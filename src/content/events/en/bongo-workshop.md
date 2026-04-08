@@ -1,0 +1,11 @@
+---
+title: "Play Bongo with Your Left Hand"
+date: "June 17, 2026"
+time: "12:00"
+location: "Kulturverkstaden, Gothenburg"
+category: "Kulturverkstaden"
+image: "photo-article-02.png"
+translationKey: "bongo-workshop"
+---
+
+A workshop for everyone who wants to explore rhythm and percussion in a new way.

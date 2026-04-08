@@ -1,0 +1,45 @@
+---
+import Base from '../../layouts/Base.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const articles = await getCollection('articles', a => a.id.startsWith('sv/'));
+  return articles.map(a => ({
+    params: { slug: a.id.replace('sv/', '') },
+    props: { article: a },
+  }));
+}
+
+const { article } = Astro.props;
+const { Content } = await render(article);
+const lang = 'sv';
+
+const badgeClass: Record<string, string> = {
+  'Tune In West': 'badge--tiw',
+  'Kulturverkstaden': 'badge--kv',
+  'HSM': 'badge--hsm',
+  'VGR': 'badge--vgr',
+};
+---
+<Base title={`${article.data.title} – Music Hub West`} lang={lang}>
+  <Nav lang={lang} active="articles" />
+
+  <div class="article-header">
+    <div class="article-header__inner">
+      <a href="/artiklar" class="event-header__back">← Alla artiklar</a>
+      <span class={`badge ${badgeClass[article.data.category]}`} style="margin-bottom:20px;display:inline-block">{article.data.category}</span>
+      <h1 class="article-header__title">{article.data.title}</h1>
+      <p class="article-header__meta">{article.data.author} &nbsp;·&nbsp; {article.data.date}</p>
+    </div>
+  </div>
+
+  <div class="article-layout">
+    <div class="article-body">
+      <Content />
+    </div>
+  </div>
+
+  <Footer lang={lang} />
+</Base>

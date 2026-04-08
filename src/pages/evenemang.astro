@@ -1,0 +1,72 @@
+---
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import EventCard from '../components/EventCard.astro';
+import { getCollection } from 'astro:content';
+
+const lang = 'sv';
+const events = await getCollection('events', e => e.id.startsWith('sv/'));
+const sorted = events.sort((a, b) => a.data.date.localeCompare(b.data.date));
+---
+<Base title="Event – Music Hub West" lang={lang}>
+  <fragment slot="hreflang">
+    <link rel="alternate" hreflang="sv" href={new URL('/evenemang', Astro.site)} />
+    <link rel="alternate" hreflang="en" href={new URL('/en/evenemang', Astro.site)} />
+  </fragment>
+
+  <Nav lang={lang} active="events" />
+
+  <!-- Hero carousel -->
+  <section class="hero">
+    <div class="hero__slides">
+      {sorted.slice(0, 4).map((ev, i) => (
+        <div class={`hero__slide ${i === 0 ? 'active' : ''}`}>
+          <div class="hero__slide-bg"><img src={`/images/${ev.data.image}`} alt="" /></div>
+          <div class="hero__slide-content">
+            <span class={`badge badge--${ev.data.category === 'Tune In West' ? 'tiw' : ev.data.category === 'Kulturverkstaden' ? 'kv' : 'hsm'} hero__badge`}>{ev.data.category}</span>
+            <h1 class="hero__title" data-text={ev.data.title}>{ev.data.title}</h1>
+            <p class="hero__subtitle">{ev.data.date} på {ev.data.location}</p>
+            <div class="hero__controls">
+              <div class="hero__dots">
+                {sorted.slice(0, 4).map((_, j) => (
+                  <button class={`hero__dot ${j === i ? 'active' : ''}`}></button>
+                ))}
+              </div>
+              <a href={`/evenemang/${ev.id.replace('sv/', '')}`} class="btn btn--primary">Anmäl dig nu</a>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Event list -->
+  <section class="section">
+    <div class="section__inner">
+      <div class="filter-bar">
+        <span class="filter-bar__label">Filtrera</span>
+        <button class="filter-chip active" data-filter="all">Alla</button>
+        <button class="filter-chip" data-filter="Tune In West">Tune In West</button>
+        <button class="filter-chip" data-filter="Kulturverkstaden">Kulturverkstaden</button>
+        <button class="filter-chip" data-filter="HSM">HSM</button>
+        <button class="filter-chip" data-filter="VGR">VGR</button>
+      </div>
+      <div class="card-grid">
+        {sorted.map(ev => (
+          <EventCard
+            title={ev.data.title}
+            date={ev.data.date}
+            time={ev.data.time}
+            category={ev.data.category}
+            image={ev.data.image}
+            slug={ev.id.replace('sv/', '')}
+            lang={lang}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <Footer lang={lang} />
+</Base>

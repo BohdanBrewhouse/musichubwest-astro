@@ -1,0 +1,79 @@
+---
+import Base from '../../layouts/Base.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import { getCollection } from 'astro:content';
+
+const lang = 'en';
+const articles = await getCollection('articles', a => a.id.startsWith('en/'));
+const sorted = articles.sort((a, b) => b.data.date.localeCompare(a.data.date));
+const featured = sorted.find(a => a.data.featured) ?? sorted[0];
+const rest = sorted.filter(a => a.id !== featured.id);
+
+const badgeClass: Record<string, string> = {
+  'Tune In West': 'badge--tiw',
+  'Kulturverkstaden': 'badge--kv',
+  'HSM': 'badge--hsm',
+  'VGR': 'badge--vgr',
+};
+---
+<Base title="Artiklar – Music Hub West" lang={lang}>
+  <fragment slot="hreflang">
+    <link rel="alternate" hreflang="sv" href={new URL('/artiklar', Astro.site)} />
+    <link rel="alternate" hreflang="en" href={new URL('/en/artiklar', Astro.site)} />
+  </fragment>
+
+  <Nav lang={lang} active="articles" />
+
+  <div class="page-hero">
+    <div class="page-hero__inner">
+      <h1 class="page-hero__title">Artiklar &amp;<br>Nyheter</h1>
+      <p class="page-hero__subtitle">Reportage, reflektioner och nyheter från musikindustrins aktörer i Västra Sverige.</p>
+    </div>
+  </div>
+
+  <section class="section">
+    <div class="section__inner">
+      <div class="filter-bar">
+        <span class="filter-bar__label">Filtrera</span>
+        <button class="filter-chip active" data-filter="all">Alla</button>
+        <button class="filter-chip" data-filter="Tune In West">Tune In West</button>
+        <button class="filter-chip" data-filter="Kulturverkstaden">Kulturverkstaden</button>
+        <button class="filter-chip" data-filter="HSM">HSM</button>
+        <button class="filter-chip" data-filter="VGR">VGR</button>
+      </div>
+
+      <a id="featured-article" href={`/artiklar/${featured.id.replace('sv/', '')}`}
+         data-category={featured.data.category}
+         style="display:block;background:var(--black-2);padding:40px;margin-bottom:56px;text-decoration:none;transition:background 0.2s;">
+        <span class={`badge ${badgeClass[featured.data.category]}`} style="margin-bottom:16px;display:inline-block">{featured.data.category}</span>
+        <h2 class="featured-title" style="font-size:clamp(28px,4vw,52px);font-weight:800;letter-spacing:-0.03em;line-height:1.05;margin-bottom:12px;max-width:760px;">
+          <span>{featured.data.title}</span>
+        </h2>
+        <p style="font-size:13px;color:rgba(255,255,255,0.4);margin-bottom:14px;text-transform:uppercase;letter-spacing:0.06em;font-weight:600;">
+          {featured.data.author} &nbsp;·&nbsp; {featured.data.date}
+        </p>
+        <p style="font-size:17px;color:rgba(255,255,255,0.7);max-width:680px;line-height:1.6;">
+          <span data-i18n="art.feat.desc">{featured.body.slice(0, 180)}...</span>
+        </p>
+      </a>
+
+      <div class="card-grid">
+        {rest.map(a => (
+          <ArticleCard
+            title={a.data.title}
+            author={a.data.author}
+            date={a.data.date}
+            category={a.data.category}
+            description={a.body.slice(0, 120) + '...'}
+            slug={a.id.replace('sv/', '')}
+            lang={lang}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <Footer lang={lang} />
+</Base>

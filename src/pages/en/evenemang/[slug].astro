@@ -1,0 +1,49 @@
+---
+import Base from '../../../layouts/Base.astro';
+import Nav from '../../../components/Nav.astro';
+import Footer from '../../../components/Footer.astro';
+import EventCard from '../../../components/EventCard.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const events = await getCollection('events', e => e.id.startsWith('en/'));
+  return events.map(ev => ({
+    params: { slug: ev.id.replace('en/', '') },
+    props: { ev },
+  }));
+}
+
+const { ev } = Astro.props;
+const { Content } = await render(ev);
+const lang = 'en';
+const related = await getCollection('events', e => e.id.startsWith('en/') && e.id !== ev.id);
+const badgeClass = { 'Tune In West':'badge--tiw','Kulturverkstaden':'badge--kv','HSM':'badge--hsm','VGR':'badge--vgr' };
+---
+<Base title={`${ev.data.title} – Music Hub West`} lang={lang} ogImage={`/images/${ev.data.image}`}>
+  <Nav lang={lang} active="events" />
+  <div class="event-header"><div class="event-header__inner">
+    <a href="/en/evenemang" class="event-header__back">← All events</a>
+    <div class="event-header__badge"><span class={`badge ${badgeClass[ev.data.category]}`}>{ev.data.category}</span></div>
+    <h1 class="event-header__title">{ev.data.title}</h1>
+  </div></div>
+  <div class="event-layout">
+    <div>
+      <div class="event-image"><img src={`/images/${ev.data.image}`} alt={ev.data.title} /></div>
+      <div class="event-content"><Content /></div>
+    </div>
+    <div class="event-sidebar">
+      <div class="event-cta-box">
+        <p class="event-cta-box__title">Register for the event</p>
+        <div class="event-meta-list">
+          <div class="event-meta-item"><span>Date</span><strong>{ev.data.date}</strong></div>
+          <div class="event-meta-item"><span>Time</span><strong>{ev.data.time}</strong></div>
+          <div class="event-meta-item"><span>Location</span><strong>{ev.data.location}</strong></div>
+          {ev.data.spots_left && <div class="event-meta-item"><span>Spots left</span><strong>{ev.data.spots_left} of {ev.data.spots_total}</strong></div>}
+          {ev.data.cost && <div class="event-meta-item"><span>Cost</span><strong>{ev.data.cost}</strong></div>}
+        </div>
+        <a href="#" class="btn btn--primary" style="width:100%;text-align:center;display:block;">Register now</a>
+      </div>
+    </div>
+  </div>
+  <Footer lang={lang} />
+</Base>

@@ -1,0 +1,26 @@
+---
+export interface Props {
+  title: string;
+  author: string;
+  date: string;
+  category: string;
+  description?: string;
+  slug: string;
+  lang: 'sv' | 'en';
+}
+const { title, author, date, category, description, slug, lang } = Astro.props;
+const base = lang === 'en' ? '/en' : '';
+
+const badgeClass: Record<string, string> = {
+  'Tune In West':     'badge--tiw',
+  'Kulturverkstaden': 'badge--kv',
+  'HSM':              'badge--hsm',
+  'VGR':              'badge--vgr',
+};
+---
+<a href={`${base}/artiklar/${slug}`} class="article-card" data-category={category}>
+  <span class={`badge ${badgeClass[category] ?? ''} article-card__badge`}>{category}</span>
+  <h3 class="article-card__title">{title}</h3>
+  <p class="article-card__meta">{author} &nbsp;·&nbsp; {date}</p>
+  {description && <p class="article-card__desc">{description}</p>}
+</a>
