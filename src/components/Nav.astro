@@ -54,8 +54,8 @@ const currentPath = Astro.url.pathname;
       </li>
     </ul>
     <div class="nav__lang">
-      <a href={currentPath.replace(/^\/(en)?/, altLang === 'en' ? '/en' : '')} class={`lang-btn ${lang === 'en' ? 'active' : ''}`}>EN</a>
-      <a href={currentPath.replace(/^\/en/, '')} class={`lang-btn ${lang === 'sv' ? 'active' : ''}`}>SV</a>
+      <a href={lang === 'sv' ? '/en' + currentPath : currentPath} class={`lang-btn ${lang === 'en' ? 'active' : ''}`}>EN</a>
+      <a href={lang === 'en' ? currentPath.replace(/^\/en/, '') || '/' : currentPath} class={`lang-btn ${lang === 'sv' ? 'active' : ''}`}>SV</a>
     </div>
     <button class="nav__burger" aria-label="Meny"><span></span><span></span><span></span></button>
   </div>
