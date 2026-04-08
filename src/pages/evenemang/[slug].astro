@@ -40,9 +40,18 @@ const badgeClass: Record<string, string> = {
       <h1 class="event-header__title">{ev.data.title}</h1>
       <div class="event-header__bottom">
         <div class="event-meta-row">
-          <div><span class="event-meta__label">Datum</span><span class="event-meta__val">{ev.data.date}</span></div>
-          <div><span class="event-meta__label">Tid</span><span class="event-meta__val">{ev.data.time}</span></div>
-          <div><span class="event-meta__label">Plats</span><span class="event-meta__val">{ev.data.location}</span></div>
+          <div class="event-meta-item">
+            <span class="event-meta-item__label">Datum</span>
+            <span class="event-meta-item__value">{ev.data.date}</span>
+          </div>
+          <div class="event-meta-item">
+            <span class="event-meta-item__label">Tid</span>
+            <span class="event-meta-item__value">{ev.data.time}</span>
+          </div>
+          <div class="event-meta-item">
+            <span class="event-meta-item__label">Plats</span>
+            <span class="event-meta-item__value">{ev.data.location}</span>
+          </div>
         </div>
       </div>
     </div>
@@ -61,21 +70,40 @@ const badgeClass: Record<string, string> = {
     <div class="event-sidebar" id="anmal">
       <div class="event-cta-box">
         <p class="event-cta-box__title">Anmäl dig till eventet</p>
-        <div class="event-meta-list">
-          <div class="event-meta-item"><span>Datum</span><strong>{ev.data.date}</strong></div>
-          <div class="event-meta-item"><span>Tid</span><strong>{ev.data.time}</strong></div>
-          <div class="event-meta-item"><span>Plats</span><strong>{ev.data.location}</strong></div>
-          {ev.data.spots_left && <div class="event-meta-item"><span>Platser kvar</span><strong>{ev.data.spots_left} av {ev.data.spots_total}</strong></div>}
-          {ev.data.cost && <div class="event-meta-item"><span>Kostnad</span><strong>{ev.data.cost}</strong></div>}
+        <div class="event-cta-box__detail">
+          <span class="event-cta-box__detail-label">Datum</span>
+          <span class="event-cta-box__detail-value">{ev.data.date}</span>
         </div>
-        <a href="#" class="btn btn--primary" style="width:100%;text-align:center;display:block;">Anmäl dig nu</a>
+        <div class="event-cta-box__detail">
+          <span class="event-cta-box__detail-label">Tid</span>
+          <span class="event-cta-box__detail-value">{ev.data.time}</span>
+        </div>
+        <div class="event-cta-box__detail">
+          <span class="event-cta-box__detail-label">Plats</span>
+          <span class="event-cta-box__detail-value">{ev.data.location}</span>
+        </div>
+        {ev.data.spots_left && (
+          <div class="event-cta-box__detail">
+            <span class="event-cta-box__detail-label">Platser kvar</span>
+            <span class="event-cta-box__detail-value">{ev.data.spots_left} av {ev.data.spots_total}</span>
+          </div>
+        )}
+        {ev.data.cost && (
+          <div class="event-cta-box__detail">
+            <span class="event-cta-box__detail-label">Kostnad</span>
+            <span class="event-cta-box__detail-value">{ev.data.cost}</span>
+          </div>
+        )}
+        <a href="#" class="btn btn--primary">Anmäl dig nu</a>
         <p class="event-cta-box__note">Bekräftelse skickas via e-post</p>
       </div>
       {ev.data.organizer && (
-        <div class="event-organizer">
-          <p class="event-organizer__label">Arrangör</p>
-          <p class="event-organizer__name">{ev.data.organizer}</p>
-          {ev.data.organizer_email && <p class="event-organizer__email">{ev.data.organizer_email}</p>}
+        <div class="event-organiser">
+          <p class="event-organiser__label">Arrangör</p>
+          <p class="event-organiser__name">{ev.data.organizer}</p>
+          {ev.data.organizer_email && (
+            <p class="event-organiser__contact">{ev.data.organizer_email}</p>
+          )}
         </div>
       )}
     </div>
