@@ -375,7 +375,7 @@ function applyLang(lang) {
 }
 
 function initI18n() {
-  const saved = localStorage.getItem('mhw-lang') || 'en';
+  const saved = document.documentElement.lang || localStorage.getItem('mhw-lang') || 'sv';
   applyLang(saved);
 
   document.querySelectorAll('.lang-btn').forEach(btn => {
