@@ -15,16 +15,45 @@ export async function getStaticPaths() {
 const { article } = Astro.props;
 const { Content } = await render(article);
 const lang = 'en';
-const badgeClass = { 'Tune In West':'badge--tiw','Kulturverkstaden':'badge--kv','HSM':'badge--hsm','VGR':'badge--vgr' };
+
+const badgeClass: Record<string, string> = {
+  'Tune In West': 'badge--tiw',
+  'Kulturverkstaden': 'badge--kv',
+  'HSM': 'badge--hsm',
+  'VGR': 'badge--vgr',
+};
 ---
 <Base title={`${article.data.title} – Music Hub West`} lang={lang}>
   <Nav lang={lang} active="articles" />
-  <div class="article-header"><div class="article-header__inner">
-    <a href="/en/artiklar" class="event-header__back">← All articles</a>
-    <span class={`badge ${badgeClass[article.data.category]}`} style="margin-bottom:20px;display:inline-block">{article.data.category}</span>
+
+  <div class="article-header">
+    <a href="/en/artiklar" class="article-header__back">← All articles</a>
+    <div class="article-header__badge">
+      <span class={`badge ${badgeClass[article.data.category] ?? ''}`}>{article.data.category}</span>
+    </div>
     <h1 class="article-header__title">{article.data.title}</h1>
-    <p class="article-header__meta">{article.data.author} · {article.data.date}</p>
-  </div></div>
-  <div class="article-layout"><div class="article-body"><Content /></div></div>
+    <div class="article-header__meta">
+      <div class="article-header__author">
+        <div class="article-header__avatar"></div>
+        <div>
+          <p class="article-header__author-name">{article.data.author}</p>
+        </div>
+      </div>
+      <span class="article-header__date">{article.data.date}</span>
+    </div>
+  </div>
+
+  {article.data.image && (
+    <div class="article-image">
+      <div class="article-image__inner">
+        <img src={`/images/${article.data.image}`} alt={article.data.title} />
+      </div>
+    </div>
+  )}
+
+  <div class="article-body">
+    <Content />
+  </div>
+
   <Footer lang={lang} />
 </Base>
