@@ -2,8 +2,9 @@
 export interface Props {
   lang: 'sv' | 'en';
   active?: string;
+  altUrl?: string;
 }
-const { lang, active } = Astro.props;
+const { lang, active, altUrl } = Astro.props;
 
 const t = {
   sv: { start: 'Start', events: 'Event', articles: 'Artiklar', about: 'Om' },
@@ -54,8 +55,8 @@ const currentPath = Astro.url.pathname;
       </li>
     </ul>
     <div class="nav__lang">
-      <a href={lang === 'sv' ? '/en' + currentPath : currentPath} data-lang="en" class={`lang-btn ${lang === 'en' ? 'active' : ''}`}>EN</a>
-      <a href={lang === 'en' ? currentPath.replace(/^\/en/, '') || '/' : currentPath} data-lang="sv" class={`lang-btn ${lang === 'sv' ? 'active' : ''}`}>SV</a>
+      <a href={altUrl ? (lang === 'sv' ? altUrl : currentPath) : (lang === 'sv' ? '/en' + currentPath : currentPath)} data-lang="en" class={`lang-btn ${lang === 'en' ? 'active' : ''}`}>EN</a>
+      <a href={altUrl ? (lang === 'en' ? altUrl : currentPath) : (lang === 'en' ? currentPath.replace(/^\/en/, '') || '/' : currentPath)} data-lang="sv" class={`lang-btn ${lang === 'sv' ? 'active' : ''}`}>SV</a>
     </div>
     <button class="nav__burger" aria-label="Meny"><span></span><span></span><span></span></button>
   </div>

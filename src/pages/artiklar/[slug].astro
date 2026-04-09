@@ -16,6 +16,10 @@ const { article } = Astro.props;
 const { Content } = await render(article);
 const lang = 'sv';
 
+const enArticles = await getCollection('articles', a => a.id.startsWith('en/'));
+const enMatch = enArticles.find(a => a.data.translationKey === article.data.translationKey);
+const altUrl = enMatch ? `/en/artiklar/${enMatch.id.replace('en/', '')}` : '/en/artiklar';
+
 const badgeClass: Record<string, string> = {
   'Tune In West': 'badge--tiw',
   'Kulturverkstaden': 'badge--kv',
@@ -24,7 +28,7 @@ const badgeClass: Record<string, string> = {
 };
 ---
 <Base title={`${article.data.title} – Music Hub West`} lang={lang}>
-  <Nav lang={lang} active="articles" />
+  <Nav lang={lang} active="articles" altUrl={altUrl} />
 
   <div class="article-header">
     <a href="/artiklar" class="article-header__back">← Alla artiklar</a>

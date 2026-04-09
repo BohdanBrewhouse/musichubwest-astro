@@ -21,6 +21,10 @@ const related = await getCollection('events', e =>
   e.id.startsWith('en/') && e.id !== ev.id
 );
 
+const svEvents = await getCollection('events', e => e.id.startsWith('sv/'));
+const svMatch = svEvents.find(e => e.data.translationKey === ev.data.translationKey);
+const altUrl = svMatch ? `/evenemang/${svMatch.id.replace('sv/', '')}` : '/evenemang';
+
 const badgeClass: Record<string, string> = {
   'Tune In West': 'badge--tiw',
   'Kulturverkstaden': 'badge--kv',
@@ -29,7 +33,7 @@ const badgeClass: Record<string, string> = {
 };
 ---
 <Base title={`${ev.data.title} – Music Hub West`} lang={lang} ogImage={`/images/${ev.data.image}`}>
-  <Nav lang={lang} active="events" />
+  <Nav lang={lang} active="events" altUrl={altUrl} />
 
   <div class="event-header">
     <div class="event-header__inner">
