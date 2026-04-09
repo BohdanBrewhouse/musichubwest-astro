@@ -33,7 +33,7 @@ const sorted = events.sort((a, b) => a.data.date.localeCompare(b.data.date));
                   <button class={`hero__dot ${j === i ? 'active' : ''}`}></button>
                 ))}
               </div>
-              <a href={`/evenemang/${ev.id.replace('sv/', '')}`} class="btn btn--primary">Anmäl dig nu</a>
+              <a href={`/en/evenemang/${ev.id.replace('en/', '')}`} class="btn btn--primary">Register now</a>
             </div>
           </div>
         </div>
@@ -60,7 +60,7 @@ const sorted = events.sort((a, b) => a.data.date.localeCompare(b.data.date));
             time={ev.data.time}
             category={ev.data.category}
             image={ev.data.image}
-            slug={ev.id.replace('sv/', '')}
+            slug={ev.id.replace('en/', '')}
             lang={lang}
           />
         ))}

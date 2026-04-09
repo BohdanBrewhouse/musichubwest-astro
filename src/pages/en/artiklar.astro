@@ -44,7 +44,7 @@ const badgeClass: Record<string, string> = {
         <button class="filter-chip" data-filter="VGR">VGR</button>
       </div>
 
-      <a id="featured-article" href={`/artiklar/${featured.id.replace('sv/', '')}`}
+      <a id="featured-article" href={`/en/artiklar/${featured.id.replace('en/', '')}`}
          data-category={featured.data.category}
          style="display:block;background:var(--black-2);padding:40px;margin-bottom:56px;text-decoration:none;transition:background 0.2s;">
         <span class={`badge ${badgeClass[featured.data.category]}`} style="margin-bottom:16px;display:inline-block">{featured.data.category}</span>
@@ -67,7 +67,7 @@ const badgeClass: Record<string, string> = {
             date={a.data.date}
             category={a.data.category}
             description={a.body.slice(0, 120) + '...'}
-            slug={a.id.replace('sv/', '')}
+            slug={a.id.replace('en/', '')}
             lang={lang}
           />
         ))}
