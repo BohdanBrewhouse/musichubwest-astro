@@ -33,6 +33,22 @@ const badgeClass: Record<string, string> = {
 };
 ---
 <Base title={`${ev.data.title} – Music Hub West`} lang={lang} ogImage={`/images/${ev.data.image}`}>
+  <fragment slot="hreflang">
+    <link rel="alternate" hreflang="sv" href={new URL(`/evenemang/${ev.id.replace('sv/','')}`, Astro.site)} />
+    {enMatch && <link rel="alternate" hreflang="en" href={new URL(altUrl, Astro.site)} />}
+  </fragment>
+  <fragment slot="jsonld">
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Event",
+      "name": ev.data.title,
+      "startDate": ev.data.date,
+      "location": { "@type": "Place", "name": ev.data.location },
+      "organizer": { "@type": "Organization", "name": ev.data.organizer ?? "Music Hub West" },
+      "inLanguage": "sv",
+      "url": new URL(`/evenemang/${ev.id.replace('sv/','')}`, Astro.site).toString(),
+    })} />
+  </fragment>
   <Nav lang={lang} active="events" altUrl={altUrl} />
 
   <div class="event-header">

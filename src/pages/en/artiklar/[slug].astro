@@ -27,7 +27,23 @@ const badgeClass: Record<string, string> = {
   'VGR': 'badge--vgr',
 };
 ---
-<Base title={`${article.data.title} – Music Hub West`} lang={lang}>
+<Base title={`${article.data.title} – Music Hub West`} lang={lang} description={article.body?.slice(0,155).replace(/\s+/g,' ').trim()}>
+  <fragment slot="hreflang">
+    <link rel="alternate" hreflang="en" href={new URL(`/en/artiklar/${article.id.replace('en/','')}`, Astro.site)} />
+    {svMatch && <link rel="alternate" hreflang="sv" href={new URL(altUrl, Astro.site)} />}
+  </fragment>
+  <fragment slot="jsonld">
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": article.data.title,
+      "author": { "@type": "Person", "name": article.data.author },
+      "datePublished": article.data.date,
+      "publisher": { "@type": "Organization", "name": "Music Hub West", "url": Astro.site },
+      "inLanguage": "en",
+      "url": new URL(`/en/artiklar/${article.id.replace('en/','')}`, Astro.site).toString(),
+    })} />
+  </fragment>
   <Nav lang={lang} active="articles" altUrl={altUrl} />
 
   <div class="article-header">

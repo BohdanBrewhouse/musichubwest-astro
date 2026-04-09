@@ -4,7 +4,7 @@ import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
-  site: 'https://musichubwest.se',
+  site: 'https://musichubwest.vercel.app',
   integrations: [mdx(), sitemap()],
   i18n: {
     defaultLocale: 'sv',
