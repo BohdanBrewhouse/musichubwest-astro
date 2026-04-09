@@ -3,6 +3,7 @@ import Base from '../layouts/Base.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import EventCard from '../components/EventCard.astro';
+import ArticleCard from '../components/ArticleCard.astro';
 import { getCollection } from 'astro:content';
 
 const lang = 'sv';
@@ -10,6 +11,8 @@ const events = await getCollection('events', e => e.id.startsWith('sv/'));
 const sorted = events.sort((a, b) => a.data.date.localeCompare(b.data.date));
 const heroSlides = sorted.slice(0, 4);
 const cardEvents = sorted.slice(0, 3);
+const articles = await getCollection('articles', a => a.id.startsWith('sv/'));
+const latestArticles = articles.sort((a, b) => b.data.date.localeCompare(a.data.date)).slice(0, 3);
 ---
 <Base title="Music Hub West – Start" lang={lang} description="En plattform för musikindustrins tillväxt i Västra Sverige.">
   <fragment slot="hreflang">
@@ -56,8 +59,37 @@ const cardEvents = sorted.slice(0, 3);
     </div>
   </section>
 
+  <div class="divider-wave">
+    <svg viewBox="0 0 1440 40" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,20 C120,40 240,0 360,20 C480,40 600,0 720,20 C840,40 960,0 1080,20 C1200,40 1320,0 1440,20" stroke="#ccff00" stroke-width="3" fill="none"/>
+    </svg>
+  </div>
+
+  <section class="section">
+    <div class="section__inner">
+      <div class="section__head">
+        <h2 class="section__title">Nyheter & artiklar</h2>
+        <a href="/artiklar" class="section__link">Se alla →</a>
+      </div>
+      <div class="card-grid">
+        {latestArticles.map(a => (
+          <ArticleCard
+            title={a.data.title}
+            author={a.data.author}
+            date={a.data.date}
+            category={a.data.category}
+            description={a.body?.slice(0, 120).replace(/\s+/g, ' ').trim()}
+            slug={a.id.replace('sv/', '')}
+            lang={lang}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+
   <div class="project-strip">
     <div class="project-strip__inner">
+      <p class="project-strip__kicker">Projekt 2026–2029</p>
       <h2 class="project-strip__title">Tune in West 2026–2029</h2>
       <p class="project-strip__text">Med finansiering från Tillväxtverket, Västra Götalandsregionen, Högskolan för Scen och Musik samt Brewhouse Göteborg skapas förutsättningar för musikindustrins tillväxt inom Västra Götaland.</p>
       <div class="partner-logos">
