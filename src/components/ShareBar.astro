@@ -1,0 +1,70 @@
+---
+export interface Props {
+  lang: 'sv' | 'en';
+  title: string;
+}
+const { lang, title } = Astro.props;
+const label = lang === 'sv' ? 'Dela' : 'Share';
+const copyLabel = lang === 'sv' ? 'Kopiera länk' : 'Copy link';
+const copyDoneLabel = lang === 'sv' ? 'Kopierad!' : 'Copied!';
+---
+<div class="share-bar">
+  <span class="share-bar__label">{label}:</span>
+
+  <!-- X / Twitter -->
+  <a class="share-btn" id="share-x" href="#" target="_blank" rel="noopener" aria-label="Share on X">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.259 5.632 5.905-5.632Zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+    <span>X</span>
+  </a>
+
+  <!-- LinkedIn -->
+  <a class="share-btn" id="share-li" href="#" target="_blank" rel="noopener" aria-label="Share on LinkedIn">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+    <span>LinkedIn</span>
+  </a>
+
+  <!-- Facebook -->
+  <a class="share-btn" id="share-fb" href="#" target="_blank" rel="noopener" aria-label="Share on Facebook">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+    <span>Facebook</span>
+  </a>
+
+  <!-- Instagram -->
+  <a class="share-btn" href="https://www.instagram.com/musichubwest" target="_blank" rel="noopener" aria-label="Instagram">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+    <span>Instagram</span>
+  </a>
+
+  <!-- Copy link -->
+  <button class="share-btn" id="share-copy" aria-label={copyLabel}>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+    <span id="copy-label">{copyLabel}</span>
+  </button>
+</div>
+
+<script define:vars={{ title, copyLabel, copyDoneLabel }}>
+  (function() {
+    var url = window.location.href;
+    var enc = encodeURIComponent;
+
+    var x = document.getElementById('share-x');
+    if (x) x.href = 'https://x.com/intent/tweet?url=' + enc(url) + '&text=' + enc(title);
+
+    var li = document.getElementById('share-li');
+    if (li) li.href = 'https://www.linkedin.com/sharing/share-offsite/?url=' + enc(url);
+
+    var fb = document.getElementById('share-fb');
+    if (fb) fb.href = 'https://www.facebook.com/sharer/sharer.php?u=' + enc(url);
+
+    var copy = document.getElementById('share-copy');
+    var copyLbl = document.getElementById('copy-label');
+    if (copy && copyLbl) {
+      copy.addEventListener('click', function() {
+        navigator.clipboard.writeText(url).then(function() {
+          copyLbl.textContent = copyDoneLabel;
+          setTimeout(function() { copyLbl.textContent = copyLabel; }, 2000);
+        });
+      });
+    }
+  })();
+</script>

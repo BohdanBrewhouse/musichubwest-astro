@@ -3,6 +3,7 @@ import Base from '../../../layouts/Base.astro';
 import Nav from '../../../components/Nav.astro';
 import Footer from '../../../components/Footer.astro';
 import EventCard from '../../../components/EventCard.astro';
+import ShareBar from '../../../components/ShareBar.astro';
 import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
@@ -128,6 +129,8 @@ const badgeClass: Record<string, string> = {
       )}
     </div>
   </div>
+
+  <ShareBar lang={lang} title={ev.data.title} />
 
   {related.length > 0 && (
     <div class="related-events">

@@ -1754,3 +1754,53 @@ a:hover .featured-title { text-decoration-color: var(--lime); }
   .article-body p { font-size: 16px; }
   .related { padding: 40px 20px; }
 }
+
+/* ── SHARE BAR ───────────────────────────────────────── */
+.share-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 32px 40px 40px;
+  max-width: var(--max);
+  margin: 0 auto;
+  border-top: 1px solid #1a1a1a;
+}
+
+.share-bar__label {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+  margin-right: 4px;
+}
+
+.share-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.18);
+  background: transparent;
+  color: rgba(255,255,255,0.75);
+  font-size: 13px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  text-decoration: none;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+
+.share-btn:hover {
+  border-color: var(--lime);
+  color: var(--lime);
+  background: rgba(204,255,0,0.06);
+}
+
+@media (max-width: 640px) {
+  .share-bar { padding: 24px 20px 32px; gap: 8px; }
+  .share-btn span { display: none; }
+  .share-btn { padding: 9px 12px; }
+}
