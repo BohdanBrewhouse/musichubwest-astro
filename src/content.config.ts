@@ -16,6 +16,8 @@ const events = defineCollection({
     organizer: z.string().optional(),
     organizer_email: z.string().optional(),
     translationKey: z.string(),
+    registration_open: z.boolean().optional().default(false),
+    registration_url: z.string().optional(),
   }),
 });
 
