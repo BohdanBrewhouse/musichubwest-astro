@@ -32,8 +32,45 @@ const badgeClass: Record<string, string> = {
   'HSM': 'badge--hsm',
   'VGR': 'badge--vgr',
 };
+
+// Calendar helpers
+function toIcsDate(dateStr: string, timeStr: string) {
+  const [start] = timeStr.split('–');
+  const [h, m] = start.trim().split(':');
+  const d = new Date(`${dateStr} ${h}:${m}`);
+  if (isNaN(d.getTime())) return '';
+  return d.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+}
+function toIcsDateEnd(dateStr: string, timeStr: string) {
+  const parts = timeStr.split('–');
+  const endTime = parts.length > 1 ? parts[1] : parts[0];
+  const [h, m] = endTime.trim().split(':');
+  const d = new Date(`${dateStr} ${h}:${m}`);
+  if (isNaN(d.getTime())) return toIcsDate(dateStr, timeStr);
+  d.setHours(d.getHours() + (parts.length === 1 ? 1 : 0));
+  return d.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+}
+
+const dtStart = toIcsDate(ev.data.date, ev.data.time);
+const dtEnd = toIcsDateEnd(ev.data.date, ev.data.time);
+const eventUrl = new URL(`/evenemang/${ev.id.replace('sv/','')}`, Astro.site).toString();
+
+const googleUrl = dtStart ? `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(ev.data.title)}&dates=${dtStart}/${dtEnd}&location=${encodeURIComponent(ev.data.location)}&details=${encodeURIComponent(eventUrl)}` : null;
+
+const icsContent = dtStart ? [
+  'BEGIN:VCALENDAR',
+  'VERSION:2.0',
+  'BEGIN:VEVENT',
+  `DTSTART:${dtStart}`,
+  `DTEND:${dtEnd}`,
+  `SUMMARY:${ev.data.title}`,
+  `LOCATION:${ev.data.location}`,
+  `URL:${eventUrl}`,
+  'END:VEVENT',
+  'END:VCALENDAR'
+].join('\r\n') : null;
 ---
-<Base title={`${ev.data.title} – Music Hub West`} lang={lang} ogImage={`/images/${ev.data.image}`}>
+<Base title={`${ev.data.title} – Music Hub West`} lang={lang} ogImage={ev.data.image}>
   <fragment slot="hreflang">
     <link rel="alternate" hreflang="sv" href={new URL(`/evenemang/${ev.id.replace('sv/','')}`, Astro.site)} />
     {enMatch && <link rel="alternate" hreflang="en" href={new URL(altUrl, Astro.site)} />}
@@ -74,9 +111,20 @@ const badgeClass: Record<string, string> = {
             <span class="event-meta-item__value">{ev.data.location}</span>
           </div>
         </div>
-        {ev.data.registration_open && ev.data.registration_url && (
-          <a href={ev.data.registration_url} target="_blank" rel="noopener noreferrer" class="btn btn--primary">Anmäl dig nu</a>
-        )}
+        <div class="event-header__actions">
+          {ev.data.registration_open && ev.data.registration_url && (
+            <a href={ev.data.registration_url} target="_blank" rel="noopener noreferrer" class="btn btn--primary">Anmäl dig nu</a>
+          )}
+          {googleUrl && (
+            <div class="cal-dropdown">
+              <button class="btn btn--outline cal-dropdown__trigger">+ Spara i kalender</button>
+              <div class="cal-dropdown__menu">
+                <a href={googleUrl} target="_blank" rel="noopener noreferrer" class="cal-dropdown__item">Google Calendar</a>
+                <a href={`data:text/calendar;charset=utf8,${encodeURIComponent(icsContent!)}`} download={`${ev.id.replace('sv/','')}.ics`} class="cal-dropdown__item">Apple / Outlook (.ics)</a>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   </div>
@@ -84,7 +132,7 @@ const badgeClass: Record<string, string> = {
   <div class="event-layout">
     <div>
       <div class="event-image">
-        <img src={`/images/${ev.data.image}`} alt={ev.data.title} />
+        <img src={ev.data.image} alt={ev.data.title} />
       </div>
       <div class="event-content">
         <Content />

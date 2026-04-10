@@ -3,7 +3,7 @@ title: 20 bolag deltog i workshoppen om AI-agenter
 author: Angelica Kranz
 date: 12 maj 2026
 category: Tune In West
-image: /imagesphoto-article-01.png
+image: /images/photo-article-01.png
 featured: false
 translationKey: ai-agents-workshop
 ---

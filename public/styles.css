@@ -1406,12 +1406,44 @@ a:hover .featured-title { text-decoration-color: var(--lime); }
   color: var(--white);
 }
 .event-header__bottom {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 40px;
-  align-items: end;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
   padding: 48px 0 52px;
 }
+.event-header__actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* ── Calendar dropdown ──────────────────────────────── */
+.cal-dropdown { position: relative; }
+.cal-dropdown__menu {
+  display: none;
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  background: var(--black-2);
+  border: 1px solid var(--black-3);
+  border-radius: 8px;
+  min-width: 200px;
+  z-index: 50;
+  overflow: hidden;
+}
+.cal-dropdown:hover .cal-dropdown__menu,
+.cal-dropdown:focus-within .cal-dropdown__menu { display: block; }
+.cal-dropdown__item {
+  display: block;
+  padding: 12px 16px;
+  font-family: var(--font);
+  font-size: 14px;
+  color: var(--white);
+  text-decoration: none;
+  transition: background 0.15s;
+}
+.cal-dropdown__item:hover { background: var(--black-3); }
 .event-meta-row {
   display: flex;
   gap: 40px;

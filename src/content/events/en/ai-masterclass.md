@@ -4,7 +4,7 @@ date: "June 17, 2026"
 time: "12:00–17:00"
 location: "Brewhouse, Gothenburg"
 category: "Tune In West"
-image: "photo-article-01.png"
+image: /images/photo-article-01.png
 spots_left: 8
 spots_total: 25
 cost: "Free"

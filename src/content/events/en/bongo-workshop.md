@@ -4,7 +4,7 @@ date: "June 17, 2026"
 time: "12:00"
 location: "Kulturverkstaden, Gothenburg"
 category: "Kulturverkstaden"
-image: "photo-article-02.png"
+image: /images/photo-article-02.png
 translationKey: "bongo-workshop"
 ---
 

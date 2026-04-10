@@ -4,7 +4,7 @@ date: "May 12, 2026"
 time: "13:00"
 location: "HSM, Gothenburg"
 category: "HSM"
-image: "photo-article-06.png"
+image: /images/photo-article-06.png
 translationKey: "music-future"
 ---
 

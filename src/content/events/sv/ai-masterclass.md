@@ -4,7 +4,7 @@ date: "17 Juni 2026"
 time: "12:00–17:00"
 location: "Brewhouse, Göteborg"
 category: "Tune In West"
-image: "photo-article-01.png"
+image: /images/photo-article-01.png
 spots_left: 8
 spots_total: 25
 cost: "Kostnadsfritt"

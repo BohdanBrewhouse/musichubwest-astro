@@ -74,7 +74,7 @@ const badgeClass: Record<string, string> = {
   {article.data.image && (
     <div class="article-image">
       <div class="article-image__inner">
-        <img src={`/images/${article.data.image}`} alt={article.data.title} />
+        <img src={article.data.image} alt={article.data.title} />
       </div>
     </div>
   )}

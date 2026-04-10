@@ -4,7 +4,7 @@ date: "24 Oktober 2026"
 time: "10:00"
 location: "HSM, Göteborg"
 category: "Tune In West"
-image: "photo-article-04.png"
+image: /images/photo-article-04.png
 translationKey: "music-tech-summit"
 ---
 
