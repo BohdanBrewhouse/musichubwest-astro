@@ -6,6 +6,7 @@ location: 'Kulturverkstaden, Gothenburg'
 category: Kulturverkstaden
 image: /imagesphoto-article-05.png
 translationKey: open-stage
+registration_open: true
 registration_url: 'https://brewhouseinkubator.se/'
 ---
 
