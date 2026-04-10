@@ -561,6 +561,76 @@ a:hover .featured-title { text-decoration-color: var(--lime); }
 }
 
 /* ─── PROJECT STRIP ───────────────────────────────── */
+/* ── Home – Tune In West AP section ────────────────── */
+.home-project {
+  background: var(--black-2);
+  border-top: 1px solid var(--black-3);
+  padding: 80px var(--px);
+}
+.home-project__inner { max-width: var(--max); margin: 0 auto; }
+.home-project__header { margin-bottom: 48px; }
+.home-project__kicker {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--lime);
+  margin-bottom: 14px;
+}
+.home-project__title {
+  font-size: clamp(36px, 5vw, 64px);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 0.95;
+  color: var(--white);
+  margin-bottom: 20px;
+}
+.home-project__text {
+  font-size: 16px;
+  color: rgba(255,255,255,0.65);
+  max-width: 600px;
+  line-height: 1.7;
+}
+.home-ap-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.home-ap-card {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--black-3);
+  padding: 28px 24px;
+  text-decoration: none;
+  color: var(--white);
+  background: var(--black);
+  transition: border-color 0.2s, background 0.2s;
+}
+.home-ap-card:hover { border-color: var(--lime); background: rgba(208,255,0,0.04); }
+.home-ap-card__num {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--lime);
+  margin-bottom: 10px;
+}
+.home-ap-card__title {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 12px;
+  color: var(--white);
+}
+.home-ap-card__desc {
+  font-size: 14px;
+  color: rgba(255,255,255,0.6);
+  line-height: 1.65;
+  flex: 1;
+  margin-bottom: 20px;
+}
+.home-ap-card__link { font-size: 13px; font-weight: 700; color: var(--lime); }
+
 .project-strip {
   background: var(--black);
   border-top: 1px solid var(--black-3);
@@ -639,7 +709,7 @@ a:hover .featured-title { text-decoration-color: var(--lime); }
 /* ─── PAGE TAB NAVIGATION ─────────────────────────── */
 .page-tabs {
   position: sticky;
-  top: 64px;
+  top: 80px;
   z-index: 90;
   background: var(--black);
   border-bottom: 1px solid var(--black-3);
@@ -1240,6 +1310,8 @@ a:hover .featured-title { text-decoration-color: var(--lime); }
   .section { padding: 48px var(--px); }
   .page-hero { padding: 56px var(--px) 44px; }
   .project-strip { padding: 48px var(--px); }
+  .home-project { padding: 56px var(--px); }
+  .home-ap-grid { grid-template-columns: 1fr; }
 
   /* Page tabs */
   .page-tabs__inner { padding: 0 var(--px); overflow-x: auto; }
