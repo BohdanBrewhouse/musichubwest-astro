@@ -74,6 +74,11 @@ const badgeClass: Record<string, string> = {
             <span class="event-meta-item__value">{ev.data.location}</span>
           </div>
         </div>
+        {ev.data.registration_open && ev.data.registration_url ? (
+          <a href={ev.data.registration_url} target="_blank" rel="noopener noreferrer" class="btn btn--primary">Anmäl dig nu</a>
+        ) : (
+          <a href="#anmal" class="btn btn--outline">Se anmälningsinfo</a>
+        )}
       </div>
     </div>
   </div>
@@ -115,7 +120,7 @@ const badgeClass: Record<string, string> = {
             <span class="event-cta-box__detail-value">{ev.data.cost}</span>
           </div>
         )}
-        {ev.data.registration_url ? (
+        {ev.data.registration_open && ev.data.registration_url ? (
           <a href={ev.data.registration_url} target="_blank" rel="noopener noreferrer" class="btn btn--primary">Anmäl dig nu</a>
         ) : (
           <span class="btn btn--primary btn--disabled">Anmälan öppnar snart</span>
