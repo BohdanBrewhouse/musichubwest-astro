@@ -2,8 +2,8 @@
 title: "Seminar: The Future of the Music Industry"
 date: "May 12, 2026"
 time: "13:00"
-location: "HSM, Gothenburg"
-category: "HSM"
+location: "Högskolan för scen och musik, Gothenburg"
+category: "Högskolan för scen och musik"
 image: /images/photo-article-06.png
 translationKey: "music-future"
 ---

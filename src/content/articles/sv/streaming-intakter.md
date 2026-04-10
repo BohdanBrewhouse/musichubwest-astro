@@ -2,7 +2,7 @@
 title: "Streaming-intäkter – vad hamnar faktiskt hos artisten?"
 author: "Erik Holm"
 date: "2 mars 2026"
-category: "HSM"
+category: "Högskolan för scen och musik"
 translationKey: "streaming-revenue"
 ---
 

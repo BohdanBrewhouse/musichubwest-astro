@@ -6,141 +6,141 @@ import Footer from '../components/Footer.astro';
 const lang = 'sv';
 ---
 <Base title="Om oss – Music Hub West" lang={lang} description="Lär känna Music Hub West — en plattform för musikindustrins tillväxt i Västra Sverige.">
-  <fragment slot="hreflang">
-    <link rel="alternate" hreflang="sv" href={new URL('/om', Astro.site)} />
-    <link rel="alternate" hreflang="en" href={new URL('/en/om', Astro.site)} />
-  </fragment>
+ <fragment slot="hreflang">
+ <link rel="alternate" hreflang="sv" href={new URL('/om', Astro.site)} />
+ <link rel="alternate" hreflang="en" href={new URL('/en/om', Astro.site)} />
+ </fragment>
 
-  <Nav lang={lang} active="about" />
+ <Nav lang={lang} active="about" />
 
-  <!-- TAB NAVIGATION -->
-  <div class="page-tabs">
-    <div class="page-tabs__inner">
-      <button class="page-tab active" data-tab="om-oss">Om oss</button>
-      <button class="page-tab" data-tab="kontakt">Kontakt</button>
-      <button class="page-tab" data-tab="partners">Partners</button>
-    </div>
-  </div>
+ <!-- TAB NAVIGATION -->
+ <div class="page-tabs">
+ <div class="page-tabs__inner">
+ <button class="page-tab active" data-tab="om-oss">Om oss</button>
+ <button class="page-tab" data-tab="kontakt">Kontakt</button>
+ <button class="page-tab" data-tab="partners">Partners</button>
+ </div>
+ </div>
 
-  <!-- PANEL: OM OSS -->
-  <div class="page-panel active" id="tab-om-oss">
-    <div class="page-hero">
-      <div class="page-hero__inner">
-        <h1 class="page-hero__title">Music Hub<br>West</h1>
-        <p class="page-hero__subtitle">Här är något ra om oss — vad vi gör och varför vi finns. En plattform som samlar musikindustrins aktörer i Västra Sverige.</p>
-      </div>
-    </div>
-    <div class="brand-photo" style="aspect-ratio:16/5; width:100%; position:relative;">
-      <img src="/images/about-hero.png" alt="Göteborg" style="width:100%;height:100%;object-fit:cover;" />
-      <div style="position:absolute;inset:0;background:linear-gradient(to top, rgba(13,13,13,0.5) 0%, transparent 40%); pointer-events:none;"></div>
-    </div>
-  </div>
+ <!-- PANEL: OM OSS -->
+ <div class="page-panel active" id="tab-om-oss">
+ <div class="page-hero">
+ <div class="page-hero__inner">
+ <h1 class="page-hero__title">Music Hub<br>West</h1>
+ <p class="page-hero__subtitle">Här är något ra om oss — vad vi gör och varför vi finns. En plattform som samlar musikindustrins aktörer i Västra Sverige.</p>
+ </div>
+ </div>
+ <div class="brand-photo" style="aspect-ratio:16/5; width:100%; position:relative;">
+ <img src="/images/about-hero.png" alt="Göteborg" style="width:100%;height:100%;object-fit:cover;" />
+ <div style="position:absolute;inset:0;background:linear-gradient(to top, rgba(13,13,13,0.5) 0%, transparent 40%); pointer-events:none;"></div>
+ </div>
+ </div>
 
-  <!-- PANEL: KONTAKT -->
-  <div class="page-panel" id="tab-kontakt">
-    <div class="contact-layout">
-      <div>
-        <h2 class="contact-title">Kontakta oss</h2>
-        <p class="contact-subtitle">Med finansiering från Tillväxtverket, Västra Götalandsregionen, Högskolan för Scen och Musik samt Brewhouse Göteborg skapas förutsättningar för musikindustrins tillväxt.</p>
-        <div class="team-grid">
-          <div class="team-card">
-            <div class="team-card__photo"></div>
-            <p class="team-card__name">Angelica</p>
-            <p class="team-card__org">Brewhouse</p>
-            <p class="team-card__email">angelica@brewhouse.se</p>
-          </div>
-          <div class="team-card">
-            <div class="team-card__photo"></div>
-            <p class="team-card__name">Johan</p>
-            <p class="team-card__org">Brewhouse</p>
-            <p class="team-card__email">johan@brewhouse.se</p>
-          </div>
-          <div class="team-card">
-            <div class="team-card__photo"></div>
-            <p class="team-card__name">Charlotte</p>
-            <p class="team-card__org">Brewhouse</p>
-            <p class="team-card__email">charlotte@brewhouse.se</p>
-          </div>
-          <div class="team-card">
-            <div class="team-card__photo"></div>
-            <p class="team-card__name">Erik</p>
-            <p class="team-card__org">HSM</p>
-            <p class="team-card__email">erik@hsm.se</p>
-          </div>
-          <div class="team-card">
-            <div class="team-card__photo"></div>
-            <p class="team-card__name">Jonathan</p>
-            <p class="team-card__org">VGR</p>
-            <p class="team-card__email">jonathan@vgr.se</p>
-          </div>
-          <div class="team-card">
-            <div class="team-card__photo"></div>
-            <p class="team-card__name">Maja-Karin</p>
-            <p class="team-card__org">VGR</p>
-            <p class="team-card__email">maja-karin@vgr.se</p>
-          </div>
-        </div>
-      </div>
-      <div>
-        <div class="form-block__title">Skicka ett meddelande</div>
-        <form>
-          <div class="form__group">
-            <label class="form__label" for="name">Namn</label>
-            <input class="form__input" type="text" id="name" placeholder="Ditt namn" />
-          </div>
-          <div class="form__group">
-            <label class="form__label" for="email">E-post</label>
-            <input class="form__input" type="email" id="email" placeholder="din@email.se" />
-          </div>
-          <div class="form__group">
-            <label class="form__label" for="org">Organisation</label>
-            <input class="form__input" type="text" id="org" placeholder="Företag / Organisation" />
-          </div>
-          <div class="form__group">
-            <label class="form__label" for="msg">Meddelande</label>
-            <textarea class="form__textarea" id="msg" placeholder="Vad kan vi hjälpa dig med?"></textarea>
-          </div>
-          <button type="submit" class="btn btn--primary" style="width:100%">Skicka</button>
-        </form>
-      </div>
-    </div>
-  </div>
+ <!-- PANEL: KONTAKT -->
+ <div class="page-panel" id="tab-kontakt">
+ <div class="contact-layout">
+ <div>
+ <h2 class="contact-title">Kontakta oss</h2>
+ <p class="contact-subtitle">Med finansiering från Tillväxtverket, Västra Götalandsregionen, Högskolan för Scen och Musik samt Brewhouse Göteborg skapas förutsättningar för musikindustrins tillväxt.</p>
+ <div class="team-grid">
+ <div class="team-card">
+ <div class="team-card__photo"></div>
+ <p class="team-card__name">Angelica</p>
+ <p class="team-card__org">Brewhouse</p>
+ <p class="team-card__email">angelica@brewhouse.se</p>
+ </div>
+ <div class="team-card">
+ <div class="team-card__photo"></div>
+ <p class="team-card__name">Johan</p>
+ <p class="team-card__org">Brewhouse</p>
+ <p class="team-card__email">johan@brewhouse.se</p>
+ </div>
+ <div class="team-card">
+ <div class="team-card__photo"></div>
+ <p class="team-card__name">Charlotte</p>
+ <p class="team-card__org">Brewhouse</p>
+ <p class="team-card__email">charlotte@brewhouse.se</p>
+ </div>
+ <div class="team-card">
+ <div class="team-card__photo"></div>
+ <p class="team-card__name">Erik</p>
+ <p class="team-card__org">Högskolan för scen och musik</p>
+ <p class="team-card__email">erik@hsm.se</p>
+ </div>
+ <div class="team-card">
+ <div class="team-card__photo"></div>
+ <p class="team-card__name">Jonathan</p>
+ <p class="team-card__org">VGR</p>
+ <p class="team-card__email">jonathan@vgr.se</p>
+ </div>
+ <div class="team-card">
+ <div class="team-card__photo"></div>
+ <p class="team-card__name">Maja-Karin</p>
+ <p class="team-card__org">VGR</p>
+ <p class="team-card__email">maja-karin@vgr.se</p>
+ </div>
+ </div>
+ </div>
+ <div>
+ <div class="form-block__title">Skicka ett meddelande</div>
+ <form>
+ <div class="form__group">
+ <label class="form__label" for="name">Namn</label>
+ <input class="form__input" type="text" id="name" placeholder="Ditt namn" />
+ </div>
+ <div class="form__group">
+ <label class="form__label" for="email">E-post</label>
+ <input class="form__input" type="email" id="email" placeholder="din@email.se" />
+ </div>
+ <div class="form__group">
+ <label class="form__label" for="org">Organisation</label>
+ <input class="form__input" type="text" id="org" placeholder="Företag / Organisation" />
+ </div>
+ <div class="form__group">
+ <label class="form__label" for="msg">Meddelande</label>
+ <textarea class="form__textarea" id="msg" placeholder="Vad kan vi hjälpa dig med?"></textarea>
+ </div>
+ <button type="submit" class="btn btn--primary" style="width:100%">Skicka</button>
+ </form>
+ </div>
+ </div>
+ </div>
 
-  <!-- PANEL: PARTNERS -->
-  <div class="page-panel" id="tab-partners">
-    <div style="padding: 48px 40px; max-width: var(--max); margin: 0 auto;">
-      <div class="partner-logos">
-        <span class="partner-logo"><img src="/logos/vgr.svg" alt="Västra Götalandsregionen" /></span>
-        <span class="partner-logo"><img src="/logos/tillvaxtverket.svg" alt="Tillväxtverket" /></span>
-        <span class="partner-logo"><img src="/logos/brewhouse.svg" alt="Brewhouse Göteborg" /></span>
-        <span class="partner-logo"><img src="/logos/hsm.svg" alt="HSM" /></span>
-      </div>
-    </div>
-    <hr class="divider" />
-    <div style="padding: 64px 40px; max-width: var(--max); margin: 0 auto;">
-      <h2 style="font-size:clamp(26px,3vw,40px); font-weight:800; letter-spacing:-0.03em; margin-bottom:10px;">
-        Tune in West 2026–2029
-      </h2>
-      <p style="font-size:15px; color:rgba(255,255,255,0.7); max-width:520px; line-height:1.6; margin-bottom:8px;">
-        Med finansiering från Tillväxtverket, Västra Götalandsregionen, Högskolan för Scen och Musik samt Brewhouse Göteborg skapas förutsättningar för musikindustrins tillväxt inom Västra Götaland.
-      </p>
-      <a href="/tune-in-west" style="font-size:14px; font-weight:700; text-decoration:underline; text-underline-offset:3px;">Läs mer om Projektet</a>
-      <div class="stats-row">
-        <div>
-          <p class="stat__number" data-count="45">45</p>
-          <p class="stat__label">deltagande bolag</p>
-        </div>
-        <div>
-          <p class="stat__number">3 mkr</p>
-          <p class="stat__label">i finansiering</p>
-        </div>
-        <div>
-          <p class="stat__number" data-count="12">12+</p>
-          <p class="stat__label">event per år</p>
-        </div>
-      </div>
-    </div>
-  </div>
+ <!-- PANEL: PARTNERS -->
+ <div class="page-panel" id="tab-partners">
+ <div style="padding: 48px 40px; max-width: var(--max); margin: 0 auto;">
+ <div class="partner-logos">
+ <span class="partner-logo"><img src="/logos/vgr.svg" alt="Västra Götalandsregionen" /></span>
+ <span class="partner-logo"><img src="/logos/tillvaxtverket.svg" alt="Tillväxtverket" /></span>
+ <span class="partner-logo"><img src="/logos/brewhouse.svg" alt="Brewhouse Göteborg" /></span>
+ <span class="partner-logo"><img src="/logos/hsm.svg" alt="Högskolan för scen och musik" /></span>
+ </div>
+ </div>
+ <hr class="divider" />
+ <div style="padding: 64px 40px; max-width: var(--max); margin: 0 auto;">
+ <h2 style="font-size:clamp(26px,3vw,40px); font-weight:800; letter-spacing:-0.03em; margin-bottom:10px;">
+ Tune in West 2026–2029
+ </h2>
+ <p style="font-size:15px; color:rgba(255,255,255,0.7); max-width:520px; line-height:1.6; margin-bottom:8px;">
+ Med finansiering från Tillväxtverket, Västra Götalandsregionen, Högskolan för Scen och Musik samt Brewhouse Göteborg skapas förutsättningar för musikindustrins tillväxt inom Västra Götaland.
+ </p>
+ <a href="/tune-in-west" style="font-size:14px; font-weight:700; text-decoration:underline; text-underline-offset:3px;">Läs mer om Projektet</a>
+ <div class="stats-row">
+ <div>
+ <p class="stat__number" data-count="45">45</p>
+ <p class="stat__label">deltagande bolag</p>
+ </div>
+ <div>
+ <p class="stat__number">3 mkr</p>
+ <p class="stat__label">i finansiering</p>
+ </div>
+ <div>
+ <p class="stat__number" data-count="12">12+</p>
+ <p class="stat__label">event per år</p>
+ </div>
+ </div>
+ </div>
+ </div>
 
-  <Footer lang={lang} />
+ <Footer lang={lang} />
 </Base>

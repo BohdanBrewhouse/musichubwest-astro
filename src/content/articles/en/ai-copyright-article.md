@@ -2,7 +2,7 @@
 title: "AI and Copyright – A Legal Vacuum"
 author: "Angelica Kranz"
 date: "May 12, 2026"
-category: "HSM"
+category: "Högskolan för scen och musik"
 translationKey: "ai-copyright-article"
 ---
 

@@ -2,7 +2,7 @@
 title: "Streaming Revenue – What Actually Reaches the Artist?"
 author: "Erik Holm"
 date: "March 2, 2026"
-category: "HSM"
+category: "Högskolan för scen och musik"
 translationKey: "streaming-revenue"
 ---
 
