@@ -20,7 +20,7 @@ const badgeClass: Record<string, string> = {
 ---
 <a href={`${base}/evenemang/${slug}`} class="event-card" data-category={category}>
   <div class="event-card__image">
-    <img src={`/images/${image}`} alt={title} loading="lazy" />
+    <img src={image} alt={title} loading="lazy" />
     <span class={`badge ${badgeClass[category] ?? ''} event-card__badge`}>{category}</span>
   </div>
   <div class="event-card__body">
