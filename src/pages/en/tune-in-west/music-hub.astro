@@ -1,0 +1,138 @@
+---
+import Base from '../../../layouts/Base.astro';
+import Nav from '../../../components/Nav.astro';
+import Footer from '../../../components/Footer.astro';
+
+const lang = 'en';
+---
+<Base title="AP1 – Music Hub · Tune In West" lang={lang} description="Music Hub is the project's shared platform for the music industry in Western Sweden – with industry meetups, showcases and the annual Music Tech Hub Summit.">
+  <fragment slot="hreflang">
+    <link rel="alternate" hreflang="sv" href={new URL('/tune-in-west/music-hub', Astro.site)} />
+    <link rel="alternate" hreflang="en" href={new URL('/en/tune-in-west/music-hub', Astro.site)} />
+  </fragment>
+
+  <Nav lang={lang} />
+
+  <div class="ap-hero">
+    <div class="ap-hero__inner">
+      <a href="/en/tune-in-west" class="ap-hero__back">← Back to Tune In West</a>
+      <p class="ap-hero__kicker">Work Package 1</p>
+      <h1 class="ap-hero__title">Music Hub</h1>
+      <p class="ap-hero__text">This work package aims to establish a shared platform for development, collaboration and innovation across the entire music industry in Western Sweden.</p>
+      <p class="ap-hero__text">Through Music Hub, a meeting place is created where artists, producers, music tech companies, educational actors and cultural institutions from across the region can connect, exchange knowledge and initiate collaborations.</p>
+      <p class="ap-hero__text">The hub acts as a catalyst for new ideas and business models by pooling resources, networks and expertise into a shared structure. Activities include recurring industry meetups, seminars, showcase events and an annual Music Tech Hub Summit, focusing on new technology, sustainability and the future of music creation.</p>
+      <p class="ap-hero__text">By building stronger regional clusters and positioning Western Sweden as a node for music innovation, the project strengthens smaller companies' opportunities to grow through collaboration, digitalisation and internationalisation.</p>
+    </div>
+  </div>
+
+  <div class="ap-activities">
+    <div class="ap-activities__inner">
+      <h2 class="ap-activities__heading">Activities</h2>
+
+      <details class="accordion__item">
+        <summary class="accordion__trigger">
+          <span class="accordion__num">1.1</span>
+          <span class="accordion__title">Music Tech Hub Summit</span>
+          <span class="accordion__arrow">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </summary>
+        <div class="accordion__body">
+          <p class="accordion__desc">The Music Tech Hub Summit is an annual open project conference bringing together artists, producers, music tech companies, academia and cultural actors from across Western Sweden. Its purpose is to create a space for knowledge exchange, innovation-driven development and networking. The programme features panel discussions, roundtable conversations and discussions of tools and initiatives.</p>
+          <p class="accordion__desc">The Summit is designed around participants' needs for business development, digitalisation and collaboration. Content creators gain insights into future revenue models and AI, producers and distributors receive new tools for sustainable business development, and music tech companies get a platform to meet users and potential partners.</p>
+          <div class="accordion__meta">
+            <div class="accordion__meta-block">
+              <p class="accordion__meta-label">Skills strengthened</p>
+              <ul class="accordion__meta-list">
+                <li>Knowledge of digitalisation, AI and copyright</li>
+                <li>New networks and collaboration opportunities between companies and actors</li>
+                <li>Ability to identify new business opportunities and partnerships</li>
+              </ul>
+            </div>
+            <div class="accordion__meta-block">
+              <p class="accordion__meta-label">Expected outcomes</p>
+              <p class="accordion__meta-text">At least 150 people will have participated in this open and free-of-charge event, which is planned to take place 3 times within the project period.</p>
+            </div>
+            <div class="accordion__meta-block">
+              <p class="accordion__meta-label">Lead organisation</p>
+              <p class="accordion__meta-text">Brewhouse Gothenburg is the lead organiser. All project partners participate.</p>
+            </div>
+          </div>
+        </div>
+      </details>
+
+      <details class="accordion__item">
+        <summary class="accordion__trigger">
+          <span class="accordion__num">1.2</span>
+          <span class="accordion__title">Masterclass</span>
+          <span class="accordion__arrow">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </summary>
+        <div class="accordion__body">
+          <p class="accordion__desc">The activity consists of a series of masterclasses and inspirational talks featuring actors from the music and cultural industries. Content is developed in close connection to the future questions and needs identified in the project's thinktanks.</p>
+          <p class="accordion__desc">The events are open to a broad audience of professionals within the music industry in Västra Götaland, with the aim of inspiring around new trends, working methods and international perspectives. The activity is directed at content creators, producers, students, distributors, music tech companies, educational actors and cultural institutions.</p>
+          <div class="accordion__meta">
+            <div class="accordion__meta-block">
+              <p class="accordion__meta-label">Skills strengthened</p>
+              <ul class="accordion__meta-list">
+                <li>Understanding of global development trends in music, technology and business</li>
+                <li>Skills in entrepreneurship, digitalisation and sustainability</li>
+                <li>Ability to translate international experiences into a regional context</li>
+              </ul>
+            </div>
+            <div class="accordion__meta-block">
+              <p class="accordion__meta-label">Expected outcomes</p>
+              <p class="accordion__meta-text">At least 200 participants from various parts of the industry. New ideas and methods are integrated into regional activities and materials are documented for further dissemination. A total of 6 masterclasses will be held.</p>
+            </div>
+            <div class="accordion__meta-block">
+              <p class="accordion__meta-label">Lead organisation</p>
+              <p class="accordion__meta-text">Brewhouse Gothenburg is the lead organiser. All project partners participate.</p>
+            </div>
+          </div>
+        </div>
+      </details>
+    </div>
+  </div>
+
+  <Footer lang={lang} />
+</Base>
+
+<style>
+  .ap-hero { background: var(--black); color: var(--white); padding: 80px 40px; position: relative; overflow: hidden; }
+  .ap-hero::before { content: ''; position: absolute; top: -100px; right: -100px; width: 600px; height: 600px; background: var(--lime); opacity: 0.08; border-radius: 50%; pointer-events: none; }
+  .ap-hero__inner { max-width: 720px; margin: 0 auto; position: relative; z-index: 1; }
+  .ap-hero__back { font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.5); text-decoration: none; display: inline-block; margin-bottom: 32px; transition: color 0.2s; }
+  .ap-hero__back:hover { color: var(--lime); }
+  .ap-hero__kicker { font-size: 10px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: var(--lime); margin-bottom: 16px; }
+  .ap-hero__title { font-size: clamp(40px, 7vw, 80px); font-weight: 800; letter-spacing: -0.04em; line-height: 0.95; margin-bottom: 32px; }
+  .ap-hero__text { font-size: 16px; color: rgba(255,255,255,0.72); line-height: 1.7; margin-bottom: 16px; }
+
+  .ap-activities { padding: 72px 40px; background: var(--black-2); border-top: 1px solid var(--black-3); }
+  .ap-activities__inner { max-width: 800px; margin: 0 auto; }
+  .ap-activities__heading { font-size: 13px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 32px; }
+
+  .accordion__item { border: 1px solid var(--black-3); margin-bottom: 8px; background: var(--black); }
+  .accordion__item[open] { border-color: rgba(208,255,0,0.3); }
+  .accordion__trigger { display: flex; align-items: center; gap: 16px; padding: 20px 24px; cursor: pointer; list-style: none; user-select: none; }
+  .accordion__trigger::-webkit-details-marker { display: none; }
+  .accordion__trigger:hover .accordion__title { color: var(--lime); }
+  .accordion__num { font-size: 10px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--lime); flex-shrink: 0; width: 28px; }
+  .accordion__title { font-size: 17px; font-weight: 700; color: var(--white); flex: 1; transition: color 0.2s; }
+  .accordion__arrow { color: rgba(255,255,255,0.4); flex-shrink: 0; transition: transform 0.2s; }
+  .accordion__item[open] .accordion__arrow { transform: rotate(180deg); color: var(--lime); }
+  .accordion__body { padding: 24px 24px 28px 68px; border-top: 1px solid var(--black-3); }
+  .accordion__desc { font-size: 15px; color: rgba(255,255,255,0.7); line-height: 1.7; margin-bottom: 16px; }
+  .accordion__meta { display: flex; flex-direction: column; gap: 20px; margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--black-3); }
+  .accordion__meta-label { font-size: 10px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--lime); margin-bottom: 8px; }
+  .accordion__meta-text { font-size: 14px; color: rgba(255,255,255,0.6); line-height: 1.65; }
+  .accordion__meta-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+  .accordion__meta-list li { font-size: 14px; color: rgba(255,255,255,0.6); line-height: 1.5; padding-left: 16px; position: relative; }
+  .accordion__meta-list li::before { content: ''; position: absolute; left: 0; top: 8px; width: 5px; height: 5px; background: var(--lime); border-radius: 50%; }
+
+  @media (max-width: 640px) {
+    .ap-hero { padding: 56px 20px; }
+    .ap-activities { padding: 48px 20px; }
+    .accordion__body { padding-left: 24px; }
+  }
+</style>

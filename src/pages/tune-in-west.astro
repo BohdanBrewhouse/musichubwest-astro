@@ -55,36 +55,26 @@ const lang = 'sv';
     </div>
     <div>
       <h2 class="tiw-about__title">Vad gör vi?</h2>
-      <ul style="list-style:none; display:flex; flex-direction:column; gap:20px;">
-        <li style="display:flex;gap:16px;align-items:flex-start;">
-          <span style="width:8px;height:8px;background:var(--lime);border-radius:50%;margin-top:6px;flex-shrink:0;"></span>
-          <div>
-            <strong style="display:block;margin-bottom:4px;">Workshops &amp; Masterclasses</strong>
-            <span style="font-size:14px;color:rgba(255,255,255,0.6);">Praktiska utbildningar i AI, upphovsrätt, finansiering och affärsutveckling för musikbranschen.</span>
-          </div>
-        </li>
-        <li style="display:flex;gap:16px;align-items:flex-start;">
-          <span style="width:8px;height:8px;background:var(--lime);border-radius:50%;margin-top:6px;flex-shrink:0;"></span>
-          <div>
-            <strong style="display:block;margin-bottom:4px;">Music Tech Summit</strong>
-            <span style="font-size:14px;color:rgba(255,255,255,0.6);">Regionens stora mötesplats där teknik och musik möts. Arrangeras en gång per år.</span>
-          </div>
-        </li>
-        <li style="display:flex;gap:16px;align-items:flex-start;">
-          <span style="width:8px;height:8px;background:var(--lime);border-radius:50%;margin-top:6px;flex-shrink:0;"></span>
-          <div>
-            <strong style="display:block;margin-bottom:4px;">Nätverk &amp; matchmaking</strong>
-            <span style="font-size:14px;color:rgba(255,255,255,0.6);">Kopplar samman artister, producenter, skivbolag och tech-bolag i regionen.</span>
-          </div>
-        </li>
-        <li style="display:flex;gap:16px;align-items:flex-start;">
-          <span style="width:8px;height:8px;background:var(--lime);border-radius:50%;margin-top:6px;flex-shrink:0;"></span>
-          <div>
-            <strong style="display:block;margin-bottom:4px;">Kunskapsspridning</strong>
-            <span style="font-size:14px;color:rgba(255,255,255,0.6);">Artiklar, rapporter och nyhetsbrev som håller branschen uppdaterad.</span>
-          </div>
-        </li>
-      </ul>
+      <div class="ap-cards">
+        <a href="/tune-in-west/music-hub" class="ap-card">
+          <span class="ap-card__num">AP 1</span>
+          <h3 class="ap-card__title">Music Hub</h3>
+          <p class="ap-card__desc">En samlande plattform för musikbranschens aktörer i Västsverige – branschträffar, showcases och ett årligt Music Tech Hub Summit.</p>
+          <span class="ap-card__link">Läs mer →</span>
+        </a>
+        <a href="/tune-in-west/musik-och-ai" class="ap-card">
+          <span class="ap-card__num">AP 2</span>
+          <h3 class="ap-card__title">Musik och AI</h3>
+          <p class="ap-card__desc">Forskning och kunskapsutveckling kring AI:s roll i musikskapande, upphovsrätt och hållbara intäktsmodeller.</p>
+          <span class="ap-card__link">Läs mer →</span>
+        </a>
+        <a href="/tune-in-west/kunskapsbyggande" class="ap-card">
+          <span class="ap-card__num">AP 3</span>
+          <h3 class="ap-card__title">Kunskapsbyggande</h3>
+          <p class="ap-card__desc">Konkret stöd för små och medelstora musikföretag – LEAN-metodik, mentorskap, studieresa och thinktank.</p>
+          <span class="ap-card__link">Läs mer →</span>
+        </a>
+      </div>
     </div>
   </div>
 
@@ -344,6 +334,46 @@ const lang = 'sv';
     color: var(--white);
   }
   .tiw-form__row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+  /* AP cards */
+  .ap-cards { display: flex; flex-direction: column; gap: 12px; }
+  .ap-card {
+    display: block;
+    border: 1px solid var(--black-3);
+    padding: 24px;
+    text-decoration: none;
+    color: var(--white);
+    transition: border-color 0.2s, background 0.2s;
+    background: transparent;
+  }
+  .ap-card:hover { border-color: var(--lime); background: rgba(208,255,0,0.04); }
+  .ap-card__num {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--lime);
+    margin-bottom: 8px;
+    display: block;
+  }
+  .ap-card__title {
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+    color: var(--white);
+  }
+  .ap-card__desc {
+    font-size: 14px;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.6;
+    margin-bottom: 16px;
+  }
+  .ap-card__link {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--lime);
+  }
 
   @media (max-width: 1024px) {
     .tiw-about { grid-template-columns: 1fr; gap: 48px; }

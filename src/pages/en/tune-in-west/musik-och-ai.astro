@@ -1,0 +1,133 @@
+---
+import Base from '../../../layouts/Base.astro';
+import Nav from '../../../components/Nav.astro';
+import Footer from '../../../components/Footer.astro';
+
+const lang = 'en';
+---
+<Base title="AP2 – Music and AI · Tune In West" lang={lang} description="This work package drives forward-looking knowledge development on AI, music and sustainable revenue models – with pilot projects and dialogue on copyright in the digital age.">
+  <fragment slot="hreflang">
+    <link rel="alternate" hreflang="sv" href={new URL('/tune-in-west/musik-och-ai', Astro.site)} />
+    <link rel="alternate" hreflang="en" href={new URL('/en/tune-in-west/musik-och-ai', Astro.site)} />
+  </fragment>
+
+  <Nav lang={lang} />
+
+  <div class="ap-hero">
+    <div class="ap-hero__inner">
+      <a href="/en/tune-in-west" class="ap-hero__back">← Back to Tune In West</a>
+      <p class="ap-hero__kicker">Work Package 2</p>
+      <h1 class="ap-hero__title">Music and AI</h1>
+      <p class="ap-hero__text">This work package drives forward-looking knowledge development on AI, music and sustainable revenue models. The academic research and educational expertise contributes, together with industry organisations, to creating and openly disseminating new knowledge across both the industry and society.</p>
+      <p class="ap-hero__text">By developing practical pilots in AI-based creation and creating forums for dialogue on copyright in the digital age, the results of this work package can be used to prepare the music industry for new technological realities and strengthen the protection of creators' rights.</p>
+    </div>
+  </div>
+
+  <div class="ap-activities">
+    <div class="ap-activities__inner">
+      <h2 class="ap-activities__heading">Activities</h2>
+
+      <details class="accordion__item">
+        <summary class="accordion__trigger">
+          <span class="accordion__num">2.1</span>
+          <span class="accordion__title">AI &amp; Creative Practice</span>
+          <span class="accordion__arrow">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </summary>
+        <div class="accordion__body">
+          <p class="accordion__desc">The project conducts research and development-based pilot projects and studies on AI's impact on and opportunities for music creation and performance. The project explores new tools and methods for human–machine interaction in creative contexts.</p>
+          <p class="accordion__desc">The questions addressed include both risks – such as copyright and homogenisation – and opportunities, such as new creative expressions and efficient production methods. There is a strong need within the music industry to better understand AI development and its implications.</p>
+          <div class="accordion__meta">
+            <div class="accordion__meta-block">
+              <p class="accordion__meta-label">Skills strengthened</p>
+              <ul class="accordion__meta-list">
+                <li>Understanding of AI as a tool in artistically creative environments</li>
+                <li>Technical competence and development of new working methods</li>
+              </ul>
+            </div>
+            <div class="accordion__meta-block">
+              <p class="accordion__meta-label">Expected outcomes</p>
+              <p class="accordion__meta-text">Two pilot projects are carried out. One report and at least two public presentations are produced and shared through open channels.</p>
+            </div>
+            <div class="accordion__meta-block">
+              <p class="accordion__meta-label">Lead organisation</p>
+              <p class="accordion__meta-text">The Academy of Music and Drama (HSM) has primary responsibility for this activity.</p>
+            </div>
+          </div>
+        </div>
+      </details>
+
+      <details class="accordion__item">
+        <summary class="accordion__trigger">
+          <span class="accordion__num">2.2</span>
+          <span class="accordion__title">Copyright in the AI Era</span>
+          <span class="accordion__arrow">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </summary>
+        <div class="accordion__body">
+          <p class="accordion__desc">The activity aims to create practical guidance on how the industry can protect its intellectual property. The work is planned in collaboration with industry organisations and takes the form of seminars, case studies and policy work on how copyright can protect creators' material in an era of AI-generated content.</p>
+          <div class="accordion__meta">
+            <div class="accordion__meta-block">
+              <p class="accordion__meta-label">Skills strengthened</p>
+              <ul class="accordion__meta-list">
+                <li>Knowledge of IP and copyright</li>
+                <li>Strategic use of intellectual property in business development</li>
+              </ul>
+            </div>
+            <div class="accordion__meta-block">
+              <p class="accordion__meta-label">Expected outcomes</p>
+              <p class="accordion__meta-text">A policy recommendation and practical guidance document are published through open channels and the project's activities.</p>
+            </div>
+            <div class="accordion__meta-block">
+              <p class="accordion__meta-label">Lead organisation</p>
+              <p class="accordion__meta-text">The Academy of Music and Drama (HSM) has primary responsibility for this activity.</p>
+            </div>
+          </div>
+        </div>
+      </details>
+    </div>
+  </div>
+
+  <Footer lang={lang} />
+</Base>
+
+<style>
+  .ap-hero { background: var(--black); color: var(--white); padding: 80px 40px; position: relative; overflow: hidden; }
+  .ap-hero::before { content: ''; position: absolute; top: -100px; right: -100px; width: 600px; height: 600px; background: var(--lime); opacity: 0.08; border-radius: 50%; pointer-events: none; }
+  .ap-hero__inner { max-width: 720px; margin: 0 auto; position: relative; z-index: 1; }
+  .ap-hero__back { font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.5); text-decoration: none; display: inline-block; margin-bottom: 32px; transition: color 0.2s; }
+  .ap-hero__back:hover { color: var(--lime); }
+  .ap-hero__kicker { font-size: 10px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: var(--lime); margin-bottom: 16px; }
+  .ap-hero__title { font-size: clamp(40px, 7vw, 80px); font-weight: 800; letter-spacing: -0.04em; line-height: 0.95; margin-bottom: 32px; }
+  .ap-hero__text { font-size: 16px; color: rgba(255,255,255,0.72); line-height: 1.7; margin-bottom: 16px; }
+
+  .ap-activities { padding: 72px 40px; background: var(--black-2); border-top: 1px solid var(--black-3); }
+  .ap-activities__inner { max-width: 800px; margin: 0 auto; }
+  .ap-activities__heading { font-size: 13px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 32px; }
+
+  .accordion__item { border: 1px solid var(--black-3); margin-bottom: 8px; background: var(--black); }
+  .accordion__item[open] { border-color: rgba(208,255,0,0.3); }
+  .accordion__trigger { display: flex; align-items: center; gap: 16px; padding: 20px 24px; cursor: pointer; list-style: none; user-select: none; }
+  .accordion__trigger::-webkit-details-marker { display: none; }
+  .accordion__trigger:hover .accordion__title { color: var(--lime); }
+  .accordion__num { font-size: 10px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--lime); flex-shrink: 0; width: 28px; }
+  .accordion__title { font-size: 17px; font-weight: 700; color: var(--white); flex: 1; transition: color 0.2s; }
+  .accordion__arrow { color: rgba(255,255,255,0.4); flex-shrink: 0; transition: transform 0.2s; }
+  .accordion__item[open] .accordion__arrow { transform: rotate(180deg); color: var(--lime); }
+  .accordion__body { padding: 24px 24px 28px 68px; border-top: 1px solid var(--black-3); }
+  .accordion__desc { font-size: 15px; color: rgba(255,255,255,0.7); line-height: 1.7; margin-bottom: 16px; }
+  .accordion__meta { display: flex; flex-direction: column; gap: 20px; margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--black-3); }
+  .accordion__meta-label { font-size: 10px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--lime); margin-bottom: 8px; }
+  .accordion__meta-text { font-size: 14px; color: rgba(255,255,255,0.6); line-height: 1.65; }
+  .accordion__meta-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+  .accordion__meta-list li { font-size: 14px; color: rgba(255,255,255,0.6); line-height: 1.5; padding-left: 16px; position: relative; }
+  .accordion__meta-list li::before { content: ''; position: absolute; left: 0; top: 8px; width: 5px; height: 5px; background: var(--lime); border-radius: 50%; }
+
+  @media (max-width: 640px) {
+    .ap-hero { padding: 56px 20px; }
+    .ap-activities { padding: 48px 20px; }
+    .accordion__body { padding-left: 24px; }
+  }
+</style>
