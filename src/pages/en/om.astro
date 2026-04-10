@@ -5,142 +5,298 @@ import Footer from '../../components/Footer.astro';
 
 const lang = 'en';
 ---
-<Base title="About – Music Hub West" lang={lang} description="Learn about Music Hub West — a platform for the music industry's growth in Western Sweden.">
- <fragment slot="hreflang">
- <link rel="alternate" hreflang="sv" href={new URL('/om', Astro.site)} />
- <link rel="alternate" hreflang="en" href={new URL('/en/om', Astro.site)} />
- </fragment>
+<Base title="About – Music Hub West" lang={lang} description="Music Hub West is an open platform for the music industry in Western Sweden — a catalyst for collaboration, innovation and sustainable growth.">
+  <fragment slot="hreflang">
+    <link rel="alternate" hreflang="sv" href={new URL('/om', Astro.site)} />
+    <link rel="alternate" hreflang="en" href={new URL('/en/om', Astro.site)} />
+  </fragment>
 
- <Nav lang={lang} active="about" />
+  <Nav lang={lang} active="about" />
 
- <!-- TAB NAVIGATION -->
- <div class="page-tabs">
- <div class="page-tabs__inner">
- <button class="page-tab active" data-tab="om-oss">About us</button>
- <button class="page-tab" data-tab="kontakt">Contact</button>
- <button class="page-tab" data-tab="partners">Partners</button>
- </div>
- </div>
+  <!-- TAB NAVIGATION -->
+  <div class="page-tabs">
+    <div class="page-tabs__inner">
+      <button class="page-tab active" data-tab="om-oss">About us</button>
+      <button class="page-tab" data-tab="kontakt">Contact</button>
+      <button class="page-tab" data-tab="partners">Partners</button>
+    </div>
+  </div>
 
- <!-- PANEL: ABOUT -->
- <div class="page-panel active" id="tab-om-oss">
- <div class="page-hero">
- <div class="page-hero__inner">
- <h1 class="page-hero__title">Music Hub<br>West</h1>
- <p class="page-hero__subtitle">Here's something about us — what we do and why we exist. A platform that unites the music industry's players in Western Sweden.</p>
- </div>
- </div>
- <div class="brand-photo" style="aspect-ratio:16/5; width:100%; position:relative;">
- <img src="/images/about-hero.png" alt="Gothenburg" style="width:100%;height:100%;object-fit:cover;" />
- <div style="position:absolute;inset:0;background:linear-gradient(to top, rgba(13,13,13,0.5) 0%, transparent 40%); pointer-events:none;"></div>
- </div>
- </div>
+  <!-- PANEL: ABOUT -->
+  <div class="page-panel active" id="tab-om-oss">
 
- <!-- PANEL: CONTACT -->
- <div class="page-panel" id="tab-kontakt">
- <div class="contact-layout">
- <div>
- <h2 class="contact-title">Contact us</h2>
- <p class="contact-subtitle">With funding from Tillväxtverket, Västra Götalandsregionen, the Academy of Music and Drama, and Brewhouse Gothenburg, we create conditions for the music industry's growth.</p>
- <div class="team-grid">
- <div class="team-card">
- <div class="team-card__photo"></div>
- <p class="team-card__name">Angelica</p>
- <p class="team-card__org">Brewhouse</p>
- <p class="team-card__email">angelica@brewhouse.se</p>
- </div>
- <div class="team-card">
- <div class="team-card__photo"></div>
- <p class="team-card__name">Johan</p>
- <p class="team-card__org">Brewhouse</p>
- <p class="team-card__email">johan@brewhouse.se</p>
- </div>
- <div class="team-card">
- <div class="team-card__photo"></div>
- <p class="team-card__name">Charlotte</p>
- <p class="team-card__org">Brewhouse</p>
- <p class="team-card__email">charlotte@brewhouse.se</p>
- </div>
- <div class="team-card">
- <div class="team-card__photo"></div>
- <p class="team-card__name">Erik</p>
- <p class="team-card__org">Högskolan för scen och musik</p>
- <p class="team-card__email">erik@hsm.se</p>
- </div>
- <div class="team-card">
- <div class="team-card__photo"></div>
- <p class="team-card__name">Jonathan</p>
- <p class="team-card__org">VGR</p>
- <p class="team-card__email">jonathan@vgr.se</p>
- </div>
- <div class="team-card">
- <div class="team-card__photo"></div>
- <p class="team-card__name">Maja-Karin</p>
- <p class="team-card__org">VGR</p>
- <p class="team-card__email">maja-karin@vgr.se</p>
- </div>
- </div>
- </div>
- <div>
- <div class="form-block__title">Send a message</div>
- <form>
- <div class="form__group">
- <label class="form__label" for="name">Name</label>
- <input class="form__input" type="text" id="name" placeholder="Your name" />
- </div>
- <div class="form__group">
- <label class="form__label" for="email">Email</label>
- <input class="form__input" type="email" id="email" placeholder="your@email.com" />
- </div>
- <div class="form__group">
- <label class="form__label" for="org">Organisation</label>
- <input class="form__input" type="text" id="org" placeholder="Company / Organisation" />
- </div>
- <div class="form__group">
- <label class="form__label" for="msg">Message</label>
- <textarea class="form__textarea" id="msg" placeholder="How can we help you?"></textarea>
- </div>
- <button type="submit" class="btn btn--primary" style="width:100%">Send</button>
- </form>
- </div>
- </div>
- </div>
+    <!-- HERO -->
+    <div class="about-hero">
+      <div class="about-hero__inner">
+        <p class="about-hero__kicker">About the platform</p>
+        <h1 class="about-hero__title">Music Hub<br>West</h1>
+        <p class="about-hero__subtitle">An open meeting place for the music industry in Västra Götaland — a catalyst for collaboration, innovation and long-term growth.</p>
+      </div>
+    </div>
 
- <!-- PANEL: PARTNERS -->
- <div class="page-panel" id="tab-partners">
- <div style="padding: 48px 40px; max-width: var(--max); margin: 0 auto;">
- <div class="partner-logos">
- <span class="partner-logo"><img src="/logos/vgr.svg" alt="Västra Götalandsregionen" /></span>
- <span class="partner-logo"><img src="/logos/tillvaxtverket.svg" alt="Tillväxtverket" /></span>
- <span class="partner-logo"><img src="/logos/brewhouse.svg" alt="Brewhouse Göteborg" /></span>
- <span class="partner-logo"><img src="/logos/hsm.svg" alt="Högskolan för scen och musik" /></span>
- </div>
- </div>
- <hr class="divider" />
- <div style="padding: 64px 40px; max-width: var(--max); margin: 0 auto;">
- <h2 style="font-size:clamp(26px,3vw,40px); font-weight:800; letter-spacing:-0.03em; margin-bottom:10px;">
- Tune in West 2026–2029
- </h2>
- <p style="font-size:15px; color:rgba(255,255,255,0.7); max-width:520px; line-height:1.6; margin-bottom:8px;">
- With funding from Tillväxtverket, Västra Götalandsregionen, the Academy of Music and Drama and Brewhouse Gothenburg, we create conditions for the music industry's growth in Västra Götaland.
- </p>
- <a href="/en/tune-in-west" style="font-size:14px; font-weight:700; text-decoration:underline; text-underline-offset:3px;">Read more about the project</a>
- <div class="stats-row">
- <div>
- <p class="stat__number" data-count="45">45</p>
- <p class="stat__label">participating companies</p>
- </div>
- <div>
- <p class="stat__number">3 MSEK</p>
- <p class="stat__label">in funding</p>
- </div>
- <div>
- <p class="stat__number" data-count="12">12+</p>
- <p class="stat__label">events per year</p>
- </div>
- </div>
- </div>
- </div>
+    <!-- IMAGE -->
+    <div class="about-image">
+      <img src="/images/about-hero.png" alt="Gothenburg" />
+      <div class="about-image__overlay"></div>
+    </div>
 
- <Footer lang={lang} />
+    <!-- PLATFORM -->
+    <div class="about-platform">
+      <div class="about-platform__inner">
+        <div class="about-platform__text">
+          <p class="about-section__kicker">The platform</p>
+          <h2 class="about-section__title">What is Music Hub West?</h2>
+          <p class="about-body">Music Hub West is an open platform for the entire music industry in Västra Götaland. Artists, producers, music tech companies, educational actors and cultural institutions come together here to exchange knowledge, build networks and initiate collaborations.</p>
+          <p class="about-body">The platform is run within the framework of the Tune In West project (2026–2029) and is funded by Tillväxtverket, Västra Götalandsregionen, Högskolan för scen och musik and Brewhouse Gothenburg.</p>
+          <p class="about-body">Music Hub West is not a closed organisation — it is a shared arena where industry actors can meet, regardless of background, size or sector.</p>
+        </div>
+        <div class="about-platform__highlight">
+          <blockquote class="about-quote">
+            <p>"A catalyst for new ideas and business models by pooling resources, networks and expertise into a shared structure."</p>
+          </blockquote>
+          <div class="about-stats-mini">
+            <div class="about-stat">
+              <span class="about-stat__num">45</span>
+              <span class="about-stat__label">participating companies</span>
+            </div>
+            <div class="about-stat">
+              <span class="about-stat__num">3 MSEK</span>
+              <span class="about-stat__label">in funding</span>
+            </div>
+            <div class="about-stat">
+              <span class="about-stat__num">12+</span>
+              <span class="about-stat__label">events per year</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROJECT -->
+    <div class="about-project">
+      <div class="about-project__inner">
+        <div class="about-project__header">
+          <p class="about-section__kicker">Project 2026–2029</p>
+          <h2 class="about-section__title">Tune In West</h2>
+          <p class="about-body" style="max-width:640px;">Tune In West is a time-limited project aimed at strengthening the music industry's infrastructure and growth in Västra Götaland. The project is organised into three work packages covering platform building, knowledge development and direct business support.</p>
+        </div>
+        <div class="about-ap-grid">
+          <a href="/en/tune-in-west/music-hub" class="about-ap-card">
+            <span class="about-ap-card__num">AP 1</span>
+            <h3 class="about-ap-card__title">Music Hub</h3>
+            <p class="about-ap-card__desc">Recurring industry meetups, seminars and showcase events. Each year the Music Tech Hub Summit is held — the region's major meeting place for technology and music.</p>
+            <span class="about-ap-card__link">Read more →</span>
+          </a>
+          <a href="/en/tune-in-west/musik-och-ai" class="about-ap-card">
+            <span class="about-ap-card__num">AP 2</span>
+            <h3 class="about-ap-card__title">Music and AI</h3>
+            <p class="about-ap-card__desc">Research and knowledge development on AI's role in music creation and copyright. Academia and industry organisations collaborate to produce and openly share new knowledge.</p>
+            <span class="about-ap-card__link">Read more →</span>
+          </a>
+          <a href="/en/tune-in-west/kunskapsbyggande" class="about-ap-card">
+            <span class="about-ap-card__num">AP 3</span>
+            <h3 class="about-ap-card__title">Knowledge Building</h3>
+            <p class="about-ap-card__desc">Concrete support for small and medium-sized music businesses — LEAN methodology, mentorship, an international study trip, a thinktank and a shared collaboration model.</p>
+            <span class="about-ap-card__link">Read more →</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- THEMES -->
+    <div class="about-themes">
+      <div class="about-themes__inner">
+        <p class="about-section__kicker">Focus areas</p>
+        <div class="about-themes__grid">
+          <div class="about-theme">
+            <div class="about-theme__icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="var(--lime)" stroke-width="2" stroke-linecap="round"/><circle cx="9" cy="7" r="4" stroke="var(--lime)" stroke-width="2"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke="var(--lime)" stroke-width="2" stroke-linecap="round"/></svg>
+            </div>
+            <h3 class="about-theme__title">Collaboration &amp; networks</h3>
+            <p class="about-theme__desc">We build stronger regional clusters and connect actors from across Västra Götaland — artists, producers, tech companies and cultural institutions.</p>
+          </div>
+          <div class="about-theme">
+            <div class="about-theme__icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7l10 5 10-5-10-5z" stroke="var(--lime)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5" stroke="var(--lime)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <h3 class="about-theme__title">AI &amp; digitalisation</h3>
+            <p class="about-theme__desc">We explore AI's opportunities and risks for the music industry — from creative practice and new production methods to copyright and intellectual property rights.</p>
+          </div>
+          <div class="about-theme">
+            <div class="about-theme__icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 22V12M12 12L6 6M12 12l6-6M2 22h20" stroke="var(--lime)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <h3 class="about-theme__title">Sustainable growth</h3>
+            <p class="about-theme__desc">We strengthen music businesses' innovation capacity and competitiveness — with a focus on sustainable business models, internationalisation and gender equality.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- PANEL: CONTACT -->
+  <div class="page-panel" id="tab-kontakt">
+    <div class="contact-layout">
+      <div>
+        <h2 class="contact-title">Contact us</h2>
+        <p class="contact-subtitle">With funding from Tillväxtverket, Västra Götalandsregionen, Högskolan för scen och musik and Brewhouse Gothenburg, we create conditions for the music industry's growth.</p>
+        <div class="team-grid">
+          <div class="team-card">
+            <div class="team-card__photo"></div>
+            <p class="team-card__name">Angelica</p>
+            <p class="team-card__org">Brewhouse</p>
+            <p class="team-card__email">angelica@brewhouse.se</p>
+          </div>
+          <div class="team-card">
+            <div class="team-card__photo"></div>
+            <p class="team-card__name">Johan</p>
+            <p class="team-card__org">Brewhouse</p>
+            <p class="team-card__email">johan@brewhouse.se</p>
+          </div>
+          <div class="team-card">
+            <div class="team-card__photo"></div>
+            <p class="team-card__name">Charlotte</p>
+            <p class="team-card__org">Brewhouse</p>
+            <p class="team-card__email">charlotte@brewhouse.se</p>
+          </div>
+          <div class="team-card">
+            <div class="team-card__photo"></div>
+            <p class="team-card__name">Erik</p>
+            <p class="team-card__org">Högskolan för scen och musik</p>
+            <p class="team-card__email">erik@hsm.se</p>
+          </div>
+          <div class="team-card">
+            <div class="team-card__photo"></div>
+            <p class="team-card__name">Jonathan</p>
+            <p class="team-card__org">VGR</p>
+            <p class="team-card__email">jonathan@vgr.se</p>
+          </div>
+          <div class="team-card">
+            <div class="team-card__photo"></div>
+            <p class="team-card__name">Maja-Karin</p>
+            <p class="team-card__org">VGR</p>
+            <p class="team-card__email">maja-karin@vgr.se</p>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="form-block__title">Send a message</div>
+        <form>
+          <div class="form__group">
+            <label class="form__label" for="name">Name</label>
+            <input class="form__input" type="text" id="name" placeholder="Your name" />
+          </div>
+          <div class="form__group">
+            <label class="form__label" for="email">Email</label>
+            <input class="form__input" type="email" id="email" placeholder="your@email.com" />
+          </div>
+          <div class="form__group">
+            <label class="form__label" for="org">Organisation</label>
+            <input class="form__input" type="text" id="org" placeholder="Company / Organisation" />
+          </div>
+          <div class="form__group">
+            <label class="form__label" for="msg">Message</label>
+            <textarea class="form__textarea" id="msg" placeholder="How can we help you?"></textarea>
+          </div>
+          <button type="submit" class="btn btn--primary" style="width:100%">Send</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- PANEL: PARTNERS -->
+  <div class="page-panel" id="tab-partners">
+    <div style="padding: 48px 40px; max-width: var(--max); margin: 0 auto;">
+      <div class="partner-logos">
+        <span class="partner-logo"><img src="/logos/vgr.svg" alt="Västra Götalandsregionen" /></span>
+        <span class="partner-logo"><img src="/logos/tillvaxtverket.svg" alt="Tillväxtverket" /></span>
+        <span class="partner-logo"><img src="/logos/brewhouse.svg" alt="Brewhouse Göteborg" /></span>
+        <span class="partner-logo"><img src="/logos/hsm.svg" alt="Högskolan för scen och musik" /></span>
+      </div>
+    </div>
+    <hr class="divider" />
+    <div style="padding: 64px 40px; max-width: var(--max); margin: 0 auto;">
+      <h2 style="font-size:clamp(26px,3vw,40px); font-weight:800; letter-spacing:-0.03em; margin-bottom:10px;">Tune in West 2026–2029</h2>
+      <p style="font-size:15px; color:rgba(255,255,255,0.7); max-width:520px; line-height:1.6; margin-bottom:8px;">With funding from Tillväxtverket, Västra Götalandsregionen, Högskolan för scen och musik and Brewhouse Gothenburg, we create conditions for the music industry's growth in Västra Götaland.</p>
+      <a href="/en/tune-in-west" style="font-size:14px; font-weight:700; text-decoration:underline; text-underline-offset:3px;">Read more about the project</a>
+      <div class="stats-row">
+        <div>
+          <p class="stat__number" data-count="45">45</p>
+          <p class="stat__label">participating companies</p>
+        </div>
+        <div>
+          <p class="stat__number">3 MSEK</p>
+          <p class="stat__label">in funding</p>
+        </div>
+        <div>
+          <p class="stat__number" data-count="12">12+</p>
+          <p class="stat__label">events per year</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <Footer lang={lang} />
 </Base>
+
+<style>
+  .about-hero { background: var(--black); padding: 88px 40px 72px; position: relative; overflow: hidden; }
+  .about-hero::before { content: ''; position: absolute; top: -140px; right: -140px; width: 700px; height: 700px; background: var(--lime); opacity: 0.1; border-radius: 50%; pointer-events: none; }
+  .about-hero__inner { max-width: var(--max); margin: 0 auto; position: relative; z-index: 1; }
+  .about-hero__kicker { font-size: 10px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: var(--lime); margin-bottom: 20px; display: block; }
+  .about-hero__title { font-size: clamp(52px, 9vw, 120px); font-weight: 800; letter-spacing: -0.045em; line-height: 0.92; margin-bottom: 28px; color: var(--white); }
+  .about-hero__subtitle { font-size: 20px; color: rgba(255,255,255,0.7); max-width: 560px; line-height: 1.6; }
+
+  .about-image { aspect-ratio: 16/5; width: 100%; position: relative; overflow: hidden; }
+  .about-image img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .about-image__overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(13,13,13,0.5) 0%, transparent 40%); pointer-events: none; }
+
+  .about-section__kicker { font-size: 10px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: var(--lime); margin-bottom: 16px; display: block; }
+  .about-section__title { font-size: clamp(28px, 4vw, 52px); font-weight: 800; letter-spacing: -0.04em; line-height: 1.0; margin-bottom: 24px; color: var(--white); }
+  .about-body { font-size: 16px; color: rgba(255,255,255,0.72); line-height: 1.75; margin-bottom: 16px; }
+
+  .about-platform { padding: 80px 40px; border-top: 1px solid var(--black-3); }
+  .about-platform__inner { max-width: var(--max); margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+  .about-quote { border-left: 3px solid var(--lime); padding-left: 24px; margin: 0 0 40px; }
+  .about-quote p { font-size: 18px; font-style: italic; color: rgba(255,255,255,0.75); line-height: 1.6; }
+  .about-stats-mini { display: flex; flex-direction: column; gap: 24px; padding: 32px; border: 1px solid var(--black-3); background: var(--black-2); }
+  .about-stat { display: flex; flex-direction: column; gap: 4px; }
+  .about-stat__num { font-size: 40px; font-weight: 800; letter-spacing: -0.04em; color: var(--lime); line-height: 1; }
+  .about-stat__label { font-size: 13px; color: rgba(255,255,255,0.5); font-weight: 600; }
+
+  .about-project { padding: 80px 40px; background: var(--black-2); border-top: 1px solid var(--black-3); }
+  .about-project__inner { max-width: var(--max); margin: 0 auto; }
+  .about-project__header { margin-bottom: 48px; }
+  .about-ap-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .about-ap-card { display: flex; flex-direction: column; border: 1px solid var(--black-3); padding: 28px 24px; text-decoration: none; color: var(--white); background: var(--black); transition: border-color 0.2s, background 0.2s; }
+  .about-ap-card:hover { border-color: var(--lime); background: rgba(208,255,0,0.04); }
+  .about-ap-card__num { font-size: 10px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--lime); margin-bottom: 10px; }
+  .about-ap-card__title { font-size: 20px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 12px; color: var(--white); }
+  .about-ap-card__desc { font-size: 14px; color: rgba(255,255,255,0.6); line-height: 1.65; flex: 1; margin-bottom: 20px; }
+  .about-ap-card__link { font-size: 13px; font-weight: 700; color: var(--lime); }
+
+  .about-themes { padding: 80px 40px; border-top: 1px solid var(--black-3); }
+  .about-themes__inner { max-width: var(--max); margin: 0 auto; }
+  .about-themes__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 40px; border: 1px solid var(--black-3); }
+  .about-theme { padding: 40px 32px; border-right: 1px solid var(--black-3); background: var(--black-2); }
+  .about-theme:last-child { border-right: none; }
+  .about-theme__icon { width: 48px; height: 48px; border: 1px solid rgba(208,255,0,0.2); display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
+  .about-theme__title { font-size: 18px; font-weight: 800; letter-spacing: -0.02em; color: var(--white); margin-bottom: 12px; }
+  .about-theme__desc { font-size: 14px; color: rgba(255,255,255,0.6); line-height: 1.7; }
+
+  @media (max-width: 1024px) {
+    .about-platform__inner { grid-template-columns: 1fr; gap: 48px; }
+    .about-ap-grid { grid-template-columns: 1fr; }
+    .about-themes__grid { grid-template-columns: 1fr; }
+    .about-theme { border-right: none; border-bottom: 1px solid var(--black-3); }
+    .about-theme:last-child { border-bottom: none; }
+  }
+  @media (max-width: 640px) {
+    .about-hero { padding: 64px 20px 56px; }
+    .about-platform { padding: 56px 20px; }
+    .about-project { padding: 56px 20px; }
+    .about-themes { padding: 56px 20px; }
+    .about-image { aspect-ratio: 16/7; }
+  }
+</style>
