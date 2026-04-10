@@ -1366,7 +1366,7 @@ a:hover .featured-title { text-decoration-color: var(--lime); }
   background: var(--black-2);
   padding: 64px 40px 0;
   position: relative;
-  overflow: hidden;
+  overflow: visible;
 }
 .event-header::before {
   content: '';
@@ -1461,7 +1461,7 @@ a:hover .featured-title { text-decoration-color: var(--lime); }
   border-top: 2px solid var(--lime);
   border-radius: 0 0 8px 8px;
   overflow: hidden;
-  z-index: 60;
+  z-index: 200;
 }
 .cal-drop.open .cal-drop__menu { display: block; }
 
