@@ -1418,32 +1418,32 @@ a:hover .featured-title { text-decoration-color: var(--lime); }
   flex-wrap: wrap;
 }
 
-/* ── Calendar dropdown ──────────────────────────────── */
-.cal-dropdown { position: relative; }
-.cal-dropdown__menu {
-  display: none;
-  position: absolute;
-  top: calc(100% + 8px);
-  left: 0;
-  background: var(--black-2);
-  border: 1px solid var(--black-3);
-  border-radius: 8px;
-  min-width: 200px;
-  z-index: 50;
-  overflow: hidden;
+/* ── Calendar buttons ───────────────────────────────── */
+.cal-btns {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
 }
-.cal-dropdown:hover .cal-dropdown__menu,
-.cal-dropdown:focus-within .cal-dropdown__menu { display: block; }
-.cal-dropdown__item {
-  display: block;
-  padding: 12px 16px;
+.cal-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 10px 18px;
+  border: 1.5px solid rgba(255,255,255,0.25);
+  border-radius: 8px;
   font-family: var(--font);
-  font-size: 14px;
+  font-size: 13px;
+  font-weight: 600;
   color: var(--white);
   text-decoration: none;
-  transition: background 0.15s;
+  letter-spacing: 0.03em;
+  transition: border-color 0.15s, background 0.15s;
+  white-space: nowrap;
 }
-.cal-dropdown__item:hover { background: var(--black-3); }
+.cal-btn:hover {
+  border-color: rgba(255,255,255,0.6);
+  background: rgba(255,255,255,0.06);
+}
 .event-meta-row {
   display: flex;
   gap: 40px;
