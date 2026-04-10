@@ -1419,14 +1419,15 @@ a:hover .featured-title { text-decoration-color: var(--lime); }
 }
 
 /* ── Calendar dropdown ──────────────────────────────── */
-.cal-drop { position: relative; }
+.cal-drop { position: relative; display: inline-block; }
 
 .cal-drop__trigger {
-  display: inline-flex;
+  display: flex;
+  width: 100%;
   align-items: center;
   gap: 8px;
   padding: 11px 18px;
-  background: transparent;
+  background: #111;
   border: 1.5px solid rgba(255,255,255,0.22);
   border-radius: 8px;
   font-family: var(--font);
@@ -1435,14 +1436,17 @@ a:hover .featured-title { text-decoration-color: var(--lime); }
   color: var(--white);
   letter-spacing: 0.04em;
   cursor: pointer;
-  transition: border-color 0.15s, background 0.15s;
+  transition: border-color 0.15s;
   white-space: nowrap;
 }
-.cal-drop__trigger:hover {
-  border-color: rgba(255,255,255,0.5);
-  background: rgba(255,255,255,0.05);
+.cal-drop.open .cal-drop__trigger {
+  border-color: rgba(255,255,255,0.22);
+  border-bottom-color: transparent;
+  border-radius: 8px 8px 0 0;
 }
+.cal-drop__trigger:hover { border-color: rgba(255,255,255,0.5); }
 .cal-drop__arrow {
+  margin-left: auto;
   transition: transform 0.2s ease;
   stroke: currentColor;
   fill: none;
@@ -1453,11 +1457,11 @@ a:hover .featured-title { text-decoration-color: var(--lime); }
 .cal-drop__menu {
   display: none;
   position: absolute;
-  top: calc(100% + 6px);
+  top: 100%;
   left: 0;
-  min-width: 180px;
+  width: 100%;
   background: #111;
-  border: 1.5px solid rgba(255,255,255,0.12);
+  border: 1.5px solid rgba(255,255,255,0.22);
   border-top: 2px solid var(--lime);
   border-radius: 0 0 8px 8px;
   overflow: hidden;
