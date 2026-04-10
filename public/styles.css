@@ -1418,31 +1418,69 @@ a:hover .featured-title { text-decoration-color: var(--lime); }
   flex-wrap: wrap;
 }
 
-/* ── Calendar buttons ───────────────────────────────── */
-.cal-btns {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-.cal-btn {
+/* ── Calendar dropdown ──────────────────────────────── */
+.cal-drop { position: relative; }
+
+.cal-drop__trigger {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
-  padding: 10px 18px;
-  border: 1.5px solid rgba(255,255,255,0.25);
+  gap: 8px;
+  padding: 11px 18px;
+  background: transparent;
+  border: 1.5px solid rgba(255,255,255,0.22);
   border-radius: 8px;
   font-family: var(--font);
   font-size: 13px;
   font-weight: 600;
   color: var(--white);
-  text-decoration: none;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.04em;
+  cursor: pointer;
   transition: border-color 0.15s, background 0.15s;
   white-space: nowrap;
 }
-.cal-btn:hover {
-  border-color: rgba(255,255,255,0.6);
-  background: rgba(255,255,255,0.06);
+.cal-drop__trigger:hover {
+  border-color: rgba(255,255,255,0.5);
+  background: rgba(255,255,255,0.05);
+}
+.cal-drop__arrow {
+  transition: transform 0.2s ease;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.5;
+}
+.cal-drop.open .cal-drop__arrow { transform: rotate(180deg); }
+
+.cal-drop__menu {
+  display: none;
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  min-width: 180px;
+  background: #111;
+  border: 1.5px solid rgba(255,255,255,0.12);
+  border-top: 2px solid var(--lime);
+  border-radius: 0 0 8px 8px;
+  overflow: hidden;
+  z-index: 60;
+}
+.cal-drop.open .cal-drop__menu { display: block; }
+
+.cal-drop__item {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.8);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  transition: background 0.12s, color 0.12s;
+}
+.cal-drop__item:last-child { border-bottom: none; }
+.cal-drop__item:hover {
+  background: rgba(200,255,0,0.07);
+  color: var(--lime);
 }
 .event-meta-row {
   display: flex;

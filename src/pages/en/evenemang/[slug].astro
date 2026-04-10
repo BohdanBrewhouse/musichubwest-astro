@@ -115,15 +115,20 @@ const icsContent = dtStart ? [
             <a href={ev.data.registration_url} target="_blank" rel="noopener noreferrer" class="btn btn--primary">Register now</a>
           )}
           {googleUrl && (
-            <div class="cal-btns">
-              <a href={googleUrl} target="_blank" rel="noopener noreferrer" class="cal-btn">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.372 0 0 5.373 0 12s5.372 12 12 12 12-5.373 12-12S18.628 0 12 0zm5.885 8.115l-1.732 1.732A5.5 5.5 0 0 0 6.5 12a5.5 5.5 0 0 0 9.619 3.619l1.732 1.732A7.5 7.5 0 1 1 12 4.5a7.47 7.47 0 0 1 5.885 3.615z"/></svg>
-                Google Calendar
-              </a>
-              <a href={`/en/evenemang/${ev.id.replace('en/','')}.ics`} class="cal-btn">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17 2h-1V0h-2v2H8V0H6v2H5C3.9 2 3 2.9 3 4v18c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 20H5V9h14v13z"/></svg>
-                Apple / Outlook
-              </a>
+            <div class="cal-drop" id="cal-drop-en">
+              <button class="cal-drop__trigger" aria-expanded="false" onclick="const d=this.closest('.cal-drop');const open=d.classList.toggle('open');this.setAttribute('aria-expanded',open)">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17 2h-1V0h-2v2H8V0H6v2H5C3.9 2 3 2.9 3 4v18c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 20H5V9h14v13z"/></svg>
+                Add to calendar
+                <svg class="cal-drop__arrow" width="10" height="10" viewBox="0 0 10 10" fill="currentColor"><path d="M1 3l4 4 4-4"/></svg>
+              </button>
+              <div class="cal-drop__menu">
+                <a href={googleUrl} target="_blank" rel="noopener noreferrer" class="cal-drop__item">
+                  <span class="cal-drop__item-label">Google Calendar</span>
+                </a>
+                <a href={`/en/evenemang/${ev.id.replace('en/','')}.ics`} class="cal-drop__item">
+                  <span class="cal-drop__item-label">Apple / Outlook</span>
+                </a>
+              </div>
             </div>
           )}
         </div>
