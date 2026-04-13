@@ -32,15 +32,20 @@ const sorted = events.sort((a, b) => a.data.date.localeCompare(b.data.date));
     <div class="hero__slides">
       {sorted.slice(0, 4).map((ev, i) => (
         <div class={`hero__slide ${i === 0 ? 'active' : ''}`}>
-          <div class="hero__slide-bg"><img src={ev.data.image} alt="" /></div>
+          <div class="hero__slide-bg">
+            <img src={ev.data.image} alt=""
+              fetchpriority={i === 0 ? 'high' : undefined}
+              loading={i === 0 ? 'eager' : 'lazy'}
+              decoding="async" />
+          </div>
           <div class="hero__slide-content">
             <span class={`badge badge--${ev.data.category === 'Tune In West' ? 'tiw' : ev.data.category === 'Kulturverkstaden' ? 'kv' : 'hsm'} hero__badge`}>{ev.data.category}</span>
             <h1 class="hero__title" data-text={ev.data.title}>{ev.data.title}</h1>
             <p class="hero__subtitle">{ev.data.date} at {ev.data.location}</p>
             <div class="hero__controls">
-              <div class="hero__dots">
+              <div class="hero__dots" role="tablist" aria-label="Slideshow">
                 {sorted.slice(0, 4).map((_, j) => (
-                  <button class={`hero__dot ${j === i ? 'active' : ''}`}></button>
+                  <button class={`hero__dot ${j === i ? 'active' : ''}`} role="tab" aria-label={`Slide ${j + 1}`} aria-selected={j === i ? 'true' : 'false'}></button>
                 ))}
               </div>
               <a href={`/en/evenemang/${ev.id.replace('en/', '')}`} class="btn btn--primary">Register now</a>
@@ -56,11 +61,11 @@ const sorted = events.sort((a, b) => a.data.date.localeCompare(b.data.date));
     <div class="section__inner">
       <div class="filter-bar">
         <span class="filter-bar__label">Filtrera</span>
-        <button class="filter-chip active" data-filter="all">Alla</button>
-        <button class="filter-chip" data-filter="Tune In West">Tune In West</button>
-        <button class="filter-chip" data-filter="Kulturverkstaden">Kulturverkstaden</button>
-        <button class="filter-chip" data-filter="Högskolan för scen och musik">Högskolan för scen och musik</button>
-        <button class="filter-chip" data-filter="VGR">VGR</button>
+        <button class="filter-chip active" data-filter="all" aria-pressed="true">Alla</button>
+        <button class="filter-chip" data-filter="Tune In West" aria-pressed="false">Tune In West</button>
+        <button class="filter-chip" data-filter="Kulturverkstaden" aria-pressed="false">Kulturverkstaden</button>
+        <button class="filter-chip" data-filter="Högskolan för scen och musik" aria-pressed="false">Högskolan för scen och musik</button>
+        <button class="filter-chip" data-filter="VGR" aria-pressed="false">VGR</button>
       </div>
       <div class="card-grid">
         {sorted.map(ev => (

@@ -48,13 +48,18 @@ const latestArticles = articles.sort((a, b) => b.data.date.localeCompare(a.data.
     <div class="hero__slides">
       {sorted.slice(0,4).map((ev, i) => (
         <div class={`hero__slide ${i===0?'active':''}`}>
-          <div class="hero__slide-bg"><img src={ev.data.image} alt="" /></div>
+          <div class="hero__slide-bg">
+            <img src={ev.data.image} alt=""
+              fetchpriority={i === 0 ? 'high' : undefined}
+              loading={i === 0 ? 'eager' : 'lazy'}
+              decoding="async" />
+          </div>
           <div class="hero__slide-content">
             <h1 class="hero__title" data-text={ev.data.title}>{ev.data.title}</h1>
             <p class="hero__subtitle">{ev.data.date} at {ev.data.location}</p>
             <div class="hero__controls">
-              <div class="hero__dots">
-                {sorted.slice(0,4).map((_,j) => <button class={`hero__dot ${j===i?'active':''}`}></button>)}
+              <div class="hero__dots" role="tablist" aria-label="Slideshow">
+                {sorted.slice(0,4).map((_,j) => <button class={`hero__dot ${j===i?'active':''}`} role="tab" aria-label={`Slide ${j + 1}`} aria-selected={j===i?'true':'false'}></button>)}
               </div>
               <a href={`/en/evenemang/${ev.id.replace('en/','')}`} class="btn btn--primary">Register now</a>
             </div>

@@ -141,7 +141,7 @@ const icsContent = dtStart ? [
   <div class="event-layout">
     <div>
       <div class="event-image">
-        <img src={ev.data.image} alt={ev.data.title} />
+        <img src={ev.data.image} alt={ev.data.title} loading="lazy" decoding="async" />
       </div>
       <div class="event-content">
         <Content />

@@ -10,9 +10,11 @@ function initCarousel() {
   function goTo(n) {
     slides[current].classList.remove('active');
     dots[current]?.classList.remove('active');
+    dots[current]?.setAttribute('aria-selected', 'false');
     current = (n + slides.length) % slides.length;
     slides[current].classList.add('active');
     dots[current]?.classList.add('active');
+    dots[current]?.setAttribute('aria-selected', 'true');
   }
 
   function next() { goTo(current + 1); }
@@ -52,8 +54,12 @@ function initFilters() {
     chip.addEventListener('click', () => {
       const bar = chip.closest('.filter-bar');
       if (!bar) return;
-      bar.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+      bar.querySelectorAll('.filter-chip').forEach(c => {
+        c.classList.remove('active');
+        c.setAttribute('aria-pressed', 'false');
+      });
       chip.classList.add('active');
+      chip.setAttribute('aria-pressed', 'true');
 
       // Generic show/hide — only on pages without the articles featured block
       if (!document.getElementById('featured-article')) {
