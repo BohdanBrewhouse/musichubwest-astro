@@ -2050,8 +2050,9 @@ a:hover .featured-title { text-decoration-color: var(--lime); }
   inset: 0;
   z-index: 500;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: center;
+  padding: 20px;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.25s ease;
@@ -2075,17 +2076,16 @@ a:hover .featured-title { text-decoration-color: var(--lime); }
   z-index: 1;
   background: var(--black-2);
   border: 1px solid var(--black-3);
-  border-bottom: none;
   width: 100%;
-  max-width: 880px;
-  max-height: 90vh;
+  max-width: 860px;
+  max-height: 88vh;
   overflow-y: auto;
-  transform: translateY(56px);
-  transition: transform 0.38s cubic-bezier(0.22, 1, 0.36, 1);
+  transform: scale(0.96) translateY(16px);
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .map-modal.open .map-modal__panel {
-  transform: translateY(0);
+  transform: scale(1) translateY(0);
 }
 
 .map-modal__header {

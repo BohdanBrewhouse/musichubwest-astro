@@ -318,14 +318,7 @@ const icsContent = dtStart ? [
         var grid = modal.querySelector('.map-modal__transport-grid');
         var dest = grid ? grid.dataset.dest : '';
         var url = 'https://www.google.com/maps/dir/?api=1&destination=' + encodeURIComponent(dest) + '&travelmode=' + mode;
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(
-            function (pos) { window.open(url + '&origin=' + pos.coords.latitude + ',' + pos.coords.longitude, '_blank', 'noopener'); },
-            function () { window.open(url, '_blank', 'noopener'); }
-          );
-        } else {
-          window.open(url, '_blank', 'noopener');
-        }
+        window.open(url, '_blank', 'noopener');
       }
 
       window.openMapModal = openMapModal;
