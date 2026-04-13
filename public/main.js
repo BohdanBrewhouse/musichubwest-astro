@@ -19,7 +19,9 @@ function initCarousel() {
 
   function next() { goTo(current + 1); }
 
-  function start() { timer = setInterval(next, 5000); }
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function start() { if (!reducedMotion) timer = setInterval(next, 5000); }
   function stop()  { clearInterval(timer); }
 
   dots.forEach((dot, i) => {
@@ -270,6 +272,8 @@ function initCounters() {
 /* ── Card click glitch → navigate ──────────────────── */
 function initCardGlitch() {
   const cards = document.querySelectorAll('.event-card[href], .article-card[href]');
+  // If reduced motion — skip glitch, navigate directly (default link behavior)
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   cards.forEach(card => {
     const glitchClass = card.classList.contains('event-card')
       ? 'event-card--glitch'
@@ -287,6 +291,7 @@ function initCardGlitch() {
 
 /* ── Magnetic CTA buttons ───────────────────────────── */
 function initMagneticButtons() {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   document.querySelectorAll('.btn--primary').forEach(btn => {
     btn.addEventListener('mousemove', e => {
       const r = btn.getBoundingClientRect();

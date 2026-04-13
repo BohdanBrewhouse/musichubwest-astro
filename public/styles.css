@@ -2250,3 +2250,70 @@ a:hover .featured-title { text-decoration-color: var(--lime); }
   .share-btn span { display: none; }
   .share-btn { padding: 9px 12px; }
 }
+
+/* ── prefers-reduced-motion ─────────────────────────────
+   Affects only users who enabled "Reduce Motion" in OS settings.
+   All other users see the full animated experience unchanged.
+────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+
+  /* 1. Hero glitch titles — disable infinite animation */
+  .hero__slide.active .hero__title::before,
+  .hero__slide.active .hero__title::after {
+    animation: none;
+  }
+
+  /* 2. Scroll reveal — elements appear instantly, no slide-up */
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .reveal--visible {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  /* 3. Card click glitch — skip animation, just navigate */
+  .article-card--glitch,
+  .event-card--glitch {
+    animation: none;
+  }
+  .article-card--glitch::before,
+  .event-card--glitch::before {
+    animation: none;
+    opacity: 0;
+  }
+
+  /* 4. Button hover transforms — keep color feedback, remove movement */
+  .btn:hover           { transform: none; }
+  .btn:active          { transform: none; }
+  .btn--primary        { transition: background 0.15s, color 0.15s; }
+
+  /* 5. Card hover lift — remove translateY movement */
+  .event-card:hover    { transform: none; }
+  .article-card:hover  { transform: none; }
+
+  /* 6. Map modal — instant open/close, no scale animation */
+  .map-modal__panel {
+    transition: none;
+    transform: none;
+  }
+  .map-modal.open .map-modal__panel {
+    transform: none;
+  }
+
+  /* 7. Nav burger animation */
+  .nav__burger span    { transition: none; }
+
+  /* 8. All remaining transitions — shorten to imperceptible */
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
