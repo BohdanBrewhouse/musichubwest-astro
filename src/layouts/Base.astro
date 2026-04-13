@@ -5,9 +5,11 @@ export interface Props {
   lang: 'sv' | 'en';
   ogImage?: string;
 }
-const { title, description = 'En plattform för musikindustrins tillväxt i Västra Sverige.', lang, ogImage = '/images/about-hero.png' } = Astro.props;
+const { title, description = 'En plattform för musikindustrins tillväxt i Västra Sverige.', lang, ogImage } = Astro.props;
+const resolvedOgImage = ogImage ?? (lang === 'en' ? '/images/og-cover-en.jpg' : '/images/og-cover-sv.jpg');
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const ogLocale = lang === 'sv' ? 'sv_SE' : 'en_GB';
+const ogImageUrl = new URL(resolvedOgImage, Astro.site).toString();
 ---
 <!DOCTYPE html>
 <html lang={lang}>
@@ -18,20 +20,29 @@ const ogLocale = lang === 'sv' ? 'sv_SE' : 'en_GB';
   <meta name="description" content={description} />
   <link rel="canonical" href={canonicalURL} />
 
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+
   <!-- hreflang -->
   <slot name="hreflang" />
 
   <!-- OG -->
   <meta property="og:title" content={title} />
   <meta property="og:description" content={description} />
-  <meta property="og:image" content={new URL(ogImage, Astro.site)} />
+  <meta property="og:image" content={ogImageUrl} />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
   <meta property="og:url" content={canonicalURL} />
   <meta property="og:type" content="website" />
   <meta property="og:locale" content={ogLocale} />
   <meta property="og:site_name" content="Music Hub West" />
+
+  <!-- Twitter / X -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content={title} />
   <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={ogImageUrl} />
 
   <!-- JSON-LD slot -->
   <slot name="jsonld" />
