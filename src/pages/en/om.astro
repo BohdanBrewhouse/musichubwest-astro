@@ -10,6 +10,16 @@ const lang = 'en';
     <link rel="alternate" hreflang="sv" href={new URL('/om', Astro.site)} />
     <link rel="alternate" hreflang="en" href={new URL('/en/om', Astro.site)} />
   </fragment>
+  <fragment slot="jsonld">
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Start", "item": Astro.site },
+        { "@type": "ListItem", "position": 2, "name": "About", "item": new URL('/en/om', Astro.site).toString() }
+      ]
+    })} />
+  </fragment>
 
   <Nav lang={lang} active="about" />
 

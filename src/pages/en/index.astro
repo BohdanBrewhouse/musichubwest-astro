@@ -12,7 +12,37 @@ const sorted = events.sort((a, b) => a.data.date.localeCompare(b.data.date));
 const articles = await getCollection('articles', a => a.id.startsWith('en/'));
 const latestArticles = articles.sort((a, b) => b.data.date.localeCompare(a.data.date)).slice(0, 3);
 ---
-<Base title="Music Hub West – Start" lang={lang}>
+<Base title="Music Hub West – Start" lang={lang} description="A platform for the music industry's growth in Western Sweden. Events, articles and projects in music, tech and creative business in Västra Götaland.">
+  <fragment slot="hreflang">
+    <link rel="alternate" hreflang="sv" href={new URL('/', Astro.site)} />
+    <link rel="alternate" hreflang="en" href={new URL('/en/', Astro.site)} />
+  </fragment>
+  <fragment slot="jsonld">
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": `${Astro.site}#website`,
+          "url": Astro.site,
+          "name": "Music Hub West",
+          "inLanguage": "en-GB",
+          "description": "A platform for the music industry's growth in Western Sweden."
+        },
+        {
+          "@type": "Organization",
+          "@id": `${Astro.site}#organization`,
+          "name": "Music Hub West",
+          "url": Astro.site,
+          "logo": {
+            "@type": "ImageObject",
+            "url": new URL('/favicon.svg', Astro.site).toString()
+          },
+          "sameAs": []
+        }
+      ]
+    })} />
+  </fragment>
   <Nav lang={lang} active="start" />
   <section class="hero">
     <div class="hero__slides">

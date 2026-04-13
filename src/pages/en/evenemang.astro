@@ -9,10 +9,20 @@ const lang = 'en';
 const events = await getCollection('events', e => e.id.startsWith('en/'));
 const sorted = events.sort((a, b) => a.data.date.localeCompare(b.data.date));
 ---
-<Base title="Event – Music Hub West" lang={lang}>
+<Base title="Events – Music Hub West" lang={lang} description="Upcoming events in music, technology and creative business in Western Sweden. Seminars, showcases and industry meetups by Music Hub West.">
   <fragment slot="hreflang">
     <link rel="alternate" hreflang="sv" href={new URL('/evenemang', Astro.site)} />
     <link rel="alternate" hreflang="en" href={new URL('/en/evenemang', Astro.site)} />
+  </fragment>
+  <fragment slot="jsonld">
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Start", "item": Astro.site },
+        { "@type": "ListItem", "position": 2, "name": "Events", "item": new URL('/en/evenemang', Astro.site).toString() }
+      ]
+    })} />
   </fragment>
 
   <Nav lang={lang} active="events" />
@@ -26,7 +36,7 @@ const sorted = events.sort((a, b) => a.data.date.localeCompare(b.data.date));
           <div class="hero__slide-content">
             <span class={`badge badge--${ev.data.category === 'Tune In West' ? 'tiw' : ev.data.category === 'Kulturverkstaden' ? 'kv' : 'hsm'} hero__badge`}>{ev.data.category}</span>
             <h1 class="hero__title" data-text={ev.data.title}>{ev.data.title}</h1>
-            <p class="hero__subtitle">{ev.data.date} på {ev.data.location}</p>
+            <p class="hero__subtitle">{ev.data.date} at {ev.data.location}</p>
             <div class="hero__controls">
               <div class="hero__dots">
                 {sorted.slice(0, 4).map((_, j) => (

@@ -14,10 +14,41 @@ const cardEvents = sorted.slice(0, 3);
 const articles = await getCollection('articles', a => a.id.startsWith('sv/'));
 const latestArticles = articles.sort((a, b) => b.data.date.localeCompare(a.data.date)).slice(0, 3);
 ---
-<Base title="Music Hub West – Start" lang={lang} description="En plattform för musikindustrins tillväxt i Västra Sverige.">
+<Base title="Music Hub West – Start" lang={lang} description="En plattform för musikindustrins tillväxt i Västra Sverige. Evenemang, artiklar och projekt inom musik, teknik och kreativt företagande i Västra Götaland.">
   <fragment slot="hreflang">
     <link rel="alternate" hreflang="sv" href={new URL('/', Astro.site)} />
     <link rel="alternate" hreflang="en" href={new URL('/en/', Astro.site)} />
+  </fragment>
+  <fragment slot="jsonld">
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": `${Astro.site}#website`,
+          "url": Astro.site,
+          "name": "Music Hub West",
+          "inLanguage": "sv-SE",
+          "description": "En plattform för musikindustrins tillväxt i Västra Sverige.",
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": `${Astro.site}evenemang`,
+            "query-input": "required name=search_term_string"
+          }
+        },
+        {
+          "@type": "Organization",
+          "@id": `${Astro.site}#organization`,
+          "name": "Music Hub West",
+          "url": Astro.site,
+          "logo": {
+            "@type": "ImageObject",
+            "url": new URL('/favicon.svg', Astro.site).toString()
+          },
+          "sameAs": []
+        }
+      ]
+    })} />
   </fragment>
 
   <Nav lang={lang} active="start" />

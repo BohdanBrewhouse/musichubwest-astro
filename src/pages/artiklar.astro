@@ -18,10 +18,20 @@ const badgeClass: Record<string, string> = {
   'VGR': 'badge--vgr',
 };
 ---
-<Base title="Artiklar – Music Hub West" lang={lang}>
+<Base title="Artiklar – Music Hub West" lang={lang} description="Artiklar och nyheter om musikbranschens utveckling, AI och innovation i Västsverige. Reportage och reflektioner från Music Hub Wests aktörer.">
   <fragment slot="hreflang">
     <link rel="alternate" hreflang="sv" href={new URL('/artiklar', Astro.site)} />
     <link rel="alternate" hreflang="en" href={new URL('/en/artiklar', Astro.site)} />
+  </fragment>
+  <fragment slot="jsonld">
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Start", "item": Astro.site },
+        { "@type": "ListItem", "position": 2, "name": "Artiklar", "item": new URL('/artiklar', Astro.site).toString() }
+      ]
+    })} />
   </fragment>
 
   <Nav lang={lang} active="articles" />
