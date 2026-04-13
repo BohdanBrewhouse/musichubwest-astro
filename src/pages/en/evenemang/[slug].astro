@@ -136,6 +136,8 @@ const icsContent = dtStart ? [
     </div>
   </div>
 
+  <ShareBar lang={lang} title={ev.data.title} />
+
   <div class="event-layout">
     <div>
       <div class="event-image">
@@ -329,8 +331,6 @@ const icsContent = dtStart ? [
       });
     })();
   </script>
-
-  <ShareBar lang={lang} title={ev.data.title} />
 
   {related.length > 0 && (
     <div class="related-events">

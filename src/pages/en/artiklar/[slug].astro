@@ -71,6 +71,8 @@ const badgeClass: Record<string, string> = {
     </div>
   </div>
 
+  <ShareBar lang={lang} title={article.data.title} />
+
   {article.data.image && (
     <div class="article-image">
       <div class="article-image__inner">
@@ -82,8 +84,6 @@ const badgeClass: Record<string, string> = {
   <div class="article-body">
     <Content />
   </div>
-
-  <ShareBar lang={lang} title={article.data.title} />
 
   {relatedArticles.length > 0 && (
     <div class="related">
