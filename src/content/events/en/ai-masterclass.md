@@ -3,6 +3,7 @@ title: "Masterclass in AI for the Music Industry"
 date: "June 17, 2026"
 time: "12:00–17:00"
 location: "Brewhouse, Gothenburg"
+map_query: "Brewhouse Inkubator Göteborg"
 category: "Tune In West"
 image: /images/photo-article-01.png
 spots_left: 8

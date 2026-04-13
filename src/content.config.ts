@@ -18,6 +18,8 @@ const events = defineCollection({
     translationKey: z.string(),
     registration_open: z.boolean().optional().default(false),
     registration_url: z.string().optional(),
+    address: z.string().optional(),
+    map_query: z.string().optional(),
   }),
 });
 

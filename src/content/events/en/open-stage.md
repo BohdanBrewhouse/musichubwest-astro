@@ -3,6 +3,7 @@ title: Open Stage – Show Your Material
 date: 'September 3, 2026'
 time: '18:00'
 location: 'Kulturverkstaden, Gothenburg'
+map_query: "Kulturverkstaden Göteborg"
 category: Kulturverkstaden
 image: /images/photo-article-02.png
 translationKey: open-stage

@@ -1903,6 +1903,104 @@ a:hover .featured-title { text-decoration-color: var(--lime); }
   .related { padding: 40px 20px; }
 }
 
+/* ── EVENT LOCATION ──────────────────────────────────── */
+.event-location {
+  padding: 72px 40px;
+  background: var(--black-2);
+  border-top: 1px solid var(--black-3);
+  border-bottom: 1px solid var(--black-3);
+}
+
+.event-location__inner {
+  max-width: var(--max);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+
+.event-location__kicker {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--lime);
+  margin-bottom: 16px;
+}
+
+.event-location__name {
+  font-family: 'Syne Mono', monospace;
+  font-size: clamp(24px, 2.8vw, 40px);
+  font-weight: 400;
+  line-height: 1.2;
+  color: var(--white);
+  margin-bottom: 14px;
+}
+
+.event-location__address {
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--grey-500);
+  margin-bottom: 36px;
+}
+
+.event-location__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--lime);
+  color: var(--black);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 13px 24px;
+  transition: opacity 0.15s;
+}
+
+.event-location__cta:hover {
+  opacity: 0.82;
+}
+
+.event-location__map-wrap {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  filter: grayscale(1) contrast(1.05);
+}
+
+.event-location__map-wrap::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--lime);
+  mix-blend-mode: multiply;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.event-location__map {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+}
+
+@media (max-width: 1024px) {
+  .event-location { padding: 56px 28px; }
+  .event-location__inner {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+}
+
+@media (max-width: 640px) {
+  .event-location { padding: 48px 20px; }
+  .event-location__name { font-size: 24px; }
+}
+
 /* ── SHARE BAR ───────────────────────────────────────── */
 .share-bar {
   display: flex;

@@ -193,6 +193,35 @@ const icsContent = dtStart ? [
     </div>
   </div>
 
+  {ev.data.map_query && (
+    <section class="event-location">
+      <div class="event-location__inner">
+        <div class="event-location__info">
+          <p class="event-location__kicker">Plats</p>
+          <h2 class="event-location__name">{ev.data.location}</h2>
+          {ev.data.address && <p class="event-location__address">{ev.data.address}</p>}
+          <a
+            href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(ev.data.map_query)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="event-location__cta"
+          >
+            Öppna i Google Maps →
+          </a>
+        </div>
+        <div class="event-location__map-wrap">
+          <iframe
+            class="event-location__map"
+            src={`https://maps.google.com/maps?q=${encodeURIComponent(ev.data.map_query)}&output=embed&hl=sv`}
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            title={`Karta: ${ev.data.location}`}
+          ></iframe>
+        </div>
+      </div>
+    </section>
+  )}
+
   <ShareBar lang={lang} title={ev.data.title} />
 
   {related.length > 0 && (
