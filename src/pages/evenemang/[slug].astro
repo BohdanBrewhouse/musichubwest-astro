@@ -200,27 +200,143 @@ const icsContent = dtStart ? [
           <p class="event-location__kicker">Plats</p>
           <h2 class="event-location__name">{ev.data.location}</h2>
           {ev.data.address && <p class="event-location__address">{ev.data.address}</p>}
-          <a
-            href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(ev.data.map_query)}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="event-location__cta"
-          >
-            Öppna i Google Maps →
-          </a>
+          <div class="event-location__actions">
+            <a
+              href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(ev.data.map_query)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="event-location__cta-maps"
+            >
+              Öppna i Google Maps →
+            </a>
+            <button class="event-location__cta-preview" onclick="openMapModal()">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+              Förhandsgranska karta
+            </button>
+          </div>
         </div>
-        <div class="event-location__map-wrap">
-          <iframe
-            class="event-location__map"
-            src={`https://maps.google.com/maps?q=${encodeURIComponent(ev.data.map_query)}&output=embed&hl=sv`}
-            loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"
-            title={`Karta: ${ev.data.location}`}
-          ></iframe>
-        </div>
+        <button class="event-location__map-placeholder" onclick="openMapModal()" aria-label="Förhandsgranska karta">
+          <span class="event-location__map-pin">
+            <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+              <circle cx="12" cy="9" r="2.5" fill="currentColor" stroke="none"/>
+            </svg>
+          </span>
+          <span class="event-location__map-placeholder-label">Klicka för att se karta</span>
+        </button>
       </div>
     </section>
   )}
+
+  {ev.data.map_query && (
+    <div class="map-modal" id="map-modal" role="dialog" aria-modal="true" aria-label="Karta" hidden>
+      <div class="map-modal__backdrop" onclick="closeMapModal()"></div>
+      <div class="map-modal__panel">
+        <div class="map-modal__header">
+          <h3 class="map-modal__title">Hitta hit</h3>
+          <button class="map-modal__close" onclick="closeMapModal()" aria-label="Stäng">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+              <line x1="1" y1="1" x2="12" y2="12"/><line x1="12" y1="1" x2="1" y2="12"/>
+            </svg>
+          </button>
+        </div>
+        <div class="map-modal__map-wrap" data-src={`https://maps.google.com/maps?q=${encodeURIComponent(ev.data.map_query)}&output=embed&hl=sv`}></div>
+        <div class="map-modal__transport">
+          <p class="map-modal__transport-label">Hur vill du ta dig dit?</p>
+          <div class="map-modal__transport-grid" data-dest={ev.data.map_query}>
+            <button class="map-modal__transport-btn" data-mode="driving">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M5 17H3v-5l2.5-6h13l2.5 6v5h-2"/><path d="M5 17h14"/>
+                <circle cx="7.5" cy="17" r="1.5" fill="currentColor" stroke="none"/>
+                <circle cx="16.5" cy="17" r="1.5" fill="currentColor" stroke="none"/>
+              </svg>
+              <span>Bil</span>
+            </button>
+            <button class="map-modal__transport-btn" data-mode="transit">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="4" y="3" width="16" height="13" rx="2"/>
+                <path d="M4 9h16"/><path d="M9 20l-1-4h8l-1 4"/>
+                <circle cx="8.5" cy="15" r="1" fill="currentColor" stroke="none"/>
+                <circle cx="15.5" cy="15" r="1" fill="currentColor" stroke="none"/>
+              </svg>
+              <span>Kollektivtrafik</span>
+            </button>
+            <button class="map-modal__transport-btn" data-mode="bicycling">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="5.5" cy="16" r="3"/><circle cx="18.5" cy="16" r="3"/>
+                <path d="M5.5 16l4.5-7 3 4 2-3h2.5"/>
+                <circle cx="16" cy="6" r="1.2" fill="currentColor" stroke="none"/>
+              </svg>
+              <span>Cykel</span>
+            </button>
+            <button class="map-modal__transport-btn" data-mode="walking">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="4" r="1.5" fill="currentColor" stroke="none"/>
+                <path d="M9 20l1.5-5.5-2.5-2.5 2-5"/><path d="M11 7l3 2 2.5-2"/>
+                <path d="M13 11.5l1.5 4-2.5 4.5"/>
+              </svg>
+              <span>Gång</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  )}
+
+  <script is:inline>
+    (function () {
+      var modal = document.getElementById('map-modal');
+      if (!modal) return;
+
+      function openMapModal() {
+        var wrap = modal.querySelector('.map-modal__map-wrap');
+        if (wrap && !wrap.querySelector('iframe')) {
+          var src = wrap.dataset.src;
+          if (src) {
+            var iframe = document.createElement('iframe');
+            iframe.src = src;
+            iframe.className = 'map-modal__map';
+            iframe.setAttribute('referrerpolicy', 'no-referrer-when-downgrade');
+            iframe.title = 'Karta';
+            wrap.appendChild(iframe);
+          }
+        }
+        modal.hidden = false;
+        requestAnimationFrame(function () { requestAnimationFrame(function () { modal.classList.add('open'); }); });
+        document.body.style.overflow = 'hidden';
+        document.addEventListener('keydown', handleEsc);
+      }
+
+      function closeMapModal() {
+        modal.classList.remove('open');
+        setTimeout(function () { modal.hidden = true; document.body.style.overflow = ''; }, 350);
+        document.removeEventListener('keydown', handleEsc);
+      }
+
+      function handleEsc(e) { if (e.key === 'Escape') closeMapModal(); }
+
+      function openMapsDir(mode) {
+        var grid = modal.querySelector('.map-modal__transport-grid');
+        var dest = grid ? grid.dataset.dest : '';
+        var url = 'https://www.google.com/maps/dir/?api=1&destination=' + encodeURIComponent(dest) + '&travelmode=' + mode;
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            function (pos) { window.open(url + '&origin=' + pos.coords.latitude + ',' + pos.coords.longitude, '_blank', 'noopener'); },
+            function () { window.open(url, '_blank', 'noopener'); }
+          );
+        } else {
+          window.open(url, '_blank', 'noopener');
+        }
+      }
+
+      window.openMapModal = openMapModal;
+      window.closeMapModal = closeMapModal;
+
+      modal.querySelectorAll('.map-modal__transport-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () { openMapsDir(btn.dataset.mode); });
+      });
+    })();
+  </script>
 
   <ShareBar lang={lang} title={ev.data.title} />
 
