@@ -112,8 +112,8 @@ const icsContent = dtStart ? [
           </div>
         </div>
         <div class="event-header__actions">
-          {ev.data.registration_open && ev.data.registration_url && (
-            <a href={ev.data.registration_url} target="_blank" rel="noopener noreferrer" class="btn btn--primary">Anmäl dig nu</a>
+          {ev.data.registration_open && (
+            <button class="btn btn--primary" onclick="openRegModal()">Anmäl dig nu</button>
           )}
           {googleUrl && (
             <div class="cal-drop" id="cal-drop-sv">
@@ -176,8 +176,8 @@ const icsContent = dtStart ? [
             <span class="event-cta-box__detail-value">{ev.data.cost}</span>
           </div>
         )}
-        {ev.data.registration_open && ev.data.registration_url ? (
-          <a href={ev.data.registration_url} target="_blank" rel="noopener noreferrer" class="btn btn--primary">Anmäl dig nu</a>
+        {ev.data.registration_open ? (
+          <button class="btn btn--primary" onclick="openRegModal()">Anmäl dig nu</button>
         ) : (
           <span class="btn btn--primary btn--disabled">Anmälan öppnar snart</span>
         )}
@@ -330,6 +330,129 @@ const icsContent = dtStart ? [
       modal.querySelectorAll('.map-modal__transport-btn').forEach(function (btn) {
         btn.addEventListener('click', function () { openMapsDir(btn.dataset.mode); });
       });
+    })();
+  </script>
+
+  {/* ── Registration modal ───────────────────────────── */}
+  <div class="map-modal reg-modal" id="reg-modal" role="dialog" aria-modal="true" aria-labelledby="reg-modal-title" hidden>
+    <div class="map-modal__backdrop" onclick="closeRegModal()"></div>
+    <div class="map-modal__panel">
+      <div class="map-modal__header">
+        <h3 class="map-modal__title" id="reg-modal-title">Anmäl dig</h3>
+        <button class="map-modal__close" onclick="closeRegModal()" aria-label="Stäng">
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+            <line x1="1" y1="1" x2="12" y2="12"/><line x1="12" y1="1" x2="1" y2="12"/>
+          </svg>
+        </button>
+      </div>
+      <div class="reg-modal__body">
+        <div class="reg-modal__event-info">
+          <p class="reg-modal__event-label">Event</p>
+          <p class="reg-modal__event-name">{ev.data.title}</p>
+          <p class="reg-modal__event-meta">{ev.data.date} &nbsp;·&nbsp; {ev.data.location}</p>
+        </div>
+
+        <form id="reg-form" class="reg-form" novalidate>
+          <input type="hidden" name="eventTitle" value={ev.data.title} />
+          <input type="hidden" name="eventSlug" value={ev.id.replace('sv/', '')} />
+          <input type="hidden" name="eventDate" value={ev.data.date} />
+          <input type="hidden" name="lang" value="sv" />
+
+          <div class="reg-form__field">
+            <label class="reg-form__label" for="reg-namn">Namn <span class="reg-form__required">*</span></label>
+            <input class="reg-form__input" type="text" id="reg-namn" name="namn" required autocomplete="name" placeholder="Ditt fullständiga namn" />
+          </div>
+          <div class="reg-form__field">
+            <label class="reg-form__label" for="reg-epost">E-post <span class="reg-form__required">*</span></label>
+            <input class="reg-form__input" type="email" id="reg-epost" name="epost" required autocomplete="email" placeholder="din@epost.se" />
+          </div>
+          <div class="reg-form__field">
+            <label class="reg-form__label" for="reg-telefon">Telefon <span class="reg-form__optional">(valfritt)</span></label>
+            <input class="reg-form__input" type="tel" id="reg-telefon" name="telefon" autocomplete="tel" placeholder="+46 70 000 00 00" />
+          </div>
+
+          <div class="reg-form__error" id="reg-error" hidden>
+            Något gick fel. Försök igen eller kontakta oss direkt.
+          </div>
+
+          <button type="submit" class="btn btn--primary reg-form__submit" id="reg-submit">
+            Skicka anmälan
+          </button>
+          <p class="reg-form__note">* Obligatoriska fält. Bekräftelse skickas till din e-post.</p>
+        </form>
+
+        <div id="reg-success" class="reg-modal__success" hidden>
+          <div class="reg-modal__success-check">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <h3 class="reg-modal__success-title">Tack för din anmälan!</h3>
+          <p class="reg-modal__success-text">Vi har tagit emot din anmälan till <strong>{ev.data.title}</strong>. En bekräftelse skickas till din e-post inom kort.</p>
+          <button class="btn btn--outline" onclick="closeRegModal()">Stäng</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script is:inline>
+    (function () {
+      var regModal = document.getElementById('reg-modal');
+      if (!regModal) return;
+
+      function openRegModal() {
+        regModal.hidden = false;
+        requestAnimationFrame(function () {
+          requestAnimationFrame(function () { regModal.classList.add('open'); });
+        });
+        document.body.style.overflow = 'hidden';
+        document.addEventListener('keydown', handleRegEsc);
+      }
+
+      function closeRegModal() {
+        regModal.classList.remove('open');
+        setTimeout(function () { regModal.hidden = true; document.body.style.overflow = ''; }, 350);
+        document.removeEventListener('keydown', handleRegEsc);
+      }
+
+      function handleRegEsc(e) { if (e.key === 'Escape') closeRegModal(); }
+
+      var form      = document.getElementById('reg-form');
+      var submitBtn = document.getElementById('reg-submit');
+      var errorEl   = document.getElementById('reg-error');
+      var successEl = document.getElementById('reg-success');
+
+      if (form) {
+        form.addEventListener('submit', function (e) {
+          e.preventDefault();
+          submitBtn.textContent = 'Skickar...';
+          submitBtn.disabled = true;
+          errorEl.hidden = true;
+
+          var data = {};
+          new FormData(form).forEach(function (val, key) { data[key] = val; });
+
+          fetch('/api/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data),
+          })
+            .then(function (res) {
+              if (!res.ok) throw new Error('error');
+              return res.json();
+            })
+            .then(function () {
+              form.hidden = true;
+              successEl.hidden = false;
+            })
+            .catch(function () {
+              errorEl.hidden = false;
+              submitBtn.textContent = 'Skicka anmälan';
+              submitBtn.disabled = false;
+            });
+        });
+      }
+
+      window.openRegModal  = openRegModal;
+      window.closeRegModal = closeRegModal;
     })();
   </script>
 
