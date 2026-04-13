@@ -109,7 +109,7 @@ export default defineConfig({
           { type: 'string', name: 'date', label: 'Datum (ÅÅÅÅ-MM-DD)', required: true },
           {
             type: 'string', name: 'category', label: 'Kategori', required: true,
-            options: ['Tune In West', 'Kulturverkstaden', 'HSM', 'VGR'],
+            options: ['Tune In West', 'Kulturverkstaden', 'Högskolan för scen och musik', 'VGR'],
           },
           { type: 'image', name: 'image', label: 'Omslagsbild' },
           { type: 'boolean', name: 'featured', label: 'Utvald artikel' },
@@ -136,7 +136,7 @@ export default defineConfig({
           { type: 'string', name: 'date', label: 'Date (YYYY-MM-DD)', required: true },
           {
             type: 'string', name: 'category', label: 'Category', required: true,
-            options: ['Tune In West', 'Kulturverkstaden', 'HSM', 'VGR'],
+            options: ['Tune In West', 'Kulturverkstaden', 'Högskolan för scen och musik', 'VGR'],
           },
           { type: 'image', name: 'image', label: 'Cover image' },
           { type: 'boolean', name: 'featured', label: 'Featured article' },
