@@ -20,7 +20,7 @@ const lang = 'sv';
 
 const enArticles = await getCollection('articles', a => a.id.startsWith('en/'));
 const enMatch = enArticles.find(a => a.data.translationKey === article.data.translationKey);
-const altUrl = enMatch ? `/en/artiklar/${enMatch.id.replace('en/', '')}` : '/en/artiklar';
+const altUrl = enMatch ? `/en/articles/${enMatch.id.replace('en/', '')}` : '/en/articles';
 
 const allSvArticles = await getCollection('articles', a => a.id.startsWith('sv/'));
 const relatedArticles = allSvArticles

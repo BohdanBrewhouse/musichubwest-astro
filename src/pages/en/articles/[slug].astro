@@ -37,7 +37,7 @@ const badgeClass: Record<string, string> = {
 ---
 <Base title={`${article.data.title} – Music Hub West`} lang={lang} description={article.body?.slice(0,155).replace(/\s+/g,' ').trim()}>
   <fragment slot="hreflang">
-    <link rel="alternate" hreflang="en" href={new URL(`/en/artiklar/${article.id.replace('en/','')}`, Astro.site)} />
+    <link rel="alternate" hreflang="en" href={new URL(`/en/articles/${article.id.replace('en/','')}`, Astro.site)} />
     {svMatch && <link rel="alternate" hreflang="sv" href={new URL(altUrl, Astro.site)} />}
   </fragment>
   <fragment slot="jsonld">
@@ -49,13 +49,13 @@ const badgeClass: Record<string, string> = {
       "datePublished": article.data.date,
       "publisher": { "@type": "Organization", "name": "Music Hub West", "url": Astro.site },
       "inLanguage": "en",
-      "url": new URL(`/en/artiklar/${article.id.replace('en/','')}`, Astro.site).toString(),
+      "url": new URL(`/en/articles/${article.id.replace('en/','')}`, Astro.site).toString(),
     })} />
   </fragment>
   <Nav lang={lang} active="articles" altUrl={altUrl} />
 
   <div class="article-header">
-    <a href="/en/artiklar" class="article-header__back">← All articles</a>
+    <a href="/en/articles" class="article-header__back">← All articles</a>
     <div class="article-header__badge">
       <span class={`badge ${badgeClass[article.data.category] ?? ''}`}>{article.data.category}</span>
     </div>

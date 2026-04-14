@@ -12,7 +12,7 @@ const sorted = events.sort((a, b) => a.data.date.localeCompare(b.data.date));
 <Base title="Event – Music Hub West" lang={lang} description="Kommande event inom musik, teknik och kreativt företagande i Västra Götaland. Seminarier, showcases och branschträffar arrangerade av Music Hub West.">
   <fragment slot="hreflang">
     <link rel="alternate" hreflang="sv" href={new URL('/evenemang', Astro.site)} />
-    <link rel="alternate" hreflang="en" href={new URL('/en/evenemang', Astro.site)} />
+    <link rel="alternate" hreflang="en" href={new URL('/en/events', Astro.site)} />
   </fragment>
   <fragment slot="jsonld">
     <script type="application/ld+json" set:html={JSON.stringify({

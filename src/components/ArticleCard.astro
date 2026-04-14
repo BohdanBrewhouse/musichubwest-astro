@@ -9,7 +9,7 @@ export interface Props {
   lang: 'sv' | 'en';
 }
 const { title, author, date, category, description, slug, lang } = Astro.props;
-const base = lang === 'en' ? '/en' : '';
+const articlesBase = lang === 'en' ? '/en/articles' : '/artiklar';
 
 const badgeClass: Record<string, string> = {
   'Tune In West':     'badge--tiw',
@@ -18,7 +18,7 @@ const badgeClass: Record<string, string> = {
   'VGR':              'badge--vgr',
 };
 ---
-<a href={`${base}/artiklar/${slug}`} class="article-card" data-category={category}>
+<a href={`${articlesBase}/${slug}`} class="article-card" data-category={category}>
   <span class={`badge ${badgeClass[category] ?? ''} article-card__badge`}>{category}</span>
   <h3 class="article-card__title">{title}</h3>
   <p class="article-card__meta">{author} &nbsp;·&nbsp; {date}</p>

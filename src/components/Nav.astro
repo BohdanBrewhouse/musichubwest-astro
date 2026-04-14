@@ -13,10 +13,10 @@ const t = {
 
 const base = lang === 'en' ? '/en' : '';
 const links = [
-  { href: `${base}/`,           label: t.start,    key: 'start' },
-  { href: `${base}/evenemang`,  label: t.events,   key: 'events' },
-  { href: `${base}/artiklar`,   label: t.articles, key: 'articles' },
-  { href: `${base}/om`,         label: t.about,    key: 'about' },
+  { href: `${base}/`,                               label: t.start,    key: 'start' },
+  { href: lang === 'en' ? '/en/events'   : '/evenemang', label: t.events,   key: 'events' },
+  { href: lang === 'en' ? '/en/articles' : '/artiklar',  label: t.articles, key: 'articles' },
+  { href: lang === 'en' ? '/en/about'    : '/om',        label: t.about,    key: 'about' },
 ];
 
 const altLang = lang === 'sv' ? 'en' : 'sv';

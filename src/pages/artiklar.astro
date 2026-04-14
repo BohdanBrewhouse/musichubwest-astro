@@ -21,7 +21,7 @@ const badgeClass: Record<string, string> = {
 <Base title="Artiklar – Music Hub West" lang={lang} description="Artiklar och nyheter om musikbranschens utveckling, AI och innovation i Västsverige. Reportage och reflektioner från Music Hub Wests aktörer.">
   <fragment slot="hreflang">
     <link rel="alternate" hreflang="sv" href={new URL('/artiklar', Astro.site)} />
-    <link rel="alternate" hreflang="en" href={new URL('/en/artiklar', Astro.site)} />
+    <link rel="alternate" hreflang="en" href={new URL('/en/articles', Astro.site)} />
   </fragment>
   <fragment slot="jsonld">
     <script type="application/ld+json" set:html={JSON.stringify({

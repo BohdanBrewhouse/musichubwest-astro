@@ -21,7 +21,7 @@ const badgeClass: Record<string, string> = {
 <Base title="Articles – Music Hub West" lang={lang} description="Articles and news on music industry development, AI and innovation in Western Sweden. Reporting and insights from Music Hub West.">
   <fragment slot="hreflang">
     <link rel="alternate" hreflang="sv" href={new URL('/artiklar', Astro.site)} />
-    <link rel="alternate" hreflang="en" href={new URL('/en/artiklar', Astro.site)} />
+    <link rel="alternate" hreflang="en" href={new URL('/en/articles', Astro.site)} />
   </fragment>
   <fragment slot="jsonld">
     <script type="application/ld+json" set:html={JSON.stringify({
@@ -29,7 +29,7 @@ const badgeClass: Record<string, string> = {
       "@type": "BreadcrumbList",
       "itemListElement": [
         { "@type": "ListItem", "position": 1, "name": "Start", "item": Astro.site },
-        { "@type": "ListItem", "position": 2, "name": "Articles", "item": new URL('/en/artiklar', Astro.site).toString() }
+        { "@type": "ListItem", "position": 2, "name": "Articles", "item": new URL('/en/articles', Astro.site).toString() }
       ]
     })} />
   </fragment>
@@ -54,7 +54,7 @@ const badgeClass: Record<string, string> = {
         <button class="filter-chip" data-filter="VGR" aria-pressed="false">VGR</button>
       </div>
 
-      <a id="featured-article" href={`/en/artiklar/${featured.id.replace('en/', '')}`}
+      <a id="featured-article" href={`/en/articles/${featured.id.replace('en/', '')}`}
          data-category={featured.data.category}
          style="display:block;background:var(--black-2);padding:40px;margin-bottom:56px;text-decoration:none;transition:background 0.2s;">
         <span class={`badge ${badgeClass[featured.data.category]}`} style="margin-bottom:16px;display:inline-block">{featured.data.category}</span>

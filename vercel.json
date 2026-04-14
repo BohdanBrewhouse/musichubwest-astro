@@ -1,5 +1,15 @@
 {
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
-  "framework": "astro"
+  "framework": "astro",
+  "redirects": [
+    { "source": "/en/om",              "destination": "/en/about",        "permanent": true },
+    { "source": "/en/om/",             "destination": "/en/about/",       "permanent": true },
+    { "source": "/en/evenemang",       "destination": "/en/events",       "permanent": true },
+    { "source": "/en/evenemang/",      "destination": "/en/events/",      "permanent": true },
+    { "source": "/en/evenemang/:slug", "destination": "/en/events/:slug", "permanent": true },
+    { "source": "/en/artiklar",        "destination": "/en/articles",     "permanent": true },
+    { "source": "/en/artiklar/",       "destination": "/en/articles/",    "permanent": true },
+    { "source": "/en/artiklar/:slug",  "destination": "/en/articles/:slug", "permanent": true }
+  ]
 }

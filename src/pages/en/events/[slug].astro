@@ -52,7 +52,7 @@ function toIcsDateEnd(dateStr: string, timeStr: string) {
 
 const dtStart = toIcsDate(ev.data.date, ev.data.time);
 const dtEnd = toIcsDateEnd(ev.data.date, ev.data.time);
-const eventUrl = new URL(`/en/evenemang/${ev.id.replace('en/','')}`, Astro.site).toString();
+const eventUrl = new URL(`/en/events/${ev.id.replace('en/','')}`, Astro.site).toString();
 
 const googleUrl = dtStart ? `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(ev.data.title)}&dates=${dtStart}/${dtEnd}&location=${encodeURIComponent(ev.data.location)}&details=${encodeURIComponent(eventUrl)}` : null;
 
@@ -71,7 +71,7 @@ const icsContent = dtStart ? [
 ---
 <Base title={`${ev.data.title} – Music Hub West`} lang={lang} ogImage={ev.data.image}>
   <fragment slot="hreflang">
-    <link rel="alternate" hreflang="en" href={new URL(`/en/evenemang/${ev.id.replace('en/','')}`, Astro.site)} />
+    <link rel="alternate" hreflang="en" href={new URL(`/en/events/${ev.id.replace('en/','')}`, Astro.site)} />
     {svMatch && <link rel="alternate" hreflang="sv" href={new URL(altUrl, Astro.site)} />}
   </fragment>
   <fragment slot="jsonld">
@@ -83,14 +83,14 @@ const icsContent = dtStart ? [
       "location": { "@type": "Place", "name": ev.data.location },
       "organizer": { "@type": "Organization", "name": ev.data.organizer ?? "Music Hub West" },
       "inLanguage": "en",
-      "url": new URL(`/en/evenemang/${ev.id.replace('en/','')}`, Astro.site).toString(),
+      "url": new URL(`/en/events/${ev.id.replace('en/','')}`, Astro.site).toString(),
     })} />
   </fragment>
   <Nav lang={lang} active="events" altUrl={altUrl} />
 
   <div class="event-header">
     <div class="event-header__inner">
-      <a href="/en/evenemang" class="event-header__back">← All events</a>
+      <a href="/en/events" class="event-header__back">← All events</a>
       <div class="event-header__badge">
         <span class={`badge ${badgeClass[ev.data.category]}`}>{ev.data.category}</span>
       </div>
@@ -125,7 +125,7 @@ const icsContent = dtStart ? [
                 <a href={googleUrl} target="_blank" rel="noopener noreferrer" class="cal-drop__item">
                   <span class="cal-drop__item-label">Google Calendar</span>
                 </a>
-                <a href={`/en/evenemang/${ev.id.replace('en/','')}.ics`} class="cal-drop__item">
+                <a href={`/en/events/${ev.id.replace('en/','')}.ics`} class="cal-drop__item">
                   <span class="cal-drop__item-label">Apple / Outlook</span>
                 </a>
               </div>

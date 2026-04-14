@@ -8,7 +8,7 @@ const lang = 'en';
 <Base title="About – Music Hub West" lang={lang} description="Music Hub West is an open platform for the music industry in Western Sweden — a catalyst for collaboration, innovation and sustainable growth.">
   <fragment slot="hreflang">
     <link rel="alternate" hreflang="sv" href={new URL('/om', Astro.site)} />
-    <link rel="alternate" hreflang="en" href={new URL('/en/om', Astro.site)} />
+    <link rel="alternate" hreflang="en" href={new URL('/en/about', Astro.site)} />
   </fragment>
   <fragment slot="jsonld">
     <script type="application/ld+json" set:html={JSON.stringify({
@@ -16,7 +16,7 @@ const lang = 'en';
       "@type": "BreadcrumbList",
       "itemListElement": [
         { "@type": "ListItem", "position": 1, "name": "Start", "item": Astro.site },
-        { "@type": "ListItem", "position": 2, "name": "About", "item": new URL('/en/om', Astro.site).toString() }
+        { "@type": "ListItem", "position": 2, "name": "About", "item": new URL('/en/about', Astro.site).toString() }
       ]
     })} />
   </fragment>

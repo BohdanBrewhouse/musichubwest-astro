@@ -24,7 +24,7 @@ const related = await getCollection('events', e =>
 
 const enEvents = await getCollection('events', e => e.id.startsWith('en/'));
 const enMatch = enEvents.find(e => e.data.translationKey === ev.data.translationKey);
-const altUrl = enMatch ? `/en/evenemang/${enMatch.id.replace('en/', '')}` : '/en/evenemang';
+const altUrl = enMatch ? `/en/events/${enMatch.id.replace('en/', '')}` : '/en/events';
 
 const badgeClass: Record<string, string> = {
   'Tune In West': 'badge--tiw',

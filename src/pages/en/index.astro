@@ -61,7 +61,7 @@ const latestArticles = articles.sort((a, b) => b.data.date.localeCompare(a.data.
               <div class="hero__dots" role="tablist" aria-label="Slideshow">
                 {sorted.slice(0,4).map((_,j) => <button class={`hero__dot ${j===i?'active':''}`} role="tab" aria-label={`Slide ${j + 1}`} aria-selected={j===i?'true':'false'}></button>)}
               </div>
-              <a href={`/en/evenemang/${ev.id.replace('en/','')}`} class="btn btn--primary">Register now</a>
+              <a href={`/en/events/${ev.id.replace('en/','')}`} class="btn btn--primary">Register now</a>
             </div>
           </div>
         </div>
@@ -71,7 +71,7 @@ const latestArticles = articles.sort((a, b) => b.data.date.localeCompare(a.data.
   <section class="section"><div class="section__inner">
     <div class="section__head">
       <h2 class="section__title">Upcoming events</h2>
-      <a href="/en/evenemang" class="section__link">See all →</a>
+      <a href="/en/events" class="section__link">See all →</a>
     </div>
     <div class="card-grid">
       {sorted.slice(0,3).map(ev => (
@@ -90,7 +90,7 @@ const latestArticles = articles.sort((a, b) => b.data.date.localeCompare(a.data.
   <section class="section"><div class="section__inner">
     <div class="section__head">
       <h2 class="section__title">News & articles</h2>
-      <a href="/en/artiklar" class="section__link">See all →</a>
+      <a href="/en/articles" class="section__link">See all →</a>
     </div>
     <div class="card-grid">
       {latestArticles.map(a => (
