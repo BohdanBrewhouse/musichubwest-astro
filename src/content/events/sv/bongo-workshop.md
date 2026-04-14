@@ -1,6 +1,6 @@
 ---
 title: "Spela Bongotrumma med Vänster Hand"
-date: "17 Juni 2026"
+date: '2026-06-17'
 time: "12:00"
 location: "Kulturverkstaden, Göteborg"
 map_query: "Kulturverkstaden Göteborg"

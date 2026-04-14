@@ -1,6 +1,6 @@
 ---
 title: Öppen scen – Visa upp ditt material
-date: 3 September 2026
+date: '2026-09-03'
 time: '18:00'
 location: 'Kulturverkstaden, Göteborg'
 map_query: "Kulturverkstaden Göteborg"

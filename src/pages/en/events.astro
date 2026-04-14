@@ -25,6 +25,12 @@ const badgeClass: Record<string, string> = {
   'Högskolan för scen och musik': 'badge--hsm',
   'VGR': 'badge--vgr',
 };
+
+function formatDate(d: string) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(d)) return d;
+  return new Intl.DateTimeFormat('en-US', { day: 'numeric', month: 'long', year: 'numeric' })
+    .format(new Date(d + 'T12:00:00'));
+}
 ---
 <Base title="Events – Music Hub West" lang={lang} description="Upcoming events in music, technology and creative business in Western Sweden. Seminars, showcases and industry meetups by Music Hub West.">
   <fragment slot="hreflang">
@@ -142,7 +148,7 @@ const badgeClass: Record<string, string> = {
                       <h2 class="agenda-item__title">{ev.data.title}</h2>
                     </div>
                     <p class="agenda-item__meta">
-                      <span>{ev.data.date}</span>
+                      <span>{formatDate(ev.data.date)}</span>
                       {ev.data.location && <><span class="agenda-item__dot">·</span><span>{ev.data.location}</span></>}
                       {ev.data.time && <><span class="agenda-item__dot">·</span><span>{ev.data.time}</span></>}
                     </p>

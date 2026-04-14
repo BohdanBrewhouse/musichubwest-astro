@@ -18,6 +18,13 @@ const { ev } = Astro.props;
 const { Content } = await render(ev);
 const lang = 'en';
 
+function formatDate(d: string) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(d)) return d;
+  return new Intl.DateTimeFormat('en-US', { day: 'numeric', month: 'long', year: 'numeric' })
+    .format(new Date(d + 'T12:00:00'));
+}
+const displayDate = formatDate(ev.data.date);
+
 const related = await getCollection('events', e =>
   e.id.startsWith('en/') && e.id !== ev.id
 );
@@ -99,7 +106,7 @@ const icsContent = dtStart ? [
         <div class="event-meta-row">
           <div class="event-meta-item">
             <span class="event-meta-item__label">Date</span>
-            <span class="event-meta-item__value">{ev.data.date}</span>
+            <span class="event-meta-item__value">{displayDate}</span>
           </div>
           <div class="event-meta-item">
             <span class="event-meta-item__label">Time</span>
@@ -153,7 +160,7 @@ const icsContent = dtStart ? [
         <p class="event-cta-box__title">Register for this event</p>
         <div class="event-cta-box__detail">
           <span class="event-cta-box__detail-label">Date</span>
-          <span class="event-cta-box__detail-value">{ev.data.date}</span>
+          <span class="event-cta-box__detail-value">{displayDate}</span>
         </div>
         <div class="event-cta-box__detail">
           <span class="event-cta-box__detail-label">Time</span>
@@ -348,7 +355,7 @@ const icsContent = dtStart ? [
         <div class="reg-modal__event-info">
           <p class="reg-modal__event-label">Event</p>
           <p class="reg-modal__event-name">{ev.data.title}</p>
-          <p class="reg-modal__event-meta">{ev.data.date} &nbsp;·&nbsp; {ev.data.location}</p>
+          <p class="reg-modal__event-meta">{displayDate} &nbsp;·&nbsp; {ev.data.location}</p>
         </div>
 
         <form id="reg-form" class="reg-form" novalidate>
@@ -369,6 +376,10 @@ const icsContent = dtStart ? [
           <div class="reg-form__field">
             <label class="reg-form__label" for="reg-telefon">Phone <span class="reg-form__optional">(optional)</span></label>
             <input class="reg-form__input" type="tel" id="reg-telefon" name="telefon" autocomplete="tel" placeholder="+46 70 000 00 00" />
+          </div>
+          <div class="reg-form__field">
+            <label class="reg-form__label" for="reg-foretag">Company / Organisation <span class="reg-form__optional">(optional)</span></label>
+            <input class="reg-form__input" type="text" id="reg-foretag" name="foretag" autocomplete="organization" placeholder="Your company or freelancer" />
           </div>
 
           <div class="reg-form__error" id="reg-error" hidden>

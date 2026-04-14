@@ -1,7 +1,7 @@
 ---
 title: 'Masterclass: Framtidens Musikvideo & Content med AI'
-date: 25 Augusti 2026
-time: 25 Augusti 2026
+date: '2026-08-25'
+time: '13:00-17:30'
 location: 'Brewhouse, Göteborg'
 address: 'Åvägen 24, 412 51 Göteborg'
 map_query: Brewhouse Inkubator Göteborg

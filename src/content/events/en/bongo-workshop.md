@@ -1,6 +1,6 @@
 ---
 title: "Play Bongo with Your Left Hand"
-date: "June 17, 2026"
+date: '2026-06-17'
 time: "12:00"
 location: "Kulturverkstaden, Gothenburg"
 map_query: "Kulturverkstaden Göteborg"

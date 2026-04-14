@@ -1,6 +1,6 @@
 ---
 title: "Music Tech Summit 2026"
-date: "24 Oktober 2026"
+date: '2026-10-24'
 time: "10:00"
 location: "Högskolan för scen och musik, Göteborg"
 map_query: "Högskolan för scen och musik Göteborg"

@@ -1,6 +1,6 @@
 ---
 title: AI and Copyright – Where is the Line?
-date: 'May 12, 2026'
+date: '2026-05-12'
 time: '13:00'
 location: 'Högskolan för scen och musik, Gothenburg'
 map_query: "Högskolan för scen och musik Göteborg"

@@ -1,6 +1,6 @@
 ---
 title: Masterclass i AI för Musikindustrin
-date: 17 Juni 2026
+date: '2026-06-17'
 time: '12:00–17:00'
 location: 'Brewhouse, Göteborg'
 map_query: Brewhouse Inkubator Göteborg

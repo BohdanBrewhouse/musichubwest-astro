@@ -1,6 +1,6 @@
 ---
 title: "AI och Upphovsrätt – Var går gränsen?"
-date: "12 Maj 2026"
+date: '2026-05-12'
 time: "13:00"
 location: "Högskolan för scen och musik, Göteborg"
 map_query: "Högskolan för scen och musik Göteborg"

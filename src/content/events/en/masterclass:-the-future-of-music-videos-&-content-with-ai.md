@@ -1,6 +1,6 @@
 ---
 title: 'Masterclass: The Future of Music Videos & Content with AI'
-date: 'August 25, 2026'
+date: '2026-08-25'
 time: '13:00–17:30'
 location: 'Brewhouse, Göteborg'
 address: 'Åvägen 24, 412 51 Göteborg'
