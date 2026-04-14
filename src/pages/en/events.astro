@@ -2,12 +2,30 @@
 import Base from '../../layouts/Base.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/Footer.astro';
-import EventCard from '../../components/EventCard.astro';
 import { getCollection } from 'astro:content';
 
 const lang = 'en';
 const events = await getCollection('events', e => e.id.startsWith('en/'));
 const sorted = events.sort((a, b) => a.data.date.localeCompare(b.data.date));
+
+const monthsFull = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const monthsShort = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+
+// Group by YYYY-MM
+const groups: Record<string, typeof sorted> = {};
+for (const ev of sorted) {
+  const [year, month] = ev.data.date.split('-');
+  const key = `${year}-${month}`;
+  if (!groups[key]) groups[key] = [];
+  groups[key].push(ev);
+}
+
+const badgeClass: Record<string, string> = {
+  'Tune In West': 'badge--tiw',
+  'Kulturverkstaden': 'badge--kv',
+  'Högskolan för scen och musik': 'badge--hsm',
+  'VGR': 'badge--vgr',
+};
 ---
 <Base title="Events – Music Hub West" lang={lang} description="Upcoming events in music, technology and creative business in Western Sweden. Seminars, showcases and industry meetups by Music Hub West.">
   <fragment slot="hreflang">
@@ -27,61 +45,299 @@ const sorted = events.sort((a, b) => a.data.date.localeCompare(b.data.date));
 
   <Nav lang={lang} active="events" />
 
-  <!-- Hero carousel -->
-  <section class="hero">
-    <div class="hero__slides">
-      {sorted.slice(0, 4).map((ev, i) => (
-        <div class={`hero__slide ${i === 0 ? 'active' : ''}`}>
-          <div class="hero__slide-bg">
-            <img src={ev.data.image} alt=""
-              fetchpriority={i === 0 ? 'high' : undefined}
-              loading={i === 0 ? 'eager' : 'lazy'}
-              decoding="async" />
-          </div>
-          <div class="hero__slide-content">
-            <span class={`badge badge--${ev.data.category === 'Tune In West' ? 'tiw' : ev.data.category === 'Kulturverkstaden' ? 'kv' : 'hsm'} hero__badge`}>{ev.data.category}</span>
-            <h1 class="hero__title" data-text={ev.data.title}>{ev.data.title}</h1>
-            <p class="hero__subtitle">{ev.data.date} at {ev.data.location}</p>
-            <div class="hero__controls">
-              <div class="hero__dots" role="tablist" aria-label="Slideshow">
-                {sorted.slice(0, 4).map((_, j) => (
-                  <button class={`hero__dot ${j === i ? 'active' : ''}`} role="tab" aria-label={`Slide ${j + 1}`} aria-selected={j === i ? 'true' : 'false'}></button>
-                ))}
-              </div>
-              <a href={`/en/events/${ev.id.replace('en/', '')}`} class="btn btn--primary">Register now</a>
-            </div>
-          </div>
-        </div>
-      ))}
-    </div>
-  </section>
-
-  <!-- Event list -->
-  <section class="section">
-    <div class="section__inner">
-      <div class="filter-bar">
-        <span class="filter-bar__label">Filtrera</span>
-        <button class="filter-chip active" data-filter="all" aria-pressed="true">Alla</button>
+  <!-- Page header -->
+  <div class="ev-header">
+    <div class="ev-header__inner">
+      <div class="ev-header__top">
+        <h1 class="ev-header__title">Events</h1>
+        <p class="ev-header__count"><span class="ev-header__num">{sorted.length}</span> upcoming events</p>
+      </div>
+      <div class="filter-bar ev-filter-bar">
+        <span class="filter-bar__label">Filter</span>
+        <button class="filter-chip active" data-filter="all" aria-pressed="true">All</button>
         <button class="filter-chip" data-filter="Tune In West" aria-pressed="false">Tune In West</button>
         <button class="filter-chip" data-filter="Kulturverkstaden" aria-pressed="false">Kulturverkstaden</button>
-        <button class="filter-chip" data-filter="Högskolan för scen och musik" aria-pressed="false">Högskolan för scen och musik</button>
+        <button class="filter-chip" data-filter="Högskolan för scen och musik" aria-pressed="false">HSM</button>
         <button class="filter-chip" data-filter="VGR" aria-pressed="false">VGR</button>
       </div>
-      <div class="card-grid">
-        {sorted.map(ev => (
-          <EventCard
-            title={ev.data.title}
-            date={ev.data.date}
-            time={ev.data.time}
-            category={ev.data.category}
-            image={ev.data.image}
-            slug={ev.id.replace('en/', '')}
-            lang={lang}
-          />
-        ))}
+    </div>
+  </div>
+
+  <!-- Agenda -->
+  <div class="agenda">
+    <div class="agenda__inner">
+      {Object.entries(groups).map(([key, evs]) => {
+        const [year, monthIdx] = key.split('-');
+        const mIdx = parseInt(monthIdx, 10) - 1;
+        return (
+          <div class="agenda-month" data-month-key={key}>
+            <div class="agenda-month__label">
+              <span class="agenda-month__name">{monthsFull[mIdx]}</span>
+              <span class="agenda-month__year">{year}</span>
+            </div>
+            <div class="agenda-month__rows">
+              {evs.map((ev) => {
+                const day = ev.data.date.split('-')[2];
+                const slug = ev.id.replace('en/', '');
+                return (
+                  <a
+                    class="agenda-item"
+                    href={`/en/events/${slug}`}
+                    data-category={ev.data.category}
+                  >
+                    <div class="agenda-item__date">
+                      <span class="agenda-item__day">{day}</span>
+                      <span class="agenda-item__month">{monthsShort[mIdx]}</span>
+                    </div>
+                    <div class="agenda-item__body">
+                      <div class="agenda-item__top">
+                        <span class={`badge ${badgeClass[ev.data.category] ?? ''}`}>{ev.data.category}</span>
+                        <h2 class="agenda-item__title">{ev.data.title}</h2>
+                      </div>
+                      <p class="agenda-item__meta">
+                        <span class="agenda-item__location">{ev.data.location}</span>
+                        {ev.data.time && <><span class="agenda-item__dot">·</span><span class="agenda-item__time">{ev.data.time}</span></>}
+                      </p>
+                    </div>
+                    {ev.data.image && (
+                      <div class="agenda-item__thumb">
+                        <img src={ev.data.image} alt={ev.data.title} loading="lazy" decoding="async" />
+                      </div>
+                    )}
+                    <div class="agenda-item__cta">
+                      <span class="agenda-item__link">
+                        {ev.data.registration_open ? 'Register' : 'Read more'}
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                      </span>
+                    </div>
+                  </a>
+                );
+              })}
+            </div>
+          </div>
+        );
+      })}
+
+      <div class="agenda-empty" id="agenda-empty" hidden>
+        <p>No events match the selected filter.</p>
       </div>
     </div>
-  </section>
+  </div>
 
   <Footer lang={lang} />
 </Base>
+
+<script is:inline>
+(function () {
+  document.querySelectorAll('.filter-chip').forEach(function (chip) {
+    chip.addEventListener('click', function () {
+      requestAnimationFrame(function () {
+        var anyVisible = false;
+        document.querySelectorAll('.agenda-month').forEach(function (group) {
+          var items = group.querySelectorAll('.agenda-item');
+          var hasVisible = Array.from(items).some(function (el) {
+            return el.style.display !== 'none';
+          });
+          group.style.display = hasVisible ? '' : 'none';
+          if (hasVisible) anyVisible = true;
+        });
+        var empty = document.getElementById('agenda-empty');
+        if (empty) empty.hidden = anyVisible;
+      });
+    });
+  });
+})();
+</script>
+
+<style>
+  /* ── Page header ── */
+  .ev-header {
+    background: var(--black);
+    border-bottom: 1px solid var(--black-3);
+    padding: 64px 40px 40px;
+  }
+  .ev-header__inner { max-width: var(--max); margin: 0 auto; }
+  .ev-header__top {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+  }
+  .ev-header__title {
+    font-size: clamp(48px, 8vw, 112px);
+    font-weight: 800;
+    letter-spacing: -0.045em;
+    line-height: 0.9;
+    color: var(--white);
+    margin: 0;
+  }
+  .ev-header__count {
+    font-size: 14px;
+    color: rgba(255,255,255,0.4);
+    text-align: right;
+    line-height: 1.4;
+    padding-bottom: 8px;
+    white-space: nowrap;
+  }
+  .ev-header__num {
+    display: block;
+    font-size: clamp(40px, 5vw, 64px);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    color: var(--lime);
+    line-height: 1;
+  }
+  .ev-filter-bar { border-top: 1px solid var(--black-3); padding-top: 24px; }
+
+  /* ── Agenda ── */
+  .agenda { padding: 0 40px 80px; }
+  .agenda__inner { max-width: var(--max); margin: 0 auto; }
+
+  .agenda-month { margin-top: 56px; }
+  .agenda-month__label {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--black-3);
+  }
+  .agenda-month__name {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--lime);
+  }
+  .agenda-month__year {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.25);
+  }
+
+  /* ── Agenda row ── */
+  .agenda-item {
+    display: grid;
+    grid-template-columns: 72px 1fr auto auto;
+    align-items: center;
+    gap: 24px;
+    padding: 24px 0;
+    border-bottom: 1px solid var(--black-3);
+    text-decoration: none;
+    color: var(--white);
+    position: relative;
+  }
+  .agenda-item::before {
+    content: '';
+    position: absolute;
+    inset: 0 -16px;
+    background: var(--black-2);
+    opacity: 0;
+    transition: opacity 0.15s;
+    border-radius: 4px;
+    z-index: 0;
+  }
+  .agenda-item:hover::before { opacity: 1; }
+  .agenda-item > * { position: relative; z-index: 1; }
+
+  .agenda-item__date {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+  .agenda-item__day {
+    font-size: clamp(36px, 4vw, 52px);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    color: var(--white);
+    line-height: 1;
+  }
+  .agenda-item__month {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    color: var(--lime);
+    margin-top: 4px;
+  }
+
+  .agenda-item__body { min-width: 0; }
+  .agenda-item__top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+  }
+  .agenda-item__title {
+    font-size: clamp(16px, 2vw, 22px);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--white);
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .agenda-item__meta {
+    font-size: 13px;
+    color: rgba(255,255,255,0.45);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .agenda-item__dot { opacity: 0.3; }
+
+  .agenda-item__thumb {
+    width: 64px;
+    height: 64px;
+    border-radius: 4px;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .agenda-item__thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .agenda-item__cta { flex-shrink: 0; }
+  .agenda-item__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--lime);
+    white-space: nowrap;
+    transition: gap 0.2s;
+  }
+  .agenda-item:hover .agenda-item__link { gap: 10px; }
+
+  .agenda-empty {
+    padding: 64px 0;
+    text-align: center;
+    color: rgba(255,255,255,0.35);
+    font-size: 15px;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 768px) {
+    .ev-header { padding: 48px 20px 32px; }
+    .agenda { padding: 0 20px 56px; }
+    .agenda-item { grid-template-columns: 56px 1fr auto; gap: 16px; }
+    .agenda-item__thumb { display: none; }
+    .agenda-item__title { font-size: 16px; white-space: normal; }
+  }
+  @media (max-width: 480px) {
+    .ev-header__top { flex-direction: column; align-items: flex-start; }
+    .ev-header__count { text-align: left; }
+    .agenda-item { grid-template-columns: 48px 1fr; }
+    .agenda-item__cta { display: none; }
+  }
+</style>
