@@ -40,7 +40,16 @@ const badgeClass: Record<string, string> = {
   'VGR': 'badge--vgr',
 };
 
-// Calendar helpers — floating local time (no Z/UTC conversion)
+// Calendar helpers — Europe/Stockholm timezone
+function stockholmOffset(dateStr: string): number {
+  const [y, mo, d] = dateStr.split('-').map(Number);
+  const lastMarch = new Date(y, 2, 31);
+  while (lastMarch.getDay() !== 0) lastMarch.setDate(lastMarch.getDate() - 1);
+  const lastOct = new Date(y, 9, 31);
+  while (lastOct.getDay() !== 0) lastOct.setDate(lastOct.getDate() - 1);
+  const dt = new Date(y, mo - 1, d);
+  return dt >= lastMarch && dt < lastOct ? 2 : 1;
+}
 function toIcsDate(dateStr: string, timeStr: string) {
   const [start] = timeStr.split('–');
   const [h, m] = start.trim().split(':');
@@ -57,28 +66,39 @@ function toIcsDateEnd(dateStr: string, timeStr: string) {
     if (!year || !month || !day || !h) return toIcsDate(dateStr, timeStr);
     return `${year}${month}${day}T${h.padStart(2,'0')}${(m||'00').padStart(2,'0')}00`;
   }
-  const start = toIcsDate(dateStr, timeStr);
-  if (!start) return '';
-  const d = new Date(`${dateStr}T${parts[0].trim()}:00`);
-  d.setHours(d.getHours() + 1);
-  const hh = String(d.getHours()).padStart(2,'0');
-  const mm = String(d.getMinutes()).padStart(2,'0');
-  const [year, month, day] = dateStr.split('-');
-  return `${year}${month}${day}T${hh}${mm}00`;
+  const [year, month, day] = dateStr.split('-').map(Number);
+  const [h, mStr] = parts[0].trim().split(':');
+  const d = new Date(Date.UTC(year, month - 1, day, Number(h) + 1, Number(mStr || 0)));
+  const hh = String(d.getUTCHours()).padStart(2,'0');
+  const mm = String(d.getUTCMinutes()).padStart(2,'0');
+  return `${year}${String(month).padStart(2,'0')}${String(day).padStart(2,'0')}T${hh}${mm}00`;
+}
+function toUtcDate(dateStr: string, timeStr: string, isEnd = false) {
+  const offset = stockholmOffset(dateStr);
+  const parts = timeStr.split('–');
+  const timePart = isEnd && parts.length > 1 ? parts[1] : parts[0];
+  const [h, m] = timePart.trim().split(':');
+  if (!h) return '';
+  const [year, month, day] = dateStr.split('-').map(Number);
+  const utcH = Number(h) - offset + (isEnd && parts.length === 1 ? 1 : 0);
+  const d = new Date(Date.UTC(year, month - 1, day, utcH, Number(m || 0)));
+  return d.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
 }
 
 const dtStart = toIcsDate(ev.data.date, ev.data.time);
-const dtEnd = toIcsDateEnd(ev.data.date, ev.data.time);
+const dtEnd   = toIcsDateEnd(ev.data.date, ev.data.time);
+const gcStart = toUtcDate(ev.data.date, ev.data.time);
+const gcEnd   = toUtcDate(ev.data.date, ev.data.time, true);
 const eventUrl = new URL(`/en/events/${ev.id.replace('en/','')}`, Astro.site).toString();
 
-const googleUrl = dtStart ? `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(ev.data.title)}&dates=${dtStart}/${dtEnd}&location=${encodeURIComponent(ev.data.location)}&details=${encodeURIComponent(eventUrl)}` : null;
+const googleUrl = gcStart ? `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(ev.data.title)}&dates=${gcStart}/${gcEnd}&location=${encodeURIComponent(ev.data.location)}&details=${encodeURIComponent(eventUrl)}` : null;
 
 const icsContent = dtStart ? [
   'BEGIN:VCALENDAR',
   'VERSION:2.0',
   'BEGIN:VEVENT',
-  `DTSTART:${dtStart}`,
-  `DTEND:${dtEnd}`,
+  `DTSTART;TZID=Europe/Stockholm:${dtStart}`,
+  `DTEND;TZID=Europe/Stockholm:${dtEnd}`,
   `SUMMARY:${ev.data.title}`,
   `LOCATION:${ev.data.location}`,
   `URL:${eventUrl}`,

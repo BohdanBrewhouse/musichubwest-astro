@@ -1438,7 +1438,7 @@ a:hover .featured-title { text-decoration-color: var(--lime); }
   background: var(--black-2);
   padding: 64px 40px 0;
   position: relative;
-  overflow: visible;
+  overflow: hidden;
 }
 .event-header::before {
   content: '';
