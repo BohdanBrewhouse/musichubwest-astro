@@ -221,16 +221,7 @@ const lang = 'sv';
  position: relative;
  overflow: hidden;
  }
- .tiw-hero::before {
- content: '';
- position: absolute;
- top: -120px; right: -120px;
- width: 700px; height: 700px;
- background: var(--lime);
- opacity: 0.12;
- border-radius: 50%;
- pointer-events: none;
- }
+ .tiw-hero::before { display: none; }
  .tiw-hero__inner {
  max-width: var(--max);
  margin: 0 auto;

@@ -106,16 +106,7 @@ const lang = 'sv';
     position: relative;
     overflow: hidden;
   }
-  .ap-hero::before {
-    content: '';
-    position: absolute;
-    top: -100px; right: -100px;
-    width: 600px; height: 600px;
-    background: var(--lime);
-    opacity: 0.08;
-    border-radius: 50%;
-    pointer-events: none;
-  }
+  .ap-hero::before { display: none; }
   .ap-hero__inner {
     max-width: var(--max);
     margin: 0 auto;

@@ -376,16 +376,7 @@ const lang = 'sv';
     position: relative;
     overflow: hidden;
   }
-  .about-hero::before {
-    content: '';
-    position: absolute;
-    top: -140px; right: -140px;
-    width: 700px; height: 700px;
-    background: var(--lime);
-    opacity: 0.1;
-    border-radius: 50%;
-    pointer-events: none;
-  }
+  .about-hero::before { display: none; }
   .about-hero__inner {
     max-width: var(--max);
     margin: 0 auto;
