@@ -65,13 +65,20 @@ function formatDate(d: string) {
       </div>
 
       <div class="ev-header__bottom">
-        <div class="filter-bar ev-filter-bar">
-          <span class="filter-bar__label">Filtrera</span>
-          <button class="filter-chip active" data-filter="all" aria-pressed="true">Alla</button>
-          <button class="filter-chip" data-filter="Tune In West" aria-pressed="false">Tune In West</button>
-          <button class="filter-chip" data-filter="Kulturverkstaden" aria-pressed="false">Kulturverkstaden</button>
-          <button class="filter-chip" data-filter="Högskolan för scen och musik" aria-pressed="false">HSM</button>
-          <button class="filter-chip" data-filter="VGR" aria-pressed="false">VGR</button>
+        <div class="cat-drop" id="cat-drop">
+          <button class="cat-drop__btn" id="cat-drop__btn" aria-haspopup="listbox" aria-expanded="false">
+            <span id="cat-drop__label">Alla kategorier</span>
+            <svg class="cat-drop__caret" width="12" height="12" viewBox="0 0 12 12" fill="none">
+              <path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <ul class="cat-drop__menu" role="listbox" id="cat-drop__menu" hidden>
+            <li class="cat-drop__item active" role="option" data-filter="all" aria-selected="true">Alla</li>
+            <li class="cat-drop__item" role="option" data-filter="Tune In West" aria-selected="false">Tune In West</li>
+            <li class="cat-drop__item" role="option" data-filter="Kulturverkstaden" aria-selected="false">Kulturverkstaden</li>
+            <li class="cat-drop__item" role="option" data-filter="Högskolan för scen och musik" aria-selected="false">HSM</li>
+            <li class="cat-drop__item" role="option" data-filter="VGR" aria-selected="false">VGR</li>
+          </ul>
         </div>
 
         <!-- View toggle -->
@@ -232,22 +239,57 @@ function formatDate(d: string) {
   btnGrid.addEventListener('click', function() { setView('grid'); });
   btnList.addEventListener('click', function() { setView('list'); dismissNudge(); });
 
-  // After filter chips toggle [data-category], hide empty month groups in list view
-  document.querySelectorAll('.filter-chip').forEach(function(chip) {
-    chip.addEventListener('click', function() {
-      requestAnimationFrame(function() {
-        var anyVisible = false;
-        document.querySelectorAll('.agenda-month').forEach(function(group) {
-          var items = group.querySelectorAll('.agenda-item');
-          var hasVisible = Array.from(items).some(function(el) { return el.style.display !== 'none'; });
-          group.style.display = hasVisible ? '' : 'none';
-          if (hasVisible) anyVisible = true;
+  // ── Category dropdown filter ──
+  var catBtn   = document.getElementById('cat-drop__btn');
+  var catMenu  = document.getElementById('cat-drop__menu');
+  var catLabel = document.getElementById('cat-drop__label');
+
+  function applyFilter(filter) {
+    document.querySelectorAll('[data-category]').forEach(function(el) {
+      el.style.display = (filter === 'all' || el.dataset.category === filter) ? '' : 'none';
+    });
+    requestAnimationFrame(function() {
+      var anyVisible = false;
+      document.querySelectorAll('.agenda-month').forEach(function(group) {
+        var items = group.querySelectorAll('.agenda-item');
+        var hasVisible = Array.from(items).some(function(el) { return el.style.display !== 'none'; });
+        group.style.display = hasVisible ? '' : 'none';
+        if (hasVisible) anyVisible = true;
+      });
+      var empty = document.getElementById('agenda-empty');
+      if (empty) empty.hidden = anyVisible;
+    });
+  }
+
+  if (catBtn && catMenu) {
+    catBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      var isOpen = !catMenu.hidden;
+      catMenu.hidden = isOpen;
+      catBtn.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
+    });
+
+    catMenu.querySelectorAll('.cat-drop__item').forEach(function(item) {
+      item.addEventListener('click', function() {
+        var filter = item.getAttribute('data-filter');
+        catLabel.textContent = filter === 'all' ? 'Alla kategorier' : item.textContent.trim();
+        catMenu.querySelectorAll('.cat-drop__item').forEach(function(i) {
+          i.classList.remove('active');
+          i.setAttribute('aria-selected', 'false');
         });
-        var empty = document.getElementById('agenda-empty');
-        if (empty) empty.hidden = anyVisible;
+        item.classList.add('active');
+        item.setAttribute('aria-selected', 'true');
+        catMenu.hidden = true;
+        catBtn.setAttribute('aria-expanded', 'false');
+        applyFilter(filter);
       });
     });
-  });
+
+    document.addEventListener('click', function() {
+      catMenu.hidden = true;
+      catBtn.setAttribute('aria-expanded', 'false');
+    });
+  }
 })();
 </script>
 
@@ -313,14 +355,56 @@ function formatDate(d: string) {
     border-bottom: 1px solid var(--black-3);
     padding: 16px 0;
   }
-  /* override global filter-bar styles */
-  .ev-filter-bar {
-    border-top: none !important;
-    padding-top: 0 !important;
-    margin-bottom: 0 !important;
-    flex: 1;
-    min-width: 0;
+  /* ── Category dropdown ── */
+  .cat-drop { position: relative; flex-shrink: 0; }
+  .cat-drop__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 4px;
+    color: var(--white);
+    font-family: var(--font);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+    white-space: nowrap;
   }
+  .cat-drop__btn:hover {
+    border-color: rgba(255,255,255,0.4);
+    background: rgba(255,255,255,0.04);
+  }
+  .cat-drop__btn[aria-expanded="true"] { border-color: var(--lime); color: var(--lime); }
+  .cat-drop__caret { flex-shrink: 0; transition: transform 0.2s; }
+  .cat-drop__btn[aria-expanded="true"] .cat-drop__caret { transform: rotate(180deg); }
+  .cat-drop__menu {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    z-index: 200;
+    background: #1c1c1c;
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 6px;
+    list-style: none;
+    margin: 0;
+    padding: 4px 0;
+    min-width: 200px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+  }
+  .cat-drop__menu[hidden] { display: none; }
+  .cat-drop__item {
+    padding: 9px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.7);
+    cursor: pointer;
+    transition: background 0.1s, color 0.1s;
+  }
+  .cat-drop__item:hover { background: rgba(255,255,255,0.06); color: var(--white); }
+  .cat-drop__item.active { color: var(--lime); font-weight: 700; }
 
   /* ── Nudge ── */
   .view-toggle-wrap { position: relative; display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
@@ -529,8 +613,6 @@ function formatDate(d: string) {
   @media (max-width: 768px) {
     .ev-header { padding: 48px 20px 0; }
     .ev-header__bottom { flex-wrap: nowrap; gap: 8px; }
-    .ev-filter-bar { overflow-x: auto; -webkit-overflow-scrolling: touch; flex-shrink: 1; }
-    .ev-filter-bar::-webkit-scrollbar { display: none; }
     .agenda { padding: 0 20px 56px; }
     .agenda-item__title { white-space: normal; }
   }
