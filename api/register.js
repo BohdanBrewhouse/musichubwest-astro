@@ -1,27 +1,71 @@
 /**
  * POST /api/register
- * Vercel Serverless Function — Event Registration
+ * Vercel Serverless Function — Event Registration → Monday.com
  *
- * Receives form data → creates item in Monday.com board
+ * Environment variables (Vercel Dashboard → Settings → Environment Variables):
+ *   MONDAY_API_TOKEN  — Monday API token (Avatar → Developers → My Access Tokens)
+ *   MONDAY_BOARD_ID   — Numeric board ID from the URL: monday.com/boards/XXXXXXXXXX
  *
- * Environment variables (set in Vercel Dashboard → Settings → Environment Variables):
- *   MONDAY_API_TOKEN  — Your Monday API token (Settings → Developers → My Access Tokens)
- *   MONDAY_BOARD_ID   — Numeric ID of your registrations board (visible in the board URL)
+ * Monday board column IDs (update after creating your board):
+ *   email__1    → Email column
+ *   text__1     → Telefon column
+ *   text1__1    → Event column
+ *   date__1     → Datum column
+ *   status__1   → Status column
+ *
+ * How to find column IDs:
+ *   Monday board → Integrate → API → open GraphQL explorer →
+ *   run: { boards(ids: [YOUR_BOARD_ID]) { columns { id title } } }
  */
 
+const MONDAY_API = 'https://api.monday.com/v2';
+
+// ── Helper: call Monday GraphQL ──────────────────────────────
+async function monday(query, token) {
+  const res = await fetch(MONDAY_API, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': token,
+      'API-Version': '2024-01',
+    },
+    body: JSON.stringify({ query }),
+  });
+  const data = await res.json();
+  if (data.errors) throw new Error(JSON.stringify(data.errors));
+  return data.data;
+}
+
+// ── Helper: find group ID by name ────────────────────────────
+async function findGroupId(boardId, groupName, token) {
+  const data = await monday(
+    `{ boards(ids: [${boardId}]) { groups { id title } } }`,
+    token
+  );
+  const groups = data?.boards?.[0]?.groups ?? [];
+  const match = groups.find(
+    g => g.title.toLowerCase().trim() === groupName.toLowerCase().trim()
+  );
+  return match?.id ?? null;
+}
+
+// ── Main handler ─────────────────────────────────────────────
 export default async function handler(req, res) {
-  // ── CORS headers (allow requests from your own domain) ──
   res.setHeader('Access-Control-Allow-Origin', 'https://musichubwest.vercel.app');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
   if (req.method === 'OPTIONS') return res.status(200).end();
-  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+  if (req.method !== 'POST')    return res.status(405).json({ error: 'Method not allowed' });
 
   try {
-    const { namn, epost, telefon, eventTitle, eventSlug, eventDate, lang } = req.body;
+    const {
+      namn, epost, telefon,
+      eventTitle, eventSlug, eventDate,
+      translationKey, lang,
+    } = req.body;
 
-    // ── Validation ───────────────────────────────────────
+    // ── Validation ─────────────────────────────────────────
     if (!namn?.trim() || !epost?.trim()) {
       return res.status(400).json({ error: 'Namn och e-post krävs' });
     }
@@ -30,67 +74,57 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Ogiltig e-postadress' });
     }
 
-    // ── Monday.com API ───────────────────────────────────
-    // TODO: When you have API token + Board ID:
-    //   1. Add MONDAY_API_TOKEN and MONDAY_BOARD_ID to Vercel Environment Variables
-    //   2. Uncomment the block below
-    //   3. Replace column IDs (name__1, email__1, etc.) with your actual column IDs
-    //      → find them in Monday: Board → Integrate → API → column IDs shown in GraphQL explorer
-    //
-    // const MONDAY_API_TOKEN = process.env.MONDAY_API_TOKEN;
-    // const MONDAY_BOARD_ID  = process.env.MONDAY_BOARD_ID;
-    //
-    // const columnValues = JSON.stringify({
-    //   email__1:   { email: email, text: email },   // Email column
-    //   text__1:    telefon?.trim() || '',            // Phone column
-    //   text1__1:   eventTitle || '',                 // Event name column
-    //   date__1:    { date: eventDate || '' },        // Event date column
-    //   status__1:  { label: 'Ny' },                  // Status column
-    // });
-    //
-    // const mutation = `
-    //   mutation {
-    //     create_item(
-    //       board_id: ${MONDAY_BOARD_ID},
-    //       item_name: "${namn.trim().replace(/"/g, '\\"')}",
-    //       column_values: ${JSON.stringify(columnValues)}
-    //     ) { id }
-    //   }
-    // `;
-    //
-    // const mondayRes = await fetch('https://api.monday.com/v2', {
-    //   method:  'POST',
-    //   headers: {
-    //     'Content-Type':  'application/json',
-    //     'Authorization': MONDAY_API_TOKEN,
-    //     'API-Version':   '2024-01',
-    //   },
-    //   body: JSON.stringify({ query: mutation }),
-    // });
-    //
-    // const mondayData = await mondayRes.json();
-    // if (mondayData.errors) {
-    //   console.error('[register] Monday API error:', mondayData.errors);
-    //   return res.status(502).json({ error: 'Monday API error' });
-    // }
-    // ─────────────────────────────────────────────────────
+    const MONDAY_API_TOKEN = process.env.MONDAY_API_TOKEN;
+    const MONDAY_BOARD_ID  = process.env.MONDAY_BOARD_ID;
 
-    // Log to Vercel Function logs (visible in Vercel Dashboard → Functions tab)
-    console.log('[register] New registration:', {
-      namn:       namn.trim(),
-      epost:      email,
-      telefon:    telefon?.trim() || '—',
-      eventTitle: eventTitle || '—',
-      eventSlug:  eventSlug  || '—',
-      eventDate:  eventDate  || '—',
-      lang:       lang       || '—',
-      timestamp:  new Date().toISOString(),
+    if (!MONDAY_API_TOKEN || !MONDAY_BOARD_ID) {
+      // Env vars not set yet — log and return OK so form still works
+      console.warn('[register] Monday env vars missing — logging only');
+      console.log('[register]', { namn: namn.trim(), email, telefon, eventTitle, translationKey, lang });
+      return res.status(200).json({ ok: true });
+    }
+
+    // ── Find Monday group ───────────────────────────────────
+    // Group name = translationKey (same for SV and EN versions of the event)
+    const groupKey = (translationKey || eventSlug || eventTitle || '').trim();
+    const groupId  = await findGroupId(MONDAY_BOARD_ID, groupKey, MONDAY_API_TOKEN);
+
+    if (!groupId) {
+      // Group doesn't exist yet — log warning but don't fail the user
+      console.warn(`[register] No Monday group found for "${groupKey}". Create a group with this exact name.`);
+      console.log('[register] Registration data:', { namn: namn.trim(), email, telefon, eventTitle, translationKey });
+      return res.status(200).json({ ok: true });
+    }
+
+    // ── Column values ───────────────────────────────────────
+    // ⚠️  Replace column IDs below with your actual ones from the GraphQL explorer
+    const columnValues = JSON.stringify({
+      email__1:  { email: email, text: email },
+      text__1:   telefon?.trim() || '',
+      text1__1:  eventTitle || '',
+      date__1:   { date: eventDate || '' },
+      status__1: { label: 'Ny' },
     });
 
+    // ── Create item in Monday ───────────────────────────────
+    const mutation = `
+      mutation {
+        create_item(
+          board_id: ${MONDAY_BOARD_ID},
+          group_id: "${groupId}",
+          item_name: "${namn.trim().replace(/"/g, '\\"')}",
+          column_values: ${JSON.stringify(columnValues)}
+        ) { id }
+      }
+    `;
+
+    await monday(mutation, MONDAY_API_TOKEN);
+
+    console.log(`[register] ✅ Created item in group "${groupKey}" for ${email}`);
     return res.status(200).json({ ok: true });
 
   } catch (err) {
-    console.error('[register] Unexpected error:', err);
+    console.error('[register] Error:', err.message);
     return res.status(500).json({ error: 'Internal server error' });
   }
 }

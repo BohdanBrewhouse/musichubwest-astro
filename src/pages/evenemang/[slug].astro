@@ -356,6 +356,7 @@ const icsContent = dtStart ? [
           <input type="hidden" name="eventTitle" value={ev.data.title} />
           <input type="hidden" name="eventSlug" value={ev.id.replace('sv/', '')} />
           <input type="hidden" name="eventDate" value={ev.data.date} />
+          <input type="hidden" name="translationKey" value={ev.data.translationKey ?? ev.id.replace('sv/', '')} />
           <input type="hidden" name="lang" value="sv" />
 
           <div class="reg-form__field">
