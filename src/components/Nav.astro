@@ -22,6 +22,40 @@ const links = [
 const altLang = lang === 'sv' ? 'en' : 'sv';
 const altBase = lang === 'sv' ? '/en' : '';
 const currentPath = Astro.url.pathname;
+
+// Map EN slugs → SV paths (for language switcher on EN pages without altUrl)
+const enToSvMap: Record<string, string> = {
+  '/en/about':    '/om',
+  '/en/events':   '/evenemang',
+  '/en/articles': '/artiklar',
+};
+// Map SV slugs → EN paths (for language switcher on SV pages without altUrl)
+const svToEnMap: Record<string, string> = {
+  '/om':       '/en/about',
+  '/evenemang':'/en/events',
+  '/artiklar': '/en/articles',
+};
+
+function getSvUrl(path: string): string {
+  // Exact match
+  if (enToSvMap[path]) return enToSvMap[path];
+  if (enToSvMap[path.replace(/\/$/, '')]) return enToSvMap[path.replace(/\/$/, '')];
+  // Dynamic: /en/events/slug → /evenemang/slug
+  const m = path.match(/^\/en\/(events|articles)\/(.+)$/);
+  if (m) return `/${m[1] === 'events' ? 'evenemang' : 'artiklar'}/${m[2]}`;
+  // Fallback: strip /en prefix
+  return path.replace(/^\/en/, '') || '/';
+}
+
+function getEnUrl(path: string): string {
+  if (svToEnMap[path]) return svToEnMap[path];
+  if (svToEnMap[path.replace(/\/$/, '')]) return svToEnMap[path.replace(/\/$/, '')];
+  // Dynamic: /evenemang/slug → /en/events/slug
+  const m = path.match(/^\/(evenemang|artiklar)\/(.+)$/);
+  if (m) return `/en/${m[1] === 'evenemang' ? 'events' : 'articles'}/${m[2]}`;
+  // Fallback: prepend /en
+  return '/en' + path;
+}
 ---
 <nav class="nav">
   <div class="nav__inner">
@@ -55,8 +89,8 @@ const currentPath = Astro.url.pathname;
       </li>
     </ul>
     <div class="nav__lang">
-      <a href={altUrl ? (lang === 'sv' ? altUrl : currentPath) : (lang === 'sv' ? '/en' + currentPath : currentPath)} data-lang="en" class={`lang-btn ${lang === 'en' ? 'active' : ''}`}>EN</a>
-      <a href={altUrl ? (lang === 'en' ? altUrl : currentPath) : (lang === 'en' ? currentPath.replace(/^\/en/, '') || '/' : currentPath)} data-lang="sv" class={`lang-btn ${lang === 'sv' ? 'active' : ''}`}>SV</a>
+      <a href={lang === 'sv' ? (altUrl ?? getEnUrl(currentPath)) : currentPath} data-lang="en" class={`lang-btn ${lang === 'en' ? 'active' : ''}`}>EN</a>
+      <a href={lang === 'en' ? (altUrl ?? getSvUrl(currentPath)) : currentPath} data-lang="sv" class={`lang-btn ${lang === 'sv' ? 'active' : ''}`}>SV</a>
     </div>
     <button class="nav__burger" aria-label="Meny"><span></span><span></span><span></span></button>
   </div>
