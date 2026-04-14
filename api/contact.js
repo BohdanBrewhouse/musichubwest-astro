@@ -1,25 +1,21 @@
 /**
  * POST /api/contact
- * Vercel Serverless Function — Contact Form → Monday.com (separate board)
+ * Vercel Serverless Function — Contact Form → Monday.com "Kontakt" board (ID: 5094610879)
  *
  * Required environment variables (Vercel → Settings → Environment Variables):
  *   MONDAY_API_TOKEN          — same token as register.js
- *   MONDAY_CONTACT_BOARD_ID   — ID of the Kontakt board (from URL: monday.com/boards/XXXXXXXXXX)
+ *   MONDAY_CONTACT_BOARD_ID   — 5094610879
  *
- * Steps to set up:
- *   1. Create a Monday board called "Kontakt" with one group "Inkorg"
- *   2. Add text columns: Email, Organisation, Meddelande, Sida
- *   3. Deploy this code, then hit /api/debug-board?board_id=YOUR_BOARD_ID to get column IDs
- *   4. Fill in the COLUMN_IDS object below with real IDs
- *   5. Add MONDAY_CONTACT_BOARD_ID env var in Vercel
+ * Board groups:
+ *   topics           → "Om"           (messages from /om)
+ *   group_mm2d6why   → "tune-in-west" (messages from /tune-in-west)
  *
- * Column IDs — update after running debug-board:
+ * Responsible Person column is left empty — team assigns manually in Monday.
  */
 const COLUMN_IDS = {
-  email:  '',   // text column "Email"    — e.g. 'text_abc123'
-  org:    '',   // text column "Organisation"
-  msg:    '',   // long text column "Meddelande"
-  sida:   '',   // text column "Sida" (which page sent the message)
+  email: 'text_mm2dg4hr',   // Email
+  org:   'text_mm2dzkka',   // Organisation
+  msg:   'text_mm2d2mrp',   // Meddelande
 };
 
 const MONDAY_API = 'https://api.monday.com/v2';
@@ -95,18 +91,11 @@ export default async function handler(req, res) {
     console.log(`[contact] Using group "${matched?.title ?? groups[0]?.title}" (id: ${groupId}) for sida="${sida}"`);
 
     // ── Build column values ─────────────────────────────────
-    const colObj = {};
-    const hasColIds = COLUMN_IDS.email && COLUMN_IDS.org && COLUMN_IDS.msg;
-
-    if (hasColIds) {
-      colObj[COLUMN_IDS.email] = emailVal;
-      if (org?.trim())        colObj[COLUMN_IDS.org]  = org.trim();
-      if (meddelande?.trim()) colObj[COLUMN_IDS.msg]   = meddelande.trim();
-      if (sida && COLUMN_IDS.sida) colObj[COLUMN_IDS.sida] = sida;
-    } else {
-      // Column IDs not yet configured — item will be created with name only
-      console.warn('[contact] COLUMN_IDS not configured — creating name-only item. Run /api/debug-board?board_id=' + MONDAY_CONTACT_BOARD + ' to get column IDs.');
-    }
+    const colObj = {
+      [COLUMN_IDS.email]: emailVal,
+    };
+    if (org?.trim())        colObj[COLUMN_IDS.org] = org.trim();
+    if (meddelande?.trim()) colObj[COLUMN_IDS.msg] = meddelande.trim();
 
     console.log('[contact] Sending column values:', JSON.stringify(colObj));
 
