@@ -1727,6 +1727,7 @@ a:hover .featured-title { text-decoration-color: var(--lime); }
 }
 @media (max-width: 640px) {
   .event-header { padding: 40px 20px 0; }
+  .event-header::before { opacity: 0.04; width: 320px; height: 320px; }
   .event-header__bottom { grid-template-columns: 1fr; gap: 24px; }
   .event-meta-row { gap: 24px; }
   .event-layout { padding: 32px 20px 48px; }
