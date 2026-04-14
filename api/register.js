@@ -96,14 +96,13 @@ export default async function handler(req, res) {
       return res.status(200).json({ ok: true });
     }
 
-    // ── Column values ───────────────────────────────────────
-    // ⚠️  Replace column IDs below with your actual ones from the GraphQL explorer
+    // ── Column values (real IDs from board 5094578299) ─────
     const columnValues = JSON.stringify({
-      email__1:  { email: email, text: email },
-      text__1:   telefon?.trim() || '',
-      text1__1:  eventTitle || '',
-      date__1:   { date: eventDate || '' },
-      status__1: { label: 'Ny' },
+      text_mm2d5e9w: email,
+      text_mm2d9f29: telefon?.trim() || '',
+      text_mm2dg526: eventTitle || '',
+      date_mm2dme63: { date: eventDate || '' },
+      color_mm2d249e: { label: 'Ny' },
     });
 
     // ── Create item in Monday ───────────────────────────────

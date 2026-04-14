@@ -194,7 +194,7 @@ const badgeClass: Record<string, string> = {
 
   function dismissNudge() {
     if (!nudge) return;
-    nudge.classList.add('hidden');
+    nudge.style.display = 'none';
     try { localStorage.setItem(NUDGE_KEY, '1'); } catch(e) {}
   }
 
@@ -202,9 +202,9 @@ const badgeClass: Record<string, string> = {
     var saved = localStorage.getItem(STORAGE_KEY);
     if (saved === 'list') {
       setView('list');
-      if (nudge) nudge.classList.add('hidden');
+      if (nudge) nudge.style.display = 'none';
     } else if (localStorage.getItem(NUDGE_KEY) === '1') {
-      if (nudge) nudge.classList.add('hidden');
+      if (nudge) nudge.style.display = 'none';
     }
   } catch(e) {}
 
