@@ -102,7 +102,6 @@ export default async function handler(req, res) {
       text_mm2d9f29: telefon?.trim() || '',
       text_mm2dg526: eventTitle || '',
       date_mm2dme63: { date: eventDate || '' },
-      color_mm2d249e: { label: 'Ny' },
     });
 
     // ── Create item in Monday ───────────────────────────────
