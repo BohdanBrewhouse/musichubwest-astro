@@ -96,45 +96,53 @@ export default async function handler(req, res) {
       return res.status(200).json({ ok: true });
     }
 
-    // ── Step 1: Create item (name + group only) ────────────
-    const createMutation = `
-      mutation {
-        create_item(
-          board_id: ${MONDAY_BOARD_ID},
-          group_id: "${groupId}",
-          item_name: "${namn.trim().replace(/"/g, '\\"')}"
-        ) { id }
-      }
-    `;
+    // ── Column values ───────────────────────────────────────
+    const colObj = {
+      text_mm2d5e9w: email,
+      text_mm2d9f29: telefon?.trim() || '',
+      text_mm2dg526: eventTitle || '',
+    };
+    if (eventDate) colObj.date_mm2dme63 = { date: eventDate };
+    const colVals = JSON.stringify(colObj);
 
-    const createResult = await monday(createMutation, MONDAY_API_TOKEN);
-    const itemId = createResult?.create_item?.id;
+    const safeName = namn.trim().replace(/\\/g, '\\\\').replace(/"/g, '\\"');
 
-    // ── Step 2: Fill column values (best-effort) ───────────
-    if (itemId) {
-      const colVals = JSON.stringify({
-        text_mm2d5e9w: email,
-        text_mm2d9f29: telefon?.trim() || '',
-        text_mm2dg526: eventTitle || '',
-        date_mm2dme63: eventDate ? { date: eventDate } : undefined,
-      });
-
+    // ── Try create_item with columns in one shot ────────────
+    let itemId = null;
+    try {
+      const r = await monday(`
+        mutation {
+          create_item(
+            board_id: ${MONDAY_BOARD_ID},
+            group_id: "${groupId}",
+            item_name: "${safeName}",
+            column_values: ${JSON.stringify(colVals)}
+          ) { id }
+        }
+      `, MONDAY_API_TOKEN);
+      itemId = r?.create_item?.id;
+      console.log(`[register] ✅ Created item #${itemId} with columns for ${email}`);
+    } catch (fullErr) {
+      // Columns rejected — fall back to name-only
+      console.warn('[register] create_item with columns failed:', fullErr.message);
       try {
-        await monday(`
+        const r2 = await monday(`
           mutation {
-            change_multiple_column_values(
+            create_item(
               board_id: ${MONDAY_BOARD_ID},
-              item_id: ${itemId},
-              column_values: ${JSON.stringify(colVals)}
+              group_id: "${groupId}",
+              item_name: "${safeName}"
             ) { id }
           }
         `, MONDAY_API_TOKEN);
-      } catch (colErr) {
-        console.warn('[register] Column update failed (non-critical):', colErr.message);
+        itemId = r2?.create_item?.id;
+        console.warn(`[register] ⚠️ Created item #${itemId} WITHOUT columns for ${email}`);
+      } catch (nameErr) {
+        console.error('[register] create_item name-only also failed:', nameErr.message);
+        throw nameErr;
       }
     }
 
-    console.log(`[register] ✅ Created item${itemId ? ` #${itemId}` : ''} in group "${groupKey}" for ${email}`);
     return res.status(200).json({ ok: true });
 
   } catch (err) {
