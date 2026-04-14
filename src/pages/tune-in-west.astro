@@ -129,11 +129,11 @@ const lang = 'sv';
  </div>
  <div class="tiw-form">
  <p class="tiw-form__title">Skicka ett meddelande</p>
- <form>
+ <form id="tiw-contact-form" novalidate>
  <div class="tiw-form__row">
  <div class="form__group">
- <label class="form__label" for="tiw-name">Namn</label>
- <input class="form__input" type="text" id="tiw-name" placeholder="Ditt namn" />
+ <label class="form__label" for="tiw-name">Namn <span style="color:var(--lime)">*</span></label>
+ <input class="form__input" type="text" id="tiw-name" placeholder="Ditt namn" required />
  </div>
  <div class="form__group">
  <label class="form__label" for="tiw-org">Organisation</label>
@@ -141,20 +141,76 @@ const lang = 'sv';
  </div>
  </div>
  <div class="form__group">
- <label class="form__label" for="tiw-email">E-post</label>
- <input class="form__input" type="email" id="tiw-email" placeholder="din@email.se" />
+ <label class="form__label" for="tiw-email">E-post <span style="color:var(--lime)">*</span></label>
+ <input class="form__input" type="email" id="tiw-email" placeholder="din@email.se" required />
  </div>
  <div class="form__group">
- <label class="form__label" for="tiw-msg">Meddelande</label>
- <textarea class="form__textarea" id="tiw-msg" placeholder="Vad kan vi hjälpa dig med?" style="height:130px;"></textarea>
+ <label class="form__label" for="tiw-msg">Meddelande <span style="color:var(--lime)">*</span></label>
+ <textarea class="form__textarea" id="tiw-msg" placeholder="Vad kan vi hjälpa dig med?" style="height:130px;" required></textarea>
  </div>
- <button type="submit" class="btn btn--primary" style="width:100%;justify-content:center;">Skicka meddelande</button>
+ <div id="tiw-contact-error" style="display:none;color:#ff6b6b;font-size:0.85rem;margin-bottom:12px;">
+   Något gick fel. Försök igen eller kontakta oss direkt.
+ </div>
+ <button type="submit" class="btn btn--primary" id="tiw-contact-submit" style="width:100%;justify-content:center;">Skicka meddelande</button>
  </form>
+ <div id="tiw-contact-success" style="display:none;padding:24px;background:rgba(196,255,0,0.08);border:1px solid rgba(196,255,0,0.25);border-radius:8px;text-align:center;margin-top:16px;">
+   <p style="font-size:1.1rem;font-weight:600;margin-bottom:8px;">Tack för ditt meddelande!</p>
+   <p style="opacity:0.7;font-size:0.9rem;">Vi återkommer till dig så snart vi kan.</p>
+ </div>
  </div>
  </div>
  </div>
 
  <Footer lang={lang} />
+
+  <script is:inline>
+    (function () {
+      var form    = document.getElementById('tiw-contact-form');
+      var success = document.getElementById('tiw-contact-success');
+      var errorEl = document.getElementById('tiw-contact-error');
+      var submit  = document.getElementById('tiw-contact-submit');
+      if (!form) return;
+
+      form.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        errorEl.style.display = 'none';
+
+        var namn       = document.getElementById('tiw-name').value.trim();
+        var email      = document.getElementById('tiw-email').value.trim();
+        var org        = document.getElementById('tiw-org').value.trim();
+        var meddelande = document.getElementById('tiw-msg').value.trim();
+
+        if (!namn || !email || !meddelande) {
+          errorEl.textContent = 'Fyll i namn, e-post och meddelande.';
+          errorEl.style.display = 'block';
+          return;
+        }
+
+        submit.disabled = true;
+        submit.textContent = 'Skickar…';
+
+        try {
+          var r = await fetch('/api/contact', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ namn, email, org, meddelande, sida: 'tune-in-west' }),
+          });
+          var data = await r.json();
+          if (data.ok) {
+            form.style.display = 'none';
+            success.style.display = 'block';
+          } else {
+            throw new Error(data.error || 'unknown');
+          }
+        } catch (err) {
+          errorEl.textContent = 'Något gick fel. Försök igen eller kontakta oss direkt.';
+          errorEl.style.display = 'block';
+          submit.disabled = false;
+          submit.textContent = 'Skicka meddelande';
+        }
+      });
+    })();
+  </script>
 </Base>
 
 <style>

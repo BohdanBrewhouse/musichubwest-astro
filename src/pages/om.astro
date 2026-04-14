@@ -192,25 +192,32 @@ const lang = 'sv';
       </div>
       <div>
         <div class="form-block__title">Skicka ett meddelande</div>
-        <form>
+        <form id="om-contact-form" novalidate>
           <div class="form__group">
-            <label class="form__label" for="name">Namn</label>
-            <input class="form__input" type="text" id="name" placeholder="Ditt namn" />
+            <label class="form__label" for="om-name">Namn <span style="color:var(--lime)">*</span></label>
+            <input class="form__input" type="text" id="om-name" placeholder="Ditt namn" required />
           </div>
           <div class="form__group">
-            <label class="form__label" for="email">E-post</label>
-            <input class="form__input" type="email" id="email" placeholder="din@email.se" />
+            <label class="form__label" for="om-email">E-post <span style="color:var(--lime)">*</span></label>
+            <input class="form__input" type="email" id="om-email" placeholder="din@email.se" required />
           </div>
           <div class="form__group">
-            <label class="form__label" for="org">Organisation</label>
-            <input class="form__input" type="text" id="org" placeholder="Företag / Organisation" />
+            <label class="form__label" for="om-org">Organisation</label>
+            <input class="form__input" type="text" id="om-org" placeholder="Företag / Organisation" />
           </div>
           <div class="form__group">
-            <label class="form__label" for="msg">Meddelande</label>
-            <textarea class="form__textarea" id="msg" placeholder="Vad kan vi hjälpa dig med?"></textarea>
+            <label class="form__label" for="om-msg">Meddelande <span style="color:var(--lime)">*</span></label>
+            <textarea class="form__textarea" id="om-msg" placeholder="Vad kan vi hjälpa dig med?" required></textarea>
           </div>
-          <button type="submit" class="btn btn--primary" style="width:100%">Skicka</button>
+          <div id="om-contact-error" style="display:none;color:#ff6b6b;font-size:0.85rem;margin-bottom:12px;">
+            Något gick fel. Försök igen eller kontakta oss direkt.
+          </div>
+          <button type="submit" class="btn btn--primary" id="om-contact-submit" style="width:100%">Skicka</button>
         </form>
+        <div id="om-contact-success" style="display:none;padding:24px;background:rgba(196,255,0,0.08);border:1px solid rgba(196,255,0,0.25);border-radius:8px;text-align:center;">
+          <p style="font-size:1.1rem;font-weight:600;margin-bottom:8px;">Tack för ditt meddelande!</p>
+          <p style="opacity:0.7;font-size:0.9rem;">Vi återkommer till dig så snart vi kan.</p>
+        </div>
       </div>
     </div>
   </div>
@@ -310,6 +317,55 @@ const lang = 'sv';
   </div>
 
   <Footer lang={lang} />
+
+  <script is:inline>
+    (function () {
+      var form    = document.getElementById('om-contact-form');
+      var success = document.getElementById('om-contact-success');
+      var errorEl = document.getElementById('om-contact-error');
+      var submit  = document.getElementById('om-contact-submit');
+      if (!form) return;
+
+      form.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        errorEl.style.display = 'none';
+
+        var namn       = document.getElementById('om-name').value.trim();
+        var email      = document.getElementById('om-email').value.trim();
+        var org        = document.getElementById('om-org').value.trim();
+        var meddelande = document.getElementById('om-msg').value.trim();
+
+        if (!namn || !email || !meddelande) {
+          errorEl.textContent = 'Fyll i namn, e-post och meddelande.';
+          errorEl.style.display = 'block';
+          return;
+        }
+
+        submit.disabled = true;
+        submit.textContent = 'Skickar…';
+
+        try {
+          var r = await fetch('/api/contact', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ namn, email, org, meddelande, sida: 'om' }),
+          });
+          var data = await r.json();
+          if (data.ok) {
+            form.style.display = 'none';
+            success.style.display = 'block';
+          } else {
+            throw new Error(data.error || 'unknown');
+          }
+        } catch (err) {
+          errorEl.textContent = 'Något gick fel. Försök igen eller kontakta oss direkt.';
+          errorEl.style.display = 'block';
+          submit.disabled = false;
+          submit.textContent = 'Skicka';
+        }
+      });
+    })();
+  </script>
 </Base>
 
 <style>
