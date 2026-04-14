@@ -73,20 +73,26 @@ export default async function handler(req, res) {
       return res.status(200).json({ ok: true });
     }
 
-    // ── Get first group in the board ────────────────────────
+    // ── Find group by sida (page name) ─────────────────────
+    // Monday board should have 2 groups named exactly: "om" and "tune-in-west"
     const boardData = await monday(
       `{ boards(ids: [${MONDAY_CONTACT_BOARD}]) { groups { id title } } }`,
       null,
       MONDAY_API_TOKEN
     );
     const groups = boardData?.boards?.[0]?.groups ?? [];
-    console.log('[contact] Groups:', groups.map(g => g.title).join(', '));
-    const groupId = groups[0]?.id;
+    console.log('[contact] Groups:', groups.map(g => `"${g.title}"`).join(', '));
+
+    const sidaKey = (sida || '').trim().toLowerCase();
+    const matched = groups.find(g => g.title.toLowerCase().trim() === sidaKey);
+    // Fallback to first group if no match (safety net)
+    const groupId = matched?.id ?? groups[0]?.id;
 
     if (!groupId) {
       console.warn('[contact] No groups found in contact board — logging only');
       return res.status(200).json({ ok: true });
     }
+    console.log(`[contact] Using group "${matched?.title ?? groups[0]?.title}" (id: ${groupId}) for sida="${sida}"`);
 
     // ── Build column values ─────────────────────────────────
     const colObj = {};
