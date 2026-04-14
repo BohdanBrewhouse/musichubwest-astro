@@ -114,7 +114,7 @@ export default async function handler(req, res) {
       boardId:  String(MONDAY_CONTACT_BOARD),
       groupId,
       itemName: namn.trim(),
-      colVals:  hasColIds ? JSON.stringify(colObj) : undefined,
+      colVals:  JSON.stringify(colObj),
     };
 
     const r = await monday(mutation, variables, MONDAY_API_TOKEN);
