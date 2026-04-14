@@ -96,29 +96,45 @@ export default async function handler(req, res) {
       return res.status(200).json({ ok: true });
     }
 
-    // ── Column values (real IDs from board 5094578299) ─────
-    const columnValues = JSON.stringify({
-      text_mm2d5e9w: email,
-      text_mm2d9f29: telefon?.trim() || '',
-      text_mm2dg526: eventTitle || '',
-      date_mm2dme63: { date: eventDate || '' },
-    });
-
-    // ── Create item in Monday ───────────────────────────────
-    const mutation = `
+    // ── Step 1: Create item (name + group only) ────────────
+    const createMutation = `
       mutation {
         create_item(
           board_id: ${MONDAY_BOARD_ID},
           group_id: "${groupId}",
-          item_name: "${namn.trim().replace(/"/g, '\\"')}",
-          column_values: ${JSON.stringify(columnValues)}
+          item_name: "${namn.trim().replace(/"/g, '\\"')}"
         ) { id }
       }
     `;
 
-    await monday(mutation, MONDAY_API_TOKEN);
+    const createResult = await monday(createMutation, MONDAY_API_TOKEN);
+    const itemId = createResult?.create_item?.id;
 
-    console.log(`[register] ✅ Created item in group "${groupKey}" for ${email}`);
+    // ── Step 2: Fill column values (best-effort) ───────────
+    if (itemId) {
+      const colVals = JSON.stringify({
+        text_mm2d5e9w: email,
+        text_mm2d9f29: telefon?.trim() || '',
+        text_mm2dg526: eventTitle || '',
+        date_mm2dme63: eventDate ? { date: eventDate } : undefined,
+      });
+
+      try {
+        await monday(`
+          mutation {
+            change_multiple_column_values(
+              board_id: ${MONDAY_BOARD_ID},
+              item_id: ${itemId},
+              column_values: ${JSON.stringify(colVals)}
+            ) { id }
+          }
+        `, MONDAY_API_TOKEN);
+      } catch (colErr) {
+        console.warn('[register] Column update failed (non-critical):', colErr.message);
+      }
+    }
+
+    console.log(`[register] ✅ Created item${itemId ? ` #${itemId}` : ''} in group "${groupKey}" for ${email}`);
     return res.status(200).json({ ok: true });
 
   } catch (err) {
