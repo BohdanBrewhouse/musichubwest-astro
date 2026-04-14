@@ -1438,18 +1438,10 @@ a:hover .featured-title { text-decoration-color: var(--lime); }
   background: var(--black-2);
   padding: 64px 40px 0;
   position: relative;
-  overflow: hidden;
+  overflow: visible;
+  border-top: 2px solid var(--lime);
 }
-.event-header::before {
-  content: '';
-  position: absolute;
-  right: -100px; top: -100px;
-  width: 600px; height: 600px;
-  background: var(--lime);
-  opacity: 0.08;
-  border-radius: 50%;
-  pointer-events: none;
-}
+.event-header::before { display: none; }
 .event-header__inner {
   max-width: var(--max);
   margin: 0 auto;
@@ -1531,7 +1523,8 @@ a:hover .featured-title { text-decoration-color: var(--lime); }
   position: absolute;
   top: 100%;
   left: 0;
-  width: 100%;
+  min-width: 100%;
+  width: max-content;
   background: #111;
   border: 1.5px solid rgba(255,255,255,0.22);
   border-top: 2px solid var(--lime);
@@ -1727,7 +1720,6 @@ a:hover .featured-title { text-decoration-color: var(--lime); }
 }
 @media (max-width: 640px) {
   .event-header { padding: 40px 20px 0; }
-  .event-header::before { opacity: 0.04; width: 320px; height: 320px; }
   .event-header__bottom { grid-template-columns: 1fr; gap: 24px; }
   .event-meta-row { gap: 24px; }
   .event-layout { padding: 32px 20px 48px; }
