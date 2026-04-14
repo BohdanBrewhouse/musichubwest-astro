@@ -90,7 +90,7 @@ export default async function handler(req, res) {
 
     const MONDAY_API_TOKEN    = process.env.MONDAY_API_TOKEN;
     const MONDAY_BOARD_ID     = process.env.MONDAY_BOARD_ID;
-    const MONDAY_COMPANY_COL  = process.env.MONDAY_COMPANY_COL_ID;
+    const MONDAY_COMPANY_COL  = 'text_mm2d4gxh'; // Företag column (confirmed via debug-columns)
 
     if (!MONDAY_API_TOKEN || !MONDAY_BOARD_ID) {
       console.warn('[register] Monday env vars missing — logging only');
@@ -127,8 +127,8 @@ export default async function handler(req, res) {
       colObj['date_mm2dme63'] = { date: eventDate };
     }
 
-    // Company (optional — only if column ID is configured)
-    if (MONDAY_COMPANY_COL && foretag?.trim()) {
+    // Company / Organisation (optional)
+    if (foretag?.trim()) {
       colObj[MONDAY_COMPANY_COL] = foretag.trim();
     }
 
