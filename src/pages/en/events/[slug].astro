@@ -440,8 +440,8 @@ const icsContent = dtStart ? [
               return res.json();
             })
             .then(function () {
-              form.hidden = true;
-              successEl.hidden = false;
+              form.style.display = 'none';
+              successEl.style.display = 'block';
             })
             .catch(function () {
               errorEl.hidden = false;
