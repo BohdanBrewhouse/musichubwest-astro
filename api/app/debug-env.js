@@ -1,9 +1,11 @@
 export default function handler(req, res) {
-  const pass = process.env.ADMIN_PASSWORD;
+  // Show all available env var keys (not values for security)
+  const allKeys = Object.keys(process.env).filter(k => 
+    !k.startsWith('PATH') && !k.startsWith('NODE') && !k.startsWith('npm_')
+  ).sort();
   res.status(200).json({
-    ADMIN_PASSWORD_length: pass ? pass.length : null,
-    ADMIN_PASSWORD_chars: pass ? [...pass].map(c => c.charCodeAt(0)) : null,
-    EDGE_CONFIG_set: !!process.env.EDGE_CONFIG,
-    EDGE_CONFIG_ID_set: !!process.env.EDGE_CONFIG_ID,
+    keys: allKeys,
+    ADMIN_PASSWORD: process.env.ADMIN_PASSWORD || null,
+    MONDAY_API_TOKEN_set: !!process.env.MONDAY_API_TOKEN,
   });
 }
