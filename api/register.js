@@ -12,10 +12,7 @@
  *   text_mm2dg526  → Event
  *   date_mm2dme63  → Datum
  *   text_mm2d4gxh  → Roll / Arbetsplats (previously Företag)
- *
- * Food preferences column:
- *   Create a text column called "Matpreferenser" in Monday, then set:
- *   MONDAY_FOOD_COL env var (Vercel → Settings → Environment Variables)
+ *   text_mm2f93jv  → Matpreferenser
  *
  * Run api/debug-columns.js endpoint to get/verify all column IDs and types.
  */
@@ -93,7 +90,7 @@ export default async function handler(req, res) {
     const MONDAY_API_TOKEN    = process.env.MONDAY_API_TOKEN;
     const MONDAY_BOARD_ID     = process.env.MONDAY_BOARD_ID;
     const MONDAY_COMPANY_COL  = 'text_mm2d4gxh'; // Roll / Arbetsplats column
-    const MONDAY_FOOD_COL     = process.env.MONDAY_FOOD_COL || ''; // Set after creating "Matpreferenser" column in Monday
+    const MONDAY_FOOD_COL     = 'text_mm2f93jv';  // Matpreferenser column
 
     if (!MONDAY_API_TOKEN || !MONDAY_BOARD_ID) {
       console.warn('[register] Monday env vars missing — logging only');
@@ -135,11 +132,9 @@ export default async function handler(req, res) {
       colObj[MONDAY_COMPANY_COL] = foretag.trim();
     }
 
-    // Matpreferenser / allergier (optional — only sent when MONDAY_FOOD_COL is configured)
-    if (matpreferenser?.trim() && MONDAY_FOOD_COL) {
+    // Matpreferenser / allergier (optional)
+    if (matpreferenser?.trim()) {
       colObj[MONDAY_FOOD_COL] = matpreferenser.trim();
-    } else if (matpreferenser?.trim()) {
-      console.log('[register] Food preference received but MONDAY_FOOD_COL not set:', matpreferenser.trim());
     }
 
     console.log('[register] Column values to send:', JSON.stringify(colObj));
