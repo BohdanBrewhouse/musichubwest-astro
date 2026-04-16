@@ -17,6 +17,7 @@ const events = defineCollection({
     organizer_email: z.string().optional(),
     translationKey: z.string(),
     registration_open: z.boolean().optional().default(false),
+    serve_food: z.boolean().optional().default(false),
     registration_url: z.string().optional(),
     address: z.string().optional(),
     map_query: z.string().optional(),

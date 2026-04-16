@@ -404,9 +404,15 @@ const icsContent = dtStart ? [
             <input class="reg-form__input" type="tel" id="reg-telefon" name="telefon" autocomplete="tel" placeholder="+46 70 000 00 00" />
           </div>
           <div class="reg-form__field">
-            <label class="reg-form__label" for="reg-foretag">Company / Organisation <span class="reg-form__optional">(optional)</span></label>
-            <input class="reg-form__input" type="text" id="reg-foretag" name="foretag" autocomplete="organization" placeholder="Your company or freelancer" />
+            <label class="reg-form__label" for="reg-foretag">Current role / workplace <span class="reg-form__optional">(optional)</span></label>
+            <input class="reg-form__input" type="text" id="reg-foretag" name="foretag" autocomplete="organization" placeholder="E.g. artist, producer at Sony, student at HSM..." />
           </div>
+          {ev.data.serve_food && (
+            <div class="reg-form__field">
+              <label class="reg-form__label" for="reg-mat">Food preferences / allergies <span class="reg-form__optional">(optional)</span></label>
+              <input class="reg-form__input" type="text" id="reg-mat" name="matpreferenser" placeholder="E.g. vegetarian, gluten-free, no preferences..." />
+            </div>
+          )}
 
           <div class="reg-form__error" id="reg-error" hidden>
             Something went wrong. Please try again or contact us directly.

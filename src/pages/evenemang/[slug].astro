@@ -408,9 +408,15 @@ const icsContent = dtStart ? [
             <input class="reg-form__input" type="tel" id="reg-telefon" name="telefon" autocomplete="tel" placeholder="+46 70 000 00 00" />
           </div>
           <div class="reg-form__field">
-            <label class="reg-form__label" for="reg-foretag">Företag / Organisation <span class="reg-form__optional">(valfritt)</span></label>
-            <input class="reg-form__input" type="text" id="reg-foretag" name="foretag" autocomplete="organization" placeholder="Ditt företag eller frilanskonsult" />
+            <label class="reg-form__label" for="reg-foretag">Nuvarande roll / arbetsplats <span class="reg-form__optional">(valfritt)</span></label>
+            <input class="reg-form__input" type="text" id="reg-foretag" name="foretag" autocomplete="organization" placeholder="T.ex. artist, producent på Sony, student vid HSM..." />
           </div>
+          {ev.data.serve_food && (
+            <div class="reg-form__field">
+              <label class="reg-form__label" for="reg-mat">Matpreferenser / allergier <span class="reg-form__optional">(valfritt)</span></label>
+              <input class="reg-form__input" type="text" id="reg-mat" name="matpreferenser" placeholder="T.ex. vegetarian, glutenintolerant, inga preferenser..." />
+            </div>
+          )}
 
           <div class="reg-form__error" id="reg-error" hidden>
             Något gick fel. Försök igen eller kontakta oss direkt.

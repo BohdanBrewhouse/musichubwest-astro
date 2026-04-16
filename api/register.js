@@ -11,9 +11,11 @@
  *   text_mm2d9f29  → Telefon
  *   text_mm2dg526  → Event
  *   date_mm2dme63  → Datum
+ *   text_mm2d4gxh  → Roll / Arbetsplats (previously Företag)
  *
- * Optional — add after creating the column in Monday and getting its ID:
- *   MONDAY_COMPANY_COL_ID — column ID for Företag/Company (e.g. text_xxxx)
+ * Food preferences column:
+ *   Create a text column called "Matpreferenser" in Monday, then set:
+ *   MONDAY_FOOD_COL env var (Vercel → Settings → Environment Variables)
  *
  * Run api/debug-columns.js endpoint to get/verify all column IDs and types.
  */
@@ -72,12 +74,12 @@ export default async function handler(req, res) {
 
   try {
     const {
-      namn, epost, telefon, foretag,
+      namn, epost, telefon, foretag, matpreferenser,
       eventTitle, eventSlug, eventDate,
       translationKey, lang,
     } = req.body;
 
-    console.log('[register] Incoming:', { namn, epost, telefon, foretag, eventTitle, eventSlug, eventDate, translationKey, lang });
+    console.log('[register] Incoming:', { namn, epost, telefon, foretag, matpreferenser, eventTitle, eventSlug, eventDate, translationKey, lang });
 
     // ── Validation ─────────────────────────────────────────
     if (!namn?.trim() || !epost?.trim()) {
@@ -90,7 +92,8 @@ export default async function handler(req, res) {
 
     const MONDAY_API_TOKEN    = process.env.MONDAY_API_TOKEN;
     const MONDAY_BOARD_ID     = process.env.MONDAY_BOARD_ID;
-    const MONDAY_COMPANY_COL  = 'text_mm2d4gxh'; // Företag column (confirmed via debug-columns)
+    const MONDAY_COMPANY_COL  = 'text_mm2d4gxh'; // Roll / Arbetsplats column
+    const MONDAY_FOOD_COL     = process.env.MONDAY_FOOD_COL || ''; // Set after creating "Matpreferenser" column in Monday
 
     if (!MONDAY_API_TOKEN || !MONDAY_BOARD_ID) {
       console.warn('[register] Monday env vars missing — logging only');
@@ -127,9 +130,16 @@ export default async function handler(req, res) {
       colObj['date_mm2dme63'] = { date: eventDate };
     }
 
-    // Company / Organisation (optional)
+    // Roll / Arbetsplats (optional)
     if (foretag?.trim()) {
       colObj[MONDAY_COMPANY_COL] = foretag.trim();
+    }
+
+    // Matpreferenser / allergier (optional — only sent when MONDAY_FOOD_COL is configured)
+    if (matpreferenser?.trim() && MONDAY_FOOD_COL) {
+      colObj[MONDAY_FOOD_COL] = matpreferenser.trim();
+    } else if (matpreferenser?.trim()) {
+      console.log('[register] Food preference received but MONDAY_FOOD_COL not set:', matpreferenser.trim());
     }
 
     console.log('[register] Column values to send:', JSON.stringify(colObj));
