@@ -1,0 +1,388 @@
+---
+// src/pages/app/admin.astro — PWA Admin Panel
+---
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MHW Admin</title>
+  <meta name="robots" content="noindex,nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" />
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-gate" id="login-gate">
+  <div class="login-box">
+    <div class="login-logo">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#c4ff00" stroke-width="2"/><path d="M9 8l8 4-8 4V8z" fill="#c4ff00"/></svg>
+    </div>
+    <h1 class="login-title">MHW Admin</h1>
+    <p class="login-sub">Ange lösenord för att fortsätta</p>
+    <input class="login-input" type="password" id="login-password" placeholder="Lösenord" />
+    <button class="login-btn" id="login-btn">Logga in</button>
+    <p class="login-error" id="login-error" hidden>Fel lösenord</p>
+  </div>
+</div>
+
+<!-- MAIN ADMIN -->
+<div class="admin" id="admin-main" hidden>
+
+  <header class="admin-header">
+    <span class="admin-header__logo">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#c4ff00" stroke-width="2"/><path d="M9 8l8 4-8 4V8z" fill="#c4ff00"/></svg>
+      Music Hub West Admin
+    </span>
+    <a class="admin-header__link" href="/app" target="_blank">↗ App</a>
+  </header>
+
+  <div class="admin-body">
+
+    <!-- PUSH -->
+    <section class="admin-section">
+      <h2 class="admin-section__title">📢 Skicka push-meddelande</h2>
+      <div class="admin-form">
+        <input class="admin-input" type="text" id="push-title" placeholder="Rubrik" />
+        <textarea class="admin-textarea" id="push-body" placeholder="Meddelande..." rows="3"></textarea>
+        <button class="admin-btn admin-btn--lime" id="push-send-btn">Skicka till alla →</button>
+        <p class="admin-feedback" id="push-feedback"></p>
+      </div>
+    </section>
+
+    <!-- AGENDA -->
+    <section class="admin-section">
+      <h2 class="admin-section__title">📋 Agenda</h2>
+      <div class="admin-list" id="agenda-list"></div>
+      <div class="admin-form admin-form--collapsed" id="agenda-form-wrap">
+        <button class="admin-btn admin-btn--outline admin-toggle" data-target="agenda-fields">+ Lägg till session</button>
+        <div class="admin-fields" id="agenda-fields" hidden>
+          <div class="admin-row">
+            <input class="admin-input" type="text" id="ag-start" placeholder="Starttid (10:00)" />
+            <input class="admin-input" type="text" id="ag-end" placeholder="Sluttid (11:00)" />
+          </div>
+          <select class="admin-input" id="ag-type">
+            <option value="Talk">Talk</option>
+            <option value="Keynote">Keynote</option>
+            <option value="Panel">Panel</option>
+            <option value="Workshop">Workshop</option>
+            <option value="Networking">Networking</option>
+            <option value="Break">Break / Paus</option>
+          </select>
+          <input class="admin-input" type="text" id="ag-title" placeholder="Titel på sessionen" />
+          <input class="admin-input" type="text" id="ag-speaker" placeholder="Talare (valfritt)" />
+          <input class="admin-input" type="text" id="ag-location" placeholder="Sal / Plats (valfritt)" />
+          <button class="admin-btn admin-btn--lime" id="agenda-add-btn">Spara session</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SPEAKERS -->
+    <section class="admin-section">
+      <h2 class="admin-section__title">🎤 Talare</h2>
+      <div class="admin-list" id="speakers-list"></div>
+      <div class="admin-form admin-form--collapsed" id="speaker-form-wrap">
+        <button class="admin-btn admin-btn--outline admin-toggle" data-target="speaker-fields">+ Lägg till talare</button>
+        <div class="admin-fields" id="speaker-fields" hidden>
+          <input class="admin-input" type="text" id="sp-name" placeholder="Namn *" />
+          <input class="admin-input" type="text" id="sp-title" placeholder="Titel / Roll" />
+          <input class="admin-input" type="text" id="sp-company" placeholder="Företag / Organisation" />
+          <input class="admin-input" type="url" id="sp-linkedin" placeholder="LinkedIn URL" />
+          <input class="admin-input" type="url" id="sp-instagram" placeholder="Instagram URL" />
+          <input class="admin-input" type="url" id="sp-website" placeholder="Webbplats URL" />
+          <button class="admin-btn admin-btn--lime" id="speaker-add-btn">Spara talare</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ANNOUNCEMENTS -->
+    <section class="admin-section">
+      <h2 class="admin-section__title">📌 Meddelanden (Feed)</h2>
+      <div class="admin-list" id="announcements-list"></div>
+      <div class="admin-form admin-form--collapsed" id="ann-form-wrap">
+        <button class="admin-btn admin-btn--outline admin-toggle" data-target="ann-fields">+ Lägg till meddelande</button>
+        <div class="admin-fields" id="ann-fields" hidden>
+          <input class="admin-input" type="text" id="ann-title" placeholder="Rubrik *" />
+          <textarea class="admin-textarea" id="ann-body" placeholder="Text..." rows="3"></textarea>
+          <select class="admin-input" id="ann-category">
+            <option value="Info">Info</option>
+            <option value="Update">Update</option>
+            <option value="Reminder">Reminder</option>
+            <option value="News">News</option>
+          </select>
+          <label class="admin-checkbox">
+            <input type="checkbox" id="ann-pinned" />
+            Fäst överst
+          </label>
+          <button class="admin-btn admin-btn--lime" id="ann-add-btn">Spara meddelande</button>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<script is:inline>
+(function() {
+  const PASS_KEY = 'mhw_admin_pass';
+  let adminPass = sessionStorage.getItem(PASS_KEY);
+
+  // ── Login ──
+  const loginGate = document.getElementById('login-gate');
+  const adminMain = document.getElementById('admin-main');
+
+  async function tryLogin(pass) {
+    const r = await fetch('/api/app/admin-data', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${pass}` },
+      body: JSON.stringify({ action: 'auth' })
+    });
+    return r.ok;
+  }
+
+  async function showAdmin() {
+    loginGate.hidden = true;
+    adminMain.hidden = false;
+    await loadData();
+  }
+
+  if (adminPass) {
+    tryLogin(adminPass).then(ok => { if (ok) showAdmin(); else { sessionStorage.removeItem(PASS_KEY); adminPass = null; } });
+  }
+
+  document.getElementById('login-btn').addEventListener('click', async function() {
+    const pass = document.getElementById('login-password').value.trim();
+    if (!pass) return;
+    const ok = await tryLogin(pass);
+    if (ok) {
+      sessionStorage.setItem(PASS_KEY, pass);
+      adminPass = pass;
+      document.getElementById('login-error').hidden = true;
+      showAdmin();
+    } else {
+      document.getElementById('login-error').hidden = false;
+    }
+  });
+  document.getElementById('login-password').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') document.getElementById('login-btn').click();
+  });
+
+  // ── API helpers ──
+  async function apiPost(body) {
+    const r = await fetch('/api/app/admin-data', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${adminPass}` },
+      body: JSON.stringify(body)
+    });
+    return r.json();
+  }
+
+  // ── Load & render data ──
+  let state = { agenda: [], speakers: [], announcements: [] };
+
+  async function loadData() {
+    const r = await fetch('/api/app/data');
+    state = await r.json();
+    renderAgenda();
+    renderSpeakers();
+    renderAnnouncements();
+  }
+
+  function renderAgenda() {
+    const list = document.getElementById('agenda-list');
+    if (!state.agenda.length) { list.innerHTML = '<p class="admin-empty">Ingen agenda ännu</p>'; return; }
+    list.innerHTML = state.agenda
+      .sort((a,b) => (a.start_time||'').localeCompare(b.start_time||''))
+      .map(s => `
+        <div class="admin-item">
+          <div class="admin-item__info">
+            <span class="admin-item__tag">${s.type||'Talk'}</span>
+            <strong>${s.start_time}${s.end_time ? '–'+s.end_time : ''}</strong> ${s.title}
+            ${s.speaker_name ? `<br><small>${s.speaker_name}${s.location?' · '+s.location:''}</small>` : ''}
+          </div>
+          <button class="admin-delete" data-type="agenda" data-id="${s.id}">✕</button>
+        </div>`).join('');
+    attachDeleteListeners();
+  }
+
+  function renderSpeakers() {
+    const list = document.getElementById('speakers-list');
+    if (!state.speakers.length) { list.innerHTML = '<p class="admin-empty">Inga talare ännu</p>'; return; }
+    list.innerHTML = state.speakers.map(s => `
+      <div class="admin-item">
+        <div class="admin-item__info">
+          <strong>${s.name}</strong>
+          ${s.title ? `<br><small>${s.title}${s.company?' · '+s.company:''}</small>` : ''}
+          ${s.linkedin ? `<br><a href="${s.linkedin}" target="_blank" class="admin-link">LinkedIn</a>` : ''}
+        </div>
+        <button class="admin-delete" data-type="speakers" data-id="${s.id}">✕</button>
+      </div>`).join('');
+    attachDeleteListeners();
+  }
+
+  function renderAnnouncements() {
+    const list = document.getElementById('announcements-list');
+    if (!state.announcements.length) { list.innerHTML = '<p class="admin-empty">Inga meddelanden ännu</p>'; return; }
+    list.innerHTML = state.announcements.map(a => `
+      <div class="admin-item">
+        <div class="admin-item__info">
+          ${a.pinned ? '<span class="admin-item__tag">📌</span> ' : ''}
+          <span class="admin-item__tag">${a.category||'Info'}</span>
+          <strong>${a.title}</strong>
+          ${a.body ? `<br><small>${a.body.slice(0,60)}${a.body.length>60?'...':''}</small>` : ''}
+        </div>
+        <button class="admin-delete" data-type="announcements" data-id="${a.id}">✕</button>
+      </div>`).join('');
+    attachDeleteListeners();
+  }
+
+  function attachDeleteListeners() {
+    document.querySelectorAll('.admin-delete').forEach(btn => {
+      btn.onclick = async function() {
+        if (!confirm('Ta bort?')) return;
+        await apiPost({ action: 'delete', type: btn.dataset.type, id: btn.dataset.id });
+        await loadData();
+      };
+    });
+  }
+
+  // ── Toggle forms ──
+  document.querySelectorAll('.admin-toggle').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const fields = document.getElementById(btn.dataset.target);
+      fields.hidden = !fields.hidden;
+    });
+  });
+
+  // ── Add agenda ──
+  document.getElementById('agenda-add-btn').addEventListener('click', async function() {
+    const title = document.getElementById('ag-title').value.trim();
+    const start_time = document.getElementById('ag-start').value.trim();
+    if (!title || !start_time) { alert('Fyll i titel och starttid'); return; }
+    await apiPost({ action: 'add', type: 'agenda', item: {
+      title,
+      start_time,
+      end_time: document.getElementById('ag-end').value.trim(),
+      type: document.getElementById('ag-type').value,
+      speaker_name: document.getElementById('ag-speaker').value.trim(),
+      location: document.getElementById('ag-location').value.trim(),
+    }});
+    ['ag-title','ag-start','ag-end','ag-speaker','ag-location'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('agenda-fields').hidden = true;
+    await loadData();
+  });
+
+  // ── Add speaker ──
+  document.getElementById('speaker-add-btn').addEventListener('click', async function() {
+    const name = document.getElementById('sp-name').value.trim();
+    if (!name) { alert('Fyll i namn'); return; }
+    await apiPost({ action: 'add', type: 'speakers', item: {
+      name,
+      title: document.getElementById('sp-title').value.trim(),
+      company: document.getElementById('sp-company').value.trim(),
+      linkedin: document.getElementById('sp-linkedin').value.trim(),
+      instagram: document.getElementById('sp-instagram').value.trim(),
+      website: document.getElementById('sp-website').value.trim(),
+    }});
+    ['sp-name','sp-title','sp-company','sp-linkedin','sp-instagram','sp-website'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('speaker-fields').hidden = true;
+    await loadData();
+  });
+
+  // ── Add announcement ──
+  document.getElementById('ann-add-btn').addEventListener('click', async function() {
+    const title = document.getElementById('ann-title').value.trim();
+    if (!title) { alert('Fyll i rubrik'); return; }
+    const now = new Date().toISOString().slice(0,10);
+    await apiPost({ action: 'add', type: 'announcements', item: {
+      title,
+      body: document.getElementById('ann-body').value.trim(),
+      category: document.getElementById('ann-category').value,
+      pinned: document.getElementById('ann-pinned').checked,
+      date: now,
+    }});
+    document.getElementById('ann-title').value = '';
+    document.getElementById('ann-body').value = '';
+    document.getElementById('ann-pinned').checked = false;
+    document.getElementById('ann-fields').hidden = true;
+    await loadData();
+  });
+
+  // ── Send push ──
+  document.getElementById('push-send-btn').addEventListener('click', async function() {
+    const title = document.getElementById('push-title').value.trim();
+    const body = document.getElementById('push-body').value.trim();
+    if (!title) { alert('Fyll i rubrik'); return; }
+    const fb = document.getElementById('push-feedback');
+    fb.textContent = 'Skickar...';
+    const r = await fetch('/api/app/push', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${adminPass}` },
+      body: JSON.stringify({ title, body })
+    });
+    const d = await r.json();
+    if (d.ok) {
+      fb.textContent = `✅ Skickat till ${d.sent} prenumeranter`;
+      document.getElementById('push-title').value = '';
+      document.getElementById('push-body').value = '';
+    } else {
+      fb.textContent = `❌ Fel: ${d.error || 'okänt'}`;
+    }
+  });
+})();
+</script>
+
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --black: #0a0a0a; --black-2: #111; --black-3: rgba(255,255,255,0.08);
+    --white: #fff; --lime: #c4ff00; --font: 'Outfit', sans-serif;
+  }
+  html, body { min-height: 100vh; background: var(--black); color: var(--white); font-family: var(--font); }
+
+  /* Login */
+  .login-gate { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 24px; }
+  .login-box { width: 100%; max-width: 360px; background: var(--black-2); border: 1px solid var(--black-3); border-radius: 12px; padding: 40px 32px; text-align: center; }
+  .login-logo { margin-bottom: 16px; }
+  .login-title { font-size: 22px; font-weight: 800; margin-bottom: 6px; }
+  .login-sub { font-size: 14px; color: rgba(255,255,255,0.5); margin-bottom: 24px; }
+  .login-input { width: 100%; background: var(--black); border: 1px solid var(--black-3); border-radius: 6px; color: var(--white); font-family: var(--font); font-size: 15px; padding: 10px 14px; margin-bottom: 12px; outline: none; }
+  .login-input:focus { border-color: var(--lime); }
+  .login-btn { width: 100%; background: var(--lime); color: var(--black); border: none; border-radius: 6px; font-family: var(--font); font-size: 15px; font-weight: 700; padding: 11px; cursor: pointer; }
+  .login-error { color: #ff6b6b; font-size: 13px; margin-top: 10px; }
+
+  /* Admin */
+  .admin-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 24px; border-bottom: 1px solid var(--black-3); background: var(--black); position: sticky; top: 0; z-index: 10; }
+  .admin-header__logo { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 700; }
+  .admin-header__link { font-size: 13px; color: var(--lime); text-decoration: none; }
+  .admin-body { max-width: 720px; margin: 0 auto; padding: 24px; display: flex; flex-direction: column; gap: 24px; }
+  .admin-section { background: var(--black-2); border: 1px solid var(--black-3); border-radius: 10px; overflow: hidden; }
+  .admin-section__title { font-size: 14px; font-weight: 800; letter-spacing: 0.02em; padding: 16px 20px; border-bottom: 1px solid var(--black-3); }
+  .admin-list { padding: 8px 0; }
+  .admin-empty { padding: 12px 20px; font-size: 13px; color: rgba(255,255,255,0.35); }
+  .admin-item { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; padding: 10px 20px; border-bottom: 1px solid var(--black-3); font-size: 13px; }
+  .admin-item:last-child { border-bottom: none; }
+  .admin-item__info { flex: 1; line-height: 1.6; }
+  .admin-item__tag { display: inline-block; font-size: 9px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; background: rgba(196,255,0,0.1); color: var(--lime); padding: 2px 6px; border-radius: 3px; margin-right: 4px; }
+  .admin-item small { color: rgba(255,255,255,0.5); }
+  .admin-link { color: var(--lime); text-decoration: none; font-size: 11px; }
+  .admin-delete { background: none; border: 1px solid rgba(255,100,100,0.2); border-radius: 4px; color: rgba(255,100,100,0.6); font-size: 12px; padding: 4px 8px; cursor: pointer; flex-shrink: 0; transition: all 0.15s; }
+  .admin-delete:hover { background: rgba(255,100,100,0.1); color: #ff6b6b; }
+  .admin-form { padding: 16px 20px; border-top: 1px solid var(--black-3); display: flex; flex-direction: column; gap: 10px; }
+  .admin-fields { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
+  .admin-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .admin-input, .admin-textarea { background: var(--black); border: 1px solid var(--black-3); border-radius: 6px; color: var(--white); font-family: var(--font); font-size: 14px; padding: 9px 12px; outline: none; width: 100%; }
+  .admin-input:focus, .admin-textarea:focus { border-color: var(--lime); }
+  .admin-textarea { resize: vertical; }
+  select.admin-input { cursor: pointer; }
+  .admin-checkbox { display: flex; align-items: center; gap: 8px; font-size: 13px; color: rgba(255,255,255,0.7); cursor: pointer; }
+  .admin-btn { border: none; border-radius: 6px; font-family: var(--font); font-size: 14px; font-weight: 700; padding: 10px 18px; cursor: pointer; transition: opacity 0.15s; }
+  .admin-btn--lime { background: var(--lime); color: var(--black); }
+  .admin-btn--lime:hover { opacity: 0.9; }
+  .admin-btn--outline { background: transparent; border: 1px solid var(--black-3); color: rgba(255,255,255,0.7); }
+  .admin-btn--outline:hover { border-color: rgba(255,255,255,0.3); color: var(--white); }
+  .admin-feedback { font-size: 13px; color: rgba(255,255,255,0.6); min-height: 20px; }
+</style>
+</body>
+</html>
