@@ -14,6 +14,7 @@ organizer: Tune In West / Brewhouse
 organizer_email: angelica@brewhouse.se
 translationKey: ai-content-creation
 registration_open: true
+serve_food: true
 ---
 
 Hur skapar man professionellt visuellt innehåll utan en stor budget? Under denna eftermiddag dyker vi ner i de senaste AI-verktygen för bild- och videoskapande skräddarsytt för musikbranschen.
