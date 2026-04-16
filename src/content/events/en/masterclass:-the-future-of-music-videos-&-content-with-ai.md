@@ -14,6 +14,7 @@ organizer: Tune In West / Brewhouse
 organizer_email: angelica@brewhouse.se
 translationKey: ai-content-creation
 registration_open: true
+serve_food: true
 ---
 
 How do you create professional visual content without a massive budget? This afternoon, we dive into the latest AI tools for image and video creation specifically tailored for the music industry.
