@@ -17,7 +17,7 @@
 <div class="login-gate" id="login-gate">
   <div class="login-box">
     <div class="login-logo">
-      <svg width="32" height="32" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#c4ff00" stroke-width="2"/><path d="M9 8l8 4-8 4V8z" fill="#c4ff00"/></svg>
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#c4ff00" stroke-width="2"/><path d="M9 8l8 4-8 4V8z" fill="#c4ff00"/></svg>
     </div>
     <h1 class="login-title">MHW Admin</h1>
     <p class="login-sub">Ange lösenord för att fortsätta</p>
@@ -27,100 +27,211 @@
   </div>
 </div>
 
-<!-- MAIN ADMIN -->
-<div class="admin" id="admin-main" hidden>
+<!-- ADMIN SHELL -->
+<div class="admin-shell" id="admin-main" hidden>
 
-  <header class="admin-header">
-    <span class="admin-header__logo">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar__logo">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#c4ff00" stroke-width="2"/><path d="M9 8l8 4-8 4V8z" fill="#c4ff00"/></svg>
-      Music Hub West Admin
-    </span>
-    <a class="admin-header__link" href="/app" target="_blank">↗ App</a>
-  </header>
+      <span>MHW Admin</span>
+    </div>
+    <nav class="sidebar__nav">
+      <button class="sidebar__btn active" data-tab="push">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Push
+      </button>
+      <button class="sidebar__btn" data-tab="agenda">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.8"/><line x1="3" y1="10" x2="21" y2="10" stroke="currentColor" stroke-width="1.8"/><line x1="8" y1="2" x2="8" y2="6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><line x1="16" y1="2" x2="16" y2="6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        Agenda
+      </button>
+      <button class="sidebar__btn" data-tab="speakers">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="1.8"/></svg>
+        Talare
+      </button>
+      <button class="sidebar__btn" data-tab="announcements">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Feed
+      </button>
+    </nav>
+    <a class="sidebar__app-link" href="/app" target="_blank">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Öppna app
+    </a>
+  </aside>
 
-  <div class="admin-body">
+  <!-- Content panels -->
+  <main class="admin-content">
 
     <!-- PUSH -->
-    <section class="admin-section">
-      <h2 class="admin-section__title">📢 Skicka push-meddelande</h2>
-      <div class="admin-form">
-        <input class="admin-input" type="text" id="push-title" placeholder="Rubrik" />
-        <textarea class="admin-textarea" id="push-body" placeholder="Meddelande..." rows="3"></textarea>
-        <button class="admin-btn admin-btn--lime" id="push-send-btn">Skicka till alla →</button>
-        <p class="admin-feedback" id="push-feedback"></p>
+    <div class="panel active" id="panel-push">
+      <div class="panel__header">
+        <h1 class="panel__title">📢 Push-meddelande</h1>
+        <p class="panel__sub">Skicka ett meddelande till alla som prenumererar på notiser</p>
       </div>
-    </section>
+      <div class="panel__body">
+        <div class="field-group">
+          <label class="field-label">Rubrik</label>
+          <input class="field-input" type="text" id="push-title" placeholder="t.ex. Sessionen börjar om 15 min" />
+        </div>
+        <div class="field-group">
+          <label class="field-label">Meddelande</label>
+          <textarea class="field-textarea" id="push-body" placeholder="Skriv mer info här..." rows="4"></textarea>
+        </div>
+        <button class="btn btn--lime" id="push-send-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><line x1="22" y1="2" x2="11" y2="13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><polygon points="22 2 15 22 11 13 2 9 22 2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Skicka till alla
+        </button>
+        <p class="feedback" id="push-feedback"></p>
+      </div>
+    </div>
 
     <!-- AGENDA -->
-    <section class="admin-section">
-      <h2 class="admin-section__title">📋 Agenda</h2>
-      <div class="admin-list" id="agenda-list"></div>
-      <div class="admin-form admin-form--collapsed" id="agenda-form-wrap">
-        <button class="admin-btn admin-btn--outline admin-toggle" data-target="agenda-fields">+ Lägg till session</button>
-        <div class="admin-fields" id="agenda-fields" hidden>
-          <div class="admin-row">
-            <input class="admin-input" type="text" id="ag-start" placeholder="Starttid (10:00)" />
-            <input class="admin-input" type="text" id="ag-end" placeholder="Sluttid (11:00)" />
+    <div class="panel" id="panel-agenda">
+      <div class="panel__header">
+        <h1 class="panel__title">📋 Agenda</h1>
+        <button class="btn btn--lime btn--sm" id="agenda-add-open">+ Lägg till session</button>
+      </div>
+
+      <!-- Add form -->
+      <div class="add-form" id="agenda-form" hidden>
+        <div class="add-form__inner">
+          <h3 class="add-form__title">Ny session</h3>
+          <div class="form-row">
+            <div class="field-group">
+              <label class="field-label">Starttid *</label>
+              <input class="field-input" type="text" id="ag-start" placeholder="10:00" />
+            </div>
+            <div class="field-group">
+              <label class="field-label">Sluttid</label>
+              <input class="field-input" type="text" id="ag-end" placeholder="11:00" />
+            </div>
           </div>
-          <select class="admin-input" id="ag-type">
-            <option value="Talk">Talk</option>
-            <option value="Keynote">Keynote</option>
-            <option value="Panel">Panel</option>
-            <option value="Workshop">Workshop</option>
-            <option value="Networking">Networking</option>
-            <option value="Break">Break / Paus</option>
-          </select>
-          <input class="admin-input" type="text" id="ag-title" placeholder="Titel på sessionen" />
-          <input class="admin-input" type="text" id="ag-speaker" placeholder="Talare (valfritt)" />
-          <input class="admin-input" type="text" id="ag-location" placeholder="Sal / Plats (valfritt)" />
-          <button class="admin-btn admin-btn--lime" id="agenda-add-btn">Spara session</button>
+          <div class="field-group">
+            <label class="field-label">Typ</label>
+            <select class="field-input" id="ag-type">
+              <option value="Talk">Talk</option>
+              <option value="Keynote">Keynote</option>
+              <option value="Panel">Panel</option>
+              <option value="Workshop">Workshop</option>
+              <option value="Networking">Networking</option>
+              <option value="Break">Break / Paus</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Titel *</label>
+            <input class="field-input" type="text" id="ag-title" placeholder="Sessionens titel" />
+          </div>
+          <div class="field-group">
+            <label class="field-label">Talare</label>
+            <input class="field-input" type="text" id="ag-speaker" placeholder="Namn på talare" />
+          </div>
+          <div class="field-group">
+            <label class="field-label">Sal / Plats</label>
+            <input class="field-input" type="text" id="ag-location" placeholder="t.ex. Stora scenen" />
+          </div>
+          <div class="form-actions">
+            <button class="btn btn--lime" id="agenda-save-btn">Spara</button>
+            <button class="btn btn--ghost" id="agenda-cancel-btn">Avbryt</button>
+          </div>
         </div>
       </div>
-    </section>
+
+      <div class="panel__body">
+        <div class="item-list" id="agenda-list"></div>
+      </div>
+    </div>
 
     <!-- SPEAKERS -->
-    <section class="admin-section">
-      <h2 class="admin-section__title">🎤 Talare</h2>
-      <div class="admin-list" id="speakers-list"></div>
-      <div class="admin-form admin-form--collapsed" id="speaker-form-wrap">
-        <button class="admin-btn admin-btn--outline admin-toggle" data-target="speaker-fields">+ Lägg till talare</button>
-        <div class="admin-fields" id="speaker-fields" hidden>
-          <input class="admin-input" type="text" id="sp-name" placeholder="Namn *" />
-          <input class="admin-input" type="text" id="sp-title" placeholder="Titel / Roll" />
-          <input class="admin-input" type="text" id="sp-company" placeholder="Företag / Organisation" />
-          <input class="admin-input" type="url" id="sp-linkedin" placeholder="LinkedIn URL" />
-          <input class="admin-input" type="url" id="sp-instagram" placeholder="Instagram URL" />
-          <input class="admin-input" type="url" id="sp-website" placeholder="Webbplats URL" />
-          <button class="admin-btn admin-btn--lime" id="speaker-add-btn">Spara talare</button>
+    <div class="panel" id="panel-speakers">
+      <div class="panel__header">
+        <h1 class="panel__title">🎤 Talare</h1>
+        <button class="btn btn--lime btn--sm" id="speaker-add-open">+ Lägg till talare</button>
+      </div>
+
+      <div class="add-form" id="speaker-form" hidden>
+        <div class="add-form__inner">
+          <h3 class="add-form__title">Ny talare</h3>
+          <div class="field-group">
+            <label class="field-label">Namn *</label>
+            <input class="field-input" type="text" id="sp-name" placeholder="Förnamn Efternamn" />
+          </div>
+          <div class="field-group">
+            <label class="field-label">Titel / Roll</label>
+            <input class="field-input" type="text" id="sp-title" placeholder="t.ex. CEO" />
+          </div>
+          <div class="field-group">
+            <label class="field-label">Företag</label>
+            <input class="field-input" type="text" id="sp-company" placeholder="t.ex. Spotify" />
+          </div>
+          <div class="field-group">
+            <label class="field-label">LinkedIn URL</label>
+            <input class="field-input" type="url" id="sp-linkedin" placeholder="https://linkedin.com/in/..." />
+          </div>
+          <div class="field-group">
+            <label class="field-label">Instagram URL</label>
+            <input class="field-input" type="url" id="sp-instagram" placeholder="https://instagram.com/..." />
+          </div>
+          <div class="field-group">
+            <label class="field-label">Webbplats</label>
+            <input class="field-input" type="url" id="sp-website" placeholder="https://..." />
+          </div>
+          <div class="form-actions">
+            <button class="btn btn--lime" id="speaker-save-btn">Spara</button>
+            <button class="btn btn--ghost" id="speaker-cancel-btn">Avbryt</button>
+          </div>
         </div>
       </div>
-    </section>
+
+      <div class="panel__body">
+        <div class="item-list" id="speakers-list"></div>
+      </div>
+    </div>
 
     <!-- ANNOUNCEMENTS -->
-    <section class="admin-section">
-      <h2 class="admin-section__title">📌 Meddelanden (Feed)</h2>
-      <div class="admin-list" id="announcements-list"></div>
-      <div class="admin-form admin-form--collapsed" id="ann-form-wrap">
-        <button class="admin-btn admin-btn--outline admin-toggle" data-target="ann-fields">+ Lägg till meddelande</button>
-        <div class="admin-fields" id="ann-fields" hidden>
-          <input class="admin-input" type="text" id="ann-title" placeholder="Rubrik *" />
-          <textarea class="admin-textarea" id="ann-body" placeholder="Text..." rows="3"></textarea>
-          <select class="admin-input" id="ann-category">
-            <option value="Info">Info</option>
-            <option value="Update">Update</option>
-            <option value="Reminder">Reminder</option>
-            <option value="News">News</option>
-          </select>
-          <label class="admin-checkbox">
+    <div class="panel" id="panel-announcements">
+      <div class="panel__header">
+        <h1 class="panel__title">📌 Meddelanden</h1>
+        <button class="btn btn--lime btn--sm" id="ann-add-open">+ Lägg till</button>
+      </div>
+
+      <div class="add-form" id="ann-form" hidden>
+        <div class="add-form__inner">
+          <h3 class="add-form__title">Nytt meddelande</h3>
+          <div class="field-group">
+            <label class="field-label">Rubrik *</label>
+            <input class="field-input" type="text" id="ann-title" placeholder="Rubrik" />
+          </div>
+          <div class="field-group">
+            <label class="field-label">Text</label>
+            <textarea class="field-textarea" id="ann-body" placeholder="Meddelande..." rows="3"></textarea>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Kategori</label>
+            <select class="field-input" id="ann-category">
+              <option value="Info">Info</option>
+              <option value="Update">Update</option>
+              <option value="Reminder">Reminder</option>
+              <option value="News">News</option>
+            </select>
+          </div>
+          <label class="field-checkbox">
             <input type="checkbox" id="ann-pinned" />
-            Fäst överst
+            <span>📌 Fäst överst i feed</span>
           </label>
-          <button class="admin-btn admin-btn--lime" id="ann-add-btn">Spara meddelande</button>
+          <div class="form-actions">
+            <button class="btn btn--lime" id="ann-save-btn">Spara</button>
+            <button class="btn btn--ghost" id="ann-cancel-btn">Avbryt</button>
+          </div>
         </div>
       </div>
-    </section>
 
-  </div>
+      <div class="panel__body">
+        <div class="item-list" id="announcements-list"></div>
+      </div>
+    </div>
+
+  </main>
 </div>
 
 <script is:inline>
@@ -129,9 +240,6 @@
   let adminPass = sessionStorage.getItem(PASS_KEY);
 
   // ── Login ──
-  const loginGate = document.getElementById('login-gate');
-  const adminMain = document.getElementById('admin-main');
-
   async function tryLogin(pass) {
     const r = await fetch('/api/app/admin-data', {
       method: 'POST',
@@ -142,13 +250,16 @@
   }
 
   async function showAdmin() {
-    loginGate.hidden = true;
-    adminMain.hidden = false;
+    document.getElementById('login-gate').hidden = true;
+    document.getElementById('admin-main').hidden = false;
     await loadData();
   }
 
   if (adminPass) {
-    tryLogin(adminPass).then(ok => { if (ok) showAdmin(); else { sessionStorage.removeItem(PASS_KEY); adminPass = null; } });
+    tryLogin(adminPass).then(ok => {
+      if (ok) showAdmin();
+      else { sessionStorage.removeItem(PASS_KEY); adminPass = null; }
+    });
   }
 
   document.getElementById('login-btn').addEventListener('click', async function() {
@@ -164,12 +275,22 @@
       document.getElementById('login-error').hidden = false;
     }
   });
-  document.getElementById('login-password').addEventListener('keydown', function(e) {
+  document.getElementById('login-password').addEventListener('keydown', e => {
     if (e.key === 'Enter') document.getElementById('login-btn').click();
   });
 
-  // ── API helpers ──
-  async function apiPost(body) {
+  // ── Tab navigation ──
+  document.querySelectorAll('.sidebar__btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.sidebar__btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('panel-' + btn.dataset.tab).classList.add('active');
+    });
+  });
+
+  // ── API ──
+  async function api(body) {
     const r = await fetch('/api/app/admin-data', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${adminPass}` },
@@ -178,106 +299,133 @@
     return r.json();
   }
 
-  // ── Load & render data ──
+  // ── Load data ──
   let state = { agenda: [], speakers: [], announcements: [] };
 
   async function loadData() {
     const r = await fetch('/api/app/data');
     state = await r.json();
-    renderAgenda();
-    renderSpeakers();
-    renderAnnouncements();
+    renderAgenda(); renderSpeakers(); renderAnnouncements();
   }
+
+  // ── Render helpers ──
+  const typeColors = { keynote: '#c4ff00', talk: '#64a0ff', panel: '#ffa032', workshop: '#a064ff', networking: '#00dcb4', break: 'rgba(255,255,255,0.3)' };
 
   function renderAgenda() {
     const list = document.getElementById('agenda-list');
-    if (!state.agenda.length) { list.innerHTML = '<p class="admin-empty">Ingen agenda ännu</p>'; return; }
+    if (!state.agenda.length) { list.innerHTML = '<p class="empty-state">Ingen agenda ännu. Klicka "+ Lägg till session" för att börja.</p>'; return; }
     list.innerHTML = state.agenda
       .sort((a,b) => (a.start_time||'').localeCompare(b.start_time||''))
-      .map(s => `
-        <div class="admin-item">
-          <div class="admin-item__info">
-            <span class="admin-item__tag">${s.type||'Talk'}</span>
-            <strong>${s.start_time}${s.end_time ? '–'+s.end_time : ''}</strong> ${s.title}
-            ${s.speaker_name ? `<br><small>${s.speaker_name}${s.location?' · '+s.location:''}</small>` : ''}
+      .map(s => {
+        const tc = typeColors[(s.type||'talk').toLowerCase()] || '#888';
+        return `<div class="list-item">
+          <div class="list-item__left">
+            <span class="list-item__tag" style="color:${tc};border-color:${tc}20;background:${tc}15">${s.type||'Talk'}</span>
+            <div>
+              <div class="list-item__title">${s.start_time}${s.end_time?'–'+s.end_time:''} · ${esc(s.title)}</div>
+              ${s.speaker_name||s.location ? `<div class="list-item__sub">${[s.speaker_name,s.location].filter(Boolean).join(' · ')}</div>` : ''}
+            </div>
           </div>
-          <button class="admin-delete" data-type="agenda" data-id="${s.id}">✕</button>
-        </div>`).join('');
-    attachDeleteListeners();
+          <button class="delete-btn" data-type="agenda" data-id="${s.id}">✕</button>
+        </div>`;
+      }).join('');
+    attachDeletes();
   }
 
   function renderSpeakers() {
     const list = document.getElementById('speakers-list');
-    if (!state.speakers.length) { list.innerHTML = '<p class="admin-empty">Inga talare ännu</p>'; return; }
-    list.innerHTML = state.speakers.map(s => `
-      <div class="admin-item">
-        <div class="admin-item__info">
-          <strong>${s.name}</strong>
-          ${s.title ? `<br><small>${s.title}${s.company?' · '+s.company:''}</small>` : ''}
-          ${s.linkedin ? `<br><a href="${s.linkedin}" target="_blank" class="admin-link">LinkedIn</a>` : ''}
+    if (!state.speakers.length) { list.innerHTML = '<p class="empty-state">Inga talare ännu.</p>'; return; }
+    list.innerHTML = state.speakers.map(s => {
+      const initials = (s.name||'?').split(' ').map(w=>w[0]||'').join('').slice(0,2).toUpperCase();
+      return `<div class="list-item">
+        <div class="list-item__left">
+          <div class="avatar">${initials}</div>
+          <div>
+            <div class="list-item__title">${esc(s.name)}</div>
+            ${s.title||s.company ? `<div class="list-item__sub">${[s.title,s.company].filter(Boolean).join(' · ')}</div>` : ''}
+            <div class="list-item__links">
+              ${s.linkedin ? `<a href="${s.linkedin}" target="_blank">LinkedIn</a>` : ''}
+              ${s.instagram ? `<a href="${s.instagram}" target="_blank">Instagram</a>` : ''}
+              ${s.website ? `<a href="${s.website}" target="_blank">Webb</a>` : ''}
+            </div>
+          </div>
         </div>
-        <button class="admin-delete" data-type="speakers" data-id="${s.id}">✕</button>
-      </div>`).join('');
-    attachDeleteListeners();
+        <button class="delete-btn" data-type="speakers" data-id="${s.id}">✕</button>
+      </div>`;
+    }).join('');
+    attachDeletes();
   }
 
   function renderAnnouncements() {
     const list = document.getElementById('announcements-list');
-    if (!state.announcements.length) { list.innerHTML = '<p class="admin-empty">Inga meddelanden ännu</p>'; return; }
-    list.innerHTML = state.announcements.map(a => `
-      <div class="admin-item">
-        <div class="admin-item__info">
-          ${a.pinned ? '<span class="admin-item__tag">📌</span> ' : ''}
-          <span class="admin-item__tag">${a.category||'Info'}</span>
-          <strong>${a.title}</strong>
-          ${a.body ? `<br><small>${a.body.slice(0,60)}${a.body.length>60?'...':''}</small>` : ''}
+    if (!state.announcements.length) { list.innerHTML = '<p class="empty-state">Inga meddelanden ännu.</p>'; return; }
+    list.innerHTML = state.announcements
+      .sort((a,b) => (b.pinned?1:0)-(a.pinned?1:0))
+      .map(a => `<div class="list-item">
+        <div class="list-item__left">
+          ${a.pinned ? '<span style="color:#c4ff00">📌</span>' : ''}
+          <div>
+            <div class="list-item__title">${esc(a.title)} <span class="list-item__tag" style="color:#c4ff00;border-color:#c4ff0020;background:#c4ff0015">${a.category||'Info'}</span></div>
+            ${a.body ? `<div class="list-item__sub">${esc(a.body.slice(0,80))}${a.body.length>80?'...':''}</div>` : ''}
+          </div>
         </div>
-        <button class="admin-delete" data-type="announcements" data-id="${a.id}">✕</button>
+        <button class="delete-btn" data-type="announcements" data-id="${a.id}">✕</button>
       </div>`).join('');
-    attachDeleteListeners();
+    attachDeletes();
   }
 
-  function attachDeleteListeners() {
-    document.querySelectorAll('.admin-delete').forEach(btn => {
+  function attachDeletes() {
+    document.querySelectorAll('.delete-btn').forEach(btn => {
       btn.onclick = async function() {
         if (!confirm('Ta bort?')) return;
-        await apiPost({ action: 'delete', type: btn.dataset.type, id: btn.dataset.id });
+        btn.textContent = '...';
+        await api({ action: 'delete', type: btn.dataset.type, id: btn.dataset.id });
         await loadData();
       };
     });
   }
 
-  // ── Toggle forms ──
-  document.querySelectorAll('.admin-toggle').forEach(btn => {
-    btn.addEventListener('click', function() {
-      const fields = document.getElementById(btn.dataset.target);
-      fields.hidden = !fields.hidden;
-    });
-  });
+  function esc(s) {
+    return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
 
-  // ── Add agenda ──
-  document.getElementById('agenda-add-btn').addEventListener('click', async function() {
+  // ── Form toggles ──
+  function toggleForm(formId, open) {
+    document.getElementById(formId).hidden = !open;
+  }
+
+  document.getElementById('agenda-add-open').onclick = () => toggleForm('agenda-form', true);
+  document.getElementById('agenda-cancel-btn').onclick = () => toggleForm('agenda-form', false);
+  document.getElementById('speaker-add-open').onclick = () => toggleForm('speaker-form', true);
+  document.getElementById('speaker-cancel-btn').onclick = () => toggleForm('speaker-form', false);
+  document.getElementById('ann-add-open').onclick = () => toggleForm('ann-form', true);
+  document.getElementById('ann-cancel-btn').onclick = () => toggleForm('ann-form', false);
+
+  // ── Save agenda ──
+  document.getElementById('agenda-save-btn').onclick = async function() {
     const title = document.getElementById('ag-title').value.trim();
     const start_time = document.getElementById('ag-start').value.trim();
     if (!title || !start_time) { alert('Fyll i titel och starttid'); return; }
-    await apiPost({ action: 'add', type: 'agenda', item: {
-      title,
-      start_time,
+    this.textContent = 'Sparar...';
+    await api({ action: 'add', type: 'agenda', item: {
+      title, start_time,
       end_time: document.getElementById('ag-end').value.trim(),
       type: document.getElementById('ag-type').value,
       speaker_name: document.getElementById('ag-speaker').value.trim(),
       location: document.getElementById('ag-location').value.trim(),
     }});
-    ['ag-title','ag-start','ag-end','ag-speaker','ag-location'].forEach(id => document.getElementById(id).value = '');
-    document.getElementById('agenda-fields').hidden = true;
+    ['ag-title','ag-start','ag-end','ag-speaker','ag-location'].forEach(id => document.getElementById(id).value='');
+    toggleForm('agenda-form', false);
+    this.textContent = 'Spara';
     await loadData();
-  });
+  };
 
-  // ── Add speaker ──
-  document.getElementById('speaker-add-btn').addEventListener('click', async function() {
+  // ── Save speaker ──
+  document.getElementById('speaker-save-btn').onclick = async function() {
     const name = document.getElementById('sp-name').value.trim();
     if (!name) { alert('Fyll i namn'); return; }
-    await apiPost({ action: 'add', type: 'speakers', item: {
+    this.textContent = 'Sparar...';
+    await api({ action: 'add', type: 'speakers', item: {
       name,
       title: document.getElementById('sp-title').value.trim(),
       company: document.getElementById('sp-company').value.trim(),
@@ -285,104 +433,161 @@
       instagram: document.getElementById('sp-instagram').value.trim(),
       website: document.getElementById('sp-website').value.trim(),
     }});
-    ['sp-name','sp-title','sp-company','sp-linkedin','sp-instagram','sp-website'].forEach(id => document.getElementById(id).value = '');
-    document.getElementById('speaker-fields').hidden = true;
+    ['sp-name','sp-title','sp-company','sp-linkedin','sp-instagram','sp-website'].forEach(id => document.getElementById(id).value='');
+    toggleForm('speaker-form', false);
+    this.textContent = 'Spara';
     await loadData();
-  });
+  };
 
-  // ── Add announcement ──
-  document.getElementById('ann-add-btn').addEventListener('click', async function() {
+  // ── Save announcement ──
+  document.getElementById('ann-save-btn').onclick = async function() {
     const title = document.getElementById('ann-title').value.trim();
     if (!title) { alert('Fyll i rubrik'); return; }
-    const now = new Date().toISOString().slice(0,10);
-    await apiPost({ action: 'add', type: 'announcements', item: {
+    this.textContent = 'Sparar...';
+    await api({ action: 'add', type: 'announcements', item: {
       title,
       body: document.getElementById('ann-body').value.trim(),
       category: document.getElementById('ann-category').value,
       pinned: document.getElementById('ann-pinned').checked,
-      date: now,
+      date: new Date().toISOString().slice(0,10),
     }});
-    document.getElementById('ann-title').value = '';
-    document.getElementById('ann-body').value = '';
-    document.getElementById('ann-pinned').checked = false;
-    document.getElementById('ann-fields').hidden = true;
+    document.getElementById('ann-title').value='';
+    document.getElementById('ann-body').value='';
+    document.getElementById('ann-pinned').checked=false;
+    toggleForm('ann-form', false);
+    this.textContent = 'Spara';
     await loadData();
-  });
+  };
 
   // ── Send push ──
-  document.getElementById('push-send-btn').addEventListener('click', async function() {
+  document.getElementById('push-send-btn').onclick = async function() {
     const title = document.getElementById('push-title').value.trim();
     const body = document.getElementById('push-body').value.trim();
     if (!title) { alert('Fyll i rubrik'); return; }
     const fb = document.getElementById('push-feedback');
-    fb.textContent = 'Skickar...';
+    this.textContent = 'Skickar...';
     const r = await fetch('/api/app/push', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${adminPass}` },
       body: JSON.stringify({ title, body })
     });
     const d = await r.json();
+    this.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><line x1="22" y1="2" x2="11" y2="13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><polygon points="22 2 15 22 11 13 2 9 22 2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Skicka till alla';
     if (d.ok) {
+      fb.style.color = '#c4ff00';
       fb.textContent = `✅ Skickat till ${d.sent} prenumeranter`;
-      document.getElementById('push-title').value = '';
-      document.getElementById('push-body').value = '';
+      document.getElementById('push-title').value='';
+      document.getElementById('push-body').value='';
     } else {
-      fb.textContent = `❌ Fel: ${d.error || 'okänt'}`;
+      fb.style.color = '#ff6b6b';
+      fb.textContent = `❌ ${d.error||'Okänt fel'}`;
     }
-  });
+  };
+
 })();
 </script>
 
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  :root {
-    --black: #0a0a0a; --black-2: #111; --black-3: rgba(255,255,255,0.08);
-    --white: #fff; --lime: #c4ff00; --font: 'Outfit', sans-serif;
-  }
-  html, body { min-height: 100vh; background: var(--black); color: var(--white); font-family: var(--font); }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --black: #0a0a0a; --black-2: #111; --black-3: rgba(255,255,255,0.08);
+  --white: #fff; --lime: #c4ff00; --font: 'Outfit', sans-serif;
+  --sidebar: 220px;
+}
+html, body { height: 100%; background: var(--black); color: var(--white); font-family: var(--font); overflow: hidden; }
 
-  /* Login */
-  .login-gate { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 24px; }
-  .login-box { width: 100%; max-width: 360px; background: var(--black-2); border: 1px solid var(--black-3); border-radius: 12px; padding: 40px 32px; text-align: center; }
-  .login-logo { margin-bottom: 16px; }
-  .login-title { font-size: 22px; font-weight: 800; margin-bottom: 6px; }
-  .login-sub { font-size: 14px; color: rgba(255,255,255,0.5); margin-bottom: 24px; }
-  .login-input { width: 100%; background: var(--black); border: 1px solid var(--black-3); border-radius: 6px; color: var(--white); font-family: var(--font); font-size: 15px; padding: 10px 14px; margin-bottom: 12px; outline: none; }
-  .login-input:focus { border-color: var(--lime); }
-  .login-btn { width: 100%; background: var(--lime); color: var(--black); border: none; border-radius: 6px; font-family: var(--font); font-size: 15px; font-weight: 700; padding: 11px; cursor: pointer; }
-  .login-error { color: #ff6b6b; font-size: 13px; margin-top: 10px; }
+/* ── Login ── */
+.login-gate { display: flex; align-items: center; justify-content: center; height: 100vh; padding: 24px; }
+.login-box { width: 100%; max-width: 360px; background: var(--black-2); border: 1px solid var(--black-3); border-radius: 14px; padding: 44px 36px; text-align: center; }
+.login-logo { margin-bottom: 20px; }
+.login-title { font-size: 24px; font-weight: 800; margin-bottom: 6px; }
+.login-sub { font-size: 14px; color: rgba(255,255,255,0.45); margin-bottom: 28px; }
+.login-input { width: 100%; background: var(--black); border: 1px solid var(--black-3); border-radius: 8px; color: var(--white); font-family: var(--font); font-size: 15px; padding: 12px 14px; margin-bottom: 12px; outline: none; transition: border-color 0.15s; }
+.login-input:focus { border-color: var(--lime); }
+.login-btn { width: 100%; background: var(--lime); color: var(--black); border: none; border-radius: 8px; font-family: var(--font); font-size: 15px; font-weight: 800; padding: 13px; cursor: pointer; transition: opacity 0.15s; }
+.login-btn:hover { opacity: 0.9; }
+.login-error { color: #ff6b6b; font-size: 13px; margin-top: 12px; }
 
-  /* Admin */
-  .admin-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 24px; border-bottom: 1px solid var(--black-3); background: var(--black); position: sticky; top: 0; z-index: 10; }
-  .admin-header__logo { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 700; }
-  .admin-header__link { font-size: 13px; color: var(--lime); text-decoration: none; }
-  .admin-body { max-width: 720px; margin: 0 auto; padding: 24px; display: flex; flex-direction: column; gap: 24px; }
-  .admin-section { background: var(--black-2); border: 1px solid var(--black-3); border-radius: 10px; overflow: hidden; }
-  .admin-section__title { font-size: 14px; font-weight: 800; letter-spacing: 0.02em; padding: 16px 20px; border-bottom: 1px solid var(--black-3); }
-  .admin-list { padding: 8px 0; }
-  .admin-empty { padding: 12px 20px; font-size: 13px; color: rgba(255,255,255,0.35); }
-  .admin-item { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; padding: 10px 20px; border-bottom: 1px solid var(--black-3); font-size: 13px; }
-  .admin-item:last-child { border-bottom: none; }
-  .admin-item__info { flex: 1; line-height: 1.6; }
-  .admin-item__tag { display: inline-block; font-size: 9px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; background: rgba(196,255,0,0.1); color: var(--lime); padding: 2px 6px; border-radius: 3px; margin-right: 4px; }
-  .admin-item small { color: rgba(255,255,255,0.5); }
-  .admin-link { color: var(--lime); text-decoration: none; font-size: 11px; }
-  .admin-delete { background: none; border: 1px solid rgba(255,100,100,0.2); border-radius: 4px; color: rgba(255,100,100,0.6); font-size: 12px; padding: 4px 8px; cursor: pointer; flex-shrink: 0; transition: all 0.15s; }
-  .admin-delete:hover { background: rgba(255,100,100,0.1); color: #ff6b6b; }
-  .admin-form { padding: 16px 20px; border-top: 1px solid var(--black-3); display: flex; flex-direction: column; gap: 10px; }
-  .admin-fields { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
-  .admin-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  .admin-input, .admin-textarea { background: var(--black); border: 1px solid var(--black-3); border-radius: 6px; color: var(--white); font-family: var(--font); font-size: 14px; padding: 9px 12px; outline: none; width: 100%; }
-  .admin-input:focus, .admin-textarea:focus { border-color: var(--lime); }
-  .admin-textarea { resize: vertical; }
-  select.admin-input { cursor: pointer; }
-  .admin-checkbox { display: flex; align-items: center; gap: 8px; font-size: 13px; color: rgba(255,255,255,0.7); cursor: pointer; }
-  .admin-btn { border: none; border-radius: 6px; font-family: var(--font); font-size: 14px; font-weight: 700; padding: 10px 18px; cursor: pointer; transition: opacity 0.15s; }
-  .admin-btn--lime { background: var(--lime); color: var(--black); }
-  .admin-btn--lime:hover { opacity: 0.9; }
-  .admin-btn--outline { background: transparent; border: 1px solid var(--black-3); color: rgba(255,255,255,0.7); }
-  .admin-btn--outline:hover { border-color: rgba(255,255,255,0.3); color: var(--white); }
-  .admin-feedback { font-size: 13px; color: rgba(255,255,255,0.6); min-height: 20px; }
+/* ── Shell ── */
+.admin-shell { display: flex; height: 100vh; }
+
+/* ── Sidebar ── */
+.sidebar { width: var(--sidebar); background: var(--black-2); border-right: 1px solid var(--black-3); display: flex; flex-direction: column; flex-shrink: 0; }
+.sidebar__logo { display: flex; align-items: center; gap: 10px; padding: 20px 20px 16px; font-size: 13px; font-weight: 800; border-bottom: 1px solid var(--black-3); }
+.sidebar__nav { flex: 1; padding: 12px 10px; display: flex; flex-direction: column; gap: 4px; }
+.sidebar__btn { display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: none; border: none; border-radius: 8px; color: rgba(255,255,255,0.5); font-family: var(--font); font-size: 14px; font-weight: 600; cursor: pointer; text-align: left; transition: all 0.15s; }
+.sidebar__btn:hover { background: rgba(255,255,255,0.05); color: var(--white); }
+.sidebar__btn.active { background: rgba(196,255,0,0.1); color: var(--lime); }
+.sidebar__app-link { display: flex; align-items: center; gap: 8px; padding: 16px 20px; font-size: 12px; color: rgba(255,255,255,0.35); text-decoration: none; border-top: 1px solid var(--black-3); transition: color 0.15s; }
+.sidebar__app-link:hover { color: var(--lime); }
+
+/* ── Content ── */
+.admin-content { flex: 1; overflow: hidden; position: relative; }
+.panel { display: none; flex-direction: column; height: 100%; }
+.panel.active { display: flex; }
+
+.panel__header { display: flex; align-items: center; justify-content: space-between; padding: 24px 32px; border-bottom: 1px solid var(--black-3); flex-shrink: 0; }
+.panel__title { font-size: 20px; font-weight: 800; }
+.panel__sub { font-size: 13px; color: rgba(255,255,255,0.45); margin-top: 4px; }
+
+.panel__body { flex: 1; overflow-y: auto; padding: 24px 32px; }
+
+/* ── Add form (slides in below header) ── */
+.add-form { background: rgba(196,255,0,0.03); border-bottom: 1px solid rgba(196,255,0,0.12); flex-shrink: 0; }
+.add-form__inner { padding: 20px 32px; max-width: 560px; }
+.add-form__title { font-size: 14px; font-weight: 700; margin-bottom: 16px; color: var(--lime); }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.form-actions { display: flex; gap: 10px; margin-top: 4px; }
+
+/* Push panel specific */
+#panel-push .panel__body { max-width: 560px; display: flex; flex-direction: column; gap: 20px; }
+
+/* ── Fields ── */
+.field-group { display: flex; flex-direction: column; gap: 6px; }
+.field-label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.4); }
+.field-input, .field-textarea { background: var(--black); border: 1px solid var(--black-3); border-radius: 8px; color: var(--white); font-family: var(--font); font-size: 14px; padding: 10px 13px; outline: none; transition: border-color 0.15s; width: 100%; }
+.field-input:focus, .field-textarea:focus { border-color: rgba(196,255,0,0.4); }
+.field-textarea { resize: vertical; }
+select.field-input { cursor: pointer; }
+.field-checkbox { display: flex; align-items: center; gap: 10px; font-size: 14px; color: rgba(255,255,255,0.7); cursor: pointer; }
+
+/* ── Buttons ── */
+.btn { display: inline-flex; align-items: center; gap: 8px; border: none; border-radius: 8px; font-family: var(--font); font-weight: 700; cursor: pointer; transition: opacity 0.15s; }
+.btn--lime { background: var(--lime); color: var(--black); padding: 11px 20px; font-size: 14px; }
+.btn--lime:hover { opacity: 0.9; }
+.btn--ghost { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.7); padding: 11px 20px; font-size: 14px; }
+.btn--ghost:hover { background: rgba(255,255,255,0.1); }
+.btn--sm { padding: 7px 14px; font-size: 13px; }
+.feedback { font-size: 13px; min-height: 20px; }
+
+/* ── List items ── */
+.item-list { display: flex; flex-direction: column; gap: 8px; }
+.list-item { display: flex; align-items: center; justify-content: space-between; gap: 14px; background: var(--black-2); border: 1px solid var(--black-3); border-radius: 10px; padding: 14px 16px; transition: border-color 0.15s; }
+.list-item:hover { border-color: rgba(255,255,255,0.14); }
+.list-item__left { display: flex; align-items: flex-start; gap: 12px; flex: 1; min-width: 0; }
+.list-item__tag { display: inline-block; font-size: 9px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; padding: 2px 7px; border-radius: 4px; border: 1px solid; flex-shrink: 0; margin-right: 2px; }
+.list-item__title { font-size: 14px; font-weight: 600; color: var(--white); margin-bottom: 3px; }
+.list-item__sub { font-size: 12px; color: rgba(255,255,255,0.45); }
+.list-item__links { display: flex; gap: 12px; margin-top: 4px; }
+.list-item__links a { font-size: 12px; color: var(--lime); text-decoration: none; }
+.list-item__links a:hover { text-decoration: underline; }
+.delete-btn { background: none; border: 1px solid rgba(255,80,80,0.2); border-radius: 6px; color: rgba(255,100,100,0.5); font-size: 12px; padding: 6px 10px; cursor: pointer; flex-shrink: 0; transition: all 0.15s; }
+.delete-btn:hover { background: rgba(255,80,80,0.1); color: #ff6b6b; border-color: rgba(255,80,80,0.4); }
+.avatar { width: 40px; height: 40px; border-radius: 50%; background: rgba(196,255,0,0.1); border: 1px solid rgba(196,255,0,0.2); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800; color: var(--lime); flex-shrink: 0; }
+.empty-state { font-size: 14px; color: rgba(255,255,255,0.3); text-align: center; padding: 48px 0; }
+
+/* ── Mobile ── */
+@media (max-width: 640px) {
+  :root { --sidebar: 60px; }
+  .sidebar__logo span { display: none; }
+  .sidebar__btn span { display: none; }
+  .sidebar__btn { justify-content: center; padding: 12px; }
+  .sidebar__app-link span { display: none; }
+  .panel__header { padding: 16px 20px; }
+  .panel__body { padding: 16px 20px; }
+  .add-form__inner { padding: 16px 20px; }
+  .form-row { grid-template-columns: 1fr; }
+}
 </style>
 </body>
 </html>

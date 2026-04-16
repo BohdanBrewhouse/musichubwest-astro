@@ -249,33 +249,65 @@
       Notification.requestPermission().then(function(perm) {
         if (perm === 'granted') {
           notifyBtn.style.color = '#c4ff00';
-          new Notification('Music Hub West', { body: 'Du får nu notiser från Music Hub West! 🎵', icon: '/favicon.svg' });
+          // Register push subscription
+          if ('serviceWorker' in navigator && 'PushManager' in window) {
+            navigator.serviceWorker.ready.then(function(registration) {
+              subscribeToPush(registration);
+            });
+          }
         }
       });
     });
   }
 
-  // ── Remind me button ──
-  document.querySelectorAll('.session-card__remind').forEach(function(btn) {
-    var savedKey = 'remind-' + btn.getAttribute('data-time');
-    if (localStorage.getItem(savedKey)) {
-      btn.classList.add('active');
+  async function subscribeToPush(registration) {
+    try {
+      var sub = await registration.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: 'BECsIxXMry_mE5aVJlusGsoW_BtyvvleM5PZDnLLZwQN68ee4sH9pxTRfW80Hsu3QbcxOmbhuhQelLLLCCJyLbU'
+      });
+      await fetch('/api/app/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ subscription: sub })
+      });
+    } catch (e) {
+      console.warn('Push subscription failed:', e);
     }
-    btn.addEventListener('click', function() {
-      var time = btn.getAttribute('data-time');
-      var key = 'remind-' + time;
-      if (localStorage.getItem(key)) {
-        localStorage.removeItem(key);
-        btn.classList.remove('active');
-      } else {
-        localStorage.setItem(key, '1');
+  }
+
+  // ── Remind me listeners (also called after dynamic render) ──
+  function attachRemindListeners() {
+    document.querySelectorAll('.session-card__remind').forEach(function(btn) {
+      var savedKey = 'remind-' + btn.getAttribute('data-time');
+      if (localStorage.getItem(savedKey)) {
         btn.classList.add('active');
-        if (Notification.permission === 'granted') {
-          new Notification('Påminnelse sparad! 🔔', { body: 'Vi påminner dig 15 min före ' + time, icon: '/favicon.svg' });
-        }
       }
+      // Remove old listener by cloning
+      var newBtn = btn.cloneNode(true);
+      btn.parentNode.replaceChild(newBtn, btn);
+      if (localStorage.getItem(savedKey)) {
+        newBtn.classList.add('active');
+      }
+      newBtn.addEventListener('click', function() {
+        var time = newBtn.getAttribute('data-time');
+        var key = 'remind-' + time;
+        if (localStorage.getItem(key)) {
+          localStorage.removeItem(key);
+          newBtn.classList.remove('active');
+        } else {
+          localStorage.setItem(key, '1');
+          newBtn.classList.add('active');
+          if (Notification.permission === 'granted') {
+            new Notification('Påminnelse sparad! 🔔', { body: 'Vi påminner dig 15 min före ' + time, icon: '/favicon.svg' });
+          }
+        }
+      });
     });
-  });
+  }
+
+  // Initial remind listeners for static cards
+  attachRemindListeners();
 
   // ── Save event button ──
   document.querySelectorAll('.event-card__save').forEach(function(btn) {
@@ -325,6 +357,94 @@
       localStorage.setItem('install-dismissed', '1');
     });
   }
+
+  // ── Dynamic data from Edge Config ──
+  fetch('/api/app/data')
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data.agenda && data.agenda.length) renderAgenda(data.agenda);
+      if (data.speakers && data.speakers.length) renderSpeakers(data.speakers);
+      if (data.announcements && data.announcements.length) renderAnnouncements(data.announcements);
+    })
+    .catch(function() {}); // keep placeholders on error
+
+  function renderAgenda(sessions) {
+    var container = document.getElementById('agenda-sessions');
+    if (!container) return;
+    container.innerHTML = sessions
+      .slice()
+      .sort(function(a, b) { return (a.start_time || '').localeCompare(b.start_time || ''); })
+      .map(function(s) {
+        var type = (s.type || 'talk').toLowerCase();
+        return (
+          '<div class="session-card" data-time="' + escHtml(s.start_time || '') + '">' +
+            '<div class="session-card__time">' +
+              '<span class="session-card__start">' + escHtml(s.start_time || '') + '</span>' +
+              '<span class="session-card__end">' + escHtml(s.end_time || '') + '</span>' +
+            '</div>' +
+            '<div class="session-card__body">' +
+              '<span class="session-card__type session-card__type--' + type + '">' + escHtml(s.type || 'Talk') + '</span>' +
+              '<p class="session-card__title">' + escHtml(s.title || '') + '</p>' +
+              '<p class="session-card__speaker">' + escHtml([s.speaker_name, s.location].filter(Boolean).join(' \xB7 ')) + '</p>' +
+            '</div>' +
+            '<button class="session-card__remind" data-time="' + escHtml(s.start_time || '') + '" title="P\xE5minn mig">' +
+              '<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
+            '</button>' +
+          '</div>'
+        );
+      })
+      .join('');
+    attachRemindListeners();
+  }
+
+  function renderSpeakers(speakers) {
+    var container = document.getElementById('speakers-grid');
+    if (!container) return;
+    container.innerHTML = speakers.map(function(s) {
+      var initials = (s.name || '?').split(' ').map(function(w) { return w[0] || ''; }).join('').slice(0, 2).toUpperCase();
+      return (
+        '<div class="speaker-card" onclick="openSpeaker(\'' + escHtml(s.id || '') + '\')">' +
+          '<div class="speaker-card__photo speaker-card__photo--placeholder">' + escHtml(initials) + '</div>' +
+          '<div class="speaker-card__info">' +
+            '<p class="speaker-card__name">' + escHtml(s.name || '') + '</p>' +
+            '<p class="speaker-card__role">' + escHtml([s.title, s.company].filter(Boolean).join(' \xB7 ')) + '</p>' +
+          '</div>' +
+          '<svg class="speaker-card__arrow" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
+        '</div>'
+      );
+    }).join('');
+  }
+
+  function renderAnnouncements(items) {
+    var container = document.getElementById('feed-announcements');
+    if (!container) return;
+    var sorted = items.slice().sort(function(a, b) {
+      return (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0);
+    });
+    container.innerHTML = sorted.map(function(a) {
+      return (
+        '<div class="announcement-card">' +
+          '<span class="announcement-card__tag">' + escHtml(a.category || 'Info') + '</span>' +
+          '<p class="announcement-card__title">' + escHtml(a.title || '') + '</p>' +
+          '<p class="announcement-card__body">' + escHtml(a.body || '') + '</p>' +
+          '<span class="announcement-card__date">' + escHtml(a.date || '') + '</span>' +
+        '</div>'
+      );
+    }).join('');
+  }
+
+  function escHtml(str) {
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  // Placeholder for speaker modal (can be extended later)
+  window.openSpeaker = function(id) {
+    console.log('openSpeaker', id);
+  };
 
 })();
 </script>
