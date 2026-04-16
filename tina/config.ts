@@ -144,6 +144,76 @@ export default defineConfig({
           { type: 'rich-text', name: 'body', label: 'Content', isBody: true },
         ],
       },
+
+      // ─── SPEAKERS ────────────────────────────────────────────
+      {
+        name: 'speaker',
+        label: 'Speakers',
+        path: 'src/content/speakers',
+        format: 'md',
+        ui: {
+          filename: {
+            readonly: false,
+            slugify: values => values?.name?.toLowerCase().replace(/\s+/g, '-') || '',
+          },
+        },
+        fields: [
+          { type: 'string', name: 'name', label: 'Namn / Name', required: true },
+          { type: 'string', name: 'title', label: 'Titel / Roll' },
+          { type: 'string', name: 'company', label: 'Företag / Organisation' },
+          { type: 'image', name: 'photo', label: 'Foto' },
+          { type: 'string', name: 'linkedin', label: 'LinkedIn URL' },
+          { type: 'string', name: 'instagram', label: 'Instagram URL' },
+          { type: 'string', name: 'website', label: 'Webbplats URL' },
+          { type: 'string', name: 'email', label: 'E-post (valfritt)' },
+          { type: 'rich-text', name: 'body', label: 'Bio', isBody: true },
+        ],
+      },
+
+      // ─── AGENDA ──────────────────────────────────────────────
+      {
+        name: 'agenda',
+        label: 'Agenda',
+        path: 'src/content/agenda',
+        format: 'md',
+        ui: {
+          filename: {
+            readonly: false,
+            slugify: values => `${values?.event_date || 'event'}-${values?.title?.toLowerCase().replace(/\s+/g, '-') || ''}`,
+          },
+        },
+        fields: [
+          { type: 'string', name: 'title', label: 'Session titel', required: true },
+          { type: 'string', name: 'event_date', label: 'Datum (YYYY-MM-DD)', required: true },
+          { type: 'string', name: 'start_time', label: 'Starttid (HH:MM)', required: true },
+          { type: 'string', name: 'end_time', label: 'Sluttid (HH:MM)' },
+          { type: 'string', name: 'location', label: 'Sal / Rum' },
+          { type: 'string', name: 'speaker_name', label: 'Spikername (fritext)' },
+          { type: 'string', name: 'type', label: 'Typ', options: ['Talk', 'Workshop', 'Panel', 'Break', 'Networking', 'Keynote'] },
+          { type: 'rich-text', name: 'body', label: 'Beskrivning', isBody: true },
+        ],
+      },
+
+      // ─── ANNOUNCEMENTS (push feed) ───────────────────────────
+      {
+        name: 'announcement',
+        label: 'Meddelanden / Announcements',
+        path: 'src/content/announcements',
+        format: 'md',
+        ui: {
+          filename: {
+            readonly: false,
+            slugify: values => values?.title?.toLowerCase().replace(/\s+/g, '-') || '',
+          },
+        },
+        fields: [
+          { type: 'string', name: 'title', label: 'Rubrik', required: true },
+          { type: 'string', name: 'date', label: 'Datum (YYYY-MM-DD)', required: true },
+          { type: 'string', name: 'category', label: 'Kategori', options: ['Info', 'Update', 'Reminder', 'News'] },
+          { type: 'boolean', name: 'pinned', label: '📌 Fäst överst' },
+          { type: 'rich-text', name: 'body', label: 'Innehåll', isBody: true },
+        ],
+      },
     ],
   },
 });

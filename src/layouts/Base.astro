@@ -24,6 +24,13 @@ const ogImageUrl = new URL(resolvedOgImage, Astro.site).toString();
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
 
+  <!-- PWA -->
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="theme-color" content="#0a0a0a" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Music Hub West" />
+
   <!-- hreflang -->
   <slot name="hreflang" />
 
@@ -60,5 +67,10 @@ const ogImageUrl = new URL(resolvedOgImage, Astro.site).toString();
   <slot />
   <script src="/i18n.js" is:inline></script>
   <script src="/main.js" is:inline></script>
+  <script is:inline>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js');
+    }
+  </script>
 </body>
 </html>

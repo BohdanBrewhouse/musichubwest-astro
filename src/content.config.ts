@@ -36,4 +36,41 @@ const articles = defineCollection({
   }),
 });
 
-export const collections = { events, articles };
+const speakers = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/speakers' }),
+  schema: z.object({
+    name: z.string(),
+    title: z.string().optional(),
+    company: z.string().optional(),
+    photo: z.string().optional(),
+    linkedin: z.string().optional(),
+    instagram: z.string().optional(),
+    website: z.string().optional(),
+    email: z.string().optional(),
+  }),
+});
+
+const agenda = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/agenda' }),
+  schema: z.object({
+    title: z.string(),
+    event_date: z.string(),
+    start_time: z.string(),
+    end_time: z.string().optional(),
+    location: z.string().optional(),
+    speaker_name: z.string().optional(),
+    type: z.enum(['Talk', 'Workshop', 'Panel', 'Break', 'Networking', 'Keynote']).optional(),
+  }),
+});
+
+const announcements = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/announcements' }),
+  schema: z.object({
+    title: z.string(),
+    date: z.string(),
+    category: z.enum(['Info', 'Update', 'Reminder', 'News']).optional(),
+    pinned: z.boolean().optional().default(false),
+  }),
+});
+
+export const collections = { events, articles, speakers, agenda, announcements };
