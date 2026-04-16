@@ -42,8 +42,8 @@ export default async function handler(req, res) {
 
   const { action, type, item, id } = req.body;
 
-  // Auth test
-  if (action === 'auth') return res.status(200).json({ ok: true });
+  // Auth test — just verifying password is correct (already checked above)
+  if (action === 'auth') return res.status(200).json({ ok: true, message: 'Authenticated' });
 
   const validTypes = ['agenda', 'speakers', 'announcements'];
   if (!validTypes.includes(type)) return res.status(400).json({ error: 'Invalid type' });
