@@ -250,9 +250,9 @@
   }
 
   async function showAdmin() {
-    document.getElementById('login-gate').hidden = true;
-    document.getElementById('admin-main').hidden = false;
-    await loadData();
+    document.getElementById('login-gate').style.display = 'none';
+    document.getElementById('admin-main').style.display = 'flex';
+    try { await loadData(); } catch(e) { console.error('loadData error', e); }
   }
 
   if (adminPass) {

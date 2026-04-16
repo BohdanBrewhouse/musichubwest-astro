@@ -8,6 +8,18 @@ import { createClient } from '@vercel/edge-config';
 
 const TEAM_ID = 'team_eCPecmqFzAxv11gB4yHaFddS';
 
+async function writeKey(key, value) {
+  const ecId = process.env.EDGE_CONFIG_ID;
+  const token = process.env.VERCEL_API_TOKEN;
+  const res = await fetch(`https://api.vercel.com/v1/edge-config/${ecId}/items?teamId=${TEAM_ID}`, {
+    method: 'PATCH',
+    headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ items: [{ operation: 'upsert', key, value }] }),
+  });
+  if (!res.ok) throw new Error(`Edge Config write failed: ${await res.text()}`);
+  return true;
+}
+
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
@@ -21,17 +33,38 @@ export default async function handler(req, res) {
   const { title, body } = req.body;
   if (!title) return res.status(400).json({ error: 'title required' });
 
+  // Check VAPID keys
+  if (!process.env.VAPID_PUBLIC_KEY || !process.env.VAPID_PRIVATE_KEY) {
+    return res.status(500).json({ error: 'VAPID keys not configured. Add VAPID_PUBLIC_KEY, VAPID_PRIVATE_KEY and VAPID_EMAIL to Vercel env vars.' });
+  }
+
   webpush.setVapidDetails(
-    `mailto:${process.env.VAPID_EMAIL}`,
+    `mailto:${process.env.VAPID_EMAIL || 'admin@musichubwest.se'}`,
     process.env.VAPID_PUBLIC_KEY,
     process.env.VAPID_PRIVATE_KEY
   );
 
   try {
     const client = createClient(process.env.EDGE_CONFIG);
-    const subscriptions = (await client.get('push_subscriptions').catch(() => null)) || [];
 
-    if (!subscriptions.length) return res.status(200).json({ ok: true, sent: 0, message: 'No subscribers' });
+    // Save notification to history
+    const notifications = (await client.get('notifications').catch(() => null)) || [];
+    const newNotif = {
+      id: Date.now().toString(),
+      title,
+      body: body || '',
+      sentAt: new Date().toISOString(),
+    };
+    notifications.unshift(newNotif);
+    // Keep only last 50
+    const trimmed = notifications.slice(0, 50);
+    await writeKey('notifications', trimmed);
+
+    // Send push to subscribers
+    const subscriptions = (await client.get('push_subscriptions').catch(() => null)) || [];
+    if (!subscriptions.length) {
+      return res.status(200).json({ ok: true, sent: 0, message: 'No subscribers' });
+    }
 
     const payload = JSON.stringify({ title, body, url: '/app' });
     const results = await Promise.allSettled(
@@ -43,13 +76,7 @@ export default async function handler(req, res) {
     const failed = subscriptions.length - valid.length;
 
     if (failed > 0) {
-      const ecId = process.env.EDGE_CONFIG_ID;
-      const token = process.env.VERCEL_API_TOKEN;
-      await fetch(`https://api.vercel.com/v1/edge-config/${ecId}/items?teamId=${TEAM_ID}`, {
-        method: 'PATCH',
-        headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ items: [{ operation: 'upsert', key: 'push_subscriptions', value: valid }] }),
-      });
+      await writeKey('push_subscriptions', valid);
     }
 
     return res.status(200).json({ ok: true, sent: valid.length, failed });

@@ -10,15 +10,17 @@ export default async function handler(req, res) {
 
   try {
     const client = createClient(process.env.EDGE_CONFIG);
-    const [agenda, speakers, announcements] = await Promise.all([
+    const [agenda, speakers, announcements, notifications] = await Promise.all([
       client.get('agenda').catch(() => []),
       client.get('speakers').catch(() => []),
       client.get('announcements').catch(() => []),
+      client.get('notifications').catch(() => []),
     ]);
     return res.status(200).json({
       agenda: agenda || [],
       speakers: speakers || [],
       announcements: announcements || [],
+      notifications: notifications || [],
     });
   } catch (e) {
     console.error('[data]', e.message);

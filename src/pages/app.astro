@@ -97,66 +97,7 @@
         </div>
 
         <div class="agenda-sessions" id="agenda-sessions">
-          <!-- Example sessions — will be replaced with real data -->
-          <div class="session-card" data-time="10:00">
-            <div class="session-card__time">
-              <span class="session-card__start">10:00</span>
-              <span class="session-card__end">10:30</span>
-            </div>
-            <div class="session-card__body">
-              <span class="session-card__type session-card__type--keynote">Keynote</span>
-              <p class="session-card__title">Öppningstal: Framtidens musikbransch</p>
-              <p class="session-card__speaker">Anna Lindqvist · Stora scenen</p>
-            </div>
-            <button class="session-card__remind" data-time="10:00" title="Påminn mig">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </button>
-          </div>
-
-          <div class="session-card" data-time="10:30">
-            <div class="session-card__time">
-              <span class="session-card__start">10:30</span>
-              <span class="session-card__end">11:30</span>
-            </div>
-            <div class="session-card__body">
-              <span class="session-card__type session-card__type--talk">Talk</span>
-              <p class="session-card__title">AI och musikskapande — möjligheter och risker</p>
-              <p class="session-card__speaker">HSM · Workshop-rummet</p>
-            </div>
-            <button class="session-card__remind" data-time="10:30" title="Påminn mig">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </button>
-          </div>
-
-          <div class="session-card" data-time="11:30">
-            <div class="session-card__time">
-              <span class="session-card__start">11:30</span>
-              <span class="session-card__end">12:00</span>
-            </div>
-            <div class="session-card__body">
-              <span class="session-card__type session-card__type--break">Paus</span>
-              <p class="session-card__title">Fika & networking</p>
-              <p class="session-card__speaker">Foajén</p>
-            </div>
-            <button class="session-card__remind" data-time="11:30" title="Påminn mig">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </button>
-          </div>
-
-          <div class="session-card" data-time="12:00">
-            <div class="session-card__time">
-              <span class="session-card__start">12:00</span>
-              <span class="session-card__end">13:00</span>
-            </div>
-            <div class="session-card__body">
-              <span class="session-card__type session-card__type--panel">Panel</span>
-              <p class="session-card__title">Upphovsrätt i AI-eran</p>
-              <p class="session-card__speaker">3 talare · Stora scenen</p>
-            </div>
-            <button class="session-card__remind" data-time="12:00" title="Påminn mig">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </button>
-          </div>
+          <div class="empty-state-msg">Agenda läses in...</div>
         </div>
       </div>
     </section>
@@ -169,24 +110,20 @@
           <p class="speakers-app__sub">Klicka för mer info & sociala länkar</p>
         </div>
         <div class="speakers-grid" id="speakers-grid">
-          <!-- Example speaker cards -->
-          <div class="speaker-card" data-speaker="anna-lindqvist">
-            <div class="speaker-card__photo speaker-card__photo--placeholder">AL</div>
-            <div class="speaker-card__info">
-              <p class="speaker-card__name">Anna Lindqvist</p>
-              <p class="speaker-card__role">CEO · Spotify Nordic</p>
-            </div>
-            <svg class="speaker-card__arrow" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
+          <div class="empty-state-msg">Talare läses in...</div>
+        </div>
+      </div>
+    </section>
 
-          <div class="speaker-card" data-speaker="marcus-berg">
-            <div class="speaker-card__photo speaker-card__photo--placeholder">MB</div>
-            <div class="speaker-card__info">
-              <p class="speaker-card__name">Marcus Berg</p>
-              <p class="speaker-card__role">Forskare · HSM</p>
-            </div>
-            <svg class="speaker-card__arrow" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
+    <!-- TAB: NOTIFICATIONS -->
+    <section class="app-tab" id="tab-notifications">
+      <div class="notif-app">
+        <div class="notif-app__header">
+          <h2 class="notif-app__title">Notiser</h2>
+          <p class="notif-app__sub">Meddelanden från arrangören</p>
+        </div>
+        <div class="notif-list" id="notif-list">
+          <div class="empty-state-msg">Inga notiser ännu.</div>
         </div>
       </div>
     </section>
@@ -206,6 +143,10 @@
     <button class="app-tab-btn" data-tab="speakers">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="1.8"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
       <span>Talare</span>
+    </button>
+    <button class="app-tab-btn" data-tab="notifications" id="notif-tab-btn">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span>Notiser</span>
     </button>
   </nav>
 
@@ -264,7 +205,7 @@
     try {
       var sub = await registration.pushManager.subscribe({
         userVisibleOnly: true,
-        applicationServerKey: 'BECsIxXMry_mE5aVJlusGsoW_BtyvvleM5PZDnLLZwQN68ee4sH9pxTRfW80Hsu3QbcxOmbhuhQelLLLCCJyLbU'
+        applicationServerKey: 'BHGim_2qR9v2Wt_UKth5kj1dSOHea0r2fUx2VbFqm0htriJ2XAhI9BcthVwvur3MqewPZIkVePIBnR-PJbjnxrA'
       });
       await fetch('/api/app/subscribe', {
         method: 'POST',
@@ -362,15 +303,29 @@
   fetch('/api/app/data')
     .then(function(r) { return r.json(); })
     .then(function(data) {
-      if (data.agenda && data.agenda.length) renderAgenda(data.agenda);
-      if (data.speakers && data.speakers.length) renderSpeakers(data.speakers);
+      renderAgenda(data.agenda || []);
+      renderSpeakers(data.speakers || []);
       if (data.announcements && data.announcements.length) renderAnnouncements(data.announcements);
+      renderNotifications(data.notifications || []);
     })
-    .catch(function() {}); // keep placeholders on error
+    .catch(function() {});
+
+  // Mark notifications tab as unread if new ones exist
+  function updateNotifBadge(count) {
+    var btn = document.getElementById('notif-tab-btn');
+    if (!btn) return;
+    var lastSeen = parseInt(localStorage.getItem('notif-last-seen') || '0');
+    var unread = count > lastSeen;
+    if (unread) btn.classList.add('has-badge');
+  }
 
   function renderAgenda(sessions) {
     var container = document.getElementById('agenda-sessions');
     if (!container) return;
+    if (!sessions.length) {
+      container.innerHTML = '<div class="empty-state-msg">Ingen agenda tillagd ännu.</div>';
+      return;
+    }
     container.innerHTML = sessions
       .slice()
       .sort(function(a, b) { return (a.start_time || '').localeCompare(b.start_time || ''); })
@@ -397,9 +352,45 @@
     attachRemindListeners();
   }
 
+  function renderNotifications(items) {
+    var container = document.getElementById('notif-list');
+    if (!container) return;
+    updateNotifBadge(items.length);
+    if (!items.length) {
+      container.innerHTML = '<div class="empty-state-msg">Inga notiser ännu.</div>';
+      return;
+    }
+    container.innerHTML = items.map(function(n) {
+      var d = new Date(n.sentAt);
+      var timeStr = d.toLocaleString('sv-SE', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+      return (
+        '<div class="notif-item">' +
+          '<div class="notif-item__icon">' +
+            '<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0" stroke="#c4ff00" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
+          '</div>' +
+          '<div class="notif-item__content">' +
+            '<p class="notif-item__title">' + escHtml(n.title) + '</p>' +
+            (n.body ? '<p class="notif-item__body">' + escHtml(n.body) + '</p>' : '') +
+            '<span class="notif-item__time">' + escHtml(timeStr) + '</span>' +
+          '</div>' +
+        '</div>'
+      );
+    }).join('');
+    // Mark as seen when tab is opened
+    document.querySelector('[data-tab="notifications"]').addEventListener('click', function() {
+      localStorage.setItem('notif-last-seen', String(items.length));
+      var btn = document.getElementById('notif-tab-btn');
+      if (btn) btn.classList.remove('has-badge');
+    }, { once: true });
+  }
+
   function renderSpeakers(speakers) {
     var container = document.getElementById('speakers-grid');
     if (!container) return;
+    if (!speakers.length) {
+      container.innerHTML = '<div class="empty-state-msg">Inga talare tillagda ännu.</div>';
+      return;
+    }
     container.innerHTML = speakers.map(function(s) {
       var initials = (s.name || '?').split(' ').map(function(w) { return w[0] || ''; }).join('').slice(0, 2).toUpperCase();
       return (
@@ -756,6 +747,35 @@
   .speaker-card__name { font-size: 14px; font-weight: 700; color: var(--white); margin-bottom: 3px; }
   .speaker-card__role { font-size: 12px; color: rgba(255,255,255,0.5); }
   .speaker-card__arrow { color: rgba(255,255,255,0.25); flex-shrink: 0; }
+
+  /* ── Notifications tab ── */
+  .notif-app__header { padding: 20px 16px 12px; border-bottom: 1px solid var(--black-3); }
+  .notif-app__title { font-size: 18px; font-weight: 800; margin-bottom: 4px; }
+  .notif-app__sub { font-size: 12px; color: rgba(255,255,255,0.4); }
+  .notif-list { display: flex; flex-direction: column; }
+  .notif-item {
+    display: flex; align-items: flex-start; gap: 14px;
+    padding: 16px; border-bottom: 1px solid var(--black-3);
+  }
+  .notif-item__icon {
+    width: 40px; height: 40px; background: rgba(196,255,0,0.08);
+    border-radius: 10px; display: flex; align-items: center;
+    justify-content: center; flex-shrink: 0;
+  }
+  .notif-item__title { font-size: 14px; font-weight: 700; color: var(--white); margin-bottom: 4px; line-height: 1.4; }
+  .notif-item__body { font-size: 13px; color: rgba(255,255,255,0.6); line-height: 1.5; margin-bottom: 6px; }
+  .notif-item__time { font-size: 11px; color: rgba(255,255,255,0.35); }
+
+  /* ── Badge on notif tab ── */
+  #notif-tab-btn { position: relative; }
+  #notif-tab-btn.has-badge::after {
+    content: ''; position: absolute; top: 6px; right: calc(50% - 14px);
+    width: 8px; height: 8px; background: #c4ff00; border-radius: 50%;
+    border: 2px solid var(--black);
+  }
+
+  /* ── Empty state ── */
+  .empty-state-msg { padding: 40px 20px; text-align: center; color: rgba(255,255,255,0.3); font-size: 14px; }
 
   /* Desktop — centered card */
   @media (min-width: 481px) {
