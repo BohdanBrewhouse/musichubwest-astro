@@ -65,6 +65,18 @@ function formatDate(d: string) {
       </div>
 
       <div class="ev-header__bottom">
+
+        <!-- Desktop: filter chips -->
+        <div class="ev-filter-chips" id="ev-filter-chips">
+          <span class="ev-filter-label">FILTRERA</span>
+          <button class="ev-chip active" data-filter="all">Alla</button>
+          <button class="ev-chip" data-filter="Tune In West">Tune In West</button>
+          <button class="ev-chip" data-filter="Kulturverkstaden">Kulturverkstaden</button>
+          <button class="ev-chip" data-filter="Högskolan för scen och musik">Högskolan för scen och musik</button>
+          <button class="ev-chip" data-filter="VGR">VGR</button>
+        </div>
+
+        <!-- Mobile: dropdown -->
         <div class="cat-drop" id="cat-drop">
           <button class="cat-drop__btn" id="cat-drop__btn" aria-haspopup="listbox" aria-expanded="false">
             <span id="cat-drop__label">Alla kategorier</span>
@@ -239,6 +251,15 @@ function formatDate(d: string) {
   btnGrid.addEventListener('click', function() { setView('grid'); });
   btnList.addEventListener('click', function() { setView('list'); dismissNudge(); });
 
+  // ── Desktop chip filter ──
+  document.querySelectorAll('.ev-chip').forEach(function(chip) {
+    chip.addEventListener('click', function() {
+      document.querySelectorAll('.ev-chip').forEach(function(c) { c.classList.remove('active'); });
+      chip.classList.add('active');
+      applyFilter(chip.getAttribute('data-filter'));
+    });
+  });
+
   // ── Category dropdown filter ──
   var catBtn   = document.getElementById('cat-drop__btn');
   var catMenu  = document.getElementById('cat-drop__menu');
@@ -355,6 +376,47 @@ function formatDate(d: string) {
     border-bottom: 1px solid var(--black-3);
     padding: 16px 0;
   }
+  /* ── Desktop filter chips ── */
+  .ev-filter-chips {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .ev-filter-label {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    color: rgba(255,255,255,0.4);
+    margin-right: 4px;
+    white-space: nowrap;
+  }
+  .ev-chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 7px 14px;
+    border: 1px solid rgba(255,255,255,0.2);
+    background: transparent;
+    border-radius: 4px;
+    color: rgba(255,255,255,0.7);
+    font-family: var(--font);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: border-color 0.15s, color 0.15s, background 0.15s;
+    white-space: nowrap;
+  }
+  .ev-chip:hover { border-color: rgba(255,255,255,0.4); color: var(--white); }
+  .ev-chip.active { background: var(--lime); border-color: var(--lime); color: var(--black); }
+
+  /* Show chips on desktop, dropdown on mobile */
+  .ev-filter-chips { display: flex; }
+  .cat-drop { display: none; }
+  @media (max-width: 767px) {
+    .ev-filter-chips { display: none; }
+    .cat-drop { display: block; }
+  }
+
   /* ── Category dropdown ── */
   .cat-drop { position: relative; flex-shrink: 0; }
   .cat-drop__btn {
