@@ -1,5 +1,5 @@
 ---
-// src/pages/app/admin.astro — PWA Admin Panel
+// src/pages/app/admin.astro — MHW Admin Panel v2 (Supabase)
 ---
 <!DOCTYPE html>
 <html lang="sv">
@@ -17,121 +17,223 @@
 <div class="login-gate" id="login-gate">
   <div class="login-box">
     <div class="login-logo">
-      <svg width="36" height="36" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#c4ff00" stroke-width="2"/><path d="M9 8l8 4-8 4V8z" fill="#c4ff00"/></svg>
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#c4ff00" stroke-width="2"/><path d="M9 8l8 4-8 4V8z" fill="#c4ff00"/></svg>
     </div>
     <h1 class="login-title">MHW Admin</h1>
     <p class="login-sub">Ange lösenord för att fortsätta</p>
-    <input class="login-input" type="password" id="login-password" placeholder="Lösenord" />
+    <input class="login-input" type="password" id="login-password" placeholder="Lösenord" autocomplete="current-password" />
     <button class="login-btn" id="login-btn">Logga in</button>
-    <p class="login-error" id="login-error" hidden>Fel lösenord</p>
+    <p class="login-error" id="login-error" style="display:none">Fel lösenord. Försök igen.</p>
   </div>
 </div>
 
 <!-- ADMIN SHELL -->
-<div class="admin-shell" id="admin-main" hidden>
+<div class="admin-shell" id="admin-main" style="display:none">
 
   <!-- Sidebar -->
-  <aside class="sidebar">
-    <div class="sidebar__logo">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#c4ff00" stroke-width="2"/><path d="M9 8l8 4-8 4V8z" fill="#c4ff00"/></svg>
-      <span>MHW Admin</span>
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar__top">
+      <div class="sidebar__logo">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#c4ff00" stroke-width="2"/><path d="M9 8l8 4-8 4V8z" fill="#c4ff00"/></svg>
+        <span>MHW Admin</span>
+      </div>
+      <nav class="sidebar__nav">
+        <button class="sidebar__btn active" data-tab="dashboard">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.8"/><rect x="14" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.8"/><rect x="3" y="14" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.8"/><rect x="14" y="14" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.8"/></svg>
+          <span>Dashboard</span>
+        </button>
+        <button class="sidebar__btn" data-tab="events">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.8"/><line x1="16" y1="2" x2="16" y2="6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><line x1="8" y1="2" x2="8" y2="6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><line x1="3" y1="10" x2="21" y2="10" stroke="currentColor" stroke-width="1.8"/></svg>
+          <span>Evenemang</span>
+        </button>
+        <button class="sidebar__btn" data-tab="agenda">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><line x1="8" y1="6" x2="21" y2="6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><line x1="8" y1="12" x2="21" y2="12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><line x1="8" y1="18" x2="21" y2="18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="3" cy="6" r="1" fill="currentColor"/><circle cx="3" cy="12" r="1" fill="currentColor"/><circle cx="3" cy="18" r="1" fill="currentColor"/></svg>
+          <span>Agenda</span>
+        </button>
+        <button class="sidebar__btn" data-tab="speakers">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="1.8"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span>Talare</span>
+        </button>
+        <button class="sidebar__btn" data-tab="announcements">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span>Meddelanden</span>
+        </button>
+        <button class="sidebar__btn" data-tab="push">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span>Push</span>
+        </button>
+      </nav>
     </div>
-    <nav class="sidebar__nav">
-      <button class="sidebar__btn active" data-tab="push">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        Push
+    <div class="sidebar__bottom">
+      <a class="sidebar__app-link" href="/app" target="_blank">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>Öppna app</span>
+      </a>
+      <button class="sidebar__btn sidebar__btn--logout" id="admin-logout">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>Logga ut</span>
       </button>
-      <button class="sidebar__btn" data-tab="agenda">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.8"/><line x1="3" y1="10" x2="21" y2="10" stroke="currentColor" stroke-width="1.8"/><line x1="8" y1="2" x2="8" y2="6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><line x1="16" y1="2" x2="16" y2="6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-        Agenda
-      </button>
-      <button class="sidebar__btn" data-tab="speakers">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="1.8"/></svg>
-        Talare
-      </button>
-      <button class="sidebar__btn" data-tab="announcements">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        Feed
-      </button>
-    </nav>
-    <a class="sidebar__app-link" href="/app" target="_blank">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      Öppna app
-    </a>
+    </div>
   </aside>
 
-  <!-- Content panels -->
+  <!-- Content -->
   <main class="admin-content">
 
-    <!-- PUSH -->
-    <div class="panel active" id="panel-push">
+    <!-- DASHBOARD -->
+    <div class="panel active" id="panel-dashboard">
       <div class="panel__header">
-        <h1 class="panel__title">📢 Push-meddelande</h1>
-        <p class="panel__sub">Skicka ett meddelande till alla som prenumererar på notiser</p>
+        <div>
+          <h1 class="panel__title">Dashboard</h1>
+          <p class="panel__sub">Översikt av Music Hub West plattformen</p>
+        </div>
+        <button class="btn btn--ghost btn--sm" onclick="loadData()">↻ Uppdatera</button>
       </div>
       <div class="panel__body">
-        <div class="field-group">
-          <label class="field-label">Rubrik</label>
-          <input class="field-input" type="text" id="push-title" placeholder="t.ex. Sessionen börjar om 15 min" />
+        <div class="stats-grid" id="stats-grid">
+          <div class="stat-card"><div class="stat-card__num" id="stat-events">–</div><div class="stat-card__label">Evenemang</div></div>
+          <div class="stat-card"><div class="stat-card__num" id="stat-speakers">–</div><div class="stat-card__label">Talare</div></div>
+          <div class="stat-card"><div class="stat-card__num" id="stat-agenda">–</div><div class="stat-card__label">Agendapunkter</div></div>
+          <div class="stat-card"><div class="stat-card__num" id="stat-announcements">–</div><div class="stat-card__label">Meddelanden</div></div>
         </div>
-        <div class="field-group">
-          <label class="field-label">Meddelande</label>
-          <textarea class="field-textarea" id="push-body" placeholder="Skriv mer info här..." rows="4"></textarea>
+
+        <div class="dash-section">
+          <h3 class="dash-section__title">Senaste evenemang</h3>
+          <div id="dash-events" class="dash-list"></div>
         </div>
-        <button class="btn btn--lime" id="push-send-btn">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><line x1="22" y1="2" x2="11" y2="13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><polygon points="22 2 15 22 11 13 2 9 22 2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          Skicka till alla
-        </button>
-        <p class="feedback" id="push-feedback"></p>
+
+        <div class="dash-section">
+          <h3 class="dash-section__title">Snabbåtgärder</h3>
+          <div class="quick-actions">
+            <button class="quick-btn" onclick="goTab('events')">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.8"/><line x1="12" y1="8" x2="12" y2="16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="8" y1="12" x2="16" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              Nytt evenemang
+            </button>
+            <button class="quick-btn" onclick="goTab('speakers')">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.8"/><line x1="12" y1="8" x2="12" y2="16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="8" y1="12" x2="16" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              Ny talare
+            </button>
+            <button class="quick-btn" onclick="goTab('push')">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Skicka push
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- EVENTS -->
+    <div class="panel" id="panel-events">
+      <div class="panel__header">
+        <div>
+          <h1 class="panel__title">Evenemang</h1>
+          <p class="panel__sub">Hantera alla evenemang</p>
+        </div>
+        <button class="btn btn--lime btn--sm" id="event-add-open">+ Nytt evenemang</button>
+      </div>
+
+      <div class="add-form" id="event-form" style="display:none">
+        <div class="add-form__inner">
+          <h3 class="add-form__title">Nytt evenemang</h3>
+          <div class="form-grid">
+            <div class="field-group field-group--full">
+              <label class="field-label">Titel *</label>
+              <input class="field-input" type="text" id="ev-title" placeholder="Music Hub Summit 2026" />
+            </div>
+            <div class="field-group">
+              <label class="field-label">Datum</label>
+              <input class="field-input" type="date" id="ev-date" />
+            </div>
+            <div class="field-group">
+              <label class="field-label">Status</label>
+              <select class="field-input" id="ev-status">
+                <option value="published">Publicerad</option>
+                <option value="draft">Utkast</option>
+                <option value="live">Live nu</option>
+                <option value="past">Avslutad</option>
+              </select>
+            </div>
+            <div class="field-group field-group--full">
+              <label class="field-label">Plats</label>
+              <input class="field-input" type="text" id="ev-location" placeholder="Brewhouse, Göteborg" />
+            </div>
+            <div class="field-group field-group--full">
+              <label class="field-label">Beskrivning</label>
+              <textarea class="field-textarea" id="ev-desc" rows="3" placeholder="Kort beskrivning av eventet..."></textarea>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button class="btn btn--lime" id="event-save-btn">Spara evenemang</button>
+            <button class="btn btn--ghost" id="event-cancel-btn">Avbryt</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel__body">
+        <div class="item-list" id="events-list"></div>
       </div>
     </div>
 
     <!-- AGENDA -->
     <div class="panel" id="panel-agenda">
       <div class="panel__header">
-        <h1 class="panel__title">📋 Agenda</h1>
+        <div>
+          <h1 class="panel__title">Agenda</h1>
+          <p class="panel__sub">Sessionstider och programpunkter</p>
+        </div>
         <button class="btn btn--lime btn--sm" id="agenda-add-open">+ Lägg till session</button>
       </div>
 
-      <!-- Add form -->
-      <div class="add-form" id="agenda-form" hidden>
+      <div class="add-form" id="agenda-form" style="display:none">
         <div class="add-form__inner">
-          <h3 class="add-form__title">Ny session</h3>
-          <div class="form-row">
+          <h3 class="add-form__title">Ny agendapunkt</h3>
+          <div class="form-grid">
+            <div class="field-group field-group--full">
+              <label class="field-label">Evenemang</label>
+              <select class="field-input" id="ag-event"></select>
+            </div>
             <div class="field-group">
               <label class="field-label">Starttid *</label>
-              <input class="field-input" type="text" id="ag-start" placeholder="10:00" />
+              <input class="field-input" type="time" id="ag-start" />
             </div>
             <div class="field-group">
               <label class="field-label">Sluttid</label>
-              <input class="field-input" type="text" id="ag-end" placeholder="11:00" />
+              <input class="field-input" type="time" id="ag-end" />
+            </div>
+            <div class="field-group">
+              <label class="field-label">Typ</label>
+              <select class="field-input" id="ag-type">
+                <option value="talk">Talk</option>
+                <option value="keynote">Keynote</option>
+                <option value="panel">Panel</option>
+                <option value="workshop">Workshop</option>
+                <option value="break">Paus / Break</option>
+              </select>
+            </div>
+            <div class="field-group">
+              <label class="field-label">Sorteringsordning</label>
+              <input class="field-input" type="number" id="ag-order" placeholder="1" min="0" />
+            </div>
+            <div class="field-group field-group--full">
+              <label class="field-label">Titel *</label>
+              <input class="field-input" type="text" id="ag-title" placeholder="Sessionens titel" />
+            </div>
+            <div class="field-group field-group--full">
+              <label class="field-label">Talare</label>
+              <select class="field-input" id="ag-speaker">
+                <option value="">Ingen talare</option>
+              </select>
+            </div>
+            <div class="field-group field-group--full">
+              <label class="field-label">Rum / Sal</label>
+              <input class="field-input" type="text" id="ag-room" placeholder="Stora scenen" />
+            </div>
+            <div class="field-group field-group--full">
+              <label class="field-label">Beskrivning</label>
+              <textarea class="field-textarea" id="ag-desc" rows="3" placeholder="Kort beskrivning..."></textarea>
             </div>
           </div>
-          <div class="field-group">
-            <label class="field-label">Typ</label>
-            <select class="field-input" id="ag-type">
-              <option value="Talk">Talk</option>
-              <option value="Keynote">Keynote</option>
-              <option value="Panel">Panel</option>
-              <option value="Workshop">Workshop</option>
-              <option value="Networking">Networking</option>
-              <option value="Break">Break / Paus</option>
-            </select>
-          </div>
-          <div class="field-group">
-            <label class="field-label">Titel *</label>
-            <input class="field-input" type="text" id="ag-title" placeholder="Sessionens titel" />
-          </div>
-          <div class="field-group">
-            <label class="field-label">Talare</label>
-            <input class="field-input" type="text" id="ag-speaker" placeholder="Namn på talare" />
-          </div>
-          <div class="field-group">
-            <label class="field-label">Sal / Plats</label>
-            <input class="field-input" type="text" id="ag-location" placeholder="t.ex. Stora scenen" />
-          </div>
           <div class="form-actions">
-            <button class="btn btn--lime" id="agenda-save-btn">Spara</button>
+            <button class="btn btn--lime" id="agenda-save-btn">Spara session</button>
             <button class="btn btn--ghost" id="agenda-cancel-btn">Avbryt</button>
           </div>
         </div>
@@ -145,39 +247,48 @@
     <!-- SPEAKERS -->
     <div class="panel" id="panel-speakers">
       <div class="panel__header">
-        <h1 class="panel__title">🎤 Talare</h1>
+        <div>
+          <h1 class="panel__title">Talare</h1>
+          <p class="panel__sub">Hantera talarprofiler</p>
+        </div>
         <button class="btn btn--lime btn--sm" id="speaker-add-open">+ Lägg till talare</button>
       </div>
 
-      <div class="add-form" id="speaker-form" hidden>
+      <div class="add-form" id="speaker-form" style="display:none">
         <div class="add-form__inner">
           <h3 class="add-form__title">Ny talare</h3>
-          <div class="field-group">
-            <label class="field-label">Namn *</label>
-            <input class="field-input" type="text" id="sp-name" placeholder="Förnamn Efternamn" />
-          </div>
-          <div class="field-group">
-            <label class="field-label">Titel / Roll</label>
-            <input class="field-input" type="text" id="sp-title" placeholder="t.ex. CEO" />
-          </div>
-          <div class="field-group">
-            <label class="field-label">Företag</label>
-            <input class="field-input" type="text" id="sp-company" placeholder="t.ex. Spotify" />
-          </div>
-          <div class="field-group">
-            <label class="field-label">LinkedIn URL</label>
-            <input class="field-input" type="url" id="sp-linkedin" placeholder="https://linkedin.com/in/..." />
-          </div>
-          <div class="field-group">
-            <label class="field-label">Instagram URL</label>
-            <input class="field-input" type="url" id="sp-instagram" placeholder="https://instagram.com/..." />
-          </div>
-          <div class="field-group">
-            <label class="field-label">Webbplats</label>
-            <input class="field-input" type="url" id="sp-website" placeholder="https://..." />
+          <div class="form-grid">
+            <div class="field-group field-group--full">
+              <label class="field-label">Namn *</label>
+              <input class="field-input" type="text" id="sp-name" placeholder="Förnamn Efternamn" />
+            </div>
+            <div class="field-group">
+              <label class="field-label">Titel / Roll</label>
+              <input class="field-input" type="text" id="sp-title" placeholder="CEO" />
+            </div>
+            <div class="field-group">
+              <label class="field-label">Företag</label>
+              <input class="field-input" type="text" id="sp-company" placeholder="Företagsnamn" />
+            </div>
+            <div class="field-group field-group--full">
+              <label class="field-label">Bio</label>
+              <textarea class="field-textarea" id="sp-bio" rows="3" placeholder="Kort biografi..."></textarea>
+            </div>
+            <div class="field-group">
+              <label class="field-label">LinkedIn URL</label>
+              <input class="field-input" type="url" id="sp-linkedin" placeholder="https://linkedin.com/in/..." />
+            </div>
+            <div class="field-group">
+              <label class="field-label">Instagram URL</label>
+              <input class="field-input" type="url" id="sp-instagram" placeholder="https://instagram.com/..." />
+            </div>
+            <div class="field-group field-group--full">
+              <label class="field-label">Webbplats</label>
+              <input class="field-input" type="url" id="sp-website" placeholder="https://..." />
+            </div>
           </div>
           <div class="form-actions">
-            <button class="btn btn--lime" id="speaker-save-btn">Spara</button>
+            <button class="btn btn--lime" id="speaker-save-btn">Spara talare</button>
             <button class="btn btn--ghost" id="speaker-cancel-btn">Avbryt</button>
           </div>
         </div>
@@ -191,36 +302,40 @@
     <!-- ANNOUNCEMENTS -->
     <div class="panel" id="panel-announcements">
       <div class="panel__header">
-        <h1 class="panel__title">📌 Meddelanden</h1>
-        <button class="btn btn--lime btn--sm" id="ann-add-open">+ Lägg till</button>
+        <div>
+          <h1 class="panel__title">Meddelanden</h1>
+          <p class="panel__sub">Annonser och info i app-feeden</p>
+        </div>
+        <button class="btn btn--lime btn--sm" id="ann-add-open">+ Nytt meddelande</button>
       </div>
 
-      <div class="add-form" id="ann-form" hidden>
+      <div class="add-form" id="ann-form" style="display:none">
         <div class="add-form__inner">
           <h3 class="add-form__title">Nytt meddelande</h3>
-          <div class="field-group">
-            <label class="field-label">Rubrik *</label>
-            <input class="field-input" type="text" id="ann-title" placeholder="Rubrik" />
+          <div class="form-grid">
+            <div class="field-group field-group--full">
+              <label class="field-label">Rubrik *</label>
+              <input class="field-input" type="text" id="ann-title" placeholder="Meddelandets rubrik" />
+            </div>
+            <div class="field-group field-group--full">
+              <label class="field-label">Text</label>
+              <textarea class="field-textarea" id="ann-body" rows="3" placeholder="Meddelande..."></textarea>
+            </div>
+            <div class="field-group">
+              <label class="field-label">Kategori</label>
+              <select class="field-input" id="ann-category">
+                <option value="info">Info</option>
+                <option value="event">Event</option>
+                <option value="warning">Varning</option>
+              </select>
+            </div>
+            <div class="field-group" style="display:flex;align-items:center;gap:10px;padding-top:24px">
+              <input type="checkbox" id="ann-pinned" style="width:18px;height:18px;accent-color:#c4ff00" />
+              <label for="ann-pinned" class="field-label" style="text-transform:none;font-size:13px">Fäst överst i feed</label>
+            </div>
           </div>
-          <div class="field-group">
-            <label class="field-label">Text</label>
-            <textarea class="field-textarea" id="ann-body" placeholder="Meddelande..." rows="3"></textarea>
-          </div>
-          <div class="field-group">
-            <label class="field-label">Kategori</label>
-            <select class="field-input" id="ann-category">
-              <option value="Info">Info</option>
-              <option value="Update">Update</option>
-              <option value="Reminder">Reminder</option>
-              <option value="News">News</option>
-            </select>
-          </div>
-          <label class="field-checkbox">
-            <input type="checkbox" id="ann-pinned" />
-            <span>📌 Fäst överst i feed</span>
-          </label>
           <div class="form-actions">
-            <button class="btn btn--lime" id="ann-save-btn">Spara</button>
+            <button class="btn btn--lime" id="ann-save-btn">Publicera</button>
             <button class="btn btn--ghost" id="ann-cancel-btn">Avbryt</button>
           </div>
         </div>
@@ -231,6 +346,39 @@
       </div>
     </div>
 
+    <!-- PUSH -->
+    <div class="panel" id="panel-push">
+      <div class="panel__header">
+        <div>
+          <h1 class="panel__title">Push-meddelanden</h1>
+          <p class="panel__sub">Skicka notiser direkt till alla prenumeranter</p>
+        </div>
+      </div>
+      <div class="panel__body panel__body--push">
+        <div class="push-card">
+          <h3 class="push-card__title">Nytt push-meddelande</h3>
+          <div class="field-group">
+            <label class="field-label">Rubrik *</label>
+            <input class="field-input" type="text" id="push-title" placeholder="t.ex. Sessionen börjar om 15 min" />
+          </div>
+          <div class="field-group">
+            <label class="field-label">Meddelande</label>
+            <textarea class="field-textarea" id="push-body" rows="3" placeholder="Mer information..."></textarea>
+          </div>
+          <button class="btn btn--lime" id="push-send-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><line x1="22" y1="2" x2="11" y2="13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><polygon points="22 2 15 22 11 13 2 9 22 2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Skicka till alla
+          </button>
+          <p class="push-feedback" id="push-feedback"></p>
+        </div>
+
+        <div class="push-history">
+          <h3 class="push-history__title">Skickade notiser</h3>
+          <div id="push-history-list" class="item-list"></div>
+        </div>
+      </div>
+    </div>
+
   </main>
 </div>
 
@@ -238,21 +386,24 @@
 (function() {
   const PASS_KEY = 'mhw_admin_pass';
   let adminPass = sessionStorage.getItem(PASS_KEY);
+  let STATE = { events: [], speakers: [], agenda: [], announcements: [], notifications: [] };
 
   // ── Login ──
   async function tryLogin(pass) {
-    const r = await fetch('/api/app/admin-data', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${pass}` },
-      body: JSON.stringify({ action: 'auth' })
-    });
-    return r.ok;
+    try {
+      const r = await fetch('/api/app/admin-data', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${pass}` },
+        body: JSON.stringify({ action: 'auth' })
+      });
+      return r.ok;
+    } catch { return false; }
   }
 
   async function showAdmin() {
     document.getElementById('login-gate').style.display = 'none';
     document.getElementById('admin-main').style.display = 'flex';
-    try { await loadData(); } catch(e) { console.error('loadData error', e); }
+    await loadData();
   }
 
   if (adminPass) {
@@ -265,31 +416,45 @@
   document.getElementById('login-btn').addEventListener('click', async function() {
     const pass = document.getElementById('login-password').value.trim();
     if (!pass) return;
+    this.textContent = '...';
     const ok = await tryLogin(pass);
+    this.textContent = 'Logga in';
     if (ok) {
       sessionStorage.setItem(PASS_KEY, pass);
       adminPass = pass;
-      document.getElementById('login-error').hidden = true;
+      document.getElementById('login-error').style.display = 'none';
       showAdmin();
     } else {
-      document.getElementById('login-error').hidden = false;
+      document.getElementById('login-error').style.display = 'block';
     }
   });
   document.getElementById('login-password').addEventListener('keydown', e => {
     if (e.key === 'Enter') document.getElementById('login-btn').click();
   });
 
-  // ── Tab navigation ──
-  document.querySelectorAll('.sidebar__btn').forEach(btn => {
-    btn.addEventListener('click', function() {
-      document.querySelectorAll('.sidebar__btn').forEach(b => b.classList.remove('active'));
-      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-      btn.classList.add('active');
-      document.getElementById('panel-' + btn.dataset.tab).classList.add('active');
-    });
+  document.getElementById('admin-logout').addEventListener('click', function() {
+    sessionStorage.removeItem(PASS_KEY);
+    document.getElementById('admin-main').style.display = 'none';
+    document.getElementById('login-gate').style.display = 'flex';
+    document.getElementById('login-password').value = '';
   });
 
-  // ── API ──
+  // ── Tab navigation ──
+  function goTab(tab) {
+    document.querySelectorAll('.sidebar__btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    const btn = document.querySelector(`.sidebar__btn[data-tab="${tab}"]`);
+    if (btn) btn.classList.add('active');
+    const panel = document.getElementById(`panel-${tab}`);
+    if (panel) panel.classList.add('active');
+  }
+  window.goTab = goTab;
+
+  document.querySelectorAll('.sidebar__btn[data-tab]').forEach(btn => {
+    btn.addEventListener('click', function() { goTab(btn.dataset.tab); });
+  });
+
+  // ── API helpers ──
   async function api(body) {
     const r = await fetch('/api/app/admin-data', {
       method: 'POST',
@@ -299,167 +464,323 @@
     return r.json();
   }
 
-  // ── Load data ──
-  let state = { agenda: [], speakers: [], announcements: [] };
-
-  async function loadData() {
-    const r = await fetch('/api/app/data');
-    state = await r.json();
-    renderAgenda(); renderSpeakers(); renderAnnouncements();
+  function esc(s) {
+    return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   }
 
-  // ── Render helpers ──
-  const typeColors = { keynote: '#c4ff00', talk: '#64a0ff', panel: '#ffa032', workshop: '#a064ff', networking: '#00dcb4', break: 'rgba(255,255,255,0.3)' };
+  function fmtTime(t) { return t ? String(t).slice(0, 5) : ''; }
 
-  function renderAgenda() {
-    const list = document.getElementById('agenda-list');
-    if (!state.agenda.length) { list.innerHTML = '<p class="empty-state">Ingen agenda ännu. Klicka "+ Lägg till session" för att börja.</p>'; return; }
-    list.innerHTML = state.agenda
-      .sort((a,b) => (a.start_time||'').localeCompare(b.start_time||''))
-      .map(s => {
-        const tc = typeColors[(s.type||'talk').toLowerCase()] || '#888';
-        return `<div class="list-item">
-          <div class="list-item__left">
-            <span class="list-item__tag" style="color:${tc};border-color:${tc}20;background:${tc}15">${s.type||'Talk'}</span>
-            <div>
-              <div class="list-item__title">${s.start_time}${s.end_time?'–'+s.end_time:''} · ${esc(s.title)}</div>
-              ${s.speaker_name||s.location ? `<div class="list-item__sub">${[s.speaker_name,s.location].filter(Boolean).join(' · ')}</div>` : ''}
-            </div>
+  function fmtDate(d) {
+    if (!d) return '';
+    return new Date(d).toLocaleDateString('sv-SE', { day: 'numeric', month: 'short', year: 'numeric' });
+  }
+
+  // ── Load all data ──
+  async function loadData() {
+    try {
+      const r = await fetch('/api/app/data');
+      const data = await r.json();
+      STATE = data;
+      renderDashboard();
+      renderEvents();
+      renderAgenda();
+      renderSpeakers();
+      renderAnnouncements();
+      renderPushHistory();
+      populateSelects();
+    } catch(e) { console.error('loadData error', e); }
+  }
+  window.loadData = loadData;
+
+  // ── Dashboard ──
+  function renderDashboard() {
+    document.getElementById('stat-events').textContent = STATE.events?.length || 0;
+    document.getElementById('stat-speakers').textContent = STATE.speakers?.length || 0;
+    document.getElementById('stat-agenda').textContent = STATE.agenda?.length || 0;
+    document.getElementById('stat-announcements').textContent = STATE.announcements?.length || 0;
+
+    const evEl = document.getElementById('dash-events');
+    if (!STATE.events?.length) {
+      evEl.innerHTML = '<p class="empty-state">Inga evenemang ännu.</p>';
+      return;
+    }
+    evEl.innerHTML = STATE.events.slice(0,3).map(ev => {
+      const statusColors = { published: '#64a0ff', live: '#c4ff00', draft: '#888', past: '#555' };
+      const col = statusColors[ev.status] || '#888';
+      return `<div class="dash-item">
+        <div class="dash-item__dot" style="background:${col}"></div>
+        <div>
+          <div class="dash-item__title">${esc(ev.title)}</div>
+          <div class="dash-item__sub">${fmtDate(ev.date)} ${ev.location ? '· ' + esc(ev.location) : ''}</div>
+        </div>
+        <span class="status-badge" style="color:${col};border-color:${col}30;background:${col}15">${esc(ev.status || 'draft')}</span>
+      </div>`;
+    }).join('');
+  }
+
+  // ── Events ──
+  function renderEvents() {
+    const list = document.getElementById('events-list');
+    if (!STATE.events?.length) {
+      list.innerHTML = '<p class="empty-state">Inga evenemang. Klicka "+ Nytt evenemang" för att börja.</p>';
+      return;
+    }
+    const statusColors = { published: '#64a0ff', live: '#c4ff00', draft: '#888', past: '#555' };
+    list.innerHTML = STATE.events.map(ev => {
+      const col = statusColors[ev.status] || '#888';
+      return `<div class="list-item">
+        <div class="list-item__left">
+          <div class="event-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="18" rx="2" stroke="#c4ff00" stroke-width="1.8"/><line x1="3" y1="10" x2="21" y2="10" stroke="#c4ff00" stroke-width="1.8"/></svg>
           </div>
-          <button class="delete-btn" data-type="agenda" data-id="${s.id}">✕</button>
-        </div>`;
-      }).join('');
+          <div>
+            <div class="list-item__title">${esc(ev.title)}</div>
+            <div class="list-item__sub">${fmtDate(ev.date)} ${ev.location ? '· ' + esc(ev.location) : ''}</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <span class="status-badge" style="color:${col};border-color:${col}30;background:${col}15">${esc(ev.status)}</span>
+          <button class="delete-btn" data-type="events" data-id="${esc(ev.id)}">✕</button>
+        </div>
+      </div>`;
+    }).join('');
     attachDeletes();
   }
 
+  // ── Agenda ──
+  function renderAgenda() {
+    const list = document.getElementById('agenda-list');
+    if (!STATE.agenda?.length) {
+      list.innerHTML = '<p class="empty-state">Ingen agenda. Klicka "+ Lägg till session" för att börja.</p>';
+      return;
+    }
+    const typeColors = { keynote: '#c4ff00', talk: '#64a0ff', panel: '#ffa032', workshop: '#a064ff', break: 'rgba(255,255,255,0.3)' };
+    const sorted = [...STATE.agenda].sort((a,b) => (a.sort_order||0) - (b.sort_order||0));
+    list.innerHTML = sorted.map(s => {
+      const col = typeColors[(s.type||'talk').toLowerCase()] || '#64a0ff';
+      const speakerName = s.speaker?.name || '';
+      const timeStr = [fmtTime(s.start_time), fmtTime(s.end_time)].filter(Boolean).join('–');
+      return `<div class="list-item">
+        <div class="list-item__left">
+          <div class="time-badge">${esc(timeStr)}</div>
+          <div>
+            <div class="list-item__title">
+              <span class="type-tag" style="color:${col};border-color:${col}30;background:${col}15">${esc(s.type||'Talk')}</span>
+              ${esc(s.title)}
+            </div>
+            ${speakerName ? `<div class="list-item__sub">${esc(speakerName)}${s.room ? ' · ' + esc(s.room) : ''}</div>` : ''}
+          </div>
+        </div>
+        <button class="delete-btn" data-type="agenda" data-id="${esc(s.id)}">✕</button>
+      </div>`;
+    }).join('');
+    attachDeletes();
+  }
+
+  // ── Speakers ──
   function renderSpeakers() {
     const list = document.getElementById('speakers-list');
-    if (!state.speakers.length) { list.innerHTML = '<p class="empty-state">Inga talare ännu.</p>'; return; }
-    list.innerHTML = state.speakers.map(s => {
+    if (!STATE.speakers?.length) {
+      list.innerHTML = '<p class="empty-state">Inga talare.</p>';
+      return;
+    }
+    list.innerHTML = STATE.speakers.map(s => {
       const initials = (s.name||'?').split(' ').map(w=>w[0]||'').join('').slice(0,2).toUpperCase();
       return `<div class="list-item">
         <div class="list-item__left">
           <div class="avatar">${initials}</div>
           <div>
             <div class="list-item__title">${esc(s.name)}</div>
-            ${s.title||s.company ? `<div class="list-item__sub">${[s.title,s.company].filter(Boolean).join(' · ')}</div>` : ''}
+            ${s.title||s.company ? `<div class="list-item__sub">${[s.title,s.company].filter(Boolean).map(esc).join(' · ')}</div>` : ''}
+            ${s.bio ? `<div class="list-item__bio">${esc(s.bio.slice(0,80))}${s.bio.length>80?'...':''}</div>` : ''}
             <div class="list-item__links">
-              ${s.linkedin ? `<a href="${s.linkedin}" target="_blank">LinkedIn</a>` : ''}
-              ${s.instagram ? `<a href="${s.instagram}" target="_blank">Instagram</a>` : ''}
-              ${s.website ? `<a href="${s.website}" target="_blank">Webb</a>` : ''}
+              ${s.linkedin ? `<a href="${esc(s.linkedin)}" target="_blank">LinkedIn</a>` : ''}
+              ${s.instagram ? `<a href="${esc(s.instagram)}" target="_blank">Instagram</a>` : ''}
+              ${s.website ? `<a href="${esc(s.website)}" target="_blank">Webb</a>` : ''}
             </div>
           </div>
         </div>
-        <button class="delete-btn" data-type="speakers" data-id="${s.id}">✕</button>
+        <button class="delete-btn" data-type="speakers" data-id="${esc(s.id)}">✕</button>
       </div>`;
     }).join('');
     attachDeletes();
   }
 
+  // ── Announcements ──
   function renderAnnouncements() {
     const list = document.getElementById('announcements-list');
-    if (!state.announcements.length) { list.innerHTML = '<p class="empty-state">Inga meddelanden ännu.</p>'; return; }
-    list.innerHTML = state.announcements
+    if (!STATE.announcements?.length) {
+      list.innerHTML = '<p class="empty-state">Inga meddelanden.</p>';
+      return;
+    }
+    list.innerHTML = [...STATE.announcements]
       .sort((a,b) => (b.pinned?1:0)-(a.pinned?1:0))
       .map(a => `<div class="list-item">
         <div class="list-item__left">
-          ${a.pinned ? '<span style="color:#c4ff00">📌</span>' : ''}
           <div>
-            <div class="list-item__title">${esc(a.title)} <span class="list-item__tag" style="color:#c4ff00;border-color:#c4ff0020;background:#c4ff0015">${a.category||'Info'}</span></div>
-            ${a.body ? `<div class="list-item__sub">${esc(a.body.slice(0,80))}${a.body.length>80?'...':''}</div>` : ''}
+            <div class="list-item__title">
+              ${a.pinned ? '<span style="color:#c4ff00;margin-right:4px">📌</span>' : ''}
+              ${esc(a.title)}
+              <span class="type-tag" style="color:#c4ff00;border-color:#c4ff0025;background:#c4ff0012;margin-left:8px">${esc(a.category||'Info')}</span>
+            </div>
+            ${a.body ? `<div class="list-item__sub">${esc(a.body.slice(0,100))}${a.body.length>100?'...':''}</div>` : ''}
+            <div class="list-item__sub" style="margin-top:4px">${fmtDate(a.created_at)}</div>
           </div>
         </div>
-        <button class="delete-btn" data-type="announcements" data-id="${a.id}">✕</button>
+        <button class="delete-btn" data-type="announcements" data-id="${esc(a.id)}">✕</button>
       </div>`).join('');
     attachDeletes();
   }
 
+  // ── Push history ──
+  function renderPushHistory() {
+    const list = document.getElementById('push-history-list');
+    if (!STATE.notifications?.length) {
+      list.innerHTML = '<p class="empty-state">Inga push-meddelanden skickade ännu.</p>';
+      return;
+    }
+    list.innerHTML = STATE.notifications.slice(0,10).map(n => `
+      <div class="list-item">
+        <div class="list-item__left">
+          <div class="notif-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" stroke="#c4ff00" stroke-width="1.8"/></svg>
+          </div>
+          <div>
+            <div class="list-item__title">${esc(n.title)}</div>
+            ${n.body ? `<div class="list-item__sub">${esc(n.body)}</div>` : ''}
+            <div class="list-item__sub" style="margin-top:4px">${fmtDate(n.sent_at)}</div>
+          </div>
+        </div>
+      </div>`).join('');
+  }
+
+  // ── Populate select dropdowns ──
+  function populateSelects() {
+    // Event select for agenda
+    const evSel = document.getElementById('ag-event');
+    if (evSel) {
+      evSel.innerHTML = STATE.events?.length
+        ? STATE.events.map(e => `<option value="${esc(e.id)}">${esc(e.title)}</option>`).join('')
+        : '<option value="">Inget evenemang tillagt</option>';
+    }
+    // Speaker select for agenda
+    const spSel = document.getElementById('ag-speaker');
+    if (spSel) {
+      spSel.innerHTML = '<option value="">Ingen talare</option>' +
+        (STATE.speakers || []).map(s => `<option value="${esc(s.id)}">${esc(s.name)}</option>`).join('');
+    }
+  }
+
+  // ── Delete handler ──
   function attachDeletes() {
     document.querySelectorAll('.delete-btn').forEach(btn => {
       btn.onclick = async function() {
-        if (!confirm('Ta bort?')) return;
+        if (!confirm('Ta bort denna post?')) return;
         btn.textContent = '...';
+        btn.disabled = true;
         await api({ action: 'delete', type: btn.dataset.type, id: btn.dataset.id });
         await loadData();
       };
     });
   }
 
-  function esc(s) {
-    return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  }
-
   // ── Form toggles ──
-  function toggleForm(formId, open) {
-    document.getElementById(formId).hidden = !open;
+  function toggleForm(id, show) {
+    document.getElementById(id).style.display = show ? 'block' : 'none';
   }
 
-  document.getElementById('agenda-add-open').onclick = () => toggleForm('agenda-form', true);
+  document.getElementById('event-add-open').onclick = () => toggleForm('event-form', true);
+  document.getElementById('event-cancel-btn').onclick = () => toggleForm('event-form', false);
+  document.getElementById('agenda-add-open').onclick = () => { populateSelects(); toggleForm('agenda-form', true); };
   document.getElementById('agenda-cancel-btn').onclick = () => toggleForm('agenda-form', false);
   document.getElementById('speaker-add-open').onclick = () => toggleForm('speaker-form', true);
   document.getElementById('speaker-cancel-btn').onclick = () => toggleForm('speaker-form', false);
   document.getElementById('ann-add-open').onclick = () => toggleForm('ann-form', true);
   document.getElementById('ann-cancel-btn').onclick = () => toggleForm('ann-form', false);
 
-  // ── Save agenda ──
-  document.getElementById('agenda-save-btn').onclick = async function() {
-    const title = document.getElementById('ag-title').value.trim();
-    const start_time = document.getElementById('ag-start').value.trim();
-    if (!title || !start_time) { alert('Fyll i titel och starttid'); return; }
+  // ── Save: Event ──
+  document.getElementById('event-save-btn').onclick = async function() {
+    const title = document.getElementById('ev-title').value.trim();
+    if (!title) { alert('Fyll i titel'); return; }
     this.textContent = 'Sparar...';
-    await api({ action: 'add', type: 'agenda', item: {
-      title, start_time,
-      end_time: document.getElementById('ag-end').value.trim(),
-      type: document.getElementById('ag-type').value,
-      speaker_name: document.getElementById('ag-speaker').value.trim(),
-      location: document.getElementById('ag-location').value.trim(),
+    await api({ action: 'add', type: 'events', item: {
+      title,
+      date: document.getElementById('ev-date').value || null,
+      location: document.getElementById('ev-location').value.trim() || null,
+      description: document.getElementById('ev-desc').value.trim() || null,
+      status: document.getElementById('ev-status').value,
+      slug: title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g,''),
     }});
-    ['ag-title','ag-start','ag-end','ag-speaker','ag-location'].forEach(id => document.getElementById(id).value='');
-    toggleForm('agenda-form', false);
-    this.textContent = 'Spara';
+    ['ev-title','ev-date','ev-location','ev-desc'].forEach(id => document.getElementById(id).value = '');
+    toggleForm('event-form', false);
+    this.textContent = 'Spara evenemang';
     await loadData();
   };
 
-  // ── Save speaker ──
+  // ── Save: Agenda ──
+  document.getElementById('agenda-save-btn').onclick = async function() {
+    const title = document.getElementById('ag-title').value.trim();
+    const start_time = document.getElementById('ag-start').value;
+    if (!title || !start_time) { alert('Fyll i titel och starttid'); return; }
+    this.textContent = 'Sparar...';
+    const speakerId = document.getElementById('ag-speaker').value;
+    await api({ action: 'add', type: 'agenda', item: {
+      title,
+      start_time,
+      end_time: document.getElementById('ag-end').value || null,
+      type: document.getElementById('ag-type').value,
+      event_id: document.getElementById('ag-event').value || null,
+      speaker_id: speakerId || null,
+      room: document.getElementById('ag-room').value.trim() || null,
+      description: document.getElementById('ag-desc').value.trim() || null,
+      sort_order: parseInt(document.getElementById('ag-order').value) || 0,
+    }});
+    ['ag-title','ag-start','ag-end','ag-room','ag-desc','ag-order'].forEach(id => document.getElementById(id).value = '');
+    toggleForm('agenda-form', false);
+    this.textContent = 'Spara session';
+    await loadData();
+  };
+
+  // ── Save: Speaker ──
   document.getElementById('speaker-save-btn').onclick = async function() {
     const name = document.getElementById('sp-name').value.trim();
     if (!name) { alert('Fyll i namn'); return; }
     this.textContent = 'Sparar...';
     await api({ action: 'add', type: 'speakers', item: {
       name,
-      title: document.getElementById('sp-title').value.trim(),
-      company: document.getElementById('sp-company').value.trim(),
-      linkedin: document.getElementById('sp-linkedin').value.trim(),
-      instagram: document.getElementById('sp-instagram').value.trim(),
-      website: document.getElementById('sp-website').value.trim(),
+      title: document.getElementById('sp-title').value.trim() || null,
+      company: document.getElementById('sp-company').value.trim() || null,
+      bio: document.getElementById('sp-bio').value.trim() || null,
+      linkedin: document.getElementById('sp-linkedin').value.trim() || null,
+      instagram: document.getElementById('sp-instagram').value.trim() || null,
+      website: document.getElementById('sp-website').value.trim() || null,
     }});
-    ['sp-name','sp-title','sp-company','sp-linkedin','sp-instagram','sp-website'].forEach(id => document.getElementById(id).value='');
+    ['sp-name','sp-title','sp-company','sp-bio','sp-linkedin','sp-instagram','sp-website'].forEach(id => document.getElementById(id).value='');
     toggleForm('speaker-form', false);
-    this.textContent = 'Spara';
+    this.textContent = 'Spara talare';
     await loadData();
   };
 
-  // ── Save announcement ──
+  // ── Save: Announcement ──
   document.getElementById('ann-save-btn').onclick = async function() {
     const title = document.getElementById('ann-title').value.trim();
     if (!title) { alert('Fyll i rubrik'); return; }
-    this.textContent = 'Sparar...';
+    this.textContent = 'Publicerar...';
     await api({ action: 'add', type: 'announcements', item: {
       title,
-      body: document.getElementById('ann-body').value.trim(),
+      body: document.getElementById('ann-body').value.trim() || null,
       category: document.getElementById('ann-category').value,
       pinned: document.getElementById('ann-pinned').checked,
-      date: new Date().toISOString().slice(0,10),
     }});
-    document.getElementById('ann-title').value='';
-    document.getElementById('ann-body').value='';
-    document.getElementById('ann-pinned').checked=false;
+    document.getElementById('ann-title').value = '';
+    document.getElementById('ann-body').value = '';
+    document.getElementById('ann-pinned').checked = false;
     toggleForm('ann-form', false);
-    this.textContent = 'Spara';
+    this.textContent = 'Publicera';
     await loadData();
   };
 
-  // ── Send push ──
+  // ── Push ──
   document.getElementById('push-send-btn').onclick = async function() {
     const title = document.getElementById('push-title').value.trim();
     const body = document.getElementById('push-body').value.trim();
@@ -474,13 +795,14 @@
     const d = await r.json();
     this.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><line x1="22" y1="2" x2="11" y2="13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><polygon points="22 2 15 22 11 13 2 9 22 2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Skicka till alla';
     if (d.ok) {
-      fb.style.color = '#c4ff00';
-      fb.textContent = `✅ Skickat till ${d.sent} prenumeranter`;
-      document.getElementById('push-title').value='';
-      document.getElementById('push-body').value='';
+      fb.className = 'push-feedback push-feedback--ok';
+      fb.textContent = `✓ Skickat till ${d.sent} prenumeranter`;
+      document.getElementById('push-title').value = '';
+      document.getElementById('push-body').value = '';
+      await loadData();
     } else {
-      fb.style.color = '#ff6b6b';
-      fb.textContent = `❌ ${d.error||'Okänt fel'}`;
+      fb.className = 'push-feedback push-feedback--err';
+      fb.textContent = `✗ ${d.error || 'Okänt fel'}`;
     }
   };
 
@@ -490,22 +812,21 @@
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
-  --black: #0a0a0a; --black-2: #111; --black-3: rgba(255,255,255,0.08);
+  --black: #0a0a0a; --black-2: #111; --black-3: rgba(255,255,255,0.07);
   --white: #fff; --lime: #c4ff00; --font: 'Outfit', sans-serif;
-  --sidebar: 220px;
+  --sidebar-w: 220px;
 }
 html, body { height: 100%; background: var(--black); color: var(--white); font-family: var(--font); overflow: hidden; }
 
 /* ── Login ── */
 .login-gate { display: flex; align-items: center; justify-content: center; height: 100vh; padding: 24px; }
-.login-gate[hidden], .admin-shell[hidden] { display: none !important; }
-.login-box { width: 100%; max-width: 360px; background: var(--black-2); border: 1px solid var(--black-3); border-radius: 14px; padding: 44px 36px; text-align: center; }
+.login-box { width: 100%; max-width: 360px; background: var(--black-2); border: 1px solid var(--black-3); border-radius: 16px; padding: 48px 40px; text-align: center; }
 .login-logo { margin-bottom: 20px; }
 .login-title { font-size: 24px; font-weight: 800; margin-bottom: 6px; }
-.login-sub { font-size: 14px; color: rgba(255,255,255,0.45); margin-bottom: 28px; }
+.login-sub { font-size: 14px; color: rgba(255,255,255,0.4); margin-bottom: 28px; }
 .login-input { width: 100%; background: var(--black); border: 1px solid var(--black-3); border-radius: 8px; color: var(--white); font-family: var(--font); font-size: 15px; padding: 12px 14px; margin-bottom: 12px; outline: none; transition: border-color 0.15s; }
-.login-input:focus { border-color: var(--lime); }
-.login-btn { width: 100%; background: var(--lime); color: var(--black); border: none; border-radius: 8px; font-family: var(--font); font-size: 15px; font-weight: 800; padding: 13px; cursor: pointer; transition: opacity 0.15s; }
+.login-input:focus { border-color: rgba(196,255,0,0.5); }
+.login-btn { width: 100%; background: var(--lime); color: var(--black); border: none; border-radius: 8px; font-family: var(--font); font-size: 15px; font-weight: 800; padding: 14px; cursor: pointer; transition: opacity 0.15s; }
 .login-btn:hover { opacity: 0.9; }
 .login-error { color: #ff6b6b; font-size: 13px; margin-top: 12px; }
 
@@ -513,81 +834,112 @@ html, body { height: 100%; background: var(--black); color: var(--white); font-f
 .admin-shell { display: flex; height: 100vh; }
 
 /* ── Sidebar ── */
-.sidebar { width: var(--sidebar); background: var(--black-2); border-right: 1px solid var(--black-3); display: flex; flex-direction: column; flex-shrink: 0; }
-.sidebar__logo { display: flex; align-items: center; gap: 10px; padding: 20px 20px 16px; font-size: 13px; font-weight: 800; border-bottom: 1px solid var(--black-3); }
-.sidebar__nav { flex: 1; padding: 12px 10px; display: flex; flex-direction: column; gap: 4px; }
-.sidebar__btn { display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: none; border: none; border-radius: 8px; color: rgba(255,255,255,0.5); font-family: var(--font); font-size: 14px; font-weight: 600; cursor: pointer; text-align: left; transition: all 0.15s; }
+.sidebar { width: var(--sidebar-w); background: var(--black-2); border-right: 1px solid var(--black-3); display: flex; flex-direction: column; flex-shrink: 0; }
+.sidebar__top { flex: 1; display: flex; flex-direction: column; overflow-y: auto; }
+.sidebar__bottom { border-top: 1px solid var(--black-3); padding: 8px 10px 12px; }
+.sidebar__logo { display: flex; align-items: center; gap: 10px; padding: 18px 20px 14px; font-size: 13px; font-weight: 800; border-bottom: 1px solid var(--black-3); margin-bottom: 8px; }
+.sidebar__nav { padding: 4px 10px; display: flex; flex-direction: column; gap: 2px; }
+.sidebar__btn { display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: none; border: none; border-radius: 8px; color: rgba(255,255,255,0.5); font-family: var(--font); font-size: 13px; font-weight: 600; cursor: pointer; text-align: left; width: 100%; transition: all 0.15s; }
 .sidebar__btn:hover { background: rgba(255,255,255,0.05); color: var(--white); }
 .sidebar__btn.active { background: rgba(196,255,0,0.1); color: var(--lime); }
-.sidebar__app-link { display: flex; align-items: center; gap: 8px; padding: 16px 20px; font-size: 12px; color: rgba(255,255,255,0.35); text-decoration: none; border-top: 1px solid var(--black-3); transition: color 0.15s; }
+.sidebar__btn--logout { color: rgba(255,100,100,0.5); margin-top: 4px; }
+.sidebar__btn--logout:hover { background: rgba(255,80,80,0.08); color: #ff6b6b; }
+.sidebar__app-link { display: flex; align-items: center; gap: 8px; padding: 10px 12px; font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.35); text-decoration: none; border-radius: 8px; transition: color 0.15s; }
 .sidebar__app-link:hover { color: var(--lime); }
 
 /* ── Content ── */
-.admin-content { flex: 1; overflow: hidden; position: relative; }
+.admin-content { flex: 1; overflow: hidden; position: relative; min-width: 0; }
 .panel { display: none; flex-direction: column; height: 100%; }
 .panel.active { display: flex; }
-
-.panel__header { display: flex; align-items: center; justify-content: space-between; padding: 24px 32px; border-bottom: 1px solid var(--black-3); flex-shrink: 0; }
+.panel__header { display: flex; align-items: center; justify-content: space-between; padding: 24px 32px; border-bottom: 1px solid var(--black-3); flex-shrink: 0; gap: 16px; }
 .panel__title { font-size: 20px; font-weight: 800; }
-.panel__sub { font-size: 13px; color: rgba(255,255,255,0.45); margin-top: 4px; }
-
+.panel__sub { font-size: 13px; color: rgba(255,255,255,0.4); margin-top: 3px; }
 .panel__body { flex: 1; overflow-y: auto; padding: 24px 32px; }
+.panel__body--push { display: flex; flex-direction: column; gap: 32px; }
 
-/* ── Add form (slides in below header) ── */
-.add-form { background: rgba(196,255,0,0.03); border-bottom: 1px solid rgba(196,255,0,0.12); flex-shrink: 0; }
-.add-form__inner { padding: 20px 32px; max-width: 560px; }
-.add-form__title { font-size: 14px; font-weight: 700; margin-bottom: 16px; color: var(--lime); }
-.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.form-actions { display: flex; gap: 10px; margin-top: 4px; }
+/* ── Add form ── */
+.add-form { background: rgba(196,255,0,0.02); border-bottom: 1px solid rgba(196,255,0,0.1); flex-shrink: 0; }
+.add-form__inner { padding: 20px 32px; max-width: 640px; }
+.add-form__title { font-size: 13px; font-weight: 800; color: var(--lime); margin-bottom: 16px; letter-spacing: 0.06em; text-transform: uppercase; }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px; }
+.field-group--full { grid-column: 1 / -1; }
+.form-actions { display: flex; gap: 10px; }
 
-/* Push panel specific */
-#panel-push .panel__body { max-width: 560px; display: flex; flex-direction: column; gap: 20px; }
+/* ── Push card ── */
+.push-card { background: var(--black-2); border: 1px solid var(--black-3); border-radius: 12px; padding: 24px; max-width: 520px; display: flex; flex-direction: column; gap: 16px; }
+.push-card__title { font-size: 16px; font-weight: 700; }
+.push-feedback { font-size: 13px; min-height: 20px; font-weight: 600; }
+.push-feedback--ok { color: var(--lime); }
+.push-feedback--err { color: #ff6b6b; }
+.push-history__title { font-size: 13px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 14px; }
 
 /* ── Fields ── */
 .field-group { display: flex; flex-direction: column; gap: 6px; }
-.field-label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.4); }
+.field-label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.35); }
 .field-input, .field-textarea { background: var(--black); border: 1px solid var(--black-3); border-radius: 8px; color: var(--white); font-family: var(--font); font-size: 14px; padding: 10px 13px; outline: none; transition: border-color 0.15s; width: 100%; }
-.field-input:focus, .field-textarea:focus { border-color: rgba(196,255,0,0.4); }
-.field-textarea { resize: vertical; }
+.field-input:focus, .field-textarea:focus { border-color: rgba(196,255,0,0.35); }
+.field-textarea { resize: vertical; min-height: 80px; }
 select.field-input { cursor: pointer; }
-.field-checkbox { display: flex; align-items: center; gap: 10px; font-size: 14px; color: rgba(255,255,255,0.7); cursor: pointer; }
+input[type="date"].field-input { color-scheme: dark; }
 
 /* ── Buttons ── */
-.btn { display: inline-flex; align-items: center; gap: 8px; border: none; border-radius: 8px; font-family: var(--font); font-weight: 700; cursor: pointer; transition: opacity 0.15s; }
+.btn { display: inline-flex; align-items: center; gap: 8px; border: none; border-radius: 8px; font-family: var(--font); font-weight: 700; cursor: pointer; transition: opacity 0.15s; white-space: nowrap; }
 .btn--lime { background: var(--lime); color: var(--black); padding: 11px 20px; font-size: 14px; }
-.btn--lime:hover { opacity: 0.9; }
-.btn--ghost { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.7); padding: 11px 20px; font-size: 14px; }
+.btn--lime:hover { opacity: 0.88; }
+.btn--ghost { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.7); border: 1px solid var(--black-3); padding: 10px 18px; font-size: 14px; }
 .btn--ghost:hover { background: rgba(255,255,255,0.1); }
-.btn--sm { padding: 7px 14px; font-size: 13px; }
-.feedback { font-size: 13px; min-height: 20px; }
+.btn--sm { padding: 8px 14px; font-size: 12px; }
 
-/* ── List items ── */
+/* ── Lists ── */
 .item-list { display: flex; flex-direction: column; gap: 8px; }
 .list-item { display: flex; align-items: center; justify-content: space-between; gap: 14px; background: var(--black-2); border: 1px solid var(--black-3); border-radius: 10px; padding: 14px 16px; transition: border-color 0.15s; }
-.list-item:hover { border-color: rgba(255,255,255,0.14); }
+.list-item:hover { border-color: rgba(255,255,255,0.12); }
 .list-item__left { display: flex; align-items: flex-start; gap: 12px; flex: 1; min-width: 0; }
-.list-item__tag { display: inline-block; font-size: 9px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; padding: 2px 7px; border-radius: 4px; border: 1px solid; flex-shrink: 0; margin-right: 2px; }
-.list-item__title { font-size: 14px; font-weight: 600; color: var(--white); margin-bottom: 3px; }
-.list-item__sub { font-size: 12px; color: rgba(255,255,255,0.45); }
-.list-item__links { display: flex; gap: 12px; margin-top: 4px; }
+.list-item__title { font-size: 14px; font-weight: 600; color: var(--white); margin-bottom: 3px; line-height: 1.4; }
+.list-item__sub { font-size: 12px; color: rgba(255,255,255,0.4); line-height: 1.4; }
+.list-item__bio { font-size: 12px; color: rgba(255,255,255,0.3); margin-top: 4px; }
+.list-item__links { display: flex; gap: 12px; margin-top: 6px; }
 .list-item__links a { font-size: 12px; color: var(--lime); text-decoration: none; }
 .list-item__links a:hover { text-decoration: underline; }
-.delete-btn { background: none; border: 1px solid rgba(255,80,80,0.2); border-radius: 6px; color: rgba(255,100,100,0.5); font-size: 12px; padding: 6px 10px; cursor: pointer; flex-shrink: 0; transition: all 0.15s; }
-.delete-btn:hover { background: rgba(255,80,80,0.1); color: #ff6b6b; border-color: rgba(255,80,80,0.4); }
-.avatar { width: 40px; height: 40px; border-radius: 50%; background: rgba(196,255,0,0.1); border: 1px solid rgba(196,255,0,0.2); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800; color: var(--lime); flex-shrink: 0; }
-.empty-state { font-size: 14px; color: rgba(255,255,255,0.3); text-align: center; padding: 48px 0; }
+.delete-btn { background: none; border: 1px solid rgba(255,80,80,0.15); border-radius: 6px; color: rgba(255,100,100,0.4); font-size: 12px; padding: 6px 10px; cursor: pointer; flex-shrink: 0; transition: all 0.15s; }
+.delete-btn:hover { background: rgba(255,80,80,0.08); color: #ff6b6b; border-color: rgba(255,80,80,0.3); }
+.delete-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.avatar { width: 40px; height: 40px; border-radius: 50%; background: rgba(196,255,0,0.08); border: 1px solid rgba(196,255,0,0.2); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800; color: var(--lime); flex-shrink: 0; }
+.event-icon { width: 36px; height: 36px; background: rgba(196,255,0,0.06); border: 1px solid rgba(196,255,0,0.15); border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.notif-icon { width: 32px; height: 32px; background: rgba(196,255,0,0.08); border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.time-badge { font-size: 12px; font-weight: 700; color: rgba(255,255,255,0.5); min-width: 80px; flex-shrink: 0; padding-top: 2px; font-feature-settings: "tnum"; }
+.type-tag { display: inline-block; font-size: 9px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; padding: 2px 7px; border-radius: 4px; border: 1px solid; margin-right: 6px; vertical-align: middle; }
+.status-badge { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; border: 1px solid; white-space: nowrap; flex-shrink: 0; }
+.empty-state { font-size: 14px; color: rgba(255,255,255,0.25); text-align: center; padding: 48px 0; }
+
+/* ── Dashboard ── */
+.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 32px; }
+.stat-card { background: var(--black-2); border: 1px solid var(--black-3); border-radius: 12px; padding: 20px 16px; text-align: center; }
+.stat-card__num { font-size: 36px; font-weight: 800; color: var(--lime); line-height: 1; margin-bottom: 6px; }
+.stat-card__label { font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.08em; }
+.dash-section { margin-bottom: 28px; }
+.dash-section__title { font-size: 11px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 12px; }
+.dash-list { display: flex; flex-direction: column; gap: 8px; }
+.dash-item { display: flex; align-items: center; gap: 12px; background: var(--black-2); border: 1px solid var(--black-3); border-radius: 8px; padding: 12px 14px; }
+.dash-item__dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.dash-item__title { font-size: 14px; font-weight: 600; flex: 1; }
+.dash-item__sub { font-size: 12px; color: rgba(255,255,255,0.4); margin-top: 2px; }
+.quick-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+.quick-btn { display: flex; align-items: center; gap: 8px; padding: 12px 18px; background: rgba(196,255,0,0.06); border: 1px solid rgba(196,255,0,0.15); border-radius: 8px; color: rgba(255,255,255,0.8); font-family: var(--font); font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.15s; }
+.quick-btn:hover { background: rgba(196,255,0,0.12); border-color: rgba(196,255,0,0.3); color: var(--white); }
 
 /* ── Mobile ── */
-@media (max-width: 640px) {
-  :root { --sidebar: 60px; }
-  .sidebar__logo span { display: none; }
-  .sidebar__btn span { display: none; }
+@media (max-width: 768px) {
+  :root { --sidebar-w: 56px; }
+  .sidebar__logo span, .sidebar__btn span, .sidebar__app-link span { display: none; }
   .sidebar__btn { justify-content: center; padding: 12px; }
-  .sidebar__app-link span { display: none; }
+  .sidebar__logo { justify-content: center; padding: 16px 8px; }
+  .sidebar__app-link { justify-content: center; padding: 12px 8px; }
   .panel__header { padding: 16px 20px; }
   .panel__body { padding: 16px 20px; }
   .add-form__inner { padding: 16px 20px; }
-  .form-row { grid-template-columns: 1fr; }
+  .form-grid { grid-template-columns: 1fr; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
 }
 </style>
 </body>

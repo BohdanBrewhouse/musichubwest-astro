@@ -381,7 +381,7 @@
     var sorted = sessions.slice().sort(function(a, b) { return (a.sort_order || 0) - (b.sort_order || 0); });
     el.innerHTML = sorted.map(function(s) {
       var type = (s.type || 'talk').toLowerCase();
-      var startTime = (s.start_time || '').slice(0, 5); // "09:00"
+      var startTime = (s.start_time || '').slice(0, 5); // "08:30:00" → "08:30"
       var endTime = (s.end_time || '').slice(0, 5);
       // Speaker from joined object
       var speakerName = (s.speaker && s.speaker.name) ? s.speaker.name : '';
@@ -537,7 +537,7 @@
 })();
 </script>
 
-<style>
+<style is:global>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
