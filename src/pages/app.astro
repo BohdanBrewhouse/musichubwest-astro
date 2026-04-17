@@ -1,6 +1,5 @@
 ---
-// src/pages/app.astro
-// PWA shell — standalone app feel
+// src/pages/app.astro — Music Hub West PWA
 ---
 <!DOCTYPE html>
 <html lang="sv">
@@ -11,17 +10,18 @@
   <meta name="theme-color" content="#0a0a0a" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="Music Hub West" />
+  <meta name="apple-mobile-web-app-title" content="MHW" />
   <link rel="manifest" href="/manifest.json" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="apple-touch-icon" sizes="180x180" href="/icon-180.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" />
+  <!-- QR code library -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
 </head>
 <body>
 
-<!-- APP SHELL -->
 <div class="app">
 
   <!-- Header -->
@@ -38,8 +38,8 @@
   </header>
 
   <!-- Install banner -->
-  <div class="install-banner" id="install-banner" hidden>
-    <p class="install-banner__text">📲 Lägg till på hemskärmen för bästa upplevelsen</p>
+  <div class="install-banner" id="install-banner" style="display:none">
+    <p class="install-banner__text">📲 Lägg till på hemskärmen</p>
     <button class="install-banner__btn" id="install-btn">Installera</button>
     <button class="install-banner__close" id="install-close">✕</button>
   </div>
@@ -50,41 +50,14 @@
     <!-- TAB: FEED -->
     <section class="app-tab active" id="tab-feed">
       <div class="feed">
-
-        <!-- Upcoming events -->
         <div class="feed-section">
-          <h2 class="feed-section__title">Kommande event</h2>
-          <div class="feed-events" id="feed-events">
-            <!-- Placeholder cards -->
-            <div class="event-card">
-              <div class="event-card__date">
-                <span class="event-card__day">15</span>
-                <span class="event-card__month">MAJ</span>
-              </div>
-              <div class="event-card__info">
-                <p class="event-card__title">Music Tech Hub Summit</p>
-                <p class="event-card__meta">Brewhouse Inkubator · 10:00–17:00</p>
-              </div>
-              <button class="event-card__save" data-event="music-tech-hub-summit" title="Spara event">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </button>
-            </div>
-          </div>
+          <h2 class="feed-section__title">Kommande evenemang</h2>
+          <div id="feed-events"><div class="skeleton-card"></div></div>
         </div>
-
-        <!-- Announcements feed -->
         <div class="feed-section">
           <h2 class="feed-section__title">Meddelanden</h2>
-          <div class="feed-announcements" id="feed-announcements">
-            <div class="announcement-card">
-              <span class="announcement-card__tag">Info</span>
-              <p class="announcement-card__title">Välkommen till Music Hub West App</p>
-              <p class="announcement-card__body">Här hittar du agenda, spikernformation och uppdateringar direkt från arrangören.</p>
-              <span class="announcement-card__date">Idag</span>
-            </div>
-          </div>
+          <div id="feed-announcements"><div class="skeleton-card"></div></div>
         </div>
-
       </div>
     </section>
 
@@ -92,13 +65,10 @@
     <section class="app-tab" id="tab-agenda">
       <div class="agenda-app">
         <div class="agenda-app__header">
-          <h2 class="agenda-app__title">Dagens agenda</h2>
+          <h2 class="agenda-app__title">Agenda</h2>
           <p class="agenda-app__date" id="agenda-date"></p>
         </div>
-
-        <div class="agenda-sessions" id="agenda-sessions">
-          <div class="empty-state-msg">Agenda läses in...</div>
-        </div>
+        <div id="agenda-sessions"><div class="empty-state-msg">Agenda läses in...</div></div>
       </div>
     </section>
 
@@ -107,11 +77,9 @@
       <div class="speakers-app">
         <div class="speakers-app__header">
           <h2 class="speakers-app__title">Talare</h2>
-          <p class="speakers-app__sub">Klicka för mer info & sociala länkar</p>
+          <p class="speakers-app__sub">Tryck för mer info</p>
         </div>
-        <div class="speakers-grid" id="speakers-grid">
-          <div class="empty-state-msg">Talare läses in...</div>
-        </div>
+        <div class="speakers-grid" id="speakers-grid"><div class="skeleton-card"></div></div>
       </div>
     </section>
 
@@ -122,9 +90,95 @@
           <h2 class="notif-app__title">Notiser</h2>
           <p class="notif-app__sub">Meddelanden från arrangören</p>
         </div>
-        <div class="notif-list" id="notif-list">
-          <div class="empty-state-msg">Inga notiser ännu.</div>
+        <div id="notif-list"><div class="empty-state-msg">Inga notiser ännu.</div></div>
+      </div>
+    </section>
+
+    <!-- TAB: MITT KORT -->
+    <section class="app-tab" id="tab-kort">
+      <!-- Guest state -->
+      <div class="kort-guest" id="kort-guest">
+        <div class="kort-guest__icon">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="1" stroke="#c4ff00" stroke-width="1.8"/><rect x="14" y="3" width="7" height="7" rx="1" stroke="#c4ff00" stroke-width="1.8"/><rect x="3" y="14" width="7" height="7" rx="1" stroke="#c4ff00" stroke-width="1.8"/><path d="M14 14h1v1h-1zM14 17h1v1h-1zM17 14h1v1h-1zM20 17h1v1h-1zM17 20h1v1h-1zM20 14v1M20 20h1" stroke="#c4ff00" stroke-width="1.8" stroke-linecap="round"/></svg>
         </div>
+        <h2 class="kort-guest__title">Ditt evenemangskort</h2>
+        <p class="kort-guest__text">Registrera dig för att få ditt personliga QR-kort, spåra dina evenemang och samla belöningar.</p>
+        <div class="kort-guest__actions">
+          <button class="btn-lime" id="btn-register">Registrera dig</button>
+          <button class="btn-outline" id="btn-login">Logga in</button>
+        </div>
+        <div class="kort-guest__perks">
+          <div class="kort-perk">
+            <span class="kort-perk__icon">🎫</span>
+            <div>
+              <p class="kort-perk__title">Personligt QR-kort</p>
+              <p class="kort-perk__sub">Check-in på plats med en skanning</p>
+            </div>
+          </div>
+          <div class="kort-perk">
+            <span class="kort-perk__icon">🏆</span>
+            <div>
+              <p class="kort-perk__title">Samla achievements</p>
+              <p class="kort-perk__sub">Belöningar för varje evenemang du besöker</p>
+            </div>
+          </div>
+          <div class="kort-perk">
+            <span class="kort-perk__icon">⭐</span>
+            <div>
+              <p class="kort-perk__title">Exklusiva erbjudanden</p>
+              <p class="kort-perk__sub">Specialförmåner för aktiva deltagare</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Logged in state (hidden by default) -->
+      <div class="kort-user" id="kort-user" style="display:none">
+        <div class="kort-card">
+          <div class="kort-card__header">
+            <span class="kort-card__label">Music Hub West</span>
+            <span class="kort-card__badge" id="user-badge">Deltagare</span>
+          </div>
+          <div class="kort-card__qr" id="qr-container">
+            <canvas id="qr-canvas"></canvas>
+          </div>
+          <div class="kort-card__info">
+            <p class="kort-card__name" id="user-name">Laddar...</p>
+            <p class="kort-card__meta" id="user-email"></p>
+          </div>
+          <div class="kort-card__footer">
+            <span class="kort-card__hint">Visa för personal vid incheckning</span>
+          </div>
+        </div>
+
+        <!-- Achievements -->
+        <div class="achievements">
+          <h3 class="achievements__title">Achievements</h3>
+          <div class="achievements-grid" id="achievements-grid">
+            <div class="achievement-item achievement-item--locked">
+              <span class="achievement-item__icon">🥉</span>
+              <p class="achievement-item__name">Deltagare</p>
+              <p class="achievement-item__sub">1 evenemang</p>
+            </div>
+            <div class="achievement-item achievement-item--locked">
+              <span class="achievement-item__icon">🥈</span>
+              <p class="achievement-item__name">Entusiast</p>
+              <p class="achievement-item__sub">3 evenemang</p>
+            </div>
+            <div class="achievement-item achievement-item--locked">
+              <span class="achievement-item__icon">🥇</span>
+              <p class="achievement-item__name">Ambassador</p>
+              <p class="achievement-item__sub">5 evenemang</p>
+            </div>
+            <div class="achievement-item achievement-item--locked">
+              <span class="achievement-item__icon">💎</span>
+              <p class="achievement-item__name">Legend</p>
+              <p class="achievement-item__sub">10 evenemang</p>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn-outline btn-logout" id="btn-logout">Logga ut</button>
       </div>
     </section>
 
@@ -137,7 +191,7 @@
       <span>Feed</span>
     </button>
     <button class="app-tab-btn" data-tab="agenda">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="18" rx="2" ry="2" stroke="currentColor" stroke-width="1.8"/><line x1="16" y1="2" x2="16" y2="6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><line x1="8" y1="2" x2="8" y2="6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><line x1="3" y1="10" x2="21" y2="10" stroke="currentColor" stroke-width="1.8"/></svg>
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.8"/><line x1="16" y1="2" x2="16" y2="6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><line x1="8" y1="2" x2="8" y2="6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><line x1="3" y1="10" x2="21" y2="10" stroke="currentColor" stroke-width="1.8"/></svg>
       <span>Agenda</span>
     </button>
     <button class="app-tab-btn" data-tab="speakers">
@@ -148,12 +202,37 @@
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
       <span>Notiser</span>
     </button>
+    <button class="app-tab-btn" data-tab="kort">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.8"/><rect x="14" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.8"/><rect x="3" y="14" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.8"/><path d="M14 14h3v3M20 14v.01M14 20h.01M17 17h3v3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span>Mitt kort</span>
+    </button>
   </nav>
 
 </div>
 
+<!-- Speaker modal -->
+<div class="modal-overlay" id="speaker-modal" style="display:none" onclick="closeSpeakerModal(event)">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="speaker-modal__photo-wrap">
+      <div class="speaker-modal__photo" id="modal-photo"></div>
+    </div>
+    <div class="speaker-modal__body">
+      <h2 class="speaker-modal__name" id="modal-name"></h2>
+      <p class="speaker-modal__role" id="modal-role"></p>
+      <p class="speaker-modal__bio" id="modal-bio"></p>
+      <div class="speaker-modal__links" id="modal-links"></div>
+    </div>
+    <button class="modal-close" onclick="document.getElementById('speaker-modal').style.display='none'">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+</div>
+
 <script is:inline>
 (function() {
+  var SPEAKERS_DATA = [];
+
   // ── Service Worker ──
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/sw.js');
@@ -169,41 +248,39 @@
       tabPanels.forEach(function(p) { p.classList.remove('active'); });
       btn.classList.add('active');
       document.getElementById('tab-' + tab).classList.add('active');
+      if (tab === 'notifications') {
+        localStorage.setItem('notif-last-seen', localStorage.getItem('notif-count') || '0');
+        var nb = document.getElementById('notif-tab-btn');
+        if (nb) nb.classList.remove('has-badge');
+      }
     });
   });
 
   // ── Agenda date ──
   var agendaDate = document.getElementById('agenda-date');
   if (agendaDate) {
-    var d = new Date();
-    agendaDate.textContent = d.toLocaleDateString('sv-SE', { weekday: 'long', day: 'numeric', month: 'long' });
+    agendaDate.textContent = new Date().toLocaleDateString('sv-SE', { weekday: 'long', day: 'numeric', month: 'long' });
   }
 
   // ── Push notifications ──
   var notifyBtn = document.getElementById('app-notify-btn');
   if (notifyBtn) {
     notifyBtn.addEventListener('click', function() {
-      if (!('Notification' in window)) {
-        alert('Din webbläsare stöder inte notiser.');
-        return;
-      }
+      if (!('Notification' in window)) { alert('Din webbläsare stöder inte notiser.'); return; }
       Notification.requestPermission().then(function(perm) {
         if (perm === 'granted') {
           notifyBtn.style.color = '#c4ff00';
-          // Register push subscription
           if ('serviceWorker' in navigator && 'PushManager' in window) {
-            navigator.serviceWorker.ready.then(function(registration) {
-              subscribeToPush(registration);
-            });
+            navigator.serviceWorker.ready.then(subscribeToPush);
           }
         }
       });
     });
   }
 
-  async function subscribeToPush(registration) {
+  async function subscribeToPush(reg) {
     try {
-      var sub = await registration.pushManager.subscribe({
+      var sub = await reg.pushManager.subscribe({
         userVisibleOnly: true,
         applicationServerKey: 'BHGim_2qR9v2Wt_UKth5kj1dSOHea0r2fUx2VbFqm0htriJ2XAhI9BcthVwvur3MqewPZIkVePIBnR-PJbjnxrA'
       });
@@ -212,230 +289,250 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ subscription: sub })
       });
-    } catch (e) {
-      console.warn('Push subscription failed:', e);
-    }
+    } catch (e) { console.warn('Push subscription failed:', e); }
   }
 
-  // ── Remind me listeners (also called after dynamic render) ──
+  // ── Load data ──
+  fetch('/api/app/data')
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      renderEvents(data.events || []);
+      renderAnnouncements(data.announcements || []);
+      renderAgenda(data.agenda || []);
+      renderSpeakers(data.speakers || []);
+      renderNotifications(data.notifications || []);
+    })
+    .catch(function(e) { console.error('Data load error', e); });
+
+  // ── Render: Events ──
+  function renderEvents(events) {
+    var el = document.getElementById('feed-events');
+    if (!el) return;
+    if (!events.length) {
+      el.innerHTML = '<div class="empty-state-msg">Inga kommande evenemang.</div>';
+      return;
+    }
+    var now = new Date();
+    var upcoming = events.filter(function(e) { return !e.date || new Date(e.date) >= now; });
+    if (!upcoming.length) upcoming = events;
+    el.innerHTML = upcoming.map(function(ev) {
+      var d = ev.date ? new Date(ev.date) : null;
+      var day = d ? d.getDate() : '--';
+      var mon = d ? d.toLocaleDateString('sv-SE', { month: 'short' }).toUpperCase() : '';
+      var isLive = ev.status === 'live';
+      return (
+        '<div class="event-card' + (isLive ? ' event-card--live' : '') + '">' +
+          '<div class="event-card__date">' +
+            '<span class="event-card__day">' + day + '</span>' +
+            '<span class="event-card__month">' + mon + '</span>' +
+          '</div>' +
+          '<div class="event-card__info">' +
+            (isLive ? '<span class="live-badge">&#9679; Live nu</span>' : '') +
+            '<p class="event-card__title">' + escHtml(ev.title) + '</p>' +
+            '<p class="event-card__meta">' + escHtml(ev.location || '') + '</p>' +
+          '</div>' +
+          '<button class="event-card__save" data-event="' + escHtml(ev.id) + '" title="Spara">' +
+            '<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
+          '</button>' +
+        '</div>'
+      );
+    }).join('');
+    // Save event buttons
+    el.querySelectorAll('.event-card__save').forEach(function(btn) {
+      var key = 'saved-' + btn.getAttribute('data-event');
+      if (localStorage.getItem(key)) btn.classList.add('active');
+      btn.addEventListener('click', function() {
+        if (localStorage.getItem(key)) { localStorage.removeItem(key); btn.classList.remove('active'); }
+        else { localStorage.setItem(key, '1'); btn.classList.add('active'); }
+      });
+    });
+  }
+
+  // ── Render: Announcements ──
+  function renderAnnouncements(items) {
+    var el = document.getElementById('feed-announcements');
+    if (!el) return;
+    if (!items.length) {
+      el.innerHTML = '<div class="empty-state-msg">Inga meddelanden ännu.</div>';
+      return;
+    }
+    var sorted = items.slice().sort(function(a, b) { return (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0); });
+    el.innerHTML = sorted.map(function(a) {
+      var ts = a.created_at ? new Date(a.created_at).toLocaleDateString('sv-SE', { day: 'numeric', month: 'short' }) : '';
+      return (
+        '<div class="announcement-card' + (a.pinned ? ' announcement-card--pinned' : '') + '">' +
+          '<span class="announcement-card__tag">' + escHtml(a.category || 'Info') + '</span>' +
+          '<p class="announcement-card__title">' + escHtml(a.title) + '</p>' +
+          (a.body ? '<p class="announcement-card__body">' + escHtml(a.body) + '</p>' : '') +
+          '<span class="announcement-card__date">' + ts + '</span>' +
+        '</div>'
+      );
+    }).join('');
+  }
+
+  // ── Render: Agenda ──
+  function renderAgenda(sessions) {
+    var el = document.getElementById('agenda-sessions');
+    if (!el) return;
+    if (!sessions.length) {
+      el.innerHTML = '<div class="empty-state-msg">Ingen agenda tillagd ännu.</div>';
+      return;
+    }
+    var sorted = sessions.slice().sort(function(a, b) { return (a.sort_order || 0) - (b.sort_order || 0); });
+    el.innerHTML = sorted.map(function(s) {
+      var type = (s.type || 'talk').toLowerCase();
+      var startTime = (s.start_time || '').slice(0, 5); // "09:00"
+      var endTime = (s.end_time || '').slice(0, 5);
+      // Speaker from joined object
+      var speakerName = (s.speaker && s.speaker.name) ? s.speaker.name : '';
+      var speakerCompany = (s.speaker && s.speaker.company) ? s.speaker.company : '';
+      var speakerMeta = [speakerName, speakerCompany].filter(Boolean).join(' · ');
+      return (
+        '<div class="session-card">' +
+          '<div class="session-card__time">' +
+            '<span class="session-card__start">' + escHtml(startTime) + '</span>' +
+            '<span class="session-card__end">' + escHtml(endTime) + '</span>' +
+          '</div>' +
+          '<div class="session-card__body">' +
+            '<span class="session-card__type session-card__type--' + type + '">' + escHtml(s.type || 'Talk') + '</span>' +
+            '<p class="session-card__title">' + escHtml(s.title || '') + '</p>' +
+            (speakerMeta ? '<p class="session-card__speaker">' + escHtml(speakerMeta) + '</p>' : '') +
+            (s.description ? '<p class="session-card__desc">' + escHtml(s.description) + '</p>' : '') +
+          '</div>' +
+          (type !== 'break' ?
+            '<button class="session-card__remind" data-time="' + escHtml(startTime) + '" title="Påminn mig">' +
+              '<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
+            '</button>'
+          : '') +
+        '</div>'
+      );
+    }).join('');
+    attachRemindListeners();
+  }
+
   function attachRemindListeners() {
     document.querySelectorAll('.session-card__remind').forEach(function(btn) {
-      var savedKey = 'remind-' + btn.getAttribute('data-time');
-      if (localStorage.getItem(savedKey)) {
-        btn.classList.add('active');
-      }
-      // Remove old listener by cloning
-      var newBtn = btn.cloneNode(true);
-      btn.parentNode.replaceChild(newBtn, btn);
-      if (localStorage.getItem(savedKey)) {
-        newBtn.classList.add('active');
-      }
-      newBtn.addEventListener('click', function() {
-        var time = newBtn.getAttribute('data-time');
-        var key = 'remind-' + time;
-        if (localStorage.getItem(key)) {
-          localStorage.removeItem(key);
-          newBtn.classList.remove('active');
-        } else {
-          localStorage.setItem(key, '1');
-          newBtn.classList.add('active');
+      var key = 'remind-' + btn.getAttribute('data-time');
+      if (localStorage.getItem(key)) btn.classList.add('active');
+      var nb = btn.cloneNode(true);
+      if (localStorage.getItem(key)) nb.classList.add('active');
+      btn.parentNode.replaceChild(nb, btn);
+      nb.addEventListener('click', function() {
+        if (localStorage.getItem(key)) { localStorage.removeItem(key); nb.classList.remove('active'); }
+        else {
+          localStorage.setItem(key, '1'); nb.classList.add('active');
           if (Notification.permission === 'granted') {
-            new Notification('Påminnelse sparad! 🔔', { body: 'Vi påminner dig 15 min före ' + time, icon: '/favicon.svg' });
+            new Notification('Påminnelse sparad!', { body: 'Vi påminner dig 15 min före ' + nb.getAttribute('data-time'), icon: '/favicon.svg' });
           }
         }
       });
     });
   }
 
-  // Initial remind listeners for static cards
-  attachRemindListeners();
-
-  // ── Save event button ──
-  document.querySelectorAll('.event-card__save').forEach(function(btn) {
-    var eventId = btn.getAttribute('data-event');
-    var key = 'saved-' + eventId;
-    if (localStorage.getItem(key)) btn.classList.add('active');
-    btn.addEventListener('click', function() {
-      if (localStorage.getItem(key)) {
-        localStorage.removeItem(key);
-        btn.classList.remove('active');
-      } else {
-        localStorage.setItem(key, '1');
-        btn.classList.add('active');
-      }
-    });
-  });
-
-  // ── PWA Install banner ──
-  var deferredPrompt;
-  var banner = document.getElementById('install-banner');
-  var installBtn = document.getElementById('install-btn');
-  var closeBtn = document.getElementById('install-close');
-
-  window.addEventListener('beforeinstallprompt', function(e) {
-    e.preventDefault();
-    deferredPrompt = e;
-    if (banner && !localStorage.getItem('install-dismissed')) {
-      banner.hidden = false;
-    }
-  });
-
-  if (installBtn) {
-    installBtn.addEventListener('click', function() {
-      if (deferredPrompt) {
-        deferredPrompt.prompt();
-        deferredPrompt.userChoice.then(function() {
-          deferredPrompt = null;
-          banner.hidden = true;
-        });
-      }
-    });
-  }
-
-  if (closeBtn) {
-    closeBtn.addEventListener('click', function() {
-      banner.hidden = true;
-      localStorage.setItem('install-dismissed', '1');
-    });
-  }
-
-  // ── Dynamic data from Edge Config ──
-  fetch('/api/app/data')
-    .then(function(r) { return r.json(); })
-    .then(function(data) {
-      renderAgenda(data.agenda || []);
-      renderSpeakers(data.speakers || []);
-      if (data.announcements && data.announcements.length) renderAnnouncements(data.announcements);
-      renderNotifications(data.notifications || []);
-    })
-    .catch(function() {});
-
-  // Mark notifications tab as unread if new ones exist
-  function updateNotifBadge(count) {
-    var btn = document.getElementById('notif-tab-btn');
-    if (!btn) return;
-    var lastSeen = parseInt(localStorage.getItem('notif-last-seen') || '0');
-    var unread = count > lastSeen;
-    if (unread) btn.classList.add('has-badge');
-  }
-
-  function renderAgenda(sessions) {
-    var container = document.getElementById('agenda-sessions');
-    if (!container) return;
-    if (!sessions.length) {
-      container.innerHTML = '<div class="empty-state-msg">Ingen agenda tillagd ännu.</div>';
-      return;
-    }
-    container.innerHTML = sessions
-      .slice()
-      .sort(function(a, b) { return (a.start_time || '').localeCompare(b.start_time || ''); })
-      .map(function(s) {
-        var type = (s.type || 'talk').toLowerCase();
-        return (
-          '<div class="session-card" data-time="' + escHtml(s.start_time || '') + '">' +
-            '<div class="session-card__time">' +
-              '<span class="session-card__start">' + escHtml(s.start_time || '') + '</span>' +
-              '<span class="session-card__end">' + escHtml(s.end_time || '') + '</span>' +
-            '</div>' +
-            '<div class="session-card__body">' +
-              '<span class="session-card__type session-card__type--' + type + '">' + escHtml(s.type || 'Talk') + '</span>' +
-              '<p class="session-card__title">' + escHtml(s.title || '') + '</p>' +
-              '<p class="session-card__speaker">' + escHtml([s.speaker_name, s.location].filter(Boolean).join(' \xB7 ')) + '</p>' +
-            '</div>' +
-            '<button class="session-card__remind" data-time="' + escHtml(s.start_time || '') + '" title="P\xE5minn mig">' +
-              '<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
-            '</button>' +
-          '</div>'
-        );
-      })
-      .join('');
-    attachRemindListeners();
-  }
-
-  function renderNotifications(items) {
-    var container = document.getElementById('notif-list');
-    if (!container) return;
-    updateNotifBadge(items.length);
-    if (!items.length) {
-      container.innerHTML = '<div class="empty-state-msg">Inga notiser ännu.</div>';
-      return;
-    }
-    container.innerHTML = items.map(function(n) {
-      var d = new Date(n.sentAt);
-      var timeStr = d.toLocaleString('sv-SE', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
-      return (
-        '<div class="notif-item">' +
-          '<div class="notif-item__icon">' +
-            '<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0" stroke="#c4ff00" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
-          '</div>' +
-          '<div class="notif-item__content">' +
-            '<p class="notif-item__title">' + escHtml(n.title) + '</p>' +
-            (n.body ? '<p class="notif-item__body">' + escHtml(n.body) + '</p>' : '') +
-            '<span class="notif-item__time">' + escHtml(timeStr) + '</span>' +
-          '</div>' +
-        '</div>'
-      );
-    }).join('');
-    // Mark as seen when tab is opened
-    document.querySelector('[data-tab="notifications"]').addEventListener('click', function() {
-      localStorage.setItem('notif-last-seen', String(items.length));
-      var btn = document.getElementById('notif-tab-btn');
-      if (btn) btn.classList.remove('has-badge');
-    }, { once: true });
-  }
-
+  // ── Render: Speakers ──
   function renderSpeakers(speakers) {
-    var container = document.getElementById('speakers-grid');
-    if (!container) return;
-    if (!speakers.length) {
-      container.innerHTML = '<div class="empty-state-msg">Inga talare tillagda ännu.</div>';
-      return;
-    }
-    container.innerHTML = speakers.map(function(s) {
+    SPEAKERS_DATA = speakers;
+    var el = document.getElementById('speakers-grid');
+    if (!el) return;
+    if (!speakers.length) { el.innerHTML = '<div class="empty-state-msg">Inga talare tillagda ännu.</div>'; return; }
+    el.innerHTML = speakers.map(function(s) {
       var initials = (s.name || '?').split(' ').map(function(w) { return w[0] || ''; }).join('').slice(0, 2).toUpperCase();
       return (
-        '<div class="speaker-card" onclick="openSpeaker(\'' + escHtml(s.id || '') + '\')">' +
+        '<div class="speaker-card" data-id="' + escHtml(s.id) + '">' +
           '<div class="speaker-card__photo speaker-card__photo--placeholder">' + escHtml(initials) + '</div>' +
           '<div class="speaker-card__info">' +
             '<p class="speaker-card__name">' + escHtml(s.name || '') + '</p>' +
-            '<p class="speaker-card__role">' + escHtml([s.title, s.company].filter(Boolean).join(' \xB7 ')) + '</p>' +
+            '<p class="speaker-card__role">' + escHtml([s.title, s.company].filter(Boolean).join(' · ')) + '</p>' +
           '</div>' +
           '<svg class="speaker-card__arrow" width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
         '</div>'
       );
     }).join('');
+    el.querySelectorAll('.speaker-card').forEach(function(card) {
+      card.addEventListener('click', function() { openSpeaker(card.getAttribute('data-id')); });
+    });
   }
 
-  function renderAnnouncements(items) {
-    var container = document.getElementById('feed-announcements');
-    if (!container) return;
-    var sorted = items.slice().sort(function(a, b) {
-      return (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0);
-    });
-    container.innerHTML = sorted.map(function(a) {
+  // ── Render: Notifications ──
+  function renderNotifications(items) {
+    var el = document.getElementById('notif-list');
+    if (!el) return;
+    localStorage.setItem('notif-count', String(items.length));
+    var lastSeen = parseInt(localStorage.getItem('notif-last-seen') || '0');
+    if (items.length > lastSeen) {
+      var nb = document.getElementById('notif-tab-btn');
+      if (nb) nb.classList.add('has-badge');
+    }
+    if (!items.length) { el.innerHTML = '<div class="empty-state-msg">Inga notiser ännu.</div>'; return; }
+    el.innerHTML = items.map(function(n) {
+      var ts = n.sent_at ? new Date(n.sent_at).toLocaleString('sv-SE', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : '';
       return (
-        '<div class="announcement-card">' +
-          '<span class="announcement-card__tag">' + escHtml(a.category || 'Info') + '</span>' +
-          '<p class="announcement-card__title">' + escHtml(a.title || '') + '</p>' +
-          '<p class="announcement-card__body">' + escHtml(a.body || '') + '</p>' +
-          '<span class="announcement-card__date">' + escHtml(a.date || '') + '</span>' +
+        '<div class="notif-item">' +
+          '<div class="notif-item__icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0" stroke="#c4ff00" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>' +
+          '<div class="notif-item__content">' +
+            '<p class="notif-item__title">' + escHtml(n.title) + '</p>' +
+            (n.body ? '<p class="notif-item__body">' + escHtml(n.body) + '</p>' : '') +
+            '<span class="notif-item__time">' + ts + '</span>' +
+          '</div>' +
         '</div>'
       );
     }).join('');
   }
 
-  function escHtml(str) {
-    return String(str)
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;');
-  }
-
-  // Placeholder for speaker modal (can be extended later)
+  // ── Speaker modal ──
   window.openSpeaker = function(id) {
-    console.log('openSpeaker', id);
+    var s = SPEAKERS_DATA.find(function(x) { return x.id === id; });
+    if (!s) return;
+    var initials = (s.name || '?').split(' ').map(function(w) { return w[0] || ''; }).join('').slice(0, 2).toUpperCase();
+    document.getElementById('modal-photo').textContent = initials;
+    document.getElementById('modal-name').textContent = s.name || '';
+    document.getElementById('modal-role').textContent = [s.title, s.company].filter(Boolean).join(' · ');
+    document.getElementById('modal-bio').textContent = s.bio || '';
+    var links = '';
+    if (s.linkedin) links += '<a class="social-link" href="' + escHtml(s.linkedin) + '" target="_blank" rel="noopener">LinkedIn</a>';
+    if (s.instagram) links += '<a class="social-link" href="' + escHtml(s.instagram) + '" target="_blank" rel="noopener">Instagram</a>';
+    if (s.website) links += '<a class="social-link" href="' + escHtml(s.website) + '" target="_blank" rel="noopener">Webbsida</a>';
+    document.getElementById('modal-links').innerHTML = links;
+    document.getElementById('speaker-modal').style.display = 'flex';
   };
+
+  window.closeSpeakerModal = function(e) {
+    if (e.target === document.getElementById('speaker-modal')) {
+      document.getElementById('speaker-modal').style.display = 'none';
+    }
+  };
+
+  // ── Mitt kort / Auth buttons ──
+  document.getElementById('btn-register') && document.getElementById('btn-register').addEventListener('click', function() {
+    window.location.href = '/evenemang'; // TODO: replace with Supabase auth modal
+  });
+  document.getElementById('btn-login') && document.getElementById('btn-login').addEventListener('click', function() {
+    alert('Auth coming soon!'); // TODO: Supabase Auth modal
+  });
+  document.getElementById('btn-logout') && document.getElementById('btn-logout').addEventListener('click', function() {
+    document.getElementById('kort-user').style.display = 'none';
+    document.getElementById('kort-guest').style.display = 'flex';
+  });
+
+  // ── PWA Install banner ──
+  var deferredPrompt;
+  var banner = document.getElementById('install-banner');
+  window.addEventListener('beforeinstallprompt', function(e) {
+    e.preventDefault();
+    deferredPrompt = e;
+    if (banner && !localStorage.getItem('install-dismissed')) banner.style.display = 'flex';
+  });
+  document.getElementById('install-btn') && document.getElementById('install-btn').addEventListener('click', function() {
+    if (deferredPrompt) { deferredPrompt.prompt(); deferredPrompt.userChoice.then(function() { deferredPrompt = null; banner.style.display = 'none'; }); }
+  });
+  document.getElementById('install-close') && document.getElementById('install-close').addEventListener('click', function() {
+    banner.style.display = 'none';
+    localStorage.setItem('install-dismissed', '1');
+  });
+
+  function escHtml(str) {
+    return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
 
 })();
 </script>
@@ -452,195 +549,60 @@
     --font: 'Outfit', sans-serif;
   }
 
-  html, body {
-    height: 100%;
-    background: var(--black);
-    color: var(--white);
-    font-family: var(--font);
-    overflow: hidden;
-  }
+  html, body { height: 100%; background: var(--black); color: var(--white); font-family: var(--font); overflow: hidden; }
 
-  .app {
-    display: flex;
-    flex-direction: column;
-    height: 100dvh;
-    height: 100vh;
-    max-width: 480px;
-    margin: 0 auto;
-    position: relative;
-  }
+  .app { display: flex; flex-direction: column; height: 100dvh; height: 100vh; max-width: 480px; margin: 0 auto; position: relative; }
 
-  /* ── Header ── */
-  .app-header {
-    background: var(--black);
-    border-bottom: 1px solid var(--black-3);
-    padding: env(safe-area-inset-top, 0) 0 0;
-    flex-shrink: 0;
-    z-index: 10;
-  }
-  .app-header__inner {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 14px 20px;
-  }
-  .app-header__logo {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 15px;
-    font-weight: 700;
-    color: var(--white);
-  }
-  .app-header__notify {
-    background: none;
-    border: none;
-    color: rgba(255,255,255,0.5);
-    cursor: pointer;
-    padding: 4px;
-    transition: color 0.2s;
-  }
+  /* Header */
+  .app-header { background: var(--black); border-bottom: 1px solid var(--black-3); padding: env(safe-area-inset-top,0) 0 0; flex-shrink: 0; z-index: 10; }
+  .app-header__inner { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; }
+  .app-header__logo { display: flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 700; }
+  .app-header__notify { background: none; border: none; color: rgba(255,255,255,0.5); cursor: pointer; padding: 4px; transition: color 0.2s; }
   .app-header__notify:hover { color: var(--lime); }
 
-  /* ── Install banner ── */
-  .install-banner {
-    background: rgba(196,255,0,0.08);
-    border-bottom: 1px solid rgba(196,255,0,0.2);
-    padding: 10px 16px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex-shrink: 0;
-  }
+  /* Install banner */
+  .install-banner { background: rgba(196,255,0,0.08); border-bottom: 1px solid rgba(196,255,0,0.2); padding: 10px 16px; display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
   .install-banner__text { font-size: 12px; color: rgba(255,255,255,0.8); flex: 1; }
-  .install-banner__btn {
-    background: var(--lime);
-    color: var(--black);
-    border: none;
-    border-radius: 4px;
-    padding: 5px 12px;
-    font-size: 12px;
-    font-weight: 700;
-    font-family: var(--font);
-    cursor: pointer;
-    white-space: nowrap;
-  }
-  .install-banner__close {
-    background: none;
-    border: none;
-    color: rgba(255,255,255,0.4);
-    cursor: pointer;
-    font-size: 14px;
-    padding: 2px;
-  }
+  .install-banner__btn { background: var(--lime); color: var(--black); border: none; border-radius: 4px; padding: 5px 12px; font-size: 12px; font-weight: 700; font-family: var(--font); cursor: pointer; }
+  .install-banner__close { background: none; border: none; color: rgba(255,255,255,0.4); cursor: pointer; font-size: 14px; }
 
-  /* ── Main scroll area ── */
-  .app-main {
-    flex: 1;
-    overflow: hidden;
-    position: relative;
-  }
-
-  .app-tab {
-    display: none;
-    height: 100%;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-  }
+  /* Main */
+  .app-main { flex: 1; overflow: hidden; position: relative; }
+  .app-tab { display: none; height: 100%; overflow-y: auto; -webkit-overflow-scrolling: touch; }
   .app-tab.active { display: block; }
 
-  /* ── Bottom tab bar ── */
-  .app-tabs {
-    display: flex;
-    border-top: 1px solid var(--black-3);
-    background: var(--black);
-    padding-bottom: env(safe-area-inset-bottom, 0);
-    flex-shrink: 0;
-    z-index: 10;
-  }
-  .app-tab-btn {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    padding: 10px 8px 12px;
-    background: none;
-    border: none;
-    color: rgba(255,255,255,0.35);
-    font-family: var(--font);
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    cursor: pointer;
-    transition: color 0.15s;
-  }
+  /* Bottom tab bar */
+  .app-tabs { display: flex; border-top: 1px solid var(--black-3); background: var(--black); padding-bottom: env(safe-area-inset-bottom,0); flex-shrink: 0; z-index: 10; }
+  .app-tab-btn { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 10px 4px 12px; background: none; border: none; color: rgba(255,255,255,0.35); font-family: var(--font); font-size: 9px; font-weight: 600; letter-spacing: 0.04em; cursor: pointer; transition: color 0.15s; }
   .app-tab-btn.active { color: var(--lime); }
+
+  /* Badge */
+  #notif-tab-btn { position: relative; }
+  #notif-tab-btn.has-badge::after { content: ''; position: absolute; top: 6px; right: calc(50% - 14px); width: 8px; height: 8px; background: var(--lime); border-radius: 50%; border: 2px solid var(--black); }
+
+  /* Skeleton */
+  .skeleton-card { height: 80px; background: linear-gradient(90deg, var(--black-2) 25%, rgba(255,255,255,0.05) 50%, var(--black-2) 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 8px; margin-bottom: 10px; }
+  @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 
   /* ── FEED ── */
   .feed { padding: 20px 16px; display: flex; flex-direction: column; gap: 28px; }
-  .feed-section__title {
-    font-size: 11px;
-    font-weight: 800;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.4);
-    margin-bottom: 12px;
-  }
+  .feed-section__title { font-size: 11px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 12px; }
 
-  .event-card {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    background: var(--black-2);
-    border: 1px solid var(--black-3);
-    border-radius: 8px;
-    padding: 14px;
-    margin-bottom: 10px;
-  }
-  .event-card__date {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background: rgba(196,255,0,0.08);
-    border: 1px solid rgba(196,255,0,0.2);
-    border-radius: 6px;
-    padding: 8px 12px;
-    min-width: 48px;
-    flex-shrink: 0;
-  }
+  .event-card { display: flex; align-items: center; gap: 14px; background: var(--black-2); border: 1px solid var(--black-3); border-radius: 8px; padding: 14px; margin-bottom: 10px; }
+  .event-card--live { border-color: rgba(196,255,0,0.3); }
+  .event-card__date { display: flex; flex-direction: column; align-items: center; background: rgba(196,255,0,0.08); border: 1px solid rgba(196,255,0,0.2); border-radius: 6px; padding: 8px 12px; min-width: 48px; flex-shrink: 0; }
   .event-card__day { font-size: 22px; font-weight: 800; color: var(--lime); line-height: 1; }
   .event-card__month { font-size: 9px; font-weight: 700; letter-spacing: 0.1em; color: rgba(255,255,255,0.5); margin-top: 2px; }
   .event-card__info { flex: 1; }
   .event-card__title { font-size: 14px; font-weight: 700; color: var(--white); margin-bottom: 3px; }
   .event-card__meta { font-size: 12px; color: rgba(255,255,255,0.5); }
-  .event-card__save {
-    background: none;
-    border: 1px solid var(--black-3);
-    border-radius: 6px;
-    color: rgba(255,255,255,0.4);
-    cursor: pointer;
-    padding: 8px;
-    transition: all 0.2s;
-  }
+  .event-card__save { background: none; border: 1px solid var(--black-3); border-radius: 6px; color: rgba(255,255,255,0.4); cursor: pointer; padding: 8px; transition: all 0.2s; }
   .event-card__save.active { border-color: var(--lime); color: var(--lime); background: rgba(196,255,0,0.08); }
+  .live-badge { display: inline-block; font-size: 9px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--lime); margin-bottom: 4px; }
 
-  .announcement-card {
-    background: var(--black-2);
-    border: 1px solid var(--black-3);
-    border-radius: 8px;
-    padding: 14px;
-    margin-bottom: 10px;
-  }
-  .announcement-card__tag {
-    font-size: 9px;
-    font-weight: 800;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--lime);
-    display: block;
-    margin-bottom: 6px;
-  }
+  .announcement-card { background: var(--black-2); border: 1px solid var(--black-3); border-radius: 8px; padding: 14px; margin-bottom: 10px; }
+  .announcement-card--pinned { border-color: rgba(196,255,0,0.2); }
+  .announcement-card__tag { font-size: 9px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--lime); display: block; margin-bottom: 6px; }
   .announcement-card__title { font-size: 14px; font-weight: 700; color: var(--white); margin-bottom: 6px; }
   .announcement-card__body { font-size: 13px; color: rgba(255,255,255,0.6); line-height: 1.6; margin-bottom: 8px; }
   .announcement-card__date { font-size: 11px; color: rgba(255,255,255,0.3); }
@@ -648,143 +610,116 @@
   /* ── AGENDA ── */
   .agenda-app { padding: 20px 0; }
   .agenda-app__header { padding: 0 16px 16px; border-bottom: 1px solid var(--black-3); margin-bottom: 4px; }
-  .agenda-app__title { font-size: 20px; font-weight: 800; color: var(--white); margin-bottom: 4px; }
+  .agenda-app__title { font-size: 20px; font-weight: 800; margin-bottom: 4px; }
   .agenda-app__date { font-size: 13px; color: rgba(255,255,255,0.5); text-transform: capitalize; }
 
-  .session-card {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    padding: 14px 16px;
-    border-bottom: 1px solid var(--black-3);
-    transition: background 0.15s;
-  }
-  .session-card:hover { background: rgba(255,255,255,0.02); }
-
-  .session-card__time {
-    display: flex;
-    flex-direction: column;
-    min-width: 44px;
-    flex-shrink: 0;
-  }
-  .session-card__start { font-size: 14px; font-weight: 700; color: var(--white); }
+  .session-card { display: flex; align-items: flex-start; gap: 12px; padding: 14px 16px; border-bottom: 1px solid var(--black-3); }
+  .session-card__time { display: flex; flex-direction: column; min-width: 44px; flex-shrink: 0; }
+  .session-card__start { font-size: 14px; font-weight: 700; }
   .session-card__end { font-size: 11px; color: rgba(255,255,255,0.35); margin-top: 2px; }
-
   .session-card__body { flex: 1; }
-
-  .session-card__type {
-    display: inline-block;
-    font-size: 9px;
-    font-weight: 800;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 2px 7px;
-    border-radius: 3px;
-    margin-bottom: 6px;
-  }
-  .session-card__type--keynote { background: rgba(196,255,0,0.15); color: var(--lime); }
+  .session-card__type { display: inline-block; font-size: 9px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; padding: 2px 7px; border-radius: 3px; margin-bottom: 6px; }
   .session-card__type--talk    { background: rgba(100,160,255,0.15); color: #64a0ff; }
+  .session-card__type--keynote { background: rgba(196,255,0,0.15); color: var(--lime); }
   .session-card__type--panel   { background: rgba(255,160,50,0.15); color: #ffa032; }
   .session-card__type--workshop{ background: rgba(160,100,255,0.15); color: #a064ff; }
   .session-card__type--break   { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.4); }
-  .session-card__type--networking { background: rgba(0,220,180,0.12); color: #00dcb4; }
-
-  .session-card__title { font-size: 14px; font-weight: 600; color: var(--white); margin-bottom: 4px; line-height: 1.35; }
-  .session-card__speaker { font-size: 12px; color: rgba(255,255,255,0.45); }
-
-  .session-card__remind {
-    background: none;
-    border: 1px solid var(--black-3);
-    border-radius: 6px;
-    color: rgba(255,255,255,0.3);
-    cursor: pointer;
-    padding: 7px;
-    flex-shrink: 0;
-    margin-top: 2px;
-    transition: all 0.2s;
-  }
+  .session-card__title { font-size: 14px; font-weight: 600; margin-bottom: 4px; line-height: 1.35; }
+  .session-card__speaker { font-size: 12px; color: rgba(255,255,255,0.5); margin-bottom: 4px; }
+  .session-card__desc { font-size: 12px; color: rgba(255,255,255,0.35); line-height: 1.5; display: none; }
+  .session-card__remind { background: none; border: 1px solid var(--black-3); border-radius: 6px; color: rgba(255,255,255,0.3); cursor: pointer; padding: 7px; flex-shrink: 0; margin-top: 2px; transition: all 0.2s; }
   .session-card__remind.active { border-color: var(--lime); color: var(--lime); background: rgba(196,255,0,0.08); }
 
   /* ── SPEAKERS ── */
   .speakers-app { padding: 20px 16px; }
   .speakers-app__header { margin-bottom: 20px; }
-  .speakers-app__title { font-size: 20px; font-weight: 800; color: var(--white); margin-bottom: 4px; }
+  .speakers-app__title { font-size: 20px; font-weight: 800; margin-bottom: 4px; }
   .speakers-app__sub { font-size: 13px; color: rgba(255,255,255,0.4); }
-
   .speakers-grid { display: flex; flex-direction: column; gap: 10px; }
-
-  .speaker-card {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    background: var(--black-2);
-    border: 1px solid var(--black-3);
-    border-radius: 8px;
-    padding: 14px;
-    cursor: pointer;
-    transition: border-color 0.15s;
-  }
+  .speaker-card { display: flex; align-items: center; gap: 14px; background: var(--black-2); border: 1px solid var(--black-3); border-radius: 8px; padding: 14px; cursor: pointer; transition: border-color 0.15s; }
   .speaker-card:hover { border-color: rgba(196,255,0,0.3); }
-
-  .speaker-card__photo {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    object-fit: cover;
-    flex-shrink: 0;
-  }
-  .speaker-card__photo--placeholder {
-    background: rgba(196,255,0,0.1);
-    border: 1px solid rgba(196,255,0,0.2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 13px;
-    font-weight: 800;
-    color: var(--lime);
-  }
+  .speaker-card__photo { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
+  .speaker-card__photo--placeholder { background: rgba(196,255,0,0.1); border: 1px solid rgba(196,255,0,0.2); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800; color: var(--lime); }
   .speaker-card__info { flex: 1; }
-  .speaker-card__name { font-size: 14px; font-weight: 700; color: var(--white); margin-bottom: 3px; }
+  .speaker-card__name { font-size: 14px; font-weight: 700; margin-bottom: 3px; }
   .speaker-card__role { font-size: 12px; color: rgba(255,255,255,0.5); }
   .speaker-card__arrow { color: rgba(255,255,255,0.25); flex-shrink: 0; }
 
-  /* ── Notifications tab ── */
+  /* ── NOTIFICATIONS ── */
   .notif-app__header { padding: 20px 16px 12px; border-bottom: 1px solid var(--black-3); }
-  .notif-app__title { font-size: 18px; font-weight: 800; margin-bottom: 4px; }
-  .notif-app__sub { font-size: 12px; color: rgba(255,255,255,0.4); }
-  .notif-list { display: flex; flex-direction: column; }
-  .notif-item {
-    display: flex; align-items: flex-start; gap: 14px;
-    padding: 16px; border-bottom: 1px solid var(--black-3);
-  }
-  .notif-item__icon {
-    width: 40px; height: 40px; background: rgba(196,255,0,0.08);
-    border-radius: 10px; display: flex; align-items: center;
-    justify-content: center; flex-shrink: 0;
-  }
-  .notif-item__title { font-size: 14px; font-weight: 700; color: var(--white); margin-bottom: 4px; line-height: 1.4; }
+  .notif-app__title { font-size: 20px; font-weight: 800; margin-bottom: 4px; }
+  .notif-app__sub { font-size: 13px; color: rgba(255,255,255,0.4); }
+  .notif-item { display: flex; align-items: flex-start; gap: 14px; padding: 16px; border-bottom: 1px solid var(--black-3); }
+  .notif-item__icon { width: 40px; height: 40px; background: rgba(196,255,0,0.08); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .notif-item__title { font-size: 14px; font-weight: 700; margin-bottom: 4px; line-height: 1.4; }
   .notif-item__body { font-size: 13px; color: rgba(255,255,255,0.6); line-height: 1.5; margin-bottom: 6px; }
   .notif-item__time { font-size: 11px; color: rgba(255,255,255,0.35); }
 
-  /* ── Badge on notif tab ── */
-  #notif-tab-btn { position: relative; }
-  #notif-tab-btn.has-badge::after {
-    content: ''; position: absolute; top: 6px; right: calc(50% - 14px);
-    width: 8px; height: 8px; background: #c4ff00; border-radius: 50%;
-    border: 2px solid var(--black);
-  }
+  /* ── MITT KORT ── */
+  .kort-guest { display: flex; flex-direction: column; align-items: center; padding: 48px 24px 32px; text-align: center; gap: 16px; }
+  .kort-guest__icon { width: 80px; height: 80px; background: rgba(196,255,0,0.08); border: 1px solid rgba(196,255,0,0.2); border-radius: 20px; display: flex; align-items: center; justify-content: center; margin-bottom: 8px; }
+  .kort-guest__title { font-size: 22px; font-weight: 800; }
+  .kort-guest__text { font-size: 14px; color: rgba(255,255,255,0.55); line-height: 1.6; max-width: 280px; }
+  .kort-guest__actions { display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 280px; margin-top: 8px; }
+  .btn-lime { background: var(--lime); color: var(--black); border: none; border-radius: 8px; padding: 14px 24px; font-size: 15px; font-weight: 700; font-family: var(--font); cursor: pointer; transition: opacity 0.2s; }
+  .btn-lime:hover { opacity: 0.9; }
+  .btn-outline { background: none; color: var(--white); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 13px 24px; font-size: 15px; font-weight: 600; font-family: var(--font); cursor: pointer; transition: border-color 0.2s; }
+  .btn-outline:hover { border-color: rgba(255,255,255,0.4); }
+  .btn-logout { width: calc(100% - 48px); margin: 0 24px 32px; }
 
-  /* ── Empty state ── */
+  .kort-guest__perks { display: flex; flex-direction: column; gap: 16px; width: 100%; max-width: 300px; margin-top: 12px; }
+  .kort-perk { display: flex; align-items: center; gap: 14px; text-align: left; }
+  .kort-perk__icon { font-size: 24px; flex-shrink: 0; }
+  .kort-perk__title { font-size: 13px; font-weight: 700; margin-bottom: 2px; }
+  .kort-perk__sub { font-size: 12px; color: rgba(255,255,255,0.45); }
+
+  /* Logged-in kort */
+  .kort-user { padding: 24px 24px 0; display: flex; flex-direction: column; gap: 24px; }
+  .kort-card { background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%); border: 1px solid rgba(196,255,0,0.25); border-radius: 16px; padding: 24px; position: relative; overflow: hidden; }
+  .kort-card::before { content: ''; position: absolute; top: -40px; right: -40px; width: 120px; height: 120px; background: radial-gradient(circle, rgba(196,255,0,0.08) 0%, transparent 70%); }
+  .kort-card__header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+  .kort-card__label { font-size: 11px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.4); }
+  .kort-card__badge { background: rgba(196,255,0,0.15); color: var(--lime); font-size: 10px; font-weight: 800; letter-spacing: 0.08em; padding: 4px 10px; border-radius: 20px; }
+  .kort-card__qr { display: flex; justify-content: center; margin-bottom: 20px; }
+  .kort-card__qr canvas { border-radius: 8px; }
+  .kort-card__info { text-align: center; }
+  .kort-card__name { font-size: 18px; font-weight: 800; margin-bottom: 4px; }
+  .kort-card__meta { font-size: 13px; color: rgba(255,255,255,0.5); }
+  .kort-card__footer { margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.08); text-align: center; }
+  .kort-card__hint { font-size: 11px; color: rgba(255,255,255,0.3); }
+
+  /* Achievements */
+  .achievements__title { font-size: 13px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 16px; }
+  .achievements-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  .achievement-item { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 14px 8px; background: var(--black-2); border: 1px solid var(--black-3); border-radius: 10px; text-align: center; }
+  .achievement-item--locked { opacity: 0.4; filter: grayscale(1); }
+  .achievement-item--earned { border-color: rgba(196,255,0,0.3); opacity: 1; filter: none; }
+  .achievement-item__icon { font-size: 24px; line-height: 1; }
+  .achievement-item__name { font-size: 10px; font-weight: 700; }
+  .achievement-item__sub { font-size: 9px; color: rgba(255,255,255,0.4); }
+
+  /* ── Speaker modal ── */
+  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 100; display: flex; align-items: flex-end; justify-content: center; }
+  .modal-sheet { background: #151515; border-radius: 20px 20px 0 0; width: 100%; max-width: 480px; max-height: 85vh; overflow-y: auto; padding: 0 0 40px; position: relative; }
+  .modal-handle { width: 36px; height: 4px; background: rgba(255,255,255,0.2); border-radius: 2px; margin: 12px auto 20px; }
+  .modal-close { position: absolute; top: 16px; right: 16px; background: rgba(255,255,255,0.1); border: none; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.6); cursor: pointer; }
+  .speaker-modal__photo-wrap { display: flex; justify-content: center; padding: 0 24px 20px; }
+  .speaker-modal__photo { width: 80px; height: 80px; border-radius: 50%; background: rgba(196,255,0,0.1); border: 2px solid rgba(196,255,0,0.3); display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 800; color: var(--lime); }
+  .speaker-modal__body { padding: 0 24px; }
+  .speaker-modal__name { font-size: 22px; font-weight: 800; margin-bottom: 6px; }
+  .speaker-modal__role { font-size: 14px; color: rgba(255,255,255,0.5); margin-bottom: 20px; }
+  .speaker-modal__bio { font-size: 14px; color: rgba(255,255,255,0.7); line-height: 1.7; margin-bottom: 20px; }
+  .speaker-modal__links { display: flex; gap: 10px; flex-wrap: wrap; }
+  .social-link { display: inline-block; padding: 8px 16px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); border-radius: 20px; font-size: 13px; font-weight: 600; color: var(--white); text-decoration: none; transition: border-color 0.2s; }
+  .social-link:hover { border-color: rgba(196,255,0,0.4); }
+
+  /* Empty state */
   .empty-state-msg { padding: 40px 20px; text-align: center; color: rgba(255,255,255,0.3); font-size: 14px; }
 
-  /* Desktop — centered card */
+  /* Desktop */
   @media (min-width: 481px) {
     body { background: #050505; }
-    .app {
-      border-left: 1px solid rgba(255,255,255,0.06);
-      border-right: 1px solid rgba(255,255,255,0.06);
-      box-shadow: 0 0 60px rgba(0,0,0,0.8);
-    }
+    .app { border-left: 1px solid rgba(255,255,255,0.06); border-right: 1px solid rgba(255,255,255,0.06); box-shadow: 0 0 60px rgba(0,0,0,0.8); }
   }
 </style>
 
