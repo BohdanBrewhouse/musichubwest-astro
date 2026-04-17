@@ -1,10 +1,12 @@
 /**
  * POST /api/app/subscribe
- * Save push subscription to Edge Config
+ * Save push subscription to Supabase
  */
-import { createClient } from '@vercel/edge-config';
+import { createClient } from '@supabase/supabase-js';
 
-const TEAM_ID = 'team_eCPecmqFzAxv11gB4yHaFddS';
+const SUPABASE_URL = process.env.SUPABASE_URL || 'https://xubrgmwrhkkhyjtmnlqj.supabase.co';
+const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY;
+const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY || 'sb_publishable_A3J48KZ6_pcjadEVwrglow_CLYgaNTc';
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -16,22 +18,33 @@ export default async function handler(req, res) {
   if (!subscription?.endpoint) return res.status(400).json({ error: 'No subscription' });
 
   try {
-    const client = createClient(process.env.EDGE_CONFIG);
-    const existing = (await client.get('push_subscriptions').catch(() => null)) || [];
-
-    // Avoid duplicates by endpoint
-    const filtered = existing.filter(s => s.endpoint !== subscription.endpoint);
-    filtered.push(subscription);
-
-    const ecId = process.env.EDGE_CONFIG_ID;
-    const token = process.env.VERCEL_API_TOKEN;
-    await fetch(`https://api.vercel.com/v1/edge-config/${ecId}/items?teamId=${TEAM_ID}`, {
-      method: 'PATCH',
-      headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ items: [{ operation: 'upsert', key: 'push_subscriptions', value: filtered }] }),
+    const key = SUPABASE_SERVICE_KEY || SUPABASE_ANON_KEY;
+    const sb = createClient(SUPABASE_URL, key, {
+      auth: { autoRefreshToken: false, persistSession: false },
     });
 
-    return res.status(200).json({ ok: true, total: filtered.length });
+    // Upsert by endpoint (avoid duplicates)
+    const { error } = await sb
+      .from('push_subscriptions')
+      .upsert({ subscription }, { onConflict: 'subscription->endpoint' })
+      .select();
+
+    // Fallback: if upsert fails on conflict detection, just insert
+    if (error) {
+      // Check if already exists
+      const endpoint = subscription.endpoint;
+      const { data: existing } = await sb
+        .from('push_subscriptions')
+        .select('id')
+        .filter('subscription->>endpoint', 'eq', endpoint)
+        .maybeSingle();
+
+      if (!existing) {
+        await sb.from('push_subscriptions').insert({ subscription });
+      }
+    }
+
+    return res.status(200).json({ ok: true });
   } catch (e) {
     console.error('[subscribe]', e.message);
     return res.status(500).json({ error: e.message });

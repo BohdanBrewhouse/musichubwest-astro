@@ -14,11 +14,15 @@
   "dependencies": {
     "@astrojs/mdx": "^5.0.3",
     "@astrojs/sitemap": "^3.7.2",
+    "@supabase/supabase-js": "^2.103.3",
     "@tinacms/cli": "^2.2.2",
     "@vercel/edge-config": "^1.4.3",
     "@vercel/kv": "^3.0.0",
     "astro": "^6.1.4",
     "tinacms": "^3.7.2",
     "web-push": "^3.6.7"
+  },
+  "devDependencies": {
+    "pg": "^8.20.0"
   }
 }

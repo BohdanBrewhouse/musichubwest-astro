@@ -4,20 +4,16 @@
  * Auth: Authorization: Bearer <ADMIN_PASSWORD>
  */
 import webpush from 'web-push';
-import { createClient } from '@vercel/edge-config';
+import { createClient } from '@supabase/supabase-js';
 
-const TEAM_ID = 'team_eCPecmqFzAxv11gB4yHaFddS';
+const SUPABASE_URL = process.env.SUPABASE_URL || 'https://xubrgmwrhkkhyjtmnlqj.supabase.co';
+const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY;
 
-async function writeKey(key, value) {
-  const ecId = process.env.EDGE_CONFIG_ID;
-  const token = process.env.VERCEL_API_TOKEN;
-  const res = await fetch(`https://api.vercel.com/v1/edge-config/${ecId}/items?teamId=${TEAM_ID}`, {
-    method: 'PATCH',
-    headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ items: [{ operation: 'upsert', key, value }] }),
+function getAdmin() {
+  if (!SUPABASE_SERVICE_KEY) throw new Error('SUPABASE_SERVICE_KEY not set');
+  return createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY, {
+    auth: { autoRefreshToken: false, persistSession: false },
   });
-  if (!res.ok) throw new Error(`Edge Config write failed: ${await res.text()}`);
-  return true;
 }
 
 export default async function handler(req, res) {
@@ -35,7 +31,9 @@ export default async function handler(req, res) {
 
   // Check VAPID keys
   if (!process.env.VAPID_PUBLIC_KEY || !process.env.VAPID_PRIVATE_KEY) {
-    return res.status(500).json({ error: 'VAPID keys not configured. Add VAPID_PUBLIC_KEY, VAPID_PRIVATE_KEY and VAPID_EMAIL to Vercel env vars.' });
+    return res.status(500).json({
+      error: 'VAPID keys not configured. Add VAPID_PUBLIC_KEY, VAPID_PRIVATE_KEY and VAPID_EMAIL to Vercel env vars.',
+    });
   }
 
   webpush.setVapidDetails(
@@ -45,41 +43,37 @@ export default async function handler(req, res) {
   );
 
   try {
-    const client = createClient(process.env.EDGE_CONFIG);
+    const sb = getAdmin();
 
     // Save notification to history
-    const notifications = (await client.get('notifications').catch(() => null)) || [];
-    const newNotif = {
-      id: Date.now().toString(),
+    await sb.from('notifications').insert({
       title,
       body: body || '',
-      sentAt: new Date().toISOString(),
-    };
-    notifications.unshift(newNotif);
-    // Keep only last 50
-    const trimmed = notifications.slice(0, 50);
-    await writeKey('notifications', trimmed);
+      url: '/app',
+    });
 
-    // Send push to subscribers
-    const subscriptions = (await client.get('push_subscriptions').catch(() => null)) || [];
-    if (!subscriptions.length) {
+    // Get all push subscriptions
+    const { data: rows } = await sb.from('push_subscriptions').select('id, subscription');
+    if (!rows || !rows.length) {
       return res.status(200).json({ ok: true, sent: 0, message: 'No subscribers' });
     }
 
     const payload = JSON.stringify({ title, body, url: '/app' });
     const results = await Promise.allSettled(
-      subscriptions.map(sub => webpush.sendNotification(sub, payload))
+      rows.map(row => webpush.sendNotification(row.subscription, payload))
     );
 
     // Remove expired/invalid subscriptions
-    const valid = subscriptions.filter((_, i) => results[i].status === 'fulfilled');
-    const failed = subscriptions.length - valid.length;
+    const failedIds = rows
+      .filter((_, i) => results[i].status === 'rejected')
+      .map(row => row.id);
 
-    if (failed > 0) {
-      await writeKey('push_subscriptions', valid);
+    if (failedIds.length > 0) {
+      await sb.from('push_subscriptions').delete().in('id', failedIds);
     }
 
-    return res.status(200).json({ ok: true, sent: valid.length, failed });
+    const sent = rows.length - failedIds.length;
+    return res.status(200).json({ ok: true, sent, failed: failedIds.length });
   } catch (e) {
     console.error('[push]', e.message);
     return res.status(500).json({ error: e.message });

@@ -1,31 +1,26 @@
 /**
  * POST /api/app/admin-data
- * Admin only — add/delete items in Edge Config
+ * Admin only — CRUD for agenda, speakers, announcements, events
  * Auth: Authorization: Bearer <ADMIN_PASSWORD>
  */
-import { createClient } from '@vercel/edge-config';
+import { createClient } from '@supabase/supabase-js';
 
-const TEAM_ID = 'team_eCPecmqFzAxv11gB4yHaFddS';
+const SUPABASE_URL = process.env.SUPABASE_URL || 'https://xubrgmwrhkkhyjtmnlqj.supabase.co';
+const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY;
 
-async function readKey(key) {
-  const client = createClient(process.env.EDGE_CONFIG);
-  return (await client.get(key).catch(() => null)) || [];
-}
-
-async function writeKey(key, value) {
-  const ecId = process.env.EDGE_CONFIG_ID;
-  const token = process.env.VERCEL_API_TOKEN;
-  const res = await fetch(`https://api.vercel.com/v1/edge-config/${ecId}/items?teamId=${TEAM_ID}`, {
-    method: 'PATCH',
-    headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ items: [{ operation: 'upsert', key, value }] }),
+function getAdmin() {
+  if (!SUPABASE_SERVICE_KEY) throw new Error('SUPABASE_SERVICE_KEY not set');
+  return createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY, {
+    auth: { autoRefreshToken: false, persistSession: false },
   });
-  if (!res.ok) {
-    const text = await res.text();
-    throw new Error(`Edge Config write failed: ${text}`);
-  }
-  return true;
 }
+
+const TABLE_MAP = {
+  agenda: 'agenda_sessions',
+  speakers: 'speakers',
+  announcements: 'announcements',
+  events: 'events',
+};
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -42,25 +37,30 @@ export default async function handler(req, res) {
 
   const { action, type, item, id } = req.body;
 
-  // Auth test — just verifying password is correct (already checked above)
+  // Auth test
   if (action === 'auth') return res.status(200).json({ ok: true, message: 'Authenticated' });
 
-  const validTypes = ['agenda', 'speakers', 'announcements'];
-  if (!validTypes.includes(type)) return res.status(400).json({ error: 'Invalid type' });
+  if (!TABLE_MAP[type]) return res.status(400).json({ error: 'Invalid type' });
 
   try {
+    const sb = getAdmin();
+    const table = TABLE_MAP[type];
+
     if (action === 'add') {
-      const arr = await readKey(type);
-      const newItem = { ...item, id: Date.now().toString() };
-      arr.push(newItem);
-      await writeKey(type, arr);
-      return res.status(200).json({ ok: true, item: newItem });
+      const { data, error } = await sb.from(table).insert(item).select().single();
+      if (error) throw error;
+      return res.status(200).json({ ok: true, item: data });
+    }
+
+    if (action === 'update') {
+      const { data, error } = await sb.from(table).update(item).eq('id', id).select().single();
+      if (error) throw error;
+      return res.status(200).json({ ok: true, item: data });
     }
 
     if (action === 'delete') {
-      const arr = await readKey(type);
-      const filtered = arr.filter(x => x.id !== id);
-      await writeKey(type, filtered);
+      const { error } = await sb.from(table).delete().eq('id', id);
+      if (error) throw error;
       return res.status(200).json({ ok: true });
     }
 
