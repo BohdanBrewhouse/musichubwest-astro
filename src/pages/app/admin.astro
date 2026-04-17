@@ -126,49 +126,16 @@
       <div class="panel__header">
         <div>
           <h1 class="panel__title">Evenemang</h1>
-          <p class="panel__sub">Hantera alla evenemang</p>
+          <p class="panel__sub">Välj vilka evenemang som visas i appen</p>
         </div>
-        <button class="btn btn--lime btn--sm" id="event-add-open">+ Nytt evenemang</button>
-      </div>
-
-      <div class="add-form" id="event-form" style="display:none">
-        <div class="add-form__inner">
-          <h3 class="add-form__title">Nytt evenemang</h3>
-          <div class="form-grid">
-            <div class="field-group field-group--full">
-              <label class="field-label">Titel *</label>
-              <input class="field-input" type="text" id="ev-title" placeholder="Music Hub Summit 2026" />
-            </div>
-            <div class="field-group">
-              <label class="field-label">Datum</label>
-              <input class="field-input" type="date" id="ev-date" />
-            </div>
-            <div class="field-group">
-              <label class="field-label">Status</label>
-              <select class="field-input" id="ev-status">
-                <option value="published">Publicerad</option>
-                <option value="draft">Utkast</option>
-                <option value="live">Live nu</option>
-                <option value="past">Avslutad</option>
-              </select>
-            </div>
-            <div class="field-group field-group--full">
-              <label class="field-label">Plats</label>
-              <input class="field-input" type="text" id="ev-location" placeholder="Brewhouse, Göteborg" />
-            </div>
-            <div class="field-group field-group--full">
-              <label class="field-label">Beskrivning</label>
-              <textarea class="field-textarea" id="ev-desc" rows="3" placeholder="Kort beskrivning av eventet..."></textarea>
-            </div>
-          </div>
-          <div class="form-actions">
-            <button class="btn btn--lime" id="event-save-btn">Spara evenemang</button>
-            <button class="btn btn--ghost" id="event-cancel-btn">Avbryt</button>
-          </div>
-        </div>
+        <button class="btn btn--ghost btn--sm" onclick="loadEvents()">↻ Uppdatera</button>
       </div>
 
       <div class="panel__body">
+        <div class="events-info-bar">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#c4ff00" stroke-width="1.8"/><line x1="12" y1="8" x2="12" y2="12" stroke="#c4ff00" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="16" r="1" fill="#c4ff00"/></svg>
+          Alla evenemang hämtas från sidan. Aktivera de du vill visa i appen.
+        </div>
         <div class="item-list" id="events-list"></div>
       </div>
     </div>
@@ -451,7 +418,10 @@
   window.goTab = goTab;
 
   document.querySelectorAll('.sidebar__btn[data-tab]').forEach(btn => {
-    btn.addEventListener('click', function() { goTab(btn.dataset.tab); });
+    btn.addEventListener('click', function() {
+      goTab(btn.dataset.tab);
+      if (btn.dataset.tab === 'events') loadEvents();
+    });
   });
 
   // ── API helpers ──
@@ -475,6 +445,16 @@
     return new Date(d).toLocaleDateString('sv-SE', { day: 'numeric', month: 'short', year: 'numeric' });
   }
 
+  // ── Site events (from static JSON) ──
+  let SITE_EVENTS = [];
+
+  async function loadSiteEvents() {
+    try {
+      const r = await fetch('/api/site-events.json');
+      SITE_EVENTS = await r.json();
+    } catch(e) { console.error('loadSiteEvents error', e); }
+  }
+
   // ── Load all data ──
   async function loadData() {
     try {
@@ -482,7 +462,6 @@
       const data = await r.json();
       STATE = data;
       renderDashboard();
-      renderEvents();
       renderAgenda();
       renderSpeakers();
       renderAnnouncements();
@@ -491,6 +470,20 @@
     } catch(e) { console.error('loadData error', e); }
   }
   window.loadData = loadData;
+
+  // ── Load events panel (site events + Supabase state) ──
+  async function loadEvents() {
+    const list = document.getElementById('events-list');
+    if (!list) return;
+    list.innerHTML = '<p class="empty-state">Laddar...</p>';
+    try {
+      await Promise.all([loadSiteEvents(), loadData()]);
+      renderEvents();
+    } catch(e) {
+      list.innerHTML = '<p class="empty-state">Fel vid laddning.</p>';
+    }
+  }
+  window.loadEvents = loadEvents;
 
   // ── Dashboard ──
   function renderDashboard() {
@@ -518,33 +511,86 @@
     }).join('');
   }
 
-  // ── Events ──
+  // ── Events (site content + Supabase toggle) ──
   function renderEvents() {
     const list = document.getElementById('events-list');
-    if (!STATE.events?.length) {
-      list.innerHTML = '<p class="empty-state">Inga evenemang. Klicka "+ Nytt evenemang" för att börja.</p>';
+    if (!SITE_EVENTS.length) {
+      list.innerHTML = '<p class="empty-state">Inga evenemang hittades.</p>';
       return;
     }
-    const statusColors = { published: '#64a0ff', live: '#c4ff00', draft: '#888', past: '#555' };
-    list.innerHTML = STATE.events.map(ev => {
-      const col = statusColors[ev.status] || '#888';
-      return `<div class="list-item">
+    // Supabase slugs = currently visible in app
+    const activeSlugs = new Set((STATE.events || []).map(e => e.slug).filter(Boolean));
+
+    list.innerHTML = SITE_EVENTS.map(ev => {
+      const isActive = activeSlugs.has(ev.slug);
+      const imgHtml = ev.image
+        ? `<img class="ev-thumb" src="${esc(ev.image)}" alt="" />`
+        : `<div class="ev-thumb ev-thumb--placeholder"></div>`;
+      return `<div class="list-item list-item--event-toggle" data-slug="${esc(ev.slug)}">
         <div class="list-item__left">
-          <div class="event-icon">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="18" rx="2" stroke="#c4ff00" stroke-width="1.8"/><line x1="3" y1="10" x2="21" y2="10" stroke="#c4ff00" stroke-width="1.8"/></svg>
-          </div>
+          ${imgHtml}
           <div>
             <div class="list-item__title">${esc(ev.title)}</div>
-            <div class="list-item__sub">${fmtDate(ev.date)} ${ev.location ? '· ' + esc(ev.location) : ''}</div>
+            <div class="list-item__sub">
+              ${ev.date ? fmtDate(ev.date) : ''}
+              ${ev.location ? ' · ' + esc(ev.location) : ''}
+            </div>
+            ${ev.description ? `<div class="list-item__desc">${esc(ev.description)}</div>` : ''}
           </div>
         </div>
-        <div style="display:flex;align-items:center;gap:10px">
-          <span class="status-badge" style="color:${col};border-color:${col}30;background:${col}15">${esc(ev.status)}</span>
-          <button class="delete-btn" data-type="events" data-id="${esc(ev.id)}">✕</button>
-        </div>
+        <label class="toggle-switch" title="${isActive ? 'Visas i appen' : 'Döljs i appen'}">
+          <input type="checkbox" class="toggle-input" data-slug="${esc(ev.slug)}" ${isActive ? 'checked' : ''} />
+          <span class="toggle-track"><span class="toggle-thumb"></span></span>
+        </label>
       </div>`;
     }).join('');
-    attachDeletes();
+
+    // Attach toggle handlers
+    list.querySelectorAll('.toggle-input').forEach(input => {
+      input.addEventListener('change', async function() {
+        const slug = this.dataset.slug;
+        const on = this.checked;
+        this.disabled = true;
+        const label = this.closest('.toggle-switch');
+        if (label) label.style.opacity = '0.5';
+
+        try {
+          if (on) {
+            // Sync event from site into Supabase
+            const siteEv = SITE_EVENTS.find(e => e.slug === slug);
+            if (!siteEv) throw new Error('Event not found');
+            await api({
+              action: 'sync_event',
+              type: 'events',
+              item: {
+                slug: siteEv.slug,
+                title: siteEv.title,
+                date: siteEv.date || null,
+                location: siteEv.location || null,
+                description: siteEv.description || null,
+                cover_url: siteEv.image || null,
+                status: 'published',
+              }
+            });
+          } else {
+            // Remove event from Supabase
+            await api({ action: 'delete_by_slug', type: 'events', item: { slug } });
+          }
+          // Refresh Supabase state silently
+          const r = await fetch('/api/app/data');
+          const data = await r.json();
+          STATE = data;
+          renderDashboard();
+          populateSelects();
+        } catch(e) {
+          console.error('toggle error', e);
+          this.checked = !on; // revert
+        }
+
+        this.disabled = false;
+        if (label) label.style.opacity = '1';
+      });
+    });
   }
 
   // ── Agenda ──
@@ -689,33 +735,12 @@
     document.getElementById(id).style.display = show ? 'block' : 'none';
   }
 
-  document.getElementById('event-add-open').onclick = () => toggleForm('event-form', true);
-  document.getElementById('event-cancel-btn').onclick = () => toggleForm('event-form', false);
   document.getElementById('agenda-add-open').onclick = () => { populateSelects(); toggleForm('agenda-form', true); };
   document.getElementById('agenda-cancel-btn').onclick = () => toggleForm('agenda-form', false);
   document.getElementById('speaker-add-open').onclick = () => toggleForm('speaker-form', true);
   document.getElementById('speaker-cancel-btn').onclick = () => toggleForm('speaker-form', false);
   document.getElementById('ann-add-open').onclick = () => toggleForm('ann-form', true);
   document.getElementById('ann-cancel-btn').onclick = () => toggleForm('ann-form', false);
-
-  // ── Save: Event ──
-  document.getElementById('event-save-btn').onclick = async function() {
-    const title = document.getElementById('ev-title').value.trim();
-    if (!title) { alert('Fyll i titel'); return; }
-    this.textContent = 'Sparar...';
-    await api({ action: 'add', type: 'events', item: {
-      title,
-      date: document.getElementById('ev-date').value || null,
-      location: document.getElementById('ev-location').value.trim() || null,
-      description: document.getElementById('ev-desc').value.trim() || null,
-      status: document.getElementById('ev-status').value,
-      slug: title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g,''),
-    }});
-    ['ev-title','ev-date','ev-location','ev-desc'].forEach(id => document.getElementById(id).value = '');
-    toggleForm('event-form', false);
-    this.textContent = 'Spara evenemang';
-    await loadData();
-  };
 
   // ── Save: Agenda ──
   document.getElementById('agenda-save-btn').onclick = async function() {
@@ -927,6 +952,22 @@ input[type="date"].field-input { color-scheme: dark; }
 .quick-actions { display: flex; gap: 10px; flex-wrap: wrap; }
 .quick-btn { display: flex; align-items: center; gap: 8px; padding: 12px 18px; background: rgba(196,255,0,0.06); border: 1px solid rgba(196,255,0,0.15); border-radius: 8px; color: rgba(255,255,255,0.8); font-family: var(--font); font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.15s; }
 .quick-btn:hover { background: rgba(196,255,0,0.12); border-color: rgba(196,255,0,0.3); color: var(--white); }
+
+/* ── Events toggle panel ── */
+.events-info-bar { display: flex; align-items: center; gap: 10px; font-size: 13px; color: rgba(255,255,255,0.4); background: rgba(196,255,0,0.04); border: 1px solid rgba(196,255,0,0.12); border-radius: 10px; padding: 12px 16px; margin-bottom: 20px; }
+.list-item--event-toggle { align-items: center; }
+.ev-thumb { width: 56px; height: 56px; border-radius: 8px; object-fit: cover; flex-shrink: 0; }
+.ev-thumb--placeholder { width: 56px; height: 56px; border-radius: 8px; background: linear-gradient(135deg, #1a2a10, #0f1a08); border: 1px solid rgba(196,255,0,0.1); flex-shrink: 0; }
+.list-item__desc { font-size: 12px; color: rgba(255,255,255,0.3); margin-top: 3px; max-width: 480px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* Toggle switch */
+.toggle-switch { position: relative; display: inline-flex; cursor: pointer; flex-shrink: 0; }
+.toggle-input { position: absolute; opacity: 0; width: 0; height: 0; }
+.toggle-track { display: block; width: 44px; height: 24px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; transition: background 0.2s, border-color 0.2s; }
+.toggle-thumb { position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; border-radius: 50%; background: rgba(255,255,255,0.4); transition: transform 0.2s, background 0.2s; }
+.toggle-input:checked + .toggle-track { background: rgba(196,255,0,0.25); border-color: rgba(196,255,0,0.5); }
+.toggle-input:checked + .toggle-track .toggle-thumb { transform: translateX(20px); background: #c4ff00; }
+.toggle-switch:hover .toggle-track { border-color: rgba(255,255,255,0.3); }
 
 /* ── Mobile ── */
 @media (max-width: 768px) {

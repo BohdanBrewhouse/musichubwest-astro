@@ -64,6 +64,34 @@ export default async function handler(req, res) {
       return res.status(200).json({ ok: true });
     }
 
+    // Sync site event by slug (upsert) — toggle ON
+    if (action === 'sync_event') {
+      const { slug } = item;
+      if (!slug) return res.status(400).json({ error: 'slug required' });
+      // Check if already exists
+      const { data: existing } = await sb.from('events').select('id').eq('slug', slug).maybeSingle();
+      let result;
+      if (existing) {
+        const { data, error } = await sb.from('events').update(item).eq('slug', slug).select().single();
+        if (error) throw error;
+        result = data;
+      } else {
+        const { data, error } = await sb.from('events').insert(item).select().single();
+        if (error) throw error;
+        result = data;
+      }
+      return res.status(200).json({ ok: true, item: result });
+    }
+
+    // Delete event by slug — toggle OFF
+    if (action === 'delete_by_slug') {
+      const { slug } = item || {};
+      if (!slug) return res.status(400).json({ error: 'slug required' });
+      const { error } = await sb.from('events').delete().eq('slug', slug);
+      if (error) throw error;
+      return res.status(200).json({ ok: true });
+    }
+
     return res.status(400).json({ error: 'Unknown action' });
   } catch (e) {
     console.error('[admin-data]', e.message);
