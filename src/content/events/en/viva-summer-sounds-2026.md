@@ -1,6 +1,6 @@
 ---
 title: Viva Summer Sounds 2026
-date: '2000-06-06'
+date: '2026-06-06'
 time: '19:00'
 location: Musikens Hus & Hängmattan
 address: 'Djurgårdsgatan 13, 414 62 Göteborg'
