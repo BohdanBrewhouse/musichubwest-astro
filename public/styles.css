@@ -590,46 +590,22 @@ a:hover .featured-title { text-decoration-color: var(--lime); }
   color: rgba(255,255,255,0.65);
   max-width: 600px;
   line-height: 1.7;
+  margin-bottom: 36px;
 }
-.home-ap-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-}
-.home-ap-card {
-  display: flex;
-  flex-direction: column;
-  border: 1px solid var(--black-3);
-  padding: 28px 24px;
+.home-project__btn {
+  display: inline-flex;
+  align-items: center;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--black);
+  background: var(--lime);
   text-decoration: none;
-  color: var(--white);
-  background: var(--black);
-  transition: border-color 0.2s, background 0.2s;
+  padding: 14px 28px;
+  border-radius: 4px;
+  transition: opacity 0.15s;
+  letter-spacing: 0.01em;
 }
-.home-ap-card:hover { border-color: var(--lime); background: rgba(208,255,0,0.04); }
-.home-ap-card__num {
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--lime);
-  margin-bottom: 10px;
-}
-.home-ap-card__title {
-  font-size: 20px;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  margin-bottom: 12px;
-  color: var(--white);
-}
-.home-ap-card__desc {
-  font-size: 14px;
-  color: rgba(255,255,255,0.6);
-  line-height: 1.65;
-  flex: 1;
-  margin-bottom: 20px;
-}
-.home-ap-card__link { font-size: 13px; font-weight: 700; color: var(--lime); }
+.home-project__btn:hover { opacity: 0.85; }
 
 .project-strip {
   background: var(--black);
@@ -1311,7 +1287,6 @@ a:hover .featured-title { text-decoration-color: var(--lime); }
   .page-hero { padding: 56px var(--px) 44px; }
   .project-strip { padding: 48px var(--px); }
   .home-project { padding: 56px var(--px); }
-  .home-ap-grid { grid-template-columns: 1fr; }
 
   /* Page tabs */
   .page-tabs__inner { padding: 0 var(--px); overflow-x: auto; }
