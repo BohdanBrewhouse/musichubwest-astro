@@ -14,7 +14,7 @@ const cardEvents = sorted.slice(0, 3);
 const articles = await getCollection('articles', a => a.id.startsWith('sv/'));
 const latestArticles = articles.sort((a, b) => b.data.date.localeCompare(a.data.date)).slice(0, 3);
 ---
-<Base title="Music Hub West – Start" lang={lang} description="Möt musikbranschen i Västsverige. Music Hub West samlar musiker, producenter och kreatörer — med events, masterclasses och ett community byggt för dig.">
+<Base title="Music Hub West – Start" lang={lang} description="Möt musikbranschen i Västra Sverige. Music Hub West samlar musiker, producenter och kreatörer med events, masterclasses och ett community byggt för dig.">
   <fragment slot="hreflang">
     <link rel="alternate" hreflang="sv" href={new URL('/', Astro.site)} />
     <link rel="alternate" hreflang="en" href={new URL('/en/', Astro.site)} />
@@ -128,7 +128,7 @@ const latestArticles = articles.sort((a, b) => b.data.date.localeCompare(a.data.
       <div class="home-project__header">
         <p class="home-project__kicker">Bakom plattformen</p>
         <h2 class="home-project__title">Tune In West</h2>
-        <p class="home-project__text">Music Hub West drivs av projektet Tune In West — ett initiativ som investerar i musikbranschen i Västra Götaland fram till 2029. Nyfiken på mer?</p>
+        <p class="home-project__text">Music Hub West drivs av projektet Tune In West. Ett initiativ som investerar i musikbranschen i Västra Sverige fram till 2029. Nyfiken på mer?</p>
       </div>
       <a href="https://tuneinwest.se" target="_blank" rel="noopener" class="home-project__btn">
         Till projektets webbplats →

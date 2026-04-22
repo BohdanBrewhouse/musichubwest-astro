@@ -12,7 +12,7 @@ const sorted = events.sort((a, b) => a.data.date.localeCompare(b.data.date));
 const articles = await getCollection('articles', a => a.id.startsWith('en/'));
 const latestArticles = articles.sort((a, b) => b.data.date.localeCompare(a.data.date)).slice(0, 3);
 ---
-<Base title="Music Hub West – Start" lang={lang} description="Meet the music industry in Western Sweden. Music Hub West brings together musicians, producers and creatives — with events, masterclasses and a community built for you.">
+<Base title="Music Hub West – Start" lang={lang} description="Meet the music industry in Western Sweden. Music Hub West brings together musicians, producers and creatives with events, masterclasses and a community built for you.">
   <fragment slot="hreflang">
     <link rel="alternate" hreflang="sv" href={new URL('/', Astro.site)} />
     <link rel="alternate" hreflang="en" href={new URL('/en/', Astro.site)} />
@@ -112,7 +112,7 @@ const latestArticles = articles.sort((a, b) => b.data.date.localeCompare(a.data.
       <div class="home-project__header">
         <p class="home-project__kicker">Behind the platform</p>
         <h2 class="home-project__title">Tune In West</h2>
-        <p class="home-project__text">Music Hub West is driven by the Tune In West project — an investment in the music industry in Västra Götaland running until 2029. Curious to know more?</p>
+        <p class="home-project__text">Music Hub West is driven by the Tune In West project. An investment in the music industry in Western Sweden running until 2029. Curious to know more?</p>
       </div>
       <a href="https://tuneinwest.se/en" target="_blank" rel="noopener" class="home-project__btn">
         Visit the project website →
