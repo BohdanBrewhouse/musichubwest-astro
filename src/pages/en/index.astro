@@ -12,7 +12,7 @@ const sorted = events.sort((a, b) => a.data.date.localeCompare(b.data.date));
 const articles = await getCollection('articles', a => a.id.startsWith('en/'));
 const latestArticles = articles.sort((a, b) => b.data.date.localeCompare(a.data.date)).slice(0, 3);
 ---
-<Base title="Music Hub West – Start" lang={lang} description="A platform for the music industry's growth in Western Sweden. Events, articles and projects in music, tech and creative business in Västra Götaland.">
+<Base title="Music Hub West – Start" lang={lang} description="Meet the music industry in Western Sweden. Music Hub West brings together musicians, producers and creatives — with events, masterclasses and a community built for you.">
   <fragment slot="hreflang">
     <link rel="alternate" hreflang="sv" href={new URL('/', Astro.site)} />
     <link rel="alternate" hreflang="en" href={new URL('/en/', Astro.site)} />
@@ -110,9 +110,9 @@ const latestArticles = articles.sort((a, b) => b.data.date.localeCompare(a.data.
   <div class="home-project">
     <div class="home-project__inner">
       <div class="home-project__header">
-        <p class="home-project__kicker">Project 2026–2029</p>
+        <p class="home-project__kicker">Behind the platform</p>
         <h2 class="home-project__title">Tune In West</h2>
-        <p class="home-project__text">Tune In West is a time-limited project aimed at strengthening the music industry's infrastructure and growth in Västra Götaland. The project consists of three parts offering different types of support and inspiration.</p>
+        <p class="home-project__text">Music Hub West is driven by the Tune In West project — an investment in the music industry in Västra Götaland running until 2029. Curious to know more?</p>
       </div>
       <a href="https://tuneinwest.se/en" target="_blank" rel="noopener" class="home-project__btn">
         Visit the project website →
