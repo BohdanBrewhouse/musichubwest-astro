@@ -21,7 +21,7 @@ Do you want to develop your artistic identity and create a clear concept around 
 
 The day features a masterclass with Cassius Lambert (from the acclaimed band BITOI), followed by a practical workshop.
 
-Key topics covered:
+### Key topics covered:
 
 * How to develop a clear artistic concept where music, aesthetics, and story align.
 * Finding the balance between artistic expression and musical content.
