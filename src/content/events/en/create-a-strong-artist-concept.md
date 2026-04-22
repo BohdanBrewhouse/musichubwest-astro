@@ -15,24 +15,19 @@ translationKey: skapa-ett-starkt-artistkoncept
 registration_open: true
 ---
 
-`<h3>Develop your identity as an artist and create a cohesive vision</h3>`
+### Develop your identity as an artist and create a cohesive vision
 
-`<p>Do you want to develop your artistic identity and create a clear concept around your music? In this workshop, you will explore how to work with your expression as a whole – from sound to visual design and storytelling.</p>`
+Do you want to develop your artistic identity and create a clear concept around your music? In this workshop, you will explore how to work with your expression as a whole – from sound to visual design and storytelling.
 
-`<p>The day features a masterclass with <strong>Cassius Lambert</strong> (BITOI), followed by a practical workshop. You will learn:</p>`
+The day features a masterclass with Cassius Lambert (from the acclaimed band BITOI), followed by a practical workshop.
 
-`<ul>`
+Key topics covered:
 
-`  <li>How to develop a clear artistic concept where music, aesthetics, and story align.</li>`
+* How to develop a clear artistic concept where music, aesthetics, and story align.
+* Finding the balance between artistic expression and musical content.
+* Working with visual identity, imagery, and presentation.
+* The creative process from idea to finished production.
 
-`  <li>How to find the balance between artistic expression and musical content.</li>`
+The course is led by moderator Sara Aldén (Musikcentrum Väst).
 
-`  <li>How to work with visual identity, imagery, and presentation.</li>`
-
-`  <li>The creative process from idea to finished production.</li>`
-
-`</ul>`
-
-`<p>The course is led by moderator <strong>Sara Aldén</strong> (Musikcentrum Väst).</p>`
-
-`<p><em>Target audience: Professional musicians and artists.</em></p>`
+Target audience: Professional musicians and artists.
