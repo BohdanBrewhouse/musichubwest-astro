@@ -15,26 +15,19 @@ translationKey: skapa-ett-starkt-artistkoncept
 registration_open: true
 ---
 
-`<h3>Utveckla din identitet som artist och skapa en helhet som når fram</h3>`
+### Utveckla din identitet som artist och skapa en helhet som når fram
 
-`<p>Vill du utveckla din artistiska identitet och skapa ett tydligt koncept kring din musik? I den här träffen får du utforska hur du kan arbeta med ditt uttryck som helhet – från sound till visuell gestaltning och berättelse.</p>`
+Vill du utveckla din artistiska identitet och skapa ett tydligt koncept kring din musik? I den här träffen får du utforska hur du kan arbeta med ditt uttryck som helhet – från sound till visuell gestaltning och berättelse.
 
-`<p>Under dagen varvar du inspiration och reflektion med praktiskt arbete kring ditt eget artistiska koncept. Du tar del av en masterclass med <strong>Cassius Lambert</strong> och får inblick i det hyllade projektet BITOI.</p>`
+Under dagen varvar du inspiration och reflektion med praktiskt arbete kring ditt eget artistiska koncept. Du tar del av en masterclass med Cassius Lambert och får inblick i arbetet bakom det hyllade bandet BITOI.
 
-`<p><strong>Under träffen berör vi:</strong></p>`
+### Under träffen berör vi:
 
-`<ul>`
+* Hur du utvecklar ett tydligt artistiskt koncept där musik, estetik och berättelse hänger ihop.
+* Hur du hittar balansen mellan konstnärligt uttryck och musikaliskt innehåll.
+* Hur du arbetar med visuell identitet, bildmaterial och presentation.
+* Hur en kreativ process kan ta form – från idé till färdig produktion.
 
-`  <li>Hur du utvecklar ett tydligt artistiskt koncept där musik, estetik och berättelse hänger ihop.</li>`
+Moderator: Sara Aldén (Musikcentrum Väst).
 
-`  <li>Hur du hittar balansen mellan konstnärligt uttryck och musikaliskt innehåll.</li>`
-
-`  <li>Arbete med visuell identitet och presentation.</li>`
-
-`  <li>Kreativ process från idé till färdig produktion.</li>`
-
-`</ul>`
-
-`<p>Moderator: <strong>Sara Aldén</strong> (Musikcentrum Väst).</p>`
-
-`<p><em>Målgrupp: Yrkesverksamma musiker och artister.</em></p>`
+Målgrupp: Yrkesverksamma musiker och artister.
