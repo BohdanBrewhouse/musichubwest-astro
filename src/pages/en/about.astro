@@ -56,9 +56,9 @@ const lang = 'en';
         <div class="about-platform__text">
           <p class="about-section__kicker">The platform</p>
           <h2 class="about-section__title">What is Music Hub West?</h2>
-          <p class="about-body">Music Hub West is an open community for anyone working with music in Western Sweden. Musicians, producers, creatives and event organisers meet here to network, learn new things and find their next collaboration.</p>
-          <p class="about-body">We run events, masterclasses, think tanks and a Tech Summit. You sign up and show up. Simple as that.</p>
-          <p class="about-body">It doesn't matter if you're a solo artist or run a company. If you work with music in any way, you're welcome here.</p>
+          <p class="about-body">Music Hub West is for anyone working with music in Western Sweden. Artists, producers, creatives, event organisers and tech companies. We don't build things for you, we build them with you.</p>
+          <p class="about-body">Once a year, we bring the industry together at the Music Tech Hub Summit, one of the region's most significant events where music and tech collide for real. The rest of the year, you'll find masterclasses, think tanks and workshops where you don't just show up — you help shape what happens.</p>
+          <p class="about-body">We believe the music industry is stronger when more voices are heard. That's why we actively work for gender equality, inclusion and diversity, and strive to create spaces where everyone feels welcome. Regardless of background, experience or where you are in your career.</p>
         </div>
         <div class="about-platform__highlight">
           <blockquote class="about-quote">
@@ -175,25 +175,32 @@ const lang = 'en';
       </div>
       <div>
         <div class="form-block__title">Send a message</div>
-        <form>
+        <form id="en-om-contact-form" novalidate>
           <div class="form__group">
-            <label class="form__label" for="name">Name</label>
-            <input class="form__input" type="text" id="name" placeholder="Your name" />
+            <label class="form__label" for="en-om-name">Name <span style="color:var(--lime)">*</span></label>
+            <input class="form__input" type="text" id="en-om-name" placeholder="Your name" required />
           </div>
           <div class="form__group">
-            <label class="form__label" for="email">Email</label>
-            <input class="form__input" type="email" id="email" placeholder="your@email.com" />
+            <label class="form__label" for="en-om-email">Email <span style="color:var(--lime)">*</span></label>
+            <input class="form__input" type="email" id="en-om-email" placeholder="your@email.com" required />
           </div>
           <div class="form__group">
-            <label class="form__label" for="org">Organisation</label>
-            <input class="form__input" type="text" id="org" placeholder="Company / Organisation" />
+            <label class="form__label" for="en-om-org">Organisation</label>
+            <input class="form__input" type="text" id="en-om-org" placeholder="Company / Organisation" />
           </div>
           <div class="form__group">
-            <label class="form__label" for="msg">Message</label>
-            <textarea class="form__textarea" id="msg" placeholder="How can we help you?"></textarea>
+            <label class="form__label" for="en-om-msg">Message <span style="color:var(--lime)">*</span></label>
+            <textarea class="form__textarea" id="en-om-msg" placeholder="How can we help you?" required></textarea>
           </div>
-          <button type="submit" class="btn btn--primary" style="width:100%">Send</button>
+          <div id="en-om-contact-error" style="display:none;color:#ff6b6b;font-size:0.85rem;margin-bottom:12px;">
+            Something went wrong. Please try again or contact us directly.
+          </div>
+          <button type="submit" class="btn btn--primary" id="en-om-contact-submit" style="width:100%">Send</button>
         </form>
+        <div id="en-om-contact-success" style="display:none;padding:24px;background:rgba(196,255,0,0.08);border:1px solid rgba(196,255,0,0.25);border-radius:8px;text-align:center;">
+          <p style="font-size:1.1rem;font-weight:600;margin-bottom:8px;">Thanks for your message!</p>
+          <p style="opacity:0.7;font-size:0.9rem;">We'll get back to you as soon as we can.</p>
+        </div>
       </div>
     </div>
   </div>
@@ -280,6 +287,55 @@ const lang = 'en';
   </div>
 
   <Footer lang={lang} />
+
+  <script is:inline>
+    (function () {
+      var form    = document.getElementById('en-om-contact-form');
+      var success = document.getElementById('en-om-contact-success');
+      var errorEl = document.getElementById('en-om-contact-error');
+      var submit  = document.getElementById('en-om-contact-submit');
+      if (!form) return;
+
+      form.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        errorEl.style.display = 'none';
+
+        var namn       = document.getElementById('en-om-name').value.trim();
+        var email      = document.getElementById('en-om-email').value.trim();
+        var org        = document.getElementById('en-om-org').value.trim();
+        var meddelande = document.getElementById('en-om-msg').value.trim();
+
+        if (!namn || !email || !meddelande) {
+          errorEl.textContent = 'Please fill in name, email and message.';
+          errorEl.style.display = 'block';
+          return;
+        }
+
+        submit.disabled = true;
+        submit.textContent = 'Sending…';
+
+        try {
+          var r = await fetch('/api/contact', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ namn, email, org, meddelande, sida: 'en-om' }),
+          });
+          var data = await r.json();
+          if (data.ok) {
+            form.style.display = 'none';
+            success.style.display = 'block';
+          } else {
+            throw new Error(data.error || 'unknown');
+          }
+        } catch (err) {
+          errorEl.textContent = 'Something went wrong. Please try again or contact us directly.';
+          errorEl.style.display = 'block';
+          submit.disabled = false;
+          submit.textContent = 'Send';
+        }
+      });
+    })();
+  </script>
 </Base>
 
 <style>
