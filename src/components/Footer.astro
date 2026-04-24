@@ -52,6 +52,9 @@ const base = lang === 'en' ? '/en' : '';
     <div class="footer__bottom">
       <span class="footer__copy">© 2026 Music Hub West</span>
       <span class="footer__copy">{ lang === 'sv' ? 'En del av Tune In West 2026–2029' : 'Part of Tune In West 2026–2029' }</span>
+      <a href={lang === 'sv' ? '/privacy' : '/en/privacy'} class="footer__privacy">
+        { lang === 'sv' ? 'Cookiepolicy' : 'Cookie policy' }
+      </a>
     </div>
   </div>
 </footer>

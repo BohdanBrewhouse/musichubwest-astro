@@ -802,6 +802,15 @@ a:hover .featured-title { text-decoration-color: var(--lime); }
   color: rgba(255,255,255,0.3);
 }
 
+.footer__privacy {
+  font-family: var(--font);
+  font-size: 12px;
+  color: rgba(255,255,255,0.3);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.footer__privacy:hover { color: rgba(255,255,255,0.7); }
+
 /* ─── FOOTER SOCIAL ───────────────────────────────── */
 .footer__social {
   display: flex;

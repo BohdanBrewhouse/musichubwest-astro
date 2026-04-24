@@ -1,0 +1,107 @@
+---
+import Base from '../../layouts/Base.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+const lang = 'en';
+---
+<Base title="Cookie Policy · Music Hub West" lang={lang}
+  description="Learn how Music Hub West uses cookies and how to manage your consent settings.">
+  <Nav lang={lang} active="" />
+
+  <main class="privacy">
+    <div class="privacy__inner">
+      <h1 class="privacy__title">Cookie Policy</h1>
+      <p class="privacy__updated">Last updated: April 2026</p>
+
+      <section class="privacy__section">
+        <h2>What are cookies?</h2>
+        <p>Cookies are small text files stored on your device when you visit a website. They are used to make the website work correctly and to help us improve your experience.</p>
+      </section>
+
+      <section class="privacy__section">
+        <h2>How we use cookies</h2>
+        <p>Music Hub West uses cookies for the following purposes:</p>
+        <ul>
+          <li><strong>Necessary cookies</strong> – Required for the website to function. These cannot be turned off.</li>
+          <li><strong>Preferences</strong> – Saves your settings, such as language choice.</li>
+          <li><strong>Statistics</strong> – Helps us understand how visitors use the website (Google Analytics). Data is anonymised and not used to identify individuals.</li>
+        </ul>
+      </section>
+
+      <section class="privacy__section">
+        <h2>Your consent</h2>
+        <p>When you visit the website for the first time, a cookie banner is shown where you can choose which cookies you accept. You can change or withdraw your consent at any time by clicking the button below.</p>
+        <button class="btn btn--outline" onclick="window.Cookiebot && window.Cookiebot.renew()">
+          Change cookie settings
+        </button>
+      </section>
+
+      <section class="privacy__section">
+        <h2>Third-party providers</h2>
+        <p>We use Cookiebot for consent management and Google Analytics for website statistics. These services may place their own cookies on your device in accordance with their own privacy policies.</p>
+      </section>
+
+      <section class="privacy__section">
+        <h2>Contact</h2>
+        <p>Do you have questions about how we handle cookies or personal data? Contact us at <a href="mailto:angelica@brewhouse.se">angelica@brewhouse.se</a>.</p>
+      </section>
+    </div>
+  </main>
+
+  <Footer lang={lang} />
+</Base>
+
+<style>
+  .privacy {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 72px 24px 96px;
+  }
+  .privacy__title {
+    font-size: clamp(32px, 4vw, 48px);
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .privacy__updated {
+    font-size: 13px;
+    color: #888;
+    margin-bottom: 56px;
+  }
+  .privacy__section {
+    margin-bottom: 40px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid #eee;
+  }
+  .privacy__section:last-child { border-bottom: none; }
+  .privacy__section h2 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .privacy__section p, .privacy__section ul {
+    font-size: 16px;
+    line-height: 1.75;
+    color: #444;
+  }
+  .privacy__section ul {
+    padding-left: 20px;
+    margin-top: 8px;
+  }
+  .privacy__section li { margin-bottom: 8px; }
+  .privacy__section a { color: inherit; text-decoration: underline; }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 12px 24px;
+    border-radius: 10px;
+    text-decoration: none;
+    cursor: pointer;
+    border: 2px solid #ddd;
+    background: transparent;
+    margin-top: 16px;
+    transition: border-color 0.15s;
+  }
+  .btn:hover { border-color: #999; }
+</style>

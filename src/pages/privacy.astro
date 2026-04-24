@@ -1,0 +1,108 @@
+---
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+const lang = 'sv';
+---
+<Base title="Cookiepolicy · Music Hub West" lang={lang}
+  description="Läs om hur Music Hub West använder cookies och hur du hanterar dina samtyckesinställningar.">
+  <Nav lang={lang} active="" />
+
+  <main class="privacy">
+    <div class="privacy__inner">
+      <h1 class="privacy__title">Cookiepolicy</h1>
+      <p class="privacy__updated">Senast uppdaterad: april 2026</p>
+
+      <section class="privacy__section">
+        <h2>Vad är cookies?</h2>
+        <p>Cookies är små textfiler som lagras på din enhet när du besöker en webbplats. De används för att webbplatsen ska fungera korrekt och för att vi ska kunna förbättra din upplevelse.</p>
+      </section>
+
+      <section class="privacy__section">
+        <h2>Hur vi använder cookies</h2>
+        <p>Music Hub West använder cookies i följande syfte:</p>
+        <ul>
+          <li><strong>Nödvändiga cookies</strong> – Krävs för att webbplatsen ska fungera. Dessa kan inte stängas av.</li>
+          <li><strong>Preferenser</strong> – Sparar dina inställningar, exempelvis språkval.</li>
+          <li><strong>Statistik</strong> – Hjälper oss förstå hur besökare använder webbplatsen (Google Analytics). Data anonymiseras och används inte för att identifiera enskilda personer.</li>
+        </ul>
+      </section>
+
+      <section class="privacy__section">
+        <h2>Ditt samtycke</h2>
+        <p>När du besöker webbplatsen för första gången visas en cookie-banner där du kan välja vilka cookies du godkänner. Du kan när som helst ändra eller återkalla ditt samtycke genom att klicka på knappen nedan.</p>
+        <button class="btn btn--outline" onclick="window.Cookiebot && window.Cookiebot.renew()">
+          Ändra cookie-inställningar
+        </button>
+      </section>
+
+      <section class="privacy__section">
+        <h2>Tredjepartsleverantörer</h2>
+        <p>Vi använder Cookiebot för hantering av samtycke och Google Analytics för webbplatsstatistik. Dessa tjänster kan placera egna cookies på din enhet i enlighet med sina egna integritetspolicyer.</p>
+      </section>
+
+      <section class="privacy__section">
+        <h2>Kontakt</h2>
+        <p>Har du frågor om hur vi hanterar cookies eller personuppgifter? Kontakta oss på <a href="mailto:angelica@brewhouse.se">angelica@brewhouse.se</a>.</p>
+      </section>
+    </div>
+  </main>
+
+  <Footer lang={lang} />
+</Base>
+
+<style>
+  .privacy {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 72px 24px 96px;
+  }
+  .privacy__inner { }
+  .privacy__title {
+    font-size: clamp(32px, 4vw, 48px);
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .privacy__updated {
+    font-size: 13px;
+    color: #888;
+    margin-bottom: 56px;
+  }
+  .privacy__section {
+    margin-bottom: 40px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid #eee;
+  }
+  .privacy__section:last-child { border-bottom: none; }
+  .privacy__section h2 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .privacy__section p, .privacy__section ul {
+    font-size: 16px;
+    line-height: 1.75;
+    color: #444;
+  }
+  .privacy__section ul {
+    padding-left: 20px;
+    margin-top: 8px;
+  }
+  .privacy__section li { margin-bottom: 8px; }
+  .privacy__section a { color: inherit; text-decoration: underline; }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 12px 24px;
+    border-radius: 10px;
+    text-decoration: none;
+    cursor: pointer;
+    border: 2px solid #ddd;
+    background: transparent;
+    margin-top: 16px;
+    transition: border-color 0.15s;
+  }
+  .btn:hover { border-color: #999; }
+</style>
