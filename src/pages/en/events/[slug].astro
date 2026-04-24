@@ -144,7 +144,14 @@ const icsContent = dtStart ? [
           </div>
         </div>
         <div class="event-header__actions">
-          {ev.data.registration_open && (
+          {ev.data.external_registration_url ? (
+            <a href={ev.data.external_registration_url} target="_blank" rel="noopener noreferrer"
+               class="btn btn--primary ext-reg-link"
+               data-slug={ev.id.replace('en/','')}
+               data-title={ev.data.title}>
+              Read more &amp; tickets ↗
+            </a>
+          ) : ev.data.registration_open && (
             <button class="btn btn--primary" onclick="openRegModal()">Register now</button>
           )}
           {googleUrl && (
@@ -208,12 +215,23 @@ const icsContent = dtStart ? [
             <span class="event-cta-box__detail-value">{ev.data.cost}</span>
           </div>
         )}
-        {ev.data.registration_open ? (
+        {ev.data.external_registration_url ? (
+          <a href={ev.data.external_registration_url} target="_blank" rel="noopener noreferrer"
+             class="btn btn--primary ext-reg-link"
+             data-slug={ev.id.replace('en/','')}
+             data-title={ev.data.title}>
+            Read more &amp; tickets ↗
+          </a>
+        ) : ev.data.registration_open ? (
           <button class="btn btn--primary" onclick="openRegModal()">Register now</button>
         ) : (
           <span class="btn btn--primary btn--disabled">Registration opens soon</span>
         )}
-        <p class="event-cta-box__note">Confirmation sent via email</p>
+        <p class="event-cta-box__note">
+          {ev.data.external_registration_url
+            ? 'Registration is handled by the organiser on their website'
+            : 'Confirmation sent via email'}
+        </p>
       </div>
       {ev.data.organizer && (
         <div class="event-organiser">
@@ -497,6 +515,17 @@ const icsContent = dtStart ? [
       window.openRegModal  = openRegModal;
       window.closeRegModal = closeRegModal;
     })();
+
+    // Track clicks on external registration links
+    document.querySelectorAll('.ext-reg-link').forEach(function (el) {
+      el.addEventListener('click', function () {
+        fetch('/api/track-click', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ slug: el.dataset.slug, title: el.dataset.title, lang: 'en' }),
+        }).catch(function () {});
+      });
+    });
   </script>
 
   {related.length > 0 && (
