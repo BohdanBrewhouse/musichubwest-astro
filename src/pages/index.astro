@@ -71,7 +71,7 @@ const latestArticles = articles.sort((a, b) => b.data.date.localeCompare(a.data.
               <div class="hero__dots" role="tablist" aria-label="Bildspel">
                 {heroSlides.map((_, j) => <button class={`hero__dot ${j === i ? 'active' : ''}`} role="tab" aria-label={`Slide ${j + 1}`} aria-selected={j === i ? 'true' : 'false'}></button>)}
               </div>
-              <a href={`/evenemang/${ev.id.replace('sv/', '')}`} class="btn btn--primary">Anmäl dig nu</a>
+              <a href={`/evenemang/${ev.id.replace('sv/', '')}`} class="btn btn--primary">Läs mer</a>
             </div>
           </div>
         </div>
