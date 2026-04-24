@@ -388,7 +388,8 @@ const icsContent = dtStart ? [
   </script>
 
   {/* ── Registration modal ───────────────────────────── */}
-  <div class="map-modal reg-modal" id="reg-modal" role="dialog" aria-modal="true" aria-labelledby="reg-modal-title" hidden>
+  <div class="map-modal reg-modal" id="reg-modal" role="dialog" aria-modal="true" aria-labelledby="reg-modal-title" hidden
+    data-event-title={ev.data.title} data-event-slug={ev.id.replace('sv/','')}>
     <div class="map-modal__backdrop" onclick="closeRegModal()"></div>
     <div class="map-modal__panel">
       <div class="map-modal__header">
@@ -470,6 +471,11 @@ const icsContent = dtStart ? [
         });
         document.body.style.overflow = 'hidden';
         document.addEventListener('keydown', handleRegEsc);
+        // GA4: user opened registration form
+        if (typeof gtag === 'function') gtag('event', 'begin_registration', {
+          event_title: regModal.dataset.eventTitle,
+          event_slug:  regModal.dataset.eventSlug,
+        });
       }
 
       function closeRegModal() {
@@ -507,6 +513,11 @@ const icsContent = dtStart ? [
             .then(function () {
               form.style.display = 'none';
               successEl.style.display = 'block';
+              // GA4: registration completed successfully
+              if (typeof gtag === 'function') gtag('event', 'registration_complete', {
+                event_title: regModal.dataset.eventTitle,
+                event_slug:  regModal.dataset.eventSlug,
+              });
             })
             .catch(function () {
               errorEl.hidden = false;
@@ -528,6 +539,12 @@ const icsContent = dtStart ? [
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ slug: el.dataset.slug, title: el.dataset.title, lang: 'sv' }),
         }).catch(function () {});
+        // GA4: user clicked external partner registration link
+        if (typeof gtag === 'function') gtag('event', 'external_registration_click', {
+          event_title: el.dataset.title,
+          event_slug:  el.dataset.slug,
+          link_url:    el.href,
+        });
       });
     });
   </script>
