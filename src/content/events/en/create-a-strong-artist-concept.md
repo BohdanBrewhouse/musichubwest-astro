@@ -13,6 +13,7 @@ organizer: Kulturakademin & Musikcentrum Väst
 organizer_email: erik@kulturakademin.com
 translationKey: skapa-ett-starkt-artistkoncept
 registration_open: true
+external_registration_url: 'https://kulturakademin.com/kurskatalog/skapa-ett-starkt-artistkoncept/'
 ---
 
 ### Develop your identity as an artist and create a cohesive vision
