@@ -12,6 +12,7 @@ organizer: Westside Music Sweden
 organizer_email: info@westsidemusicsweden.se
 translationKey: viva-summer-sounds-2026
 registration_open: true
+external_registration_url: 'https://vivasummersounds.se'
 ---
 
 ### Celebrate the start of summer with live music in Majorna!
