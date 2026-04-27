@@ -7,8 +7,9 @@ export interface Props {
   image: string;
   slug: string;
   lang: 'sv' | 'en';
+  past?: boolean;
 }
-const { title, date, time, category, image, slug, lang } = Astro.props;
+const { title, date, time, category, image, slug, lang, past = false } = Astro.props;
 const eventsBase = lang === 'en' ? '/en/events' : '/evenemang';
 
 function formatDate(d: string, l: 'sv' | 'en') {
@@ -26,7 +27,7 @@ const badgeClass: Record<string, string> = {
   'VGR':              'badge--vgr',
 };
 ---
-<a href={`${eventsBase}/${slug}`} class="event-card" data-category={category}>
+<a href={`${eventsBase}/${slug}`} class={`event-card${past ? ' event-card--past' : ''}`} data-category={category}>
   <div class="event-card__image">
     <img src={image} alt={title} loading="lazy" />
     <span class={`badge ${badgeClass[category] ?? ''} event-card__badge`}>{category}</span>

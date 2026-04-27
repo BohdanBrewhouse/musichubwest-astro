@@ -425,6 +425,8 @@ h1, h2, h3, h4 { font-family: var(--font-display); }
 }
 
 .event-card:hover { transform: translateY(-2px); }
+.event-card--past { opacity: 0.6; }
+.event-card--past:hover { opacity: 1; }
 
 .event-card:hover .event-card__title {
   text-decoration-color: var(--lime);

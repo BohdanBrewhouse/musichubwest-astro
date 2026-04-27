@@ -9,14 +9,26 @@ const lang = 'sv';
 const events = await getCollection('events', e => e.id.startsWith('sv/'));
 const sorted = events.sort((a, b) => a.data.date.localeCompare(b.data.date));
 
+const today = new Date().toISOString().split('T')[0];
+const upcoming = sorted.filter(ev => ev.data.date >= today);
+const past     = sorted.filter(ev => ev.data.date < today).reverse();
+
 const monthsFull = ['Januari','Februari','Mars','April','Maj','Juni','Juli','Augusti','September','Oktober','November','December'];
 
-const groups: Record<string, typeof sorted> = {};
-for (const ev of sorted) {
+const upcomingGroups: Record<string, typeof sorted> = {};
+for (const ev of upcoming) {
   const [year, month] = ev.data.date.split('-');
   const key = `${year}-${month}`;
-  if (!groups[key]) groups[key] = [];
-  groups[key].push(ev);
+  if (!upcomingGroups[key]) upcomingGroups[key] = [];
+  upcomingGroups[key].push(ev);
+}
+
+const pastGroups: Record<string, typeof sorted> = {};
+for (const ev of past) {
+  const [year, month] = ev.data.date.split('-');
+  const key = `${year}-${month}`;
+  if (!pastGroups[key]) pastGroups[key] = [];
+  pastGroups[key].push(ev);
 }
 
 const badgeClass: Record<string, string> = {
@@ -59,12 +71,21 @@ function formatDate(d: string) {
           <h1 class="ev-header__title">Evenemang</h1>
         </div>
         <div class="ev-header__right">
-          <span class="ev-header__num">{sorted.length}</span>
-          <span class="ev-header__num-label">kommande<br>event</span>
+          <span class="ev-header__num" id="ev-count">{upcoming.length}</span>
+          <span class="ev-header__num-label" id="ev-count-label">kommande<br>event</span>
         </div>
       </div>
 
       <div class="ev-header__bottom">
+
+        <!-- Upcoming / Archive tabs -->
+        <div class="ev-tabs">
+          <button class="ev-tab active" id="tab-upcoming" data-tab="upcoming">Kommande</button>
+          <button class="ev-tab" id="tab-archive" data-tab="archive">
+            Arkiv
+            {past.length > 0 && <span class="ev-tab__count">{past.length}</span>}
+          </button>
+        </div>
 
         <!-- Desktop: filter chips -->
         <div class="ev-filter-chips" id="ev-filter-chips">
@@ -129,8 +150,9 @@ function formatDate(d: string) {
   <!-- GRID VIEW -->
   <section class="section ev-view" id="view-grid">
     <div class="section__inner">
-      <div class="card-grid">
-        {sorted.map(ev => (
+      <!-- Upcoming -->
+      <div class="card-grid" id="grid-upcoming">
+        {upcoming.map(ev => (
           <EventCard
             title={ev.data.title}
             date={ev.data.date}
@@ -141,6 +163,27 @@ function formatDate(d: string) {
             lang={lang}
           />
         ))}
+        {upcoming.length === 0 && (
+          <p class="ev-empty">Inga kommande event just nu. Kolla tillbaka snart!</p>
+        )}
+      </div>
+      <!-- Archive -->
+      <div class="card-grid" id="grid-archive" style="display:none">
+        {past.map(ev => (
+          <EventCard
+            title={ev.data.title}
+            date={ev.data.date}
+            time={ev.data.time}
+            category={ev.data.category}
+            image={ev.data.image}
+            slug={ev.id.replace('sv/', '')}
+            lang={lang}
+            past={true}
+          />
+        ))}
+        {past.length === 0 && (
+          <p class="ev-empty">Inga tidigare event ännu.</p>
+        )}
       </div>
     </div>
   </section>
@@ -148,40 +191,89 @@ function formatDate(d: string) {
   <!-- LIST VIEW -->
   <div class="agenda ev-view" id="view-list" style="display:none">
     <div class="agenda__inner">
-      {Object.entries(groups).map(([key, evs]) => {
-        const [year, monthIdx] = key.split('-');
-        const mIdx = parseInt(monthIdx, 10) - 1;
-        return (
-          <div class="agenda-month" data-month-key={key}>
-            <div class="agenda-month__label">
-              <span class="agenda-month__name">{monthsFull[mIdx]}</span>
-              <span class="agenda-month__year">{year}</span>
-            </div>
-            {evs.map((ev) => {
-              const slug = ev.id.replace('sv/', '');
-              return (
-                <a class="agenda-item" href={`/evenemang/${slug}`} data-category={ev.data.category}>
-                  <div class="agenda-item__body">
-                    <div class="agenda-item__top">
-                      <span class={`badge ${badgeClass[ev.data.category] ?? ''}`}>{ev.data.category}</span>
-                      <h2 class="agenda-item__title">{ev.data.title}</h2>
+
+      <!-- List: Upcoming -->
+      <div id="list-upcoming">
+        {Object.entries(upcomingGroups).map(([key, evs]) => {
+          const [year, monthIdx] = key.split('-');
+          const mIdx = parseInt(monthIdx, 10) - 1;
+          return (
+            <div class="agenda-month" data-month-key={key}>
+              <div class="agenda-month__label">
+                <span class="agenda-month__name">{monthsFull[mIdx]}</span>
+                <span class="agenda-month__year">{year}</span>
+              </div>
+              {evs.map((ev) => {
+                const slug = ev.id.replace('sv/', '');
+                return (
+                  <a class="agenda-item" href={`/evenemang/${slug}`} data-category={ev.data.category}>
+                    <div class="agenda-item__body">
+                      <div class="agenda-item__top">
+                        <span class={`badge ${badgeClass[ev.data.category] ?? ''}`}>{ev.data.category}</span>
+                        <h2 class="agenda-item__title">{ev.data.title}</h2>
+                      </div>
+                      <p class="agenda-item__meta">
+                        <span>{formatDate(ev.data.date)}</span>
+                        {ev.data.location && <><span class="agenda-item__dot">·</span><span>{ev.data.location}</span></>}
+                        {ev.data.time && <><span class="agenda-item__dot">·</span><span>{ev.data.time}</span></>}
+                      </p>
                     </div>
-                    <p class="agenda-item__meta">
-                      <span>{formatDate(ev.data.date)}</span>
-                      {ev.data.location && <><span class="agenda-item__dot">·</span><span>{ev.data.location}</span></>}
-                      {ev.data.time && <><span class="agenda-item__dot">·</span><span>{ev.data.time}</span></>}
-                    </p>
-                  </div>
-                  <span class="agenda-item__link">
-                    {ev.data.registration_open ? 'Anmäl dig' : 'Läs mer'}
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                  </span>
-                </a>
-              );
-            })}
-          </div>
-        );
-      })}
+                    <span class="agenda-item__link">
+                      {ev.data.registration_open ? 'Anmäl dig' : 'Läs mer'}
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </span>
+                  </a>
+                );
+              })}
+            </div>
+          );
+        })}
+        {upcoming.length === 0 && (
+          <p class="ev-empty">Inga kommande event just nu. Kolla tillbaka snart!</p>
+        )}
+      </div>
+
+      <!-- List: Archive -->
+      <div id="list-archive" style="display:none">
+        {Object.entries(pastGroups).map(([key, evs]) => {
+          const [year, monthIdx] = key.split('-');
+          const mIdx = parseInt(monthIdx, 10) - 1;
+          return (
+            <div class="agenda-month" data-month-key={key}>
+              <div class="agenda-month__label">
+                <span class="agenda-month__name">{monthsFull[mIdx]}</span>
+                <span class="agenda-month__year">{year}</span>
+              </div>
+              {evs.map((ev) => {
+                const slug = ev.id.replace('sv/', '');
+                return (
+                  <a class="agenda-item agenda-item--past" href={`/evenemang/${slug}`} data-category={ev.data.category}>
+                    <div class="agenda-item__body">
+                      <div class="agenda-item__top">
+                        <span class={`badge ${badgeClass[ev.data.category] ?? ''}`}>{ev.data.category}</span>
+                        <h2 class="agenda-item__title">{ev.data.title}</h2>
+                      </div>
+                      <p class="agenda-item__meta">
+                        <span>{formatDate(ev.data.date)}</span>
+                        {ev.data.location && <><span class="agenda-item__dot">·</span><span>{ev.data.location}</span></>}
+                        {ev.data.time && <><span class="agenda-item__dot">·</span><span>{ev.data.time}</span></>}
+                      </p>
+                    </div>
+                    <span class="agenda-item__link">
+                      Läs mer
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </span>
+                  </a>
+                );
+              })}
+            </div>
+          );
+        })}
+        {past.length === 0 && (
+          <p class="ev-empty">Inga tidigare event ännu.</p>
+        )}
+      </div>
+
       <div id="agenda-empty" hidden>
         <p class="agenda-empty">Inga event matchar det valda filtret.</p>
       </div>
@@ -250,6 +342,59 @@ function formatDate(d: string) {
 
   btnGrid.addEventListener('click', function() { setView('grid'); });
   btnList.addEventListener('click', function() { setView('list'); dismissNudge(); });
+
+  // ── Tab switching (upcoming / archive) ──
+  var tabUpcoming  = document.getElementById('tab-upcoming');
+  var tabArchive   = document.getElementById('tab-archive');
+  var gridUpcoming = document.getElementById('grid-upcoming');
+  var gridArchive  = document.getElementById('grid-archive');
+  var listUpcoming = document.getElementById('list-upcoming');
+  var listArchive  = document.getElementById('list-archive');
+  var evCount      = document.getElementById('ev-count');
+  var evCountLabel = document.getElementById('ev-count-label');
+
+  var upcomingCount = gridUpcoming ? gridUpcoming.querySelectorAll('[data-category]').length : 0;
+  var archiveCount  = gridArchive  ? gridArchive.querySelectorAll('[data-category]').length  : 0;
+
+  function setTab(tab) {
+    var isUpcoming = tab !== 'archive';
+    // grid
+    if (gridUpcoming) gridUpcoming.style.display = isUpcoming ? '' : 'none';
+    if (gridArchive)  gridArchive.style.display  = isUpcoming ? 'none' : '';
+    // list
+    if (listUpcoming) listUpcoming.style.display = isUpcoming ? '' : 'none';
+    if (listArchive)  listArchive.style.display  = isUpcoming ? 'none' : '';
+    // tab buttons
+    if (tabUpcoming) tabUpcoming.classList.toggle('active', isUpcoming);
+    if (tabArchive)  tabArchive.classList.toggle('active', !isUpcoming);
+    // counter
+    if (evCount) evCount.textContent = isUpcoming ? upcomingCount : archiveCount;
+    if (evCountLabel) evCountLabel.innerHTML = isUpcoming ? 'kommande<br>event' : 'tidigare<br>event';
+    // reset category filter
+    document.querySelectorAll('.ev-chip').forEach(function(c) { c.classList.remove('active'); });
+    var allChip = document.querySelector('.ev-chip[data-filter="all"]');
+    if (allChip) allChip.classList.add('active');
+    if (catLabel) catLabel.textContent = 'Alla kategorier';
+    if (catMenu) {
+      catMenu.querySelectorAll('.cat-drop__item').forEach(function(i) {
+        i.classList.remove('active');
+        i.setAttribute('aria-selected', 'false');
+      });
+      var allItem = catMenu.querySelector('.cat-drop__item[data-filter="all"]');
+      if (allItem) { allItem.classList.add('active'); allItem.setAttribute('aria-selected', 'true'); }
+    }
+    applyFilter('all');
+    try { localStorage.setItem('mhw-events-tab', tab); } catch(e) {}
+  }
+
+  if (tabUpcoming) tabUpcoming.addEventListener('click', function() { setTab('upcoming'); });
+  if (tabArchive)  tabArchive.addEventListener('click',  function() { setTab('archive'); });
+
+  // Restore saved tab
+  try {
+    var savedTab = localStorage.getItem('mhw-events-tab');
+    if (savedTab === 'archive') setTab('archive');
+  } catch(e) {}
 
   // ── Desktop chip filter ──
   document.querySelectorAll('.ev-chip').forEach(function(chip) {
@@ -365,6 +510,59 @@ function formatDate(d: string) {
     color: rgba(255,255,255,0.35);
     line-height: 1.3;
   }
+
+  /* ── Tabs (upcoming / archive) ── */
+  .ev-tabs {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+  .ev-tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 16px;
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 4px;
+    color: rgba(255,255,255,0.5);
+    font-family: var(--font);
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: border-color 0.15s, color 0.15s, background 0.15s;
+    white-space: nowrap;
+  }
+  .ev-tab:hover { border-color: rgba(255,255,255,0.35); color: var(--white); }
+  .ev-tab.active { background: var(--lime); border-color: var(--lime); color: var(--black); }
+  .ev-tab__count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 9px;
+    font-size: 11px;
+    font-weight: 800;
+    line-height: 1;
+  }
+  .ev-tab.active .ev-tab__count { background: rgba(0,0,0,0.2); }
+
+  /* ── Empty state ── */
+  .ev-empty {
+    grid-column: 1 / -1;
+    padding: 64px 0;
+    text-align: center;
+    color: rgba(255,255,255,0.35);
+    font-size: 15px;
+  }
+
+  /* ── Past agenda items (dimmed) ── */
+  .agenda-item--past { opacity: 0.65; }
+  .agenda-item--past:hover { opacity: 1; }
 
   /* ── Header bottom row (filters + toggle) ── */
   .ev-header__bottom {
