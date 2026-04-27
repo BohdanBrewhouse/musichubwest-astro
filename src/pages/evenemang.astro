@@ -872,9 +872,35 @@ function formatDate(d: string) {
   /* ── Responsive ── */
   @media (max-width: 768px) {
     .ev-header { padding: 48px 20px 0; }
-    .ev-header__bottom { flex-wrap: nowrap; gap: 8px; }
     .agenda { padding: 0 20px 56px; }
     .agenda-item__title { white-space: normal; }
+
+    /* Tabs go full-width on their own row above filter + toggle */
+    .ev-header__bottom {
+      flex-wrap: wrap;
+      gap: 0;
+      padding: 0;
+    }
+    .ev-tabs {
+      order: -1;
+      width: 100%;
+      gap: 0;
+      border-bottom: 1px solid var(--black-3);
+      padding: 12px 0;
+    }
+    .ev-tab {
+      flex: 1;
+      justify-content: center;
+      padding: 8px 12px;
+    }
+    /* Filter row (dropdown + toggle) */
+    .ev-filter-chips,
+    .cat-drop,
+    .view-toggle-wrap {
+      padding: 10px 0;
+    }
+    .cat-drop { flex: 1; }
+    .cat-drop__btn { width: 100%; }
   }
   @media (max-width: 640px) {
     .ev-header__right { display: none; }
