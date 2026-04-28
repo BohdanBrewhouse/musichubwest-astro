@@ -1140,17 +1140,19 @@ a:hover .featured-title { text-decoration-color: var(--lime); }
 
 /* ─── Mobile fullscreen menu ─────────────────────────── */
 .mob-menu {
+  display: none; /* hidden by default; .open class shows it */
   position: fixed;
   top: 0;
+  right: 0;
+  bottom: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  height: 100dvh;
   z-index: 9999;
   background: #0b0b0b;
-  display: flex;
   flex-direction: column;
   overflow: hidden;
+}
+.mob-menu.open {
+  display: flex;
 }
 
 /* Head */
@@ -1201,7 +1203,6 @@ a:hover .featured-title { text-decoration-color: var(--lime); }
   flex-direction: column;
   justify-content: center;
   padding: 8px 0;
-  overflow: hidden;
 }
 .mob-menu__link {
   display: flex;
