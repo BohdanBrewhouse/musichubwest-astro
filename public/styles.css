@@ -1142,7 +1142,7 @@ a:hover .featured-title { text-decoration-color: var(--lime); }
 .nav__overlay {
   position: fixed;
   inset: 0;
-  z-index: 500;
+  z-index: 9999;
   background: #0b0b0b;
   display: none;
   flex-direction: column;
@@ -1160,12 +1160,14 @@ a:hover .featured-title { text-decoration-color: var(--lime); }
 /* Head: logo + close */
 .nav__overlay-head {
   height: 80px;
+  min-height: 80px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 20px;
   border-bottom: 1px solid rgba(255,255,255,0.07);
   flex-shrink: 0;
+  overflow: hidden;
 }
 .nav__overlay-logo {
   display: flex;
@@ -1174,10 +1176,15 @@ a:hover .featured-title { text-decoration-color: var(--lime); }
   text-decoration: none;
 }
 .nav__overlay-icon {
-  width: 36px;
-  height: 36px;
+  width: 36px !important;
+  height: 36px !important;
+  min-width: 36px;
+  min-height: 36px;
+  max-width: 36px;
+  max-height: 36px;
   color: var(--lime);
   flex-shrink: 0;
+  display: block;
 }
 .nav__overlay-title {
   font-family: var(--font-display);
