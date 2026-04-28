@@ -1144,16 +1144,17 @@ a:hover .featured-title { text-decoration-color: var(--lime); }
   inset: 0;
   z-index: 500;
   background: #0b0b0b;
-  display: flex;
+  display: none;
   flex-direction: column;
   overflow-y: auto;
-  visibility: hidden;
-  opacity: 0;
-  transition: opacity 0.22s ease, visibility 0.22s ease;
 }
 .nav__overlay.open {
-  visibility: visible;
-  opacity: 1;
+  display: flex;
+  animation: overlayOpen 0.2s ease both;
+}
+@keyframes overlayOpen {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
 /* Head: logo + close */

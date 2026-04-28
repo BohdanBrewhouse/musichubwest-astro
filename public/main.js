@@ -159,6 +159,8 @@ function initBurger() {
   if (!burger || !overlay) return;
 
   const openOverlay = () => {
+    overlay.style.display = '';   // clear inline display:none so CSS .open takes over
+    void overlay.offsetHeight;    // force reflow so CSS animation triggers
     overlay.classList.add('open');
     overlay.setAttribute('aria-hidden', 'false');
     burger.classList.add('active');
@@ -166,6 +168,7 @@ function initBurger() {
   };
   const closeOverlay = () => {
     overlay.classList.remove('open');
+    overlay.style.display = 'none'; // re-apply inline hide to prevent FOUC on next load
     overlay.setAttribute('aria-hidden', 'true');
     burger.classList.remove('active');
     document.body.style.overflow = '';
