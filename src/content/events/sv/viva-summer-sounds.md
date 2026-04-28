@@ -7,7 +7,7 @@ address: 'Djurgårdsgatan 13, 414 62 Göteborg'
 map_query: Musikens Hus Göteborg
 category: Tune In West
 image: /images/vss_liggande_clean_gbg.png.avif
-cost: 195 SEK (Early Bird) / 250 SEK (Regular)
+cost: 195 kr (Early Bird) / 250 kr (Ordinarie)
 organizer: Westside Music Sweden
 organizer_email: info@westsidemusicsweden.se
 translationKey: viva-summer-sounds-2026
