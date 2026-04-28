@@ -15,10 +15,10 @@ registration_open: true
 external_registration_url: 'https://vivasummersounds.se'
 ---
 
-### Fira sommarens ankomst med livemusik i Majorna!
+### Celebrate the start of summer with live music in Majorna!
 
-Viva Summer Sounds är en endags klubbfestival som bjuder på ett handplockat urval av spännande internationell och lokal musik. Festivalen äger rum på två scener – Musikens Hus och Hängmattan – och en biljett ger dig tillträde till hela kvällens program.
+Viva Summer Sounds is a one-day club festival that brings a curated selection of fresh, international, and local music to Gothenburg. Taking place across two stages at Musikens Hus and Hängmattan, one ticket gives you access to the entire program.
 
-Upplev en kväll fylld av energi, nya musikaliska upptäckter och den bästa indiescenen. Det är det perfekta tillfället att njuta av Göteborgs levande musikkultur när sommarnätterna är som ljusast.
+Expect an evening filled with energy, discovery, and the best of the indie scene. It’s the perfect way to experience the vibrant music culture of Gothenburg as the summer nights grow longer.
 
-Vänligen notera: Åldersgräns 18 år. Line-up presenteras löpande.
+Note: Age limit 18+. Line-up is announced continuously.
