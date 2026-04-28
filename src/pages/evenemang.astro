@@ -905,6 +905,12 @@ function formatDate(d: string) {
     .agenda-item__title { white-space: normal; }
     .cat-drop { flex: 1; }
     .cat-drop__btn { width: 100%; }
+    /* Fix: negative margin on agenda month label causes horizontal overflow */
+    .agenda-month__label {
+      margin: 0 -20px;
+      padding-left: 20px;
+      padding-right: 20px;
+    }
   }
   @media (max-width: 640px) {
     .ev-header__right { display: none; }

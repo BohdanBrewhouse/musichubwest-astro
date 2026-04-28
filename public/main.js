@@ -151,25 +151,32 @@ function initNav() {
   });
 }
 
-/* ── Mobile hamburger ────────────────────────────────── */
+/* ── Mobile hamburger + overlay ─────────────────────── */
 function initBurger() {
-  const burger = document.querySelector('.nav__burger');
-  const links  = document.querySelector('.nav__links');
-  if (!burger || !links) return;
+  const burger  = document.getElementById('nav-burger');
+  const overlay = document.getElementById('nav-overlay');
+  const closeBtn = document.getElementById('nav-close');
+  if (!burger || !overlay) return;
 
-  burger.addEventListener('click', () => {
-    const open = links.classList.toggle('open');
-    burger.classList.toggle('active', open);
-    document.body.style.overflow = open ? 'hidden' : '';
-  });
+  const openOverlay = () => {
+    overlay.classList.add('open');
+    overlay.setAttribute('aria-hidden', 'false');
+    burger.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  };
+  const closeOverlay = () => {
+    overlay.classList.remove('open');
+    overlay.setAttribute('aria-hidden', 'true');
+    burger.classList.remove('active');
+    document.body.style.overflow = '';
+  };
 
-  // Close menu on link click
-  links.querySelectorAll('a').forEach(a => {
-    a.addEventListener('click', () => {
-      links.classList.remove('open');
-      burger.classList.remove('active');
-      document.body.style.overflow = '';
-    });
+  burger.addEventListener('click', openOverlay);
+  closeBtn?.addEventListener('click', closeOverlay);
+
+  // Close on any nav link or logo click inside overlay
+  overlay.querySelectorAll('.nav__overlay-link, .nav__overlay-logo').forEach(el => {
+    el.addEventListener('click', closeOverlay);
   });
 }
 
