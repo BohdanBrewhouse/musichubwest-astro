@@ -877,7 +877,12 @@ function formatDate(d: string) {
     .agenda { padding: 0 20px 100px; }
     .agenda-item__title { white-space: normal; }
     .cat-drop { flex: 1; }
-    .cat-drop__btn { width: 100%; }
+    .cat-drop__btn {
+      width: 100%;
+      justify-content: space-between;
+      padding: 10px 14px;
+    }
+    .cat-drop__menu { width: 100%; min-width: 0; }
     /* Fix: negative margin on agenda month label causes horizontal overflow */
     .agenda-month__label {
       margin: 0 -20px;
