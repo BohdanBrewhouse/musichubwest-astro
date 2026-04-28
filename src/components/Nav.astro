@@ -96,64 +96,63 @@ function getEnUrl(path: string): string {
   </div>
 </nav>
 
-<!-- ── Mobile fullscreen overlay ── -->
-<div class="nav__overlay" id="nav-overlay" style="display:none" aria-hidden="true">
-  <div class="nav__overlay-head">
-    <a href={`${base}/`} class="nav__overlay-logo" id="nav-overlay-logo">
-      <svg class="nav__overlay-icon" width="36" height="36" viewBox="0 0 1491 1360" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M934.227 49.4527C937.206 20.6073 941.417 1.53254 942.49 0.650253C950.201 -5.69678 1012.57 35.8088 1009.59 64.6544L984.035 589.437C999.31 568.419 1015.74 549.751 1033.41 534.648C1060.44 511.549 1093.83 493.989 1132.39 493.989C1166.5 493.989 1193.89 509.409 1213.09 532.228C1230.72 553.186 1240.9 579.482 1247.33 604.243C1255.68 636.361 1259.66 705.321 1261.41 743.18C1271.7 730.768 1326.82 714.246 1343.5 712.808H1490.5L1449 828.637H1343.5C1338.93 857.081 1335.17 859.132 1326.06 896.83C1319.12 925.511 1310.42 955.7 1299.73 980.069C1294.45 992.107 1287.65 1005.18 1278.74 1016.34C1270.6 1026.54 1254.82 1042.54 1230.16 1046.22C1218.02 1048.04 1205.14 1046.14 1193.47 1039.84C1182.56 1033.96 1175.58 1025.81 1171.35 1019.43C1163.56 1007.68 1160.49 994.884 1158.97 987.024C1155.68 969.959 1154.93 948.392 1154.85 927.482C1154.77 905.689 1155.47 880.331 1156.16 854.306C1156.86 827.938 1157.56 800.408 1157.61 772.947C1157.7 716.806 1154.91 666.102 1145.7 630.664C1141.08 612.896 1135.99 603.714 1132.72 599.826C1132.43 599.48 1132.18 599.213 1131.98 599.009C1126.56 599.129 1116.63 601.667 1101.63 614.484C1086.2 627.676 1068.87 648.919 1050.56 679.006C1014.46 738.335 979.77 823.323 949.439 922.409L893.775 1307.4C883.235 1380.3 776.641 1375.99 772.01 1302.49L721.883 506.822L651.005 828.637C637.322 890.763 549.728 893.443 532.272 832.271L472.196 621.742L388.592 942.092C372.573 1003.47 285.273 1003.02 269.888 941.48L216.671 728.613L207.06 755.848C200.37 774.804 200.5 820.895 156.5 820.895H0L50 741.395L122 712.808L166.068 556.461L166.553 555.13C187.396 499.699 267.377 503.474 282.906 560.622L283.265 561.992L330.229 749.855L411.041 440.215L411.423 438.812C428.117 379.864 512.241 379.374 529.221 438.873L585.712 636.846L686.184 180.677L686.557 179.067C702.897 112.012 801.154 119.584 807.025 188.353L807.146 190.003L849.797 867.016L934.227 49.4527Z" fill="currentColor"/>
-      </svg>
-      <span class="nav__overlay-title">Music<br>Hub West</span>
+<!-- ── Mobile fullscreen menu ── -->
+<div id="nav-overlay" class="mob-menu" style="display:none" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Navigation">
+
+  <div class="mob-menu__head">
+    <a href={`${base}/`} class="mob-menu__brand" id="nav-overlay-logo">
+      <span class="mob-menu__brand-text">Music Hub West</span>
     </a>
-    <button class="nav__overlay-close" id="nav-close" aria-label="Stäng meny">
-      <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-        <path d="M14 4L4 14M4 4l10 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    <button class="mob-menu__close" id="nav-close" aria-label="Stäng meny">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+        <path d="M15 5L5 15M5 5l10 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
       </svg>
     </button>
   </div>
 
-  <nav class="nav__overlay-nav">
-    <a href={`${base}/`} class="nav__overlay-link" id="nov-link-1">
-      <span class="nav__overlay-num">01</span>
-      <span class="nav__overlay-text">{t.start}</span>
-      <svg class="nav__overlay-arrow" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <nav class="mob-menu__nav">
+    <a href={`${base}/`} class="mob-menu__link">
+      <span class="mob-menu__num">01</span>
+      <span class="mob-menu__label">{t.start}</span>
+      <svg class="mob-menu__arrow" width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M5 11h12M12 5l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </a>
-    <a href={lang === 'en' ? '/en/events' : '/evenemang'} class="nav__overlay-link" id="nov-link-2">
-      <span class="nav__overlay-num">02</span>
-      <span class="nav__overlay-text">{t.events}</span>
-      <svg class="nav__overlay-arrow" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <a href={lang === 'en' ? '/en/events' : '/evenemang'} class="mob-menu__link">
+      <span class="mob-menu__num">02</span>
+      <span class="mob-menu__label">{t.events}</span>
+      <svg class="mob-menu__arrow" width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M5 11h12M12 5l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </a>
-    <a href={lang === 'en' ? '/en/articles' : '/artiklar'} class="nav__overlay-link" id="nov-link-3">
-      <span class="nav__overlay-num">03</span>
-      <span class="nav__overlay-text">{t.articles}</span>
-      <svg class="nav__overlay-arrow" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <a href={lang === 'en' ? '/en/articles' : '/artiklar'} class="mob-menu__link">
+      <span class="mob-menu__num">03</span>
+      <span class="mob-menu__label">{t.articles}</span>
+      <svg class="mob-menu__arrow" width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M5 11h12M12 5l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </a>
-    <a href={lang === 'en' ? '/en/about' : '/om'} class="nav__overlay-link" id="nov-link-4">
-      <span class="nav__overlay-num">04</span>
-      <span class="nav__overlay-text">{t.about}</span>
-      <svg class="nav__overlay-arrow" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <a href={lang === 'en' ? '/en/about' : '/om'} class="mob-menu__link">
+      <span class="mob-menu__num">04</span>
+      <span class="mob-menu__label">{t.about}</span>
+      <svg class="mob-menu__arrow" width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M5 11h12M12 5l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </a>
   </nav>
 
-  <div class="nav__overlay-foot">
-    <div class="nav__overlay-social">
+  <div class="mob-menu__foot">
+    <div class="mob-menu__social">
       <a href="https://www.linkedin.com/company/musichubwest" target="_blank" rel="noopener" aria-label="LinkedIn">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
       </a>
       <a href="https://www.instagram.com/musichubwest" target="_blank" rel="noopener" aria-label="Instagram">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
       </a>
       <a href="https://www.tiktok.com/@musichubwest" target="_blank" rel="noopener" aria-label="TikTok">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.34 6.34 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.7a8.18 8.18 0 0 0 4.78 1.52V6.76a4.85 4.85 0 0 1-1.01-.07z"/></svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.34 6.34 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.7a8.18 8.18 0 0 0 4.78 1.52V6.76a4.85 4.85 0 0 1-1.01-.07z"/></svg>
       </a>
       <a href="https://www.youtube.com/@musichubwest" target="_blank" rel="noopener" aria-label="YouTube">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="#0d0d0d"/></svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="#0b0b0b"/></svg>
       </a>
     </div>
-    <div class="nav__overlay-lang-row">
-      <a href={lang === 'sv' ? (altUrl ?? getEnUrl(currentPath)) : currentPath} class={`nav__overlay-lang-btn ${lang === 'en' ? 'active' : ''}`}>EN</a>
-      <span class="nav__overlay-lang-sep">/</span>
-      <a href={lang === 'en' ? (altUrl ?? getSvUrl(currentPath)) : currentPath} class={`nav__overlay-lang-btn ${lang === 'sv' ? 'active' : ''}`}>SV</a>
+    <div class="mob-menu__lang">
+      <a href={lang === 'sv' ? (altUrl ?? getEnUrl(currentPath)) : currentPath} class={`mob-menu__lang-btn${lang === 'en' ? ' active' : ''}`}>EN</a>
+      <span class="mob-menu__lang-sep">/</span>
+      <a href={lang === 'en' ? (altUrl ?? getSvUrl(currentPath)) : currentPath} class={`mob-menu__lang-btn${lang === 'sv' ? ' active' : ''}`}>SV</a>
     </div>
   </div>
+
 </div>

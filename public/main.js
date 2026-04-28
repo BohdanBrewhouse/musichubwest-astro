@@ -178,7 +178,7 @@ function initBurger() {
   closeBtn?.addEventListener('click', closeOverlay);
 
   // Close on any nav link or logo click inside overlay
-  overlay.querySelectorAll('.nav__overlay-link, .nav__overlay-logo').forEach(el => {
+  overlay.querySelectorAll('.mob-menu__link, .mob-menu__brand').forEach(el => {
     el.addEventListener('click', closeOverlay);
   });
 }
