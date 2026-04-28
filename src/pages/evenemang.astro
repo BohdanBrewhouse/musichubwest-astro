@@ -78,15 +78,6 @@ function formatDate(d: string) {
 
       <div class="ev-header__bottom">
 
-        <!-- Upcoming / Archive tabs -->
-        <div class="ev-tabs">
-          <button class="ev-tab active" id="tab-upcoming" data-tab="upcoming">Kommande</button>
-          <button class="ev-tab" id="tab-archive" data-tab="archive">
-            Arkiv
-            {past.length > 0 && <span class="ev-tab__count">{past.length}</span>}
-          </button>
-        </div>
-
         <!-- Desktop: filter chips -->
         <div class="ev-filter-chips" id="ev-filter-chips">
           <button class="ev-chip active" data-filter="all">Alla</button>
@@ -280,6 +271,15 @@ function formatDate(d: string) {
   </div>
 
   <Footer lang={lang} />
+
+  <!-- Floating tab pill -->
+  <div class="ev-floating" id="ev-floating">
+    <button class="ev-float-tab active" data-tab="upcoming">Kommande</button>
+    <button class="ev-float-tab" data-tab="archive">
+      Arkiv
+      {past.length > 0 && <span class="ev-float-count">{past.length}</span>}
+    </button>
+  </div>
 </Base>
 
 <script is:inline>
@@ -342,9 +342,7 @@ function formatDate(d: string) {
   btnGrid.addEventListener('click', function() { setView('grid'); });
   btnList.addEventListener('click', function() { setView('list'); dismissNudge(); });
 
-  // ── Tab switching (upcoming / archive) ──
-  var tabUpcoming  = document.getElementById('tab-upcoming');
-  var tabArchive   = document.getElementById('tab-archive');
+  // ── Tab switching ──
   var gridUpcoming = document.getElementById('grid-upcoming');
   var gridArchive  = document.getElementById('grid-archive');
   var listUpcoming = document.getElementById('list-upcoming');
@@ -357,16 +355,14 @@ function formatDate(d: string) {
 
   function setTab(tab) {
     var isUpcoming = tab !== 'archive';
-    // grid
     if (gridUpcoming) gridUpcoming.style.display = isUpcoming ? '' : 'none';
     if (gridArchive)  gridArchive.style.display  = isUpcoming ? 'none' : '';
-    // list
     if (listUpcoming) listUpcoming.style.display = isUpcoming ? '' : 'none';
     if (listArchive)  listArchive.style.display  = isUpcoming ? 'none' : '';
-    // tab buttons
-    if (tabUpcoming) tabUpcoming.classList.toggle('active', isUpcoming);
-    if (tabArchive)  tabArchive.classList.toggle('active', !isUpcoming);
-    // counter
+    // sync all [data-tab] buttons (floating pill)
+    document.querySelectorAll('[data-tab]').forEach(function(btn) {
+      btn.classList.toggle('active', btn.dataset.tab === tab);
+    });
     if (evCount) evCount.textContent = isUpcoming ? upcomingCount : archiveCount;
     if (evCountLabel) evCountLabel.innerHTML = isUpcoming ? 'kommande<br>event' : 'tidigare<br>event';
     // reset category filter
@@ -386,8 +382,10 @@ function formatDate(d: string) {
     try { localStorage.setItem('mhw-events-tab', tab); } catch(e) {}
   }
 
-  if (tabUpcoming) tabUpcoming.addEventListener('click', function() { setTab('upcoming'); });
-  if (tabArchive)  tabArchive.addEventListener('click',  function() { setTab('archive'); });
+  // Wire up all [data-tab] buttons → floating pill
+  document.querySelectorAll('[data-tab]').forEach(function(btn) {
+    btn.addEventListener('click', function() { setTab(btn.dataset.tab); });
+  });
 
   // Restore saved tab
   try {
@@ -510,61 +508,72 @@ function formatDate(d: string) {
     line-height: 1.3;
   }
 
-  /* ── Tabs — segmented control ── */
-  .ev-tabs {
+  /* ── Floating tab pill ── */
+  .ev-floating {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 90;
     display: flex;
     align-items: center;
-    background: rgba(255,255,255,0.07);
-    border-radius: 7px;
-    padding: 3px;
-    gap: 2px;
-    flex-shrink: 0;
+    gap: 3px;
+    background: rgba(16, 16, 16, 0.82);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 100px;
+    padding: 4px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.6), 0 2px 8px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.06);
+    animation: float-in 0.55s 0.1s cubic-bezier(0.34, 1.56, 0.64, 1) both;
   }
-  .ev-tab {
+  @keyframes float-in {
+    from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+    to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+  }
+  .ev-float-tab {
     display: inline-flex;
     align-items: center;
-    justify-content: center;
-    gap: 6px;
-    padding: 7px 18px;
+    gap: 8px;
+    padding: 10px 24px;
     background: transparent;
     border: none;
-    border-radius: 5px;
-    color: rgba(255,255,255,0.45);
+    border-radius: 100px;
+    color: rgba(255,255,255,0.4);
     font-family: var(--font);
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 700;
+    letter-spacing: -0.01em;
     cursor: pointer;
-    transition: color 0.15s, background 0.18s;
+    transition: color 0.15s, background 0.2s;
     white-space: nowrap;
   }
-  .ev-tab:hover { color: var(--white); }
-  .ev-tab.active {
+  .ev-float-tab:hover { color: rgba(255,255,255,0.8); }
+  .ev-float-tab.active {
     background: var(--lime);
     color: var(--black);
-    box-shadow: 0 1px 4px rgba(0,0,0,0.35);
+    box-shadow: 0 2px 8px rgba(204,255,0,0.3);
   }
-  .ev-tab__count {
+  .ev-float-count {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-width: 18px;
-    height: 18px;
+    min-width: 19px;
+    height: 19px;
     padding: 0 5px;
-    background: rgba(255,255,255,0.18);
-    border-radius: 9px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 100px;
     font-size: 11px;
     font-weight: 800;
     line-height: 1;
   }
-  .ev-tab.active .ev-tab__count { background: rgba(0,0,0,0.18); }
+  .ev-float-tab.active .ev-float-count { background: rgba(0,0,0,0.18); }
 
-  /* Desktop divider between tabs and filter chips */
-  @media (min-width: 769px) {
-    .ev-filter-chips {
-      border-left: 1px solid rgba(255,255,255,0.1);
-      padding-left: 16px;
-      margin-left: 4px;
+  @media (max-width: 768px) {
+    .ev-floating {
+      bottom: calc(20px + env(safe-area-inset-bottom, 0px));
     }
+    .ev-float-tab { padding: 11px 32px; font-size: 15px; }
   }
 
   /* ── Empty state ── */
@@ -886,41 +895,14 @@ function formatDate(d: string) {
   }
 
   /* ── Responsive ── */
+  /* Extra bottom padding so content never hides behind floating pill */
+  .section.ev-view, .agenda.ev-view { padding-bottom: 100px; }
+
   @media (max-width: 768px) {
     .ev-header { padding: 48px 20px 0; }
-    .agenda { padding: 0 20px 56px; }
+    .ev-header__bottom { gap: 8px; }
+    .agenda { padding: 0 20px 100px; }
     .agenda-item__title { white-space: normal; }
-
-    /* Tabs go full-width on their own row above filter + toggle */
-    .ev-header__bottom {
-      flex-wrap: wrap;
-      gap: 0;
-      padding: 0;
-    }
-    .ev-tabs {
-      order: -1;
-      width: 100%;
-      border-radius: 0;
-      background: transparent;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-      padding: 10px 0;
-      gap: 6px;
-    }
-    .ev-tab {
-      flex: 1;
-      border-radius: 6px;
-      padding: 10px 12px;
-      background: rgba(255,255,255,0.07);
-      font-size: 14px;
-    }
-    .ev-tab.active {
-      background: var(--lime);
-    }
-    /* Filter row (dropdown + toggle) */
-    .cat-drop,
-    .view-toggle-wrap {
-      padding: 10px 0;
-    }
     .cat-drop { flex: 1; }
     .cat-drop__btn { width: 100%; }
   }
