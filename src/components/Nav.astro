@@ -96,4 +96,65 @@ function getEnUrl(path: string): string {
   </div>
 </nav>
 
-<!-- mobile menu placeholder -->
+<!-- ── Mobile nav dialog ── -->
+<dialog class="mnav" id="nav-dialog" aria-label={lang === 'sv' ? 'Meny' : 'Menu'}>
+  <div class="mnav__inner">
+
+    <div class="mnav__head">
+      <a href={`${base}/`} class="mnav__logo">
+        <span class="mnav__logo-text">Music Hub West</span>
+      </a>
+      <button class="mnav__close" id="nav-close" aria-label={lang === 'sv' ? 'Stäng meny' : 'Close menu'}>
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+          <path d="M14 4L4 14M4 4l10 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+
+    <nav class="mnav__links">
+      <a href={`${base}/`} class="mnav__link">
+        <span class="mnav__num">01</span>
+        <span class="mnav__text" data-text={t.start}>{t.start}</span>
+        <svg class="mnav__arrow" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M14 6l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a href={lang === 'en' ? '/en/events' : '/evenemang'} class="mnav__link">
+        <span class="mnav__num">02</span>
+        <span class="mnav__text" data-text={t.events}>{t.events}</span>
+        <svg class="mnav__arrow" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M14 6l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a href={lang === 'en' ? '/en/articles' : '/artiklar'} class="mnav__link">
+        <span class="mnav__num">03</span>
+        <span class="mnav__text" data-text={t.articles}>{t.articles}</span>
+        <svg class="mnav__arrow" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M14 6l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a href={lang === 'en' ? '/en/about' : '/om'} class="mnav__link">
+        <span class="mnav__num">04</span>
+        <span class="mnav__text" data-text={t.about}>{t.about}</span>
+        <svg class="mnav__arrow" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M14 6l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </nav>
+
+    <div class="mnav__foot">
+      <div class="mnav__social">
+        <a href="https://www.linkedin.com/company/musichubwest" target="_blank" rel="noopener" aria-label="LinkedIn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        </a>
+        <a href="https://www.instagram.com/musichubwest" target="_blank" rel="noopener" aria-label="Instagram">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+        </a>
+        <a href="https://www.tiktok.com/@musichubwest" target="_blank" rel="noopener" aria-label="TikTok">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.34 6.34 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.7a8.18 8.18 0 0 0 4.78 1.52V6.76a4.85 4.85 0 0 1-1.01-.07z"/></svg>
+        </a>
+        <a href="https://www.youtube.com/@musichubwest" target="_blank" rel="noopener" aria-label="YouTube">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="#0b0b0b"/></svg>
+        </a>
+      </div>
+      <div class="mnav__lang">
+        <a href={lang === 'sv' ? (altUrl ?? getEnUrl(currentPath)) : currentPath} class={`mnav__lang-btn${lang === 'en' ? ' active' : ''}`}>EN</a>
+        <span class="mnav__lang-sep">/</span>
+        <a href={lang === 'en' ? (altUrl ?? getSvUrl(currentPath)) : currentPath} class={`mnav__lang-btn${lang === 'sv' ? ' active' : ''}`}>SV</a>
+      </div>
+    </div>
+
+  </div>
+</dialog>

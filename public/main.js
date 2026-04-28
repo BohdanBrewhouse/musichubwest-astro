@@ -151,35 +151,41 @@ function initNav() {
   });
 }
 
-/* ── Mobile hamburger + overlay ─────────────────────── */
+/* ── Mobile nav dialog ───────────────────────────────── */
 function initBurger() {
-  const burger  = document.getElementById('nav-burger');
-  const overlay = document.getElementById('nav-overlay');
+  const burger   = document.getElementById('nav-burger');
+  const dialog   = document.getElementById('nav-dialog');
   const closeBtn = document.getElementById('nav-close');
-  if (!burger || !overlay) return;
+  if (!burger || !dialog) return;
 
-  const openOverlay = () => {
-    overlay.style.display = '';   // clear inline display:none so CSS .open takes over
-    void overlay.offsetHeight;    // force reflow so CSS animation triggers
-    overlay.classList.add('open');
-    overlay.setAttribute('aria-hidden', 'false');
+  function openMenu() {
+    dialog.showModal();
     burger.classList.add('active');
-    document.body.style.overflow = 'hidden';
-  };
-  const closeOverlay = () => {
-    overlay.classList.remove('open');
-    overlay.style.display = 'none'; // re-apply inline hide to prevent FOUC on next load
-    overlay.setAttribute('aria-hidden', 'true');
-    burger.classList.remove('active');
-    document.body.style.overflow = '';
-  };
+  }
 
-  burger.addEventListener('click', openOverlay);
-  closeBtn?.addEventListener('click', closeOverlay);
+  function closeMenu() {
+    // Play exit animation then close
+    dialog.classList.add('is-closing');
+    dialog.addEventListener('animationend', function handler() {
+      dialog.classList.remove('is-closing');
+      dialog.close();
+      burger.classList.remove('active');
+      dialog.removeEventListener('animationend', handler);
+    }, { once: true });
+  }
 
-  // Close on any nav link or logo click inside overlay
-  overlay.querySelectorAll('.mob-menu__link, .mob-menu__brand').forEach(el => {
-    el.addEventListener('click', closeOverlay);
+  burger.addEventListener('click', openMenu);
+  closeBtn?.addEventListener('click', closeMenu);
+
+  // Escape key — browser fires 'cancel' on dialog
+  dialog.addEventListener('cancel', function(e) {
+    e.preventDefault(); // prevent instant close so we can animate
+    closeMenu();
+  });
+
+  // Close when clicking nav links or logo
+  dialog.querySelectorAll('.mnav__link, .mnav__logo').forEach(function(el) {
+    el.addEventListener('click', closeMenu);
   });
 }
 
