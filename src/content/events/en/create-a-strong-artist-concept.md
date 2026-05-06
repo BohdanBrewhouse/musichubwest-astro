@@ -5,7 +5,7 @@ time: '10:00–15:00 (Registration from 09:45)'
 location: Musikens Hus / Musikcentrum Väst
 address: 'Djurgårdsgatan 13, 414 62 Göteborg'
 map_query: Musikens Hus Göteborg
-category: VGR
+category: Scenen
 image: /images/24-w300.jpg
 spots_total: 11
 cost: Free (for residents of Västra Götaland) / 1900 SEK (others)

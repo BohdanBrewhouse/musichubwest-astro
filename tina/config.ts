@@ -40,7 +40,7 @@ export default defineConfig({
           { type: 'string', name: 'map_query', label: 'Kartsökning (t.ex. "Högskolan för scen och musik Göteborg")' },
           {
             type: 'string', name: 'category', label: 'Kategori', required: true,
-            options: ['Tune In West', 'Kulturverkstaden', 'Högskolan för scen och musik', 'VGR'],
+            options: ['Tune In West', 'Kulturverkstaden', 'Högskolan för scen och musik', 'VGR', 'Scenen'],
           },
           { type: 'image', name: 'image', label: 'Bild', required: true },
           { type: 'number', name: 'spots_left', label: 'Platser kvar' },
@@ -77,7 +77,7 @@ export default defineConfig({
           { type: 'string', name: 'map_query', label: 'Map search (e.g. "Högskolan för scen och musik Göteborg")' },
           {
             type: 'string', name: 'category', label: 'Category', required: true,
-            options: ['Tune In West', 'Kulturverkstaden', 'Högskolan för scen och musik', 'VGR'],
+            options: ['Tune In West', 'Kulturverkstaden', 'Högskolan för scen och musik', 'VGR', 'Scenen'],
           },
           { type: 'image', name: 'image', label: 'Image', required: true },
           { type: 'number', name: 'spots_left', label: 'Spots left' },

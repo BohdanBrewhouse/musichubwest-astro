@@ -5,7 +5,7 @@ export interface Props {
   lang: 'sv' | 'en';
   ogImage?: string;
 }
-const { title, description = 'En plattform för musikindustrins tillväxt i Västra Sverige.', lang, ogImage } = Astro.props;
+const { title, description = 'En plattform för musikindustrins tillväxt i Västra Götaland.', lang, ogImage } = Astro.props;
 const resolvedOgImage = ogImage ?? (lang === 'en' ? '/images/og-cover-en.jpg' : '/images/og-cover-sv.jpg');
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const ogLocale = lang === 'sv' ? 'sv_SE' : 'en_GB';
