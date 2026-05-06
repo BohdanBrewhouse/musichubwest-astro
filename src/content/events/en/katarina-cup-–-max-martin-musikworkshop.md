@@ -7,7 +7,7 @@ address: 'Göteborgsvägen 91, 431 37 Mölndal'
 map_query: Quality Hotel The Weaver
 category: VGR
 image: /images/bisju18q6ewmz296mz5un9qyrira.avif
-cost: 200 Sek
+cost: 200 SEK
 organizer: Katarina Cup
 translationKey: katarina-cup-max-martin-workshop
 registration_open: true
