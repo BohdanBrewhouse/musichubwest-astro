@@ -161,6 +161,8 @@ function initBurger() {
   function openMenu() {
     dialog.showModal();
     burger.classList.add('active');
+    // Move focus to close button to prevent browser from focusing the logo link
+    if (closeBtn) closeBtn.focus();
   }
 
   function closeMenu() {

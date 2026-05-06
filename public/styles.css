@@ -1195,6 +1195,7 @@ dialog.mnav.is-closing {
 }
 .mnav__logo {
   text-decoration: none;
+  outline: none;
 }
 .mnav__logo-text {
   font-family: var(--font-display);
