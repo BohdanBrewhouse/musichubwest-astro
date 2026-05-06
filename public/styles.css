@@ -1218,6 +1218,7 @@ dialog.mnav.is-closing {
   cursor: pointer;
   flex-shrink: 0;
   transition: border-color 0.15s, color 0.15s;
+  outline: none;
 }
 .mnav__close:hover {
   border-color: var(--lime);
