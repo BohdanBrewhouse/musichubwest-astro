@@ -5,7 +5,7 @@ time: '19:00-21:00'
 location: Quality Hotel The Weaver
 address: 'Göteborgsvägen 91, 431 37 Mölndal'
 map_query: Quality Hotel The Weaver
-category: VGR
+category: Scenen
 image: /images/bisju18q6ewmz296mz5un9qyrira.avif
 cost: 200 SEK
 organizer: Katarina Cup
