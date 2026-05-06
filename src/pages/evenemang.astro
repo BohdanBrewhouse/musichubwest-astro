@@ -36,6 +36,7 @@ const badgeClass: Record<string, string> = {
   'Kulturverkstaden': 'badge--kv',
   'Högskolan för scen och musik': 'badge--hsm',
   'VGR': 'badge--vgr',
+  'Scenen': 'badge--scenen',
 };
 
 function formatDate(d: string) {
@@ -85,6 +86,7 @@ function formatDate(d: string) {
           <button class="ev-chip" data-filter="Kulturverkstaden">Kulturverkstaden</button>
           <button class="ev-chip" data-filter="Högskolan för scen och musik">Högskolan för scen och musik</button>
           <button class="ev-chip" data-filter="VGR">VGR</button>
+          <button class="ev-chip" data-filter="Scenen">Scenen</button>
         </div>
 
         <!-- Mobile: dropdown -->
@@ -101,6 +103,7 @@ function formatDate(d: string) {
             <li class="cat-drop__item" role="option" data-filter="Kulturverkstaden" aria-selected="false">Kulturverkstaden</li>
             <li class="cat-drop__item" role="option" data-filter="Högskolan för scen och musik" aria-selected="false">Högskolan för scen och musik</li>
             <li class="cat-drop__item" role="option" data-filter="VGR" aria-selected="false">VGR</li>
+            <li class="cat-drop__item" role="option" data-filter="Scenen" aria-selected="false">Scenen</li>
           </ul>
         </div>
 
