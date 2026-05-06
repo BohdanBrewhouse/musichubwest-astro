@@ -189,7 +189,7 @@ h1, h2, h3, h4 { font-family: var(--font-display); }
 .badge--kv     { background: var(--white); color: var(--black); }
 .badge--hsm    { background: var(--black-3); color: var(--white); border: 1px solid #333; }
 .badge--vgr    { background: var(--black-3); color: var(--white); border: 1px solid #333; }
-.badge--scenen { background: rgba(255,255,255,0.12); color: var(--white); border: 1px solid rgba(255,255,255,0.3); backdrop-filter: blur(4px); }
+.badge--scenen { background: rgba(255,255,255,0.92); color: var(--black); }
 
 /* ─── HERO CAROUSEL ───────────────────────────────── */
 .hero {

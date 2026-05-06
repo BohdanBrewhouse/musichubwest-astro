@@ -1,6 +1,6 @@
 ---
 title: Katarina Cup – Max Martin Musikworkshop
-date: '2000-05-30'
+date: '2026-05-30'
 time: '19:00-21:00'
 location: Quality Hotel The Weaver
 address: 'Göteborgsvägen 91, 431 37 Mölndal'
