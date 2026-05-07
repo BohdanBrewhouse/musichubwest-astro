@@ -12,7 +12,7 @@ organizer: Westside Music Sweden
 organizer_email: info@westsidemusicsweden.se
 translationKey: viva-summer-sounds-2026
 registration_open: true
-external_registration_url: ''
+external_registration_url: 'https://musichubwest.vercel.app/en/events/viva-summer-sounds-2026'
 serve_food: true
 ---
 
