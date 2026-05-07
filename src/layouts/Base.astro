@@ -16,12 +16,12 @@ const ogImageUrl = new URL(resolvedOgImage, Astro.site).toString();
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <!-- Cookiebot (must be first) -->
-  <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="0dff278b-2724-41e9-8599-54f994bbd95a" data-blockingmode="auto" type="text/javascript"></script>
+  <!-- CookieYes banner -->
+  <script id="cookieyes" type="text/javascript" src="https://cdn-cookieyes.com/client_data/d57ef51e7e436e7a2a00a66668e8d22b/script.js"></script>
 
-  <!-- Google Analytics (blocked by Cookiebot until statistics consent given) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-WNLNN5Z6V7" data-cookieconsent="statistics"></script>
-  <script data-cookieconsent="statistics">
+  <!-- Google Analytics (blocked by CookieYes until statistics consent) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-WNLNN5Z6V7" data-cookiecategory="analytics"></script>
+  <script data-cookiecategory="analytics">
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
