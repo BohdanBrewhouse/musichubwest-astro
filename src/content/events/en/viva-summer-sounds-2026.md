@@ -6,14 +6,13 @@ location: Musikens Hus & Hängmattan
 address: 'Djurgårdsgatan 13, 414 62 Göteborg'
 map_query: Musikens Hus Göteborg
 category: Scenen
-
 image: /images/vss_liggande_clean_gbg.png.avif
 cost: 195 SEK (Early Bird) / 250 SEK (Regular)
 organizer: Westside Music Sweden
 organizer_email: info@westsidemusicsweden.se
 translationKey: viva-summer-sounds-2026
 registration_open: true
-external_registration_url: 'https://vivasummersounds.se'
+external_registration_url: ''
 ---
 
 ### Celebrate the start of summer with live music in Majorna!
