@@ -199,7 +199,7 @@ function formatDate(d: string) {
               {evs.map((ev) => {
                 const slug = ev.id.replace('sv/', '');
                 return (
-                  <a class="agenda-item" href={`/evenemang/${slug}`} data-category={ev.data.category}>
+                  <a class={`agenda-item${!ev.data.external_registration_url ? ' agenda-item--own' : ''}`} href={`/evenemang/${slug}`} data-category={ev.data.category}>
                     <div class="agenda-item__body">
                       <div class="agenda-item__top">
                         <span class={`badge ${badgeClass[ev.data.category] ?? ''}`}>{ev.data.category}</span>
@@ -240,7 +240,7 @@ function formatDate(d: string) {
               {evs.map((ev) => {
                 const slug = ev.id.replace('sv/', '');
                 return (
-                  <a class="agenda-item agenda-item--past" href={`/evenemang/${slug}`} data-category={ev.data.category}>
+                  <a class={`agenda-item agenda-item--past${!ev.data.external_registration_url ? ' agenda-item--own' : ''}`} href={`/evenemang/${slug}`} data-category={ev.data.category}>
                     <div class="agenda-item__body">
                       <div class="agenda-item__top">
                         <span class={`badge ${badgeClass[ev.data.category] ?? ''}`}>{ev.data.category}</span>
@@ -849,6 +849,18 @@ function formatDate(d: string) {
   }
   .agenda-item:hover::before { opacity: 1; }
   .agenda-item > * { position: relative; z-index: 1; }
+
+  .agenda-item--own::after {
+    content: '';
+    position: absolute;
+    left: -16px;
+    top: 6px;
+    bottom: 6px;
+    width: 3px;
+    background: var(--lime);
+    border-radius: 2px;
+    z-index: 1;
+  }
 
   .agenda-item__body { min-width: 0; flex: 1; }
   .agenda-item__top {
