@@ -1837,7 +1837,18 @@ dialog.mnav[open] .mnav__link:nth-child(4) .mnav__num { animation-delay: 0.22s; 
 .event-organiser__contact {
   font-size: 13px;
   color: rgba(255,255,255,0.5);
+  text-decoration: none;
 }
+.event-organiser__contact:hover { color: var(--lime); }
+
+.event-organiser--own {
+  border-color: rgba(var(--lime-rgb, 200,242,62), 0.25);
+  background: rgba(var(--lime-rgb, 200,242,62), 0.04);
+}
+.event-organiser--own .event-organiser__label { color: var(--lime); opacity: 0.7; }
+.event-organiser--own .event-organiser__name { color: var(--lime); }
+.event-organiser--own .event-organiser__contact { color: rgba(var(--lime-rgb, 200,242,62), 0.6); }
+.event-organiser--own .event-organiser__contact:hover { color: var(--lime); }
 
 .related-events {
   border-top: 1px solid var(--black-3);
