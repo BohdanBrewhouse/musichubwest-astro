@@ -6,7 +6,7 @@ location: Musikens Hus / Musikcentrum Väst
 address: 'Djurgårdsgatan 13, 414 62 Göteborg'
 map_query: Musikens Hus Göteborg
 category: Scenen
-image: /images/24-w300.jpg
+image: /images/Cover.png
 spots_total: 11
 cost: Kostnadsfri (Västra Götaland) / 1 900 kr (övriga)
 organizer: Kulturakademin & Musikcentrum Väst
