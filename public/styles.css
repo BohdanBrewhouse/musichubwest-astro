@@ -185,11 +185,12 @@ h1, h2, h3, h4 { font-family: var(--font-display); }
   padding: 5px 10px;
 }
 
-.badge--tiw    { background: var(--lime); color: var(--black); }
-.badge--kv     { background: var(--white); color: var(--black); }
-.badge--hsm    { background: var(--black-3); color: var(--white); border: 1px solid #333; }
-.badge--vgr    { background: var(--black-3); color: var(--white); border: 1px solid #333; }
-.badge--scenen { background: rgba(255,255,255,0.92); color: var(--black); }
+.badge--tiw          { background: var(--lime); color: var(--black); }
+.badge--kv           { background: var(--white); color: var(--black); }
+.badge--hsm          { background: var(--black-3); color: var(--white); border: 1px solid #333; }
+.badge--vgr          { background: var(--black-3); color: var(--white); border: 1px solid #333; }
+.badge--scenen       { background: rgba(255,255,255,0.92); color: var(--black); }
+.badge--kulturakademin { background: #C68649; color: #fff; }
 
 /* ─── HERO CAROUSEL ───────────────────────────────── */
 .hero {
