@@ -1,15 +1,15 @@
 ---
 title: Residens i Strawberry Studio – öppen utlysning
 date: '2026-05-15'
-time: 'Sista ansökningsdag'
+time: Sista ansökningsdag
 location: 'Strawberry Studio, Töreboda'
 address: 'Töreboda, Västra Götaland'
-map_query: 'Strawberry Studio Töreboda'
+map_query: Strawberry Studio Töreboda
 category: VGR
 event_type: Utlysning
 event_language: Svenska
-image: /images/Cover.png
-organizer: 'Kulturförvaltningen i Västra Götalandsregionen'
+image: /images/vgr26-va42186.jpg.webp
+organizer: Kulturförvaltningen i Västra Götalandsregionen
 translationKey: residens-strawberry-2026
 registration_open: false
 external_registration_url: 'https://www.vgregion.se/kultur-och-fritid/musik/residens-strawberry-studio/'
