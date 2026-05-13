@@ -5,7 +5,7 @@ time: '10:00–15:00 (Registrering 09:45)'
 location: Musikens Hus / Musikcentrum Väst
 address: 'Djurgårdsgatan 13, 414 62 Göteborg'
 map_query: Musikens Hus Göteborg
-category: Kulturakademin
+category: Externa event
 image: /images/Cover.png
 spots_total: 11
 cost: Kostnadsfri (Västra Götaland) / 1 900 kr (övriga)
