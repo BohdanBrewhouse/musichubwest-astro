@@ -12,8 +12,9 @@ export interface Props {
   isOwn?: boolean;
   eventType?: string;
   eventLanguage?: string;
+  location?: string;
 }
-const { title, date, time, category, image, slug, lang, past = false, organizer, isOwn = false, eventType = 'Event', eventLanguage } = Astro.props;
+const { title, date, time, category, image, slug, lang, past = false, organizer, isOwn = false, eventType = 'Event', eventLanguage, location } = Astro.props;
 const eventsBase = lang === 'en' ? '/en/events' : '/evenemang';
 
 function formatDate(d: string, l: 'sv' | 'en') {
@@ -26,12 +27,13 @@ const displayDate = formatDate(date, lang);
 
 const isUtlysning  = eventType === 'Utlysning';
 const isPartner    = category === 'Partners' || category === 'Externa event' || category === 'External events';
-const arrangerLabel  = lang === 'en' ? 'Organiser' : 'Arrangör';
-const mhwChipText    = lang === 'en' ? 'MHW Organiser' : 'MHW Arrangör';
-const arrangerName   = isOwn ? 'Music Hub West' : (organizer ?? '');
-// For Partner events: show organizer name in badge, hide separate arranger line
+const mhwChipText  = lang === 'en' ? 'MHW Organiser' : 'MHW Arrangör';
+// For Partner events: show organizer name in badge
 const partnerBadgeText = organizer ?? (lang === 'en' ? 'Partner' : 'Partner');
-const showArrangerLine = !isPartner && !!arrangerName;
+// Extract city: last comma-separated segment of location string
+const city = location
+  ? (location.includes(',') ? location.split(',').pop()!.trim() : location.trim())
+  : '';
 
 // Date/time display: Utlysning shows deadline label first, regular shows date · time
 const datetimeText = isUtlysning
@@ -83,8 +85,8 @@ const badgeText = isPartner ? partnerBadgeText : category;
     {langChip && (
       <span class="event-card__lang-chip">{langChip}</span>
     )}
-    {showArrangerLine && (
-      <p class="event-card__arranger">{arrangerLabel} · {arrangerName}</p>
+    {city && (
+      <p class="event-card__location">{city}</p>
     )}
   </div>
 </a>
@@ -149,15 +151,15 @@ const badgeText = isPartner ? partnerBadgeText : category;
     line-height: 1;
   }
 
-  /* ── Arranger line ── */
-  .event-card__arranger {
+  /* ── Location / city line ── */
+  .event-card__location {
     font-size: 12px;
     font-weight: 600;
     color: rgba(255,255,255,0.4);
     margin-top: 6px;
     letter-spacing: 0.01em;
   }
-  .event-card--own .event-card__arranger {
+  .event-card--own .event-card__location {
     color: rgba(200,242,62,0.6);
   }
 </style>

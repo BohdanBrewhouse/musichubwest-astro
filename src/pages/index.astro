@@ -92,7 +92,8 @@ const latestArticles = articles.sort((a, b) => b.data.date.localeCompare(a.data.
             category={ev.data.category} image={ev.data.image}
             slug={ev.id.replace('sv/', '')} lang={lang}
             organizer={ev.data.organizer} isOwn={!ev.data.external_registration_url}
-            eventType={ev.data.event_type} eventLanguage={ev.data.event_language} />
+            eventType={ev.data.event_type} eventLanguage={ev.data.event_language}
+            location={ev.data.location} />
         ))}
       </div>
     </div>

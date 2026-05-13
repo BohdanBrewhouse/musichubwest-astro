@@ -162,6 +162,7 @@ function formatDate(d: string) {
             isOwn={!ev.data.external_registration_url}
             eventType={ev.data.event_type}
             eventLanguage={ev.data.event_language}
+            location={ev.data.location}
           />
         ))}
         {upcoming.length === 0 && (
@@ -184,6 +185,7 @@ function formatDate(d: string) {
             isOwn={!ev.data.external_registration_url}
             eventType={ev.data.event_type}
             eventLanguage={ev.data.event_language}
+            location={ev.data.location}
           />
         ))}
         {past.length === 0 && (
