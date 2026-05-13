@@ -61,7 +61,9 @@ const badgeClass: Record<string, string> = {
   'Kulturverkstaden': 'badge--kv',
   'Högskolan för scen och musik': 'badge--hsm',
   'VGR': 'badge--vgr',
-  'Scenen': 'badge--scenen',
+  'Externa event': 'badge--externa',
+  'External events': 'badge--externa',
+  'Kulturakademin': 'badge--kulturakademin',
 };
 
 // Calendar helpers — Europe/Stockholm timezone
@@ -589,6 +591,10 @@ const icsContent = dtStart ? [
               image={r.data.image}
               slug={r.id.replace('en/', '')}
               lang={lang}
+              organizer={r.data.organizer}
+              isOwn={!r.data.external_registration_url}
+              eventType={r.data.event_type}
+              eventLanguage={r.data.event_language}
             />
           ))}
         </div>
