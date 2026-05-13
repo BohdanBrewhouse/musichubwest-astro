@@ -41,7 +41,7 @@ export default defineConfig({
           { type: 'string', name: 'map_query', label: 'Kartsökning (t.ex. "Högskolan för scen och musik Göteborg")' },
           {
             type: 'string', name: 'category', label: 'Kategori', required: true,
-            options: ['Tune In West', 'Kulturverkstaden', 'Högskolan för scen och musik', 'VGR', 'Externa event', 'Kulturakademin'],
+            options: ['Tune In West', 'Kulturverkstaden', 'Högskolan för scen och musik', 'VGR', 'Partners', 'Kulturakademin'],
           },
           {
             type: 'string', name: 'event_type', label: 'Typ av event',
@@ -87,7 +87,7 @@ export default defineConfig({
           { type: 'string', name: 'map_query', label: 'Map search (e.g. "Högskolan för scen och musik Göteborg")' },
           {
             type: 'string', name: 'category', label: 'Category', required: true,
-            options: ['Tune In West', 'Kulturverkstaden', 'Högskolan för scen och musik', 'VGR', 'External events', 'Kulturakademin'],
+            options: ['Tune In West', 'Kulturverkstaden', 'Högskolan för scen och musik', 'VGR', 'Partners', 'Kulturakademin'],
           },
           {
             type: 'string', name: 'event_type', label: 'Event type',

@@ -25,9 +25,13 @@ function formatDate(d: string, l: 'sv' | 'en') {
 const displayDate = formatDate(date, lang);
 
 const isUtlysning  = eventType === 'Utlysning';
+const isPartner    = category === 'Partners' || category === 'Externa event' || category === 'External events';
 const arrangerLabel  = lang === 'en' ? 'Organiser' : 'Arrangör';
 const mhwChipText    = lang === 'en' ? 'MHW Organiser' : 'MHW Arrangör';
 const arrangerName   = isOwn ? 'Music Hub West' : (organizer ?? '');
+// For Partner events: show organizer name in badge, hide separate arranger line
+const partnerBadgeText = organizer ?? (lang === 'en' ? 'Partner' : 'Partner');
+const showArrangerLine = !isPartner && !!arrangerName;
 
 // Date/time display: Utlysning shows deadline label first, regular shows date · time
 const datetimeText = isUtlysning
@@ -55,15 +59,17 @@ const badgeClass: Record<string, string> = {
   'Kulturverkstaden':          'badge--kv',
   'Högskolan för scen och musik': 'badge--hsm',
   'VGR':                       'badge--vgr',
-  'Externa event':             'badge--externa',
-  'External events':           'badge--externa',
+  'Partners':                  'badge--partner',
+  'Externa event':             'badge--partner',
+  'External events':           'badge--partner',
   'Kulturakademin':            'badge--kulturakademin',
 };
+const badgeText = isPartner ? partnerBadgeText : category;
 ---
 <a href={`${eventsBase}/${slug}`} class={`event-card${past ? ' event-card--past' : ''}${isOwn ? ' event-card--own' : ''}`} data-category={category}>
   <div class="event-card__image">
     <img src={image} alt={title} loading="lazy" />
-    <span class={`badge ${badgeClass[category] ?? ''} event-card__badge`}>{category}</span>
+    <span class={`badge ${badgeClass[category] ?? ''} event-card__badge`}>{badgeText}</span>
     {isOwn && (
       <span class="event-card__mhw-chip">{mhwChipText}</span>
     )}
@@ -77,7 +83,7 @@ const badgeClass: Record<string, string> = {
     {langChip && (
       <span class="event-card__lang-chip">{langChip}</span>
     )}
-    {arrangerName && (
+    {showArrangerLine && (
       <p class="event-card__arranger">{arrangerLabel} · {arrangerName}</p>
     )}
   </div>

@@ -8,7 +8,7 @@ time: '10:00–17:00'
 location: 'Scandic Swania, Trollhättan'
 address: 'Storgatan 47, 461 30 Trollhättan'
 map_query: Scandic Swania Trollhättan
-category: External events
+category: Partners
 event_type: Event
 event_language: Swedish
 image: /images/25be62cf-9f01-4733-ba68-9f0ab2c11b06.jpeg

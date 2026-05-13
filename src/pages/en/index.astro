@@ -55,10 +55,10 @@ const latestArticles = articles.sort((a, b) => b.data.date.localeCompare(a.data.
               decoding="async" />
           </div>
           <div class="hero__slide-content">
-            <span class={`badge ${({'Tune In West':'badge--tiw','Kulturverkstaden':'badge--kv','Högskolan för scen och musik':'badge--hsm','VGR':'badge--vgr','External events':'badge--externa','Kulturakademin':'badge--kulturakademin'} as Record<string,string>)[ev.data.category] ?? ''} hero__badge`}>{ev.data.category}</span>
+            <span class={`badge ${({'Tune In West':'badge--tiw','Kulturverkstaden':'badge--kv','Högskolan för scen och musik':'badge--hsm','VGR':'badge--vgr','Partners':'badge--partner','External events':'badge--partner','Kulturakademin':'badge--kulturakademin'} as Record<string,string>)[ev.data.category] ?? ''} hero__badge`}>{(ev.data.category === 'Partners' || ev.data.category === 'External events') ? (ev.data.organizer ?? 'Partner') : ev.data.category}</span>
             <h1 class="hero__title" data-text={ev.data.title}>{ev.data.title}</h1>
             <p class="hero__subtitle">{ev.data.date} at {ev.data.location}</p>
-            <p class="hero__arranger">Organiser · {ev.data.external_registration_url ? (ev.data.organizer ?? '') : 'Music Hub West'}</p>
+            {(ev.data.category !== 'Partners' && ev.data.category !== 'External events') && <p class="hero__arranger">Organiser · {ev.data.external_registration_url ? (ev.data.organizer ?? '') : 'Music Hub West'}</p>}
             <div class="hero__controls">
               <div class="hero__dots" role="tablist" aria-label="Slideshow">
                 {sorted.slice(0,4).map((_,j) => <button class={`hero__dot ${j===i?'active':''}`} role="tab" aria-label={`Slide ${j + 1}`} aria-selected={j===i?'true':'false'}></button>)}

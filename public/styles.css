@@ -189,7 +189,10 @@ h1, h2, h3, h4 { font-family: var(--font-display); }
 .badge--kv             { background: var(--white); color: var(--black); }
 .badge--hsm            { background: var(--black-3); color: var(--white); border: 1px solid #333; }
 .badge--vgr            { background: var(--black-3); color: var(--white); border: 1px solid #333; }
-.badge--externa        { background: rgba(0,0,0,0.55); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); color: rgba(255,255,255,0.92); border: 1px solid rgba(255,255,255,0.25); }
+.badge--externa,
+.badge--partner        { background: rgba(0,0,0,0.55); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); color: rgba(255,255,255,0.92); border: 1px solid rgba(255,255,255,0.25); }
+/* Partner badge: long organizer names — truncate cleanly with ellipsis */
+.badge--partner        { max-width: 240px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .badge--kulturakademin { background: #C68649; color: #fff; }
 
 /* ─── HERO CAROUSEL ───────────────────────────────── */

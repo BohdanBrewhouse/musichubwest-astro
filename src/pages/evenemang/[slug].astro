@@ -61,10 +61,13 @@ const badgeClass: Record<string, string> = {
   'Kulturverkstaden': 'badge--kv',
   'Högskolan för scen och musik': 'badge--hsm',
   'VGR': 'badge--vgr',
-  'Externa event': 'badge--externa',
-  'External events': 'badge--externa',
+  'Partners': 'badge--partner',
+  'Externa event': 'badge--partner',
+  'External events': 'badge--partner',
   'Kulturakademin': 'badge--kulturakademin',
 };
+const isPartner = ev.data.category === 'Partners' || ev.data.category === 'Externa event' || ev.data.category === 'External events';
+const headerBadgeText = isPartner ? (ev.data.organizer ?? 'Partner') : ev.data.category;
 
 // Calendar helpers — Europe/Stockholm timezone
 // Extracts all HH:MM values from a time string (handles '–', '-', spaces)
@@ -155,7 +158,7 @@ const icsContent = dtStart ? [
     <div class="event-header__inner">
       <a href="/evenemang" class="event-header__back">← Alla event</a>
       <div class="event-header__badge">
-        <span class={`badge ${badgeClass[ev.data.category]}`}>{ev.data.category}</span>
+        <span class={`badge ${badgeClass[ev.data.category]}`}>{headerBadgeText}</span>
       </div>
       <h1 class="event-header__title">{ev.data.title}</h1>
       <div class="event-header__bottom">

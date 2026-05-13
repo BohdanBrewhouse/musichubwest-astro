@@ -8,7 +8,7 @@ time: '19:00'
 location: Musikens Hus & Hängmattan
 address: 'Djurgårdsgatan 13, 414 62 Göteborg'
 map_query: Musikens Hus Göteborg
-category: Externa event
+category: Partners
 image: /images/vss_liggande_clean_gbg.png.avif
 cost: 195 kr (Early Bird) / 250 kr (Ordinarie)
 organizer: Westside Music Sweden
