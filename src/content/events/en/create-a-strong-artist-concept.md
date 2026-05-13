@@ -1,5 +1,8 @@
 ---
 title: Create a Strong Artist Concept
+seo_description: >-
+  Workshop on artistic identity, visual storytelling and concept development.
+  22 May 2026 at Musikens Hus, Göteborg. Free for residents of Västra Götaland.
 date: '2026-05-22'
 time: '10:00–15:00 (Registration from 09:45)'
 location: Musikens Hus / Musikcentrum Väst

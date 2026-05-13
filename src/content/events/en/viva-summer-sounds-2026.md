@@ -1,5 +1,8 @@
 ---
 title: Viva Summer Sounds 2026
+seo_description: >-
+  One-day club festival with handpicked international and local acts in Majorna,
+  Gothenburg. 6 June 2026 at Musikens Hus & Hängmattan. Tickets from 195 SEK.
 date: '2026-06-06'
 time: '19:00'
 location: Musikens Hus & Hängmattan

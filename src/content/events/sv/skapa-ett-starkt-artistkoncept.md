@@ -1,5 +1,8 @@
 ---
 title: Skapa ett starkt artistkoncept
+seo_description: >-
+  Workshopdag om artistidentitet, visuell gestaltning och konstnärligt koncept.
+  22 maj 2026 på Musikens Hus i Göteborg. Kostnadsfri för dig i Västra Götaland.
 date: '2026-05-22'
 time: '10:00–15:00 (Registrering 09:45)'
 location: Musikens Hus / Musikcentrum Väst

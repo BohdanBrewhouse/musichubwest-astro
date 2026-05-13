@@ -1,5 +1,8 @@
 ---
 title: Viva Summer Sounds
+seo_description: >-
+  Endags klubbfestival med handplockad internationell och lokal musik i Majorna.
+  6 juni 2026 på Musikens Hus & Hängmattan i Göteborg. Biljetter från 195 kr.
 date: '2026-06-06'
 time: '19:00'
 location: Musikens Hus & Hängmattan

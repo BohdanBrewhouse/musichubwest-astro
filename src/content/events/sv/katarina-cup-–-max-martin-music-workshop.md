@@ -1,5 +1,8 @@
 ---
 title: Katarina Cup – Max Martin Music Workshop
+seo_description: >-
+  Kom och lyssna på Max Martin på Katarina Cup – en kväll om musikproduktion
+  och kreativitet. 30 maj 2026, 19:00 på Quality Hotel The Weaver i Mölndal.
 date: '2026-05-30'
 time: '19:00-21:00'
 location: Quality Hotel The Weaver
