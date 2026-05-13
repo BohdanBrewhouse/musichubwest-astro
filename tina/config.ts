@@ -33,6 +33,7 @@ export default defineConfig({
         },
         fields: [
           { type: 'string', name: 'title', label: 'Titel', required: true },
+          { type: 'string', name: 'seo_description', label: 'SEO-beskrivning (visas i Google & social media — max 160 tecken)', ui: { component: 'textarea' } },
           { type: 'string', name: 'date', label: 'Datum (ÅÅÅÅ-MM-DD)', required: true },
           { type: 'string', name: 'time', label: 'Tid (t.ex. 14:00–17:00)', required: true },
           { type: 'string', name: 'location', label: 'Plats', required: true },
@@ -78,6 +79,7 @@ export default defineConfig({
         },
         fields: [
           { type: 'string', name: 'title', label: 'Title', required: true },
+          { type: 'string', name: 'seo_description', label: 'SEO description (shown in Google & social media — max 160 chars)', ui: { component: 'textarea' } },
           { type: 'string', name: 'date', label: 'Date (YYYY-MM-DD)', required: true },
           { type: 'string', name: 'time', label: 'Time (e.g. 14:00–17:00)', required: true },
           { type: 'string', name: 'location', label: 'Location', required: true },

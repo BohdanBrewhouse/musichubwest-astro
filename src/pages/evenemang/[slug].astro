@@ -25,6 +25,29 @@ function formatDate(d: string) {
 }
 const displayDate = formatDate(ev.data.date);
 
+// Build per-event meta description: explicit seo_description > auto from body > smart fallback
+function stripMarkdown(md: string): string {
+  return md
+    .replace(/```[\s\S]*?```/g, '')              // code blocks
+    .replace(/`[^`]+`/g, '')                       // inline code
+    .replace(/!\[[^\]]*\]\([^)]+\)/g, '')          // images
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')      // links → text
+    .replace(/[#*_>~`]/g, '')                      // markdown chars
+    .replace(/\s+/g, ' ')                          // collapse whitespace
+    .trim();
+}
+function autoDescription(body: string | undefined, max = 155): string {
+  if (!body) return '';
+  const plain = stripMarkdown(body);
+  if (plain.length <= max) return plain;
+  const cut = plain.slice(0, max);
+  const lastSpace = cut.lastIndexOf(' ');
+  return (lastSpace > 100 ? cut.slice(0, lastSpace) : cut).trim() + '…';
+}
+const metaDescription = ev.data.seo_description
+  ?? autoDescription(ev.body)
+  ?? `${ev.data.title} – ${displayDate}, ${ev.data.location}. Event arrangerat av ${ev.data.organizer ?? 'Music Hub West'}.`;
+
 const related = await getCollection('events', e =>
   e.id.startsWith('sv/') && e.id !== ev.id
 );
@@ -107,7 +130,7 @@ const icsContent = dtStart ? [
   'END:VCALENDAR'
 ].join('\r\n') : null;
 ---
-<Base title={`${ev.data.title} – Music Hub West`} lang={lang} ogImage={ev.data.image}>
+<Base title={`${ev.data.title} – Music Hub West`} lang={lang} ogImage={ev.data.image} description={metaDescription}>
   <fragment slot="hreflang">
     <link rel="alternate" hreflang="sv" href={new URL(`/evenemang/${ev.id.replace('sv/','')}`, Astro.site)} />
     {enMatch && <link rel="alternate" hreflang="en" href={new URL(altUrl, Astro.site)} />}

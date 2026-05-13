@@ -5,6 +5,7 @@ const events = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/events' }),
   schema: z.object({
     title: z.string(),
+    seo_description: z.string().optional(),
     date: z.string(),
     time: z.string(),
     location: z.string(),
