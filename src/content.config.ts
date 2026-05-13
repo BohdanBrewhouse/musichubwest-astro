@@ -8,7 +8,7 @@ const events = defineCollection({
     date: z.string(),
     time: z.string(),
     location: z.string(),
-    category: z.enum(['Tune In West', 'Kulturverkstaden', 'Högskolan för scen och musik', 'VGR', 'Scenen', 'Kulturakademin']),
+    category: z.enum(['Tune In West', 'Kulturverkstaden', 'Högskolan för scen och musik', 'VGR', 'Externa event', 'External events', 'Kulturakademin']),
     image: z.string(),
     spots_left: z.number().optional(),
     spots_total: z.number().optional(),

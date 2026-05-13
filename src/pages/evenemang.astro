@@ -36,7 +36,7 @@ const badgeClass: Record<string, string> = {
   'Kulturverkstaden': 'badge--kv',
   'Högskolan för scen och musik': 'badge--hsm',
   'VGR': 'badge--vgr',
-  'Scenen': 'badge--scenen',
+  'Externa event': 'badge--externa',
   'Kulturakademin': 'badge--kulturakademin',
 };
 
@@ -87,7 +87,7 @@ function formatDate(d: string) {
           <button class="ev-chip" data-filter="Kulturverkstaden">Kulturverkstaden</button>
           <button class="ev-chip" data-filter="Högskolan för scen och musik">Högskolan för scen och musik</button>
           <button class="ev-chip" data-filter="VGR">VGR</button>
-          <button class="ev-chip" data-filter="Scenen">Scenen</button>
+          <button class="ev-chip" data-filter="Externa event">Externa event</button>
           <button class="ev-chip" data-filter="Kulturakademin">Kulturakademin</button>
         </div>
 
@@ -105,7 +105,7 @@ function formatDate(d: string) {
             <li class="cat-drop__item" role="option" data-filter="Kulturverkstaden" aria-selected="false">Kulturverkstaden</li>
             <li class="cat-drop__item" role="option" data-filter="Högskolan för scen och musik" aria-selected="false">Högskolan för scen och musik</li>
             <li class="cat-drop__item" role="option" data-filter="VGR" aria-selected="false">VGR</li>
-            <li class="cat-drop__item" role="option" data-filter="Scenen" aria-selected="false">Scenen</li>
+            <li class="cat-drop__item" role="option" data-filter="Externa event" aria-selected="false">Externa event</li>
             <li class="cat-drop__item" role="option" data-filter="Kulturakademin" aria-selected="false">Kulturakademin</li>
           </ul>
         </div>
@@ -157,6 +157,8 @@ function formatDate(d: string) {
             image={ev.data.image}
             slug={ev.id.replace('sv/', '')}
             lang={lang}
+            organizer={ev.data.organizer}
+            isOwn={!ev.data.external_registration_url}
           />
         ))}
         {upcoming.length === 0 && (
@@ -175,6 +177,8 @@ function formatDate(d: string) {
             slug={ev.id.replace('sv/', '')}
             lang={lang}
             past={true}
+            organizer={ev.data.organizer}
+            isOwn={!ev.data.external_registration_url}
           />
         ))}
         {past.length === 0 && (
@@ -201,8 +205,10 @@ function formatDate(d: string) {
               </div>
               {evs.map((ev) => {
                 const slug = ev.id.replace('sv/', '');
+                const evIsOwn = !ev.data.external_registration_url;
+                const arrangerName = evIsOwn ? 'Music Hub West' : (ev.data.organizer ?? '');
                 return (
-                  <a class={`agenda-item${!ev.data.external_registration_url ? ' agenda-item--own' : ''}`} href={`/evenemang/${slug}`} data-category={ev.data.category}>
+                  <a class={`agenda-item${evIsOwn ? ' agenda-item--own' : ''}`} href={`/evenemang/${slug}`} data-category={ev.data.category}>
                     <div class="agenda-item__body">
                       <div class="agenda-item__top">
                         <span class={`badge ${badgeClass[ev.data.category] ?? ''}`}>{ev.data.category}</span>
@@ -213,6 +219,7 @@ function formatDate(d: string) {
                         {ev.data.location && <><span class="agenda-item__dot">·</span><span>{ev.data.location}</span></>}
                         {ev.data.time && <><span class="agenda-item__dot">·</span><span>{ev.data.time}</span></>}
                       </p>
+                      {arrangerName && <p class={`agenda-item__arranger${evIsOwn ? ' agenda-item__arranger--own' : ''}`}>Arrangör · {arrangerName}</p>}
                     </div>
                     <span class="agenda-item__link">
                       {ev.data.registration_open ? 'Anmäl dig' : 'Läs mer'}
@@ -242,8 +249,10 @@ function formatDate(d: string) {
               </div>
               {evs.map((ev) => {
                 const slug = ev.id.replace('sv/', '');
+                const evIsOwn = !ev.data.external_registration_url;
+                const arrangerName = evIsOwn ? 'Music Hub West' : (ev.data.organizer ?? '');
                 return (
-                  <a class={`agenda-item agenda-item--past${!ev.data.external_registration_url ? ' agenda-item--own' : ''}`} href={`/evenemang/${slug}`} data-category={ev.data.category}>
+                  <a class={`agenda-item agenda-item--past${evIsOwn ? ' agenda-item--own' : ''}`} href={`/evenemang/${slug}`} data-category={ev.data.category}>
                     <div class="agenda-item__body">
                       <div class="agenda-item__top">
                         <span class={`badge ${badgeClass[ev.data.category] ?? ''}`}>{ev.data.category}</span>
@@ -254,6 +263,7 @@ function formatDate(d: string) {
                         {ev.data.location && <><span class="agenda-item__dot">·</span><span>{ev.data.location}</span></>}
                         {ev.data.time && <><span class="agenda-item__dot">·</span><span>{ev.data.time}</span></>}
                       </p>
+                      {arrangerName && <p class={`agenda-item__arranger${evIsOwn ? ' agenda-item__arranger--own' : ''}`}>Arrangör · {arrangerName}</p>}
                     </div>
                     <span class="agenda-item__link">
                       Läs mer
@@ -904,6 +914,17 @@ function formatDate(d: string) {
     transition: gap 0.2s;
   }
   .agenda-item:hover .agenda-item__link { gap: 10px; }
+
+  .agenda-item__arranger {
+    font-size: 11px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.35);
+    margin-top: 5px;
+    letter-spacing: 0.01em;
+  }
+  .agenda-item__arranger--own {
+    color: rgba(200,242,62,0.55);
+  }
 
   .agenda-empty {
     padding: 64px 0;
