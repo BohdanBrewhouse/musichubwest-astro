@@ -1,5 +1,8 @@
 ---
 title: Residency at Strawberry Studio – Open call
+seo_description: >-
+  Apply for a music residency at Strawberry Studio in Töreboda. Open call for
+  producers based in Västra Götaland, Sweden. Application deadline 15 May 2026.
 date: '2026-05-15'
 time: Application deadline
 location: 'Strawberry Studio, Töreboda'

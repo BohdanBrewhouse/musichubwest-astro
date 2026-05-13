@@ -1,5 +1,8 @@
 ---
 title: Residens i Strawberry Studio – öppen utlysning
+seo_description: >-
+  Ansök om residens i Strawberry Studio i Töreboda – öppen utlysning för
+  musikproducenter i Västra Götaland. Sista ansökningsdag 15 maj 2026.
 date: '2026-05-15'
 time: Sista ansökningsdag
 location: 'Strawberry Studio, Töreboda'
