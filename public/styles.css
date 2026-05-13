@@ -189,7 +189,7 @@ h1, h2, h3, h4 { font-family: var(--font-display); }
 .badge--kv             { background: var(--white); color: var(--black); }
 .badge--hsm            { background: var(--black-3); color: var(--white); border: 1px solid #333; }
 .badge--vgr            { background: var(--black-3); color: var(--white); border: 1px solid #333; }
-.badge--externa        { background: transparent; color: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.3); }
+.badge--externa        { background: rgba(0,0,0,0.55); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); color: rgba(255,255,255,0.92); border: 1px solid rgba(255,255,255,0.25); }
 .badge--kulturakademin { background: #C68649; color: #fff; }
 
 /* ─── HERO CAROUSEL ───────────────────────────────── */
@@ -310,7 +310,16 @@ h1, h2, h3, h4 { font-family: var(--font-display); }
   font-size: 17px;
   font-weight: 400;
   color: rgba(255,255,255,0.65);
-  margin-bottom: 40px;
+  margin-bottom: 12px;
+}
+
+.hero__arranger {
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.5);
+  letter-spacing: 0.02em;
+  margin-bottom: 32px;
 }
 
 .hero__controls {
