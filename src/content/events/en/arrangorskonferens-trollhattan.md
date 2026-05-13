@@ -12,7 +12,7 @@ image: /images/25be62cf-9f01-4733-ba68-9f0ab2c11b06.jpeg
 organizer: Subkultfestivalen & Kulturförvaltningen VGR
 translationKey: arrangorskonferens-trollhattan-2026
 registration_open: false
-external_registration_url: 'https://regionkalender.vgregion.se/event/arrangorskonferens-2026'
+external_registration_url: 'https://regionkalender.vgregion.se/sv/evenemang/22655'
 ---
 
 > **Note:** This conference is held in Swedish.
