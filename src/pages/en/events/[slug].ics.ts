@@ -44,35 +44,49 @@ export const GET: APIRoute = ({ props, site }) => {
   const dtStart = toIcsStart(ev.data.date, ev.data.time);
   const dtEnd   = toIcsEnd(ev.data.date, ev.data.time);
 
-  if (!dtStart) {
-    return new Response('', { status: 204 });
-  }
+  // For events without a clock time (e.g. open calls), generate an all-day event
+  const [y, mo, d] = ev.data.date.split('-');
+  const dateOnly = `${y}${mo}${d}`;
+  const nextDay = new Date(ev.data.date + 'T12:00:00');
+  nextDay.setDate(nextDay.getDate() + 1);
+  const nextDateOnly = `${nextDay.getFullYear()}${String(nextDay.getMonth()+1).padStart(2,'0')}${String(nextDay.getDate()).padStart(2,'0')}`;
+
+  const dtLines = dtStart
+    ? [
+        `DTSTART;TZID=Europe/Stockholm:${dtStart}`,
+        `DTEND;TZID=Europe/Stockholm:${dtEnd}`,
+      ]
+    : [
+        `DTSTART;VALUE=DATE:${dateOnly}`,
+        `DTEND;VALUE=DATE:${nextDateOnly}`,
+      ];
 
   const ics = [
     'BEGIN:VCALENDAR',
     'VERSION:2.0',
     'PRODID:-//Music Hub West//Event//EN',
     'CALSCALE:GREGORIAN',
-    'BEGIN:VTIMEZONE',
-    'TZID:Europe/Stockholm',
-    'BEGIN:DAYLIGHT',
-    'TZOFFSETFROM:+0100',
-    'TZOFFSETTO:+0200',
-    'TZNAME:CEST',
-    'DTSTART:19700329T020000',
-    'RRULE:FREQ=YEARLY;BYDAY=-1SU;BYMONTH=3',
-    'END:DAYLIGHT',
-    'BEGIN:STANDARD',
-    'TZOFFSETFROM:+0200',
-    'TZOFFSETTO:+0100',
-    'TZNAME:CET',
-    'DTSTART:19701025T030000',
-    'RRULE:FREQ=YEARLY;BYDAY=-1SU;BYMONTH=10',
-    'END:STANDARD',
-    'END:VTIMEZONE',
+    ...(dtStart ? [
+      'BEGIN:VTIMEZONE',
+      'TZID:Europe/Stockholm',
+      'BEGIN:DAYLIGHT',
+      'TZOFFSETFROM:+0100',
+      'TZOFFSETTO:+0200',
+      'TZNAME:CEST',
+      'DTSTART:19700329T020000',
+      'RRULE:FREQ=YEARLY;BYDAY=-1SU;BYMONTH=3',
+      'END:DAYLIGHT',
+      'BEGIN:STANDARD',
+      'TZOFFSETFROM:+0200',
+      'TZOFFSETTO:+0100',
+      'TZNAME:CET',
+      'DTSTART:19701025T030000',
+      'RRULE:FREQ=YEARLY;BYDAY=-1SU;BYMONTH=10',
+      'END:STANDARD',
+      'END:VTIMEZONE',
+    ] : []),
     'BEGIN:VEVENT',
-    `DTSTART;TZID=Europe/Stockholm:${dtStart}`,
-    `DTEND;TZID=Europe/Stockholm:${dtEnd}`,
+    ...dtLines,
     `SUMMARY:${ev.data.title}`,
     `LOCATION:${ev.data.location}`,
     `URL:${eventUrl}`,

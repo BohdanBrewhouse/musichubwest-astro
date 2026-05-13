@@ -42,6 +42,14 @@ export default defineConfig({
             type: 'string', name: 'category', label: 'Kategori', required: true,
             options: ['Tune In West', 'Kulturverkstaden', 'Högskolan för scen och musik', 'VGR', 'Externa event', 'Kulturakademin'],
           },
+          {
+            type: 'string', name: 'event_type', label: 'Typ av event',
+            options: ['Event', 'Utlysning'],
+          },
+          {
+            type: 'string', name: 'event_language', label: 'Eventets språk',
+            options: ['Svenska', 'Engelska', 'Tvåspråkigt'],
+          },
           { type: 'image', name: 'image', label: 'Bild', required: true },
           { type: 'number', name: 'spots_left', label: 'Platser kvar' },
           { type: 'number', name: 'spots_total', label: 'Totalt antal platser' },
@@ -78,6 +86,14 @@ export default defineConfig({
           {
             type: 'string', name: 'category', label: 'Category', required: true,
             options: ['Tune In West', 'Kulturverkstaden', 'Högskolan för scen och musik', 'VGR', 'External events', 'Kulturakademin'],
+          },
+          {
+            type: 'string', name: 'event_type', label: 'Event type',
+            options: ['Event', 'Utlysning'],
+          },
+          {
+            type: 'string', name: 'event_language', label: 'Event language',
+            options: ['Swedish', 'English', 'Bilingual'],
           },
           { type: 'image', name: 'image', label: 'Image', required: true },
           { type: 'number', name: 'spots_left', label: 'Spots left' },

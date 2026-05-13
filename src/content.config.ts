@@ -9,6 +9,8 @@ const events = defineCollection({
     time: z.string(),
     location: z.string(),
     category: z.enum(['Tune In West', 'Kulturverkstaden', 'Högskolan för scen och musik', 'VGR', 'Externa event', 'External events', 'Kulturakademin']),
+    event_type: z.enum(['Event', 'Utlysning']).optional().default('Event'),
+    event_language: z.enum(['Svenska', 'Engelska', 'Tvåspråkigt', 'Swedish', 'English', 'Bilingual']).optional(),
     image: z.string(),
     spots_left: z.number().optional(),
     spots_total: z.number().optional(),

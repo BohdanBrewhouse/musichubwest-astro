@@ -159,6 +159,8 @@ function formatDate(d: string) {
             lang={lang}
             organizer={ev.data.organizer}
             isOwn={!ev.data.external_registration_url}
+            eventType={ev.data.event_type}
+            eventLanguage={ev.data.event_language}
           />
         ))}
         {upcoming.length === 0 && (
@@ -179,6 +181,8 @@ function formatDate(d: string) {
             past={true}
             organizer={ev.data.organizer}
             isOwn={!ev.data.external_registration_url}
+            eventType={ev.data.event_type}
+            eventLanguage={ev.data.event_language}
           />
         ))}
         {past.length === 0 && (
@@ -207,17 +211,25 @@ function formatDate(d: string) {
                 const slug = ev.id.replace('sv/', '');
                 const evIsOwn = !ev.data.external_registration_url;
                 const arrangerName = evIsOwn ? 'Music Hub West' : (ev.data.organizer ?? '');
+                const evIsUtlysning = ev.data.event_type === 'Utlysning';
+                const evLangNorm = ev.data.event_language?.toLowerCase() ?? '';
+                const evLangChip = evLangNorm === 'engelska' || evLangNorm === 'english' ? 'Engelska'
+                  : evLangNorm === 'tvåspråkigt' || evLangNorm === 'bilingual' ? 'Tvåspråkigt'
+                  : null;
                 return (
                   <a class={`agenda-item${evIsOwn ? ' agenda-item--own' : ''}`} href={`/evenemang/${slug}`} data-category={ev.data.category}>
                     <div class="agenda-item__body">
                       <div class="agenda-item__top">
                         <span class={`badge ${badgeClass[ev.data.category] ?? ''}`}>{ev.data.category}</span>
+                        {evIsUtlysning && <span class="agenda-item__utlysning-chip">Utlysning</span>}
+                        {evLangChip && <span class="agenda-item__lang-chip">{evLangChip}</span>}
                         <h2 class="agenda-item__title">{ev.data.title}</h2>
                       </div>
                       <p class="agenda-item__meta">
-                        <span>{formatDate(ev.data.date)}</span>
-                        {ev.data.location && <><span class="agenda-item__dot">·</span><span>{ev.data.location}</span></>}
-                        {ev.data.time && <><span class="agenda-item__dot">·</span><span>{ev.data.time}</span></>}
+                        {evIsUtlysning
+                          ? <><span>{ev.data.time}</span><span class="agenda-item__dot">·</span><span>{formatDate(ev.data.date)}</span></>
+                          : <><span>{formatDate(ev.data.date)}</span>{ev.data.location && <><span class="agenda-item__dot">·</span><span>{ev.data.location}</span></>}{ev.data.time && <><span class="agenda-item__dot">·</span><span>{ev.data.time}</span></>}</>
+                        }
                       </p>
                       {arrangerName && <p class={`agenda-item__arranger${evIsOwn ? ' agenda-item__arranger--own' : ''}`}>Arrangör · {arrangerName}</p>}
                     </div>
@@ -251,17 +263,25 @@ function formatDate(d: string) {
                 const slug = ev.id.replace('sv/', '');
                 const evIsOwn = !ev.data.external_registration_url;
                 const arrangerName = evIsOwn ? 'Music Hub West' : (ev.data.organizer ?? '');
+                const evIsUtlysning = ev.data.event_type === 'Utlysning';
+                const evLangNorm = ev.data.event_language?.toLowerCase() ?? '';
+                const evLangChip = evLangNorm === 'engelska' || evLangNorm === 'english' ? 'Engelska'
+                  : evLangNorm === 'tvåspråkigt' || evLangNorm === 'bilingual' ? 'Tvåspråkigt'
+                  : null;
                 return (
                   <a class={`agenda-item agenda-item--past${evIsOwn ? ' agenda-item--own' : ''}`} href={`/evenemang/${slug}`} data-category={ev.data.category}>
                     <div class="agenda-item__body">
                       <div class="agenda-item__top">
                         <span class={`badge ${badgeClass[ev.data.category] ?? ''}`}>{ev.data.category}</span>
+                        {evIsUtlysning && <span class="agenda-item__utlysning-chip">Utlysning</span>}
+                        {evLangChip && <span class="agenda-item__lang-chip">{evLangChip}</span>}
                         <h2 class="agenda-item__title">{ev.data.title}</h2>
                       </div>
                       <p class="agenda-item__meta">
-                        <span>{formatDate(ev.data.date)}</span>
-                        {ev.data.location && <><span class="agenda-item__dot">·</span><span>{ev.data.location}</span></>}
-                        {ev.data.time && <><span class="agenda-item__dot">·</span><span>{ev.data.time}</span></>}
+                        {evIsUtlysning
+                          ? <><span>{ev.data.time}</span><span class="agenda-item__dot">·</span><span>{formatDate(ev.data.date)}</span></>
+                          : <><span>{formatDate(ev.data.date)}</span>{ev.data.location && <><span class="agenda-item__dot">·</span><span>{ev.data.location}</span></>}{ev.data.time && <><span class="agenda-item__dot">·</span><span>{ev.data.time}</span></>}</>
+                        }
                       </p>
                       {arrangerName && <p class={`agenda-item__arranger${evIsOwn ? ' agenda-item__arranger--own' : ''}`}>Arrangör · {arrangerName}</p>}
                     </div>
@@ -924,6 +944,39 @@ function formatDate(d: string) {
   }
   .agenda-item__arranger--own {
     color: rgba(200,242,62,0.55);
+  }
+
+  /* ── Utlysning chip (list view) ── */
+  .agenda-item__utlysning-chip {
+    display: inline-flex;
+    align-items: center;
+    background: #F59E0B;
+    color: #fff;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 7px;
+    border-radius: 3px;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  /* ── Language chip (list view) ── */
+  .agenda-item__lang-chip {
+    display: inline-flex;
+    align-items: center;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: rgba(255,255,255,0.45);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    padding: 3px 7px;
+    border-radius: 3px;
+    line-height: 1;
+    flex-shrink: 0;
   }
 
   .agenda-empty {
