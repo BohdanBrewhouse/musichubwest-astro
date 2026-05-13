@@ -12,7 +12,7 @@ image: /images/vgr26-va42186.jpg.webp
 organizer: Kulturförvaltningen i Västra Götalandsregionen
 translationKey: residens-strawberry-2026
 registration_open: false
-external_registration_url: 'https://www.vgregion.se/kultur-och-fritid/musik/residens-strawberry-studio/'
+external_registration_url: 'https://www.vgregion.se/f/kulturforvaltningen/vi-erbjuder/stod-och-stipendier/aktuella-utlysningar/utlysningar-aktuella/residens-for-popularmusik-i-strawberry-studio--med-fokus-pa-musikproduktion/'
 ---
 
 ### Ansök om residens i ett av Västsveriges mest välkända studior
