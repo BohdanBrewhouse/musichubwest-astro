@@ -46,7 +46,7 @@ const latestArticles = articles.sort((a, b) => b.data.date.localeCompare(a.data.
   <Nav lang={lang} active="start" />
   <section class="hero">
     <div class="hero__slides">
-      {sorted.slice(0,4).map((ev, i) => (
+      {sorted.slice(0,5).map((ev, i) => (
         <div class={`hero__slide ${i===0?'active':''}`}>
           <div class="hero__slide-bg">
             <img src={ev.data.image} alt=""
@@ -61,7 +61,7 @@ const latestArticles = articles.sort((a, b) => b.data.date.localeCompare(a.data.
             {(ev.data.category !== 'Partners' && ev.data.category !== 'External events') && <p class="hero__arranger">Organiser · {ev.data.external_registration_url ? (ev.data.organizer ?? '') : 'Music Hub West'}</p>}
             <div class="hero__controls">
               <div class="hero__dots" role="tablist" aria-label="Slideshow">
-                {sorted.slice(0,4).map((_,j) => <button class={`hero__dot ${j===i?'active':''}`} role="tab" aria-label={`Slide ${j + 1}`} aria-selected={j===i?'true':'false'}></button>)}
+                {sorted.slice(0,5).map((_,j) => <button class={`hero__dot ${j===i?'active':''}`} role="tab" aria-label={`Slide ${j + 1}`} aria-selected={j===i?'true':'false'}></button>)}
               </div>
               <a href={`/en/events/${ev.id.replace('en/','')}`} class="btn btn--primary">Read more</a>
             </div>
