@@ -8,7 +8,7 @@ address: 'Amerikagatan 2, 414 63 Gothenburg'
 map_query: Skeppet Amerikagatan Göteborg
 category: Tune In West
 event_language: English
-image: /images/Masterclass%20in%20Music%20Production%20with%20Planningtorock.png
+image: /images/Masterclass%20in%20Music%20Production%20with%20Planningtorock%204%D1%853.png
 card_image: /images/Masterclass%20in%20Music%20Production%20with%20Planningtorock%204%D1%853.png
 cost: Free of charge (registration required by 18 June)
 organizer: Tune In West
