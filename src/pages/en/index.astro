@@ -8,7 +8,10 @@ import { getCollection } from 'astro:content';
 
 const lang = 'en';
 const events = await getCollection('events', e => e.id.startsWith('en/'));
-const sorted = events.sort((a, b) => a.data.date.localeCompare(b.data.date));
+// Drop events whose date has passed — they belong in the archive, not the hero/cards
+const today = new Date().toISOString().split('T')[0];
+const upcoming = events.filter(e => e.data.date >= today);
+const sorted = upcoming.sort((a, b) => a.data.date.localeCompare(b.data.date));
 const articles = await getCollection('articles', a => a.id.startsWith('en/'));
 const latestArticles = articles.sort((a, b) => b.data.date.localeCompare(a.data.date)).slice(0, 3);
 ---
