@@ -155,7 +155,7 @@ function formatDate(d: string) {
             date={ev.data.date}
             time={ev.data.time}
             category={ev.data.category}
-            image={ev.data.image}
+            image={ev.data.card_image ?? ev.data.image}
             slug={ev.id.replace('en/', '')}
             lang={lang}
             organizer={ev.data.organizer}
@@ -177,7 +177,7 @@ function formatDate(d: string) {
             date={ev.data.date}
             time={ev.data.time}
             category={ev.data.category}
-            image={ev.data.image}
+            image={ev.data.card_image ?? ev.data.image}
             slug={ev.id.replace('en/', '')}
             lang={lang}
             past={true}

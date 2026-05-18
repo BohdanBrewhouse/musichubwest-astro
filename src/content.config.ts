@@ -13,6 +13,7 @@ const events = defineCollection({
     event_type: z.enum(['Event', 'Utlysning']).optional().default('Event'),
     event_language: z.enum(['Svenska', 'Engelska', 'Tvåspråkigt', 'Swedish', 'English', 'Bilingual']).optional(),
     image: z.string(),
+    card_image: z.string().optional(),
     spots_left: z.number().optional(),
     spots_total: z.number().optional(),
     cost: z.string().optional(),
