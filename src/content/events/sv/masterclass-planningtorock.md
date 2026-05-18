@@ -9,6 +9,7 @@ map_query: Skeppet Amerikagatan Göteborg
 category: Tune In West
 event_language: Engelska
 image: /images/Masterclass in Music Production with Planningtorock.png
+card_image: /images/Masterclass in Music Production with Planningtorock 4х3.png
 cost: Kostnadsfri (föranmälan krävs senast 18 juni)
 organizer: Tune In West
 translationKey: masterclass-planningtorock
