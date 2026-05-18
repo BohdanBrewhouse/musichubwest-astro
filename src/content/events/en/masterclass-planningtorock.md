@@ -1,9 +1,6 @@
 ---
 title: Masterclass in Music Production with Planningtorock
-seo_description: >-
-  Masterclass in music production with Jam Rostron (Planningtorock) – vocal
-  processing and queer sound. 25 June 2026, 15:00–18:00 at Skeppet,
-  Gothenburg. Free with registration by 18 June.
+seo_description: 'Masterclass in music production with Jam Rostron (Planningtorock) – vocal processing and queer sound. 25 June 2026, 15:00–18:00 at Skeppet, Gothenburg. Free with registration by 18 June.'
 date: '2026-06-25'
 time: '15:00–18:00'
 location: Skeppet GBG
@@ -11,7 +8,7 @@ address: 'Amerikagatan 2, 414 63 Gothenburg'
 map_query: Skeppet Amerikagatan Göteborg
 category: Tune In West
 event_language: English
-image: /images/Cover.png
+image: /images/Masterclass%20in%20Music%20Production%20with%20Planningtorock.png
 cost: Free of charge (registration required by 18 June)
 organizer: Tune In West
 translationKey: masterclass-planningtorock
