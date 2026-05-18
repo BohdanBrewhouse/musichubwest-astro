@@ -1,4 +1,6 @@
 ---
+import { Image } from 'astro:assets';
+
 export interface Props {
   title: string;
   date: string;
@@ -70,7 +72,7 @@ const badgeText = isPartner ? partnerBadgeText : category;
 ---
 <a href={`${eventsBase}/${slug}`} class={`event-card${past ? ' event-card--past' : ''}${isOwn ? ' event-card--own' : ''}`} data-category={category}>
   <div class="event-card__image">
-    <img src={image} alt={title} loading="lazy" />
+    <Image src={image} alt={title} width={1200} height={900} loading="lazy" densities={[1, 2]} />
     <span class={`badge ${badgeClass[category] ?? ''} event-card__badge`}>{badgeText}</span>
     {isOwn && (
       <span class="event-card__mhw-chip">{mhwChipText}</span>
