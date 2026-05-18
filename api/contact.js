@@ -13,15 +13,13 @@
  * Responsible Person column is left empty — team assigns manually in Monday.
  */
 const COLUMN_IDS = {
-  email:  'text_mm2dg4hr',   // Email
-  org:    'text_mm2dzkka',   // Organisation
-  msg:    'text_mm2d2mrp',   // Meddelande
-  omrade: 'color_mm3fgbhp',  // Område (status)
+  email: 'text_mm2dg4hr',   // Email
+  org:   'text_mm2dzkka',   // Organisation
+  msg:   'text_mm2d2mrp',   // Meddelande
 };
-
-// MHW (musichubwest.com) is the Music Hub itself → all submissions are
-// tagged as Område 1 so the right person gets notified via Monday automation.
-const DEFAULT_OMRADE_LABEL = 'Event & Inspiration';
+// NOTE: Område routing is handled on the Tune In West site (tuneinwest.se),
+// not here. MHW submissions go straight into the "om" group without a
+// status tag — the team triages them manually in Monday.
 
 const MONDAY_API = 'https://api.monday.com/v2';
 
@@ -97,8 +95,7 @@ export default async function handler(req, res) {
 
     // ── Build column values ─────────────────────────────────
     const colObj = {
-      [COLUMN_IDS.email]:  emailVal,
-      [COLUMN_IDS.omrade]: { label: DEFAULT_OMRADE_LABEL },
+      [COLUMN_IDS.email]: emailVal,
     };
     if (org?.trim())        colObj[COLUMN_IDS.org] = org.trim();
     if (meddelande?.trim()) colObj[COLUMN_IDS.msg] = meddelande.trim();
