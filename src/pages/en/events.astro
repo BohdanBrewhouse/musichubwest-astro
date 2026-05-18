@@ -868,7 +868,8 @@ function formatDate(d: string) {
   .agenda-item:hover::before { opacity: 1; }
   .agenda-item > * { position: relative; z-index: 1; }
 
-  .agenda-item--own::after {
+  .agenda-item--own::after,
+  .agenda-item[data-category="Tune In West"]::after {
     content: '';
     position: absolute;
     left: -16px;

@@ -94,8 +94,9 @@ const badgeText = isPartner ? partnerBadgeText : category;
 </a>
 
 <style>
-  /* ── Own event: lime left border ── */
-  .event-card--own {
+  /* ── Lime left border: MHW-own events AND Tune In West events ── */
+  .event-card--own,
+  .event-card[data-category="Tune In West"] {
     border-left: 3px solid var(--lime);
     padding-left: 12px;
     margin-left: -15px;
@@ -161,7 +162,8 @@ const badgeText = isPartner ? partnerBadgeText : category;
     margin-top: 6px;
     letter-spacing: 0.01em;
   }
-  .event-card--own .event-card__location {
+  .event-card--own .event-card__location,
+  .event-card[data-category="Tune In West"] .event-card__location {
     color: rgba(200,242,62,0.6);
   }
 </style>
