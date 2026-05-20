@@ -1,9 +1,6 @@
 ---
 title: Exponentiellt kulturentreprenörskap – surfa på framtidens vågor utan att tappa dig själv
-seo_description: >-
-  Halvdagsworkshop om AI, immersiv teknik och hållbart företagande för
-  kulturutövare. 3 juni 2026 kl 09:00–12:30 på United Spaces Lindholmen,
-  Göteborg. Kostnadsfri för dig i Västra Götaland.
+seo_description: 'Halvdagsworkshop om AI, immersiv teknik och hållbart företagande för kulturutövare. 3 juni 2026 kl 09:00–12:30 på United Spaces Lindholmen, Göteborg. Kostnadsfri för dig i Västra Götaland.'
 date: '2026-06-03'
 time: '09:00–12:30 (inkl. fikapaus)'
 location: United Spaces Lindholmen
@@ -11,7 +8,7 @@ address: 'Pumpgatan 1, 417 55 Göteborg'
 map_query: United Spaces Lindholmen Göteborg
 category: Kulturakademin
 event_language: Svenska
-image: /images/Cover.png
+image: /images/himlavalv-bla-och-rod-3-w300.jpg
 cost: Kostnadsfri (Västra Götaland) / 1 900 kr (övriga)
 organizer: Kulturakademin
 organizer_email: sassa@kulturakademin.com
