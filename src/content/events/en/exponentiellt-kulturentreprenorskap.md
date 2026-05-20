@@ -1,9 +1,6 @@
 ---
 title: Exponential Cultural Entrepreneurship – surf the waves of the future without losing yourself
-seo_description: >-
-  Half-day workshop on AI, immersive tech and sustainable entrepreneurship
-  for cultural practitioners. 3 June 2026, 09:00–12:30 at United Spaces
-  Lindholmen, Gothenburg. Free for residents of Västra Götaland.
+seo_description: 'Half-day workshop on AI, immersive tech and sustainable entrepreneurship for cultural practitioners. 3 June 2026, 09:00–12:30 at United Spaces Lindholmen, Gothenburg. Free for residents of Västra Götaland.'
 date: '2026-06-03'
 time: '09:00–12:30 (incl. coffee break)'
 location: United Spaces Lindholmen
@@ -11,7 +8,7 @@ address: 'Pumpgatan 1, 417 55 Gothenburg'
 map_query: United Spaces Lindholmen Göteborg
 category: Kulturakademin
 event_language: Swedish
-image: /images/Cover.png
+image: /images/himlavalv-bla-och-rod-3-w300.jpg
 cost: Free (for residents of Västra Götaland) / 1 900 SEK (others)
 organizer: Kulturakademin
 organizer_email: sassa@kulturakademin.com
