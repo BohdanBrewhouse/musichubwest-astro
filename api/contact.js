@@ -12,11 +12,17 @@
  *
  * Responsible Person column is left empty — team assigns manually in Monday.
  */
+import { Resend } from 'resend';
+import { buildMhwEmail } from './_email-template.js';
+
 const COLUMN_IDS = {
   email: 'text_mm2dg4hr',   // Email
   org:   'text_mm2dzkka',   // Organisation
   msg:   'text_mm2d2mrp',   // Meddelande
 };
+
+const FROM_ADDRESS = 'Music Hub West <hello@tuneinwest.se>';
+const REPLY_TO     = 'hello@musichubwest.com';
 // NOTE: Område routing is handled on the Tune In West site (tuneinwest.se),
 // not here. MHW submissions go straight into the "om" group without a
 // status tag — the team triages them manually in Monday.
@@ -123,6 +129,29 @@ export default async function handler(req, res) {
     const r = await monday(mutation, variables, MONDAY_API_TOKEN);
     const itemId = r?.create_item?.id;
     console.log(`[contact] ✅ Created item #${itemId} from ${emailVal} (${sida})`);
+
+    // ── Send branded confirmation email via Resend ─────────
+    // Failure here is non-fatal — Monday item is already created.
+    const RESEND_API_KEY = process.env.RESEND_API_KEY;
+    if (RESEND_API_KEY) {
+      try {
+        const resend = new Resend(RESEND_API_KEY);
+        const { subject, html, text } = buildMhwEmail({ namn: namn.trim() });
+        const sent = await resend.emails.send({
+          from: FROM_ADDRESS,
+          to: emailVal,
+          replyTo: REPLY_TO,
+          subject,
+          html,
+          text,
+        });
+        console.log(`[contact] ✉️ Resend email sent → ${emailVal}`, sent?.data?.id || '');
+      } catch (mailErr) {
+        console.error('[contact] Resend send failed (non-fatal):', mailErr?.message || mailErr);
+      }
+    } else {
+      console.warn('[contact] RESEND_API_KEY missing — skipping confirmation email');
+    }
 
     return res.status(200).json({ ok: true });
 
