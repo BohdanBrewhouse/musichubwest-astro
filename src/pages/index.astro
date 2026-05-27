@@ -14,7 +14,7 @@ const today = new Date().toISOString().split('T')[0];
 const upcoming = events.filter(e => e.data.date >= today);
 const sorted = upcoming.sort((a, b) => a.data.date.localeCompare(b.data.date));
 const heroSlides = sorted.slice(0, 5);
-const cardEvents = sorted.slice(0, 3);
+const cardEvents = sorted.slice(0, 6);
 const articles = await getCollection('articles', a => a.id.startsWith('sv/'));
 const latestArticles = articles.sort((a, b) => b.data.date.localeCompare(a.data.date)).slice(0, 3);
 ---
@@ -87,17 +87,33 @@ const latestArticles = articles.sort((a, b) => b.data.date.localeCompare(a.data.
     <div class="section__inner">
       <div class="section__head">
         <h2 class="section__title">Kommande event</h2>
-        <a href="/evenemang" class="section__link">Se alla →</a>
+        <div class="event-carousel__nav">
+          <button class="event-carousel__arrow" id="ev-prev" aria-label="Föregående event" type="button">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <button class="event-carousel__arrow" id="ev-next" aria-label="Nästa event" type="button">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <a href="/evenemang" class="section__link">Se alla →</a>
+        </div>
       </div>
-      <div class="card-grid">
-        {cardEvents.map(ev => (
-          <EventCard title={ev.data.title} date={ev.data.date} time={ev.data.time}
-            category={ev.data.category} image={ev.data.card_image ?? ev.data.image}
-            slug={ev.id.replace('sv/', '')} lang={lang}
-            organizer={ev.data.organizer} isOwn={!ev.data.external_registration_url}
-            eventType={ev.data.event_type} eventLanguage={ev.data.event_language}
-            location={ev.data.location} />
-        ))}
+      <div class="event-carousel">
+        <div class="event-carousel__track" id="ev-track">
+          {cardEvents.map(ev => (
+            <div class="event-carousel__item">
+              <EventCard title={ev.data.title} date={ev.data.date} time={ev.data.time}
+                category={ev.data.category} image={ev.data.card_image ?? ev.data.image}
+                slug={ev.id.replace('sv/', '')} lang={lang}
+                organizer={ev.data.organizer} isOwn={!ev.data.external_registration_url}
+                eventType={ev.data.event_type} eventLanguage={ev.data.event_language}
+                location={ev.data.location} />
+            </div>
+          ))}
+          <a href="/evenemang" class="event-carousel__item event-carousel__viewall">
+            <span class="event-carousel__viewall-arrow">→</span>
+            <span class="event-carousel__viewall-text">Se alla event</span>
+          </a>
+        </div>
       </div>
     </div>
   </section>
@@ -145,3 +161,133 @@ const latestArticles = articles.sort((a, b) => b.data.date.localeCompare(a.data.
 
   <Footer lang={lang} />
 </Base>
+
+<style>
+  /* ── Kommande event · horizontal carousel ── */
+  .event-carousel__nav {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .event-carousel__arrow {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 1px solid var(--black-3);
+    background: var(--black-2);
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, color 0.15s, opacity 0.15s;
+    flex-shrink: 0;
+  }
+  .event-carousel__arrow:hover {
+    background: var(--lime);
+    border-color: var(--lime);
+    color: var(--black);
+  }
+  .event-carousel__arrow:disabled {
+    opacity: 0.35;
+    cursor: default;
+  }
+  .event-carousel__arrow:disabled:hover {
+    background: var(--black-2);
+    border-color: var(--black-3);
+    color: var(--white);
+  }
+
+  .event-carousel {
+    position: relative;
+    margin: 0 -2px;
+  }
+  .event-carousel__track {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    padding: 18px 2px 24px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .event-carousel__track::-webkit-scrollbar { display: none; }
+  .event-carousel__item {
+    flex: 0 0 auto;
+    width: 340px;
+    max-width: 80vw;
+    scroll-snap-align: start;
+  }
+  .event-carousel__item .event-card { width: 100%; height: 100%; }
+
+  /* "Se alla event" tail card */
+  .event-carousel__viewall {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    border: 1px dashed var(--black-3);
+    border-radius: 10px;
+    background: var(--black-2);
+    text-decoration: none;
+    color: var(--white);
+    transition: border-color 0.2s, background 0.2s, transform 0.2s;
+    min-height: 220px;
+  }
+  .event-carousel__viewall:hover {
+    border-color: var(--lime);
+    background: rgba(204,255,0,0.04);
+    transform: translateY(-2px);
+  }
+  .event-carousel__viewall-arrow {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--lime);
+    color: var(--black);
+    font-size: 26px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s;
+  }
+  .event-carousel__viewall:hover .event-carousel__viewall-arrow { transform: translateX(4px); }
+  .event-carousel__viewall-text {
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  @media (max-width: 640px) {
+    .event-carousel__item { width: 300px; }
+  }
+</style>
+
+<script>
+  const track = document.getElementById('ev-track');
+  const prev  = document.getElementById('ev-prev');
+  const next  = document.getElementById('ev-next');
+
+  if (track && prev && next) {
+    const step = () => {
+      const first = track.querySelector('.event-carousel__item');
+      const w = first ? first.getBoundingClientRect().width : 340;
+      return w + 20; // item width + gap
+    };
+
+    const update = () => {
+      const maxScroll = track.scrollWidth - track.clientWidth - 1;
+      prev.disabled = track.scrollLeft <= 0;
+      next.disabled = track.scrollLeft >= maxScroll;
+    };
+
+    prev.addEventListener('click', () => track.scrollBy({ left: -step(), behavior: 'smooth' }));
+    next.addEventListener('click', () => track.scrollBy({ left:  step(), behavior: 'smooth' }));
+    track.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+  }
+</script>
