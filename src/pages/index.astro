@@ -12,7 +12,16 @@ const events = await getCollection('events', e => e.id.startsWith('sv/'));
 // Drop events whose date has passed — they belong in the archive, not the hero/cards
 const today = new Date().toISOString().split('T')[0];
 const upcoming = events.filter(e => e.data.date >= today);
-const sorted = upcoming.sort((a, b) => a.data.date.localeCompare(b.data.date));
+// Prioritise our own activities (Tune In West category or MHW-organised) so
+// they show up first on the hero and the homepage carousel.
+const isPriority = (ev: typeof events[number]) =>
+  ev.data.category === 'Tune In West' || !ev.data.external_registration_url;
+const sorted = upcoming.sort((a, b) => {
+  const aPri = isPriority(a) ? 0 : 1;
+  const bPri = isPriority(b) ? 0 : 1;
+  if (aPri !== bPri) return aPri - bPri;
+  return a.data.date.localeCompare(b.data.date);
+});
 const heroSlides = sorted.slice(0, 5);
 const cardEvents = sorted.slice(0, 6);
 const articles = await getCollection('articles', a => a.id.startsWith('sv/'));
