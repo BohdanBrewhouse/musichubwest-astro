@@ -204,18 +204,39 @@ h1, h2, h3, h4 { font-family: var(--font-display); }
   min-height: calc(100vh - 64px); /* fallback */
 }
 
-.hero__slides { position: relative; height: 100%; }
-
-.hero__slide {
-  display: none;
-  padding: 80px var(--px) 60px;
+.hero__slides {
+  position: relative;
+  height: 100%;
   min-height: calc(100svh - 64px);
   min-height: calc(100vh - 64px); /* fallback */
-  flex-direction: column;
-  justify-content: flex-end;
 }
 
-.hero__slide.active { display: flex; }
+/* Slides are stacked absolutely; fade between them via opacity for smooth
+   cross-fade. Glitch animation (defined later) only fires on .active so it
+   stays in sync with the active slide and stops on the outgoing one. */
+.hero__slide {
+  display: flex;
+  position: absolute;
+  inset: 0;
+  padding: 80px var(--px) 60px;
+  flex-direction: column;
+  justify-content: flex-end;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 1;
+  transition: opacity 500ms ease-in-out;
+  will-change: opacity;
+}
+
+.hero__slide.active {
+  opacity: 1;
+  pointer-events: auto;
+  z-index: 2;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__slide { transition: none; }
+}
 
 .hero__slide-bg {
   position: absolute;

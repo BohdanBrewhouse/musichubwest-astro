@@ -7,31 +7,54 @@ function initCarousel() {
   let current = 0;
   let timer;
 
+  function setActive(idx) {
+    slides.forEach((s, i) => {
+      const isActive = i === idx;
+      s.classList.toggle('active', isActive);
+      s.setAttribute('aria-hidden', isActive ? 'false' : 'true');
+    });
+    // Update every duplicate set of dots so all stay in sync.
+    dots.forEach((d, j) => {
+      const isActive = (j % slides.length) === idx;
+      d.classList.toggle('active', isActive);
+      d.setAttribute('aria-selected', isActive ? 'true' : 'false');
+    });
+  }
+
   function goTo(n) {
-    slides[current].classList.remove('active');
-    dots[current]?.classList.remove('active');
-    dots[current]?.setAttribute('aria-selected', 'false');
     current = (n + slides.length) % slides.length;
-    slides[current].classList.add('active');
-    dots[current]?.classList.add('active');
-    dots[current]?.setAttribute('aria-selected', 'true');
+    setActive(current);
   }
 
   function next() { goTo(current + 1); }
 
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  function start() { if (!reducedMotion) timer = setInterval(next, 5000); }
-  function stop()  { clearInterval(timer); }
+  function start() {
+    stop();
+    if (!reducedMotion) timer = setInterval(next, 5000);
+  }
+  function stop() {
+    if (timer) clearInterval(timer);
+    timer = null;
+  }
 
+  // Restart on each click so the 5s clock resets after manual navigation.
   dots.forEach((dot, i) => {
-    dot.addEventListener('click', () => { stop(); goTo(i); start(); });
+    dot.addEventListener('click', () => { stop(); goTo(i % slides.length); start(); });
   });
 
-  // Pause on hover
+  // Pause on hover & focus, resume on leave/blur.
   const hero = document.querySelector('.hero');
   hero?.addEventListener('mouseenter', stop);
   hero?.addEventListener('mouseleave', start);
+  hero?.addEventListener('focusin',  stop);
+  hero?.addEventListener('focusout', start);
+
+  // Pause when tab hidden so animation doesn't desync after the user returns.
+  document.addEventListener('visibilitychange', () => {
+    document.hidden ? stop() : start();
+  });
 
   // Touch swipe support
   let touchStartX = 0;
@@ -47,6 +70,14 @@ function initCarousel() {
     start();
   }, { passive: true });
 
+  // Keyboard navigation (when a dot has focus).
+  hero?.addEventListener('keydown', e => {
+    if (e.key === 'ArrowLeft')  { stop(); goTo(current - 1); start(); }
+    if (e.key === 'ArrowRight') { stop(); goTo(current + 1); start(); }
+  });
+
+  // Ensure the initial state is in sync with the DOM.
+  setActive(current);
   start();
 }
 

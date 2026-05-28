@@ -1,4 +1,4 @@
-const CACHE = 'mhw-v3';
+const CACHE = 'mhw-v4';
 const PRECACHE = ['/favicon.svg'];
 
 self.addEventListener('install', e => {
