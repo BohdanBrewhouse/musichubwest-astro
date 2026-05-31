@@ -2,6 +2,9 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "framework": "astro",
+  "crons": [
+    { "path": "/api/rebuild", "schedule": "0 3 * * *" }
+  ],
   "redirects": [
     { "source": "/en/om",              "destination": "/en/about",        "permanent": true },
     { "source": "/en/om/",             "destination": "/en/about/",       "permanent": true },
