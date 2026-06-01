@@ -15,8 +15,9 @@ export interface Props {
   eventType?: string;
   eventLanguage?: string;
   location?: string;
+  priority?: boolean;
 }
-const { title, date, time, category, image, slug, lang, past = false, organizer, isOwn = false, eventType = 'Event', eventLanguage, location } = Astro.props;
+const { title, date, time, category, image, slug, lang, past = false, organizer, isOwn = false, eventType = 'Event', eventLanguage, location, priority = false } = Astro.props;
 const eventsBase = lang === 'en' ? '/en/events' : '/evenemang';
 
 function formatDate(d: string, l: 'sv' | 'en') {
@@ -72,7 +73,13 @@ const badgeText = isPartner ? partnerBadgeText : category;
 ---
 <a href={`${eventsBase}/${slug}`} class={`event-card${past ? ' event-card--past' : ''}${isOwn ? ' event-card--own' : ''}`} data-category={category}>
   <div class="event-card__image">
-    <Image src={image} alt={title} width={1200} height={900} loading="lazy" densities={[1, 2]} />
+    <Image src={image} alt={title} width={800} height={600}
+      loading={priority ? 'eager' : 'lazy'}
+      fetchpriority={priority ? 'high' : 'auto'}
+      decoding="async"
+      widths={[320, 480, 640, 800]}
+      sizes="(max-width: 640px) 90vw, (max-width: 1024px) 50vw, 360px"
+      onload="this.dataset.loaded='true'" />
     <span class={`badge ${badgeClass[category] ?? ''} event-card__badge`}>{badgeText}</span>
     {isOwn && (
       <span class="event-card__mhw-chip">{mhwChipText}</span>
@@ -94,6 +101,21 @@ const badgeText = isPartner ? partnerBadgeText : category;
 </a>
 
 <style>
+  /* ── Image fade-in on load: stops the "pop-in" when lazy images decode ── */
+  .event-card__image img {
+    opacity: 0;
+    transition: opacity 0.35s ease-out;
+  }
+  .event-card__image img[data-loaded="true"],
+  .event-card__image img.is-loaded {
+    opacity: 1;
+  }
+  /* Eagerly-loaded (priority) images show immediately to keep LCP fast */
+  .event-card__image img[loading="eager"] {
+    opacity: 1;
+    transition: none;
+  }
+
   /* ── Full lime border + glow: MHW-own events AND Tune In West events ── */
   .event-card--own,
   .event-card[data-category="Tune In West"] {
@@ -101,6 +123,9 @@ const badgeText = isPartner ? partnerBadgeText : category;
     border-radius: 10px;
     box-shadow: 0 0 0 1px rgba(204,255,0,0.25), 0 0 24px rgba(204,255,0,0.18);
     transition: box-shadow 0.2s, transform 0.2s;
+    /* Promote to its own compositor layer so scrolling the carousel doesn't
+       repaint the lime glow on every frame on mobile. */
+    transform: translateZ(0);
   }
   .event-card--own:hover,
   .event-card[data-category="Tune In West"]:hover {
@@ -173,3 +198,12 @@ const badgeText = isPartner ? partnerBadgeText : category;
     color: rgba(200,242,62,0.6);
   }
 </style>
+
+<script is:inline>
+  // Safety net: if an image is already complete (cached) by the time this runs,
+  // its `load` event may have fired before the inline onload attribute could be
+  // parsed. Mark those manually so they don't stay invisible at opacity:0.
+  document.querySelectorAll('.event-card__image img').forEach(function(img) {
+    if (img.complete && img.naturalWidth > 0) img.dataset.loaded = 'true';
+  });
+</script>
