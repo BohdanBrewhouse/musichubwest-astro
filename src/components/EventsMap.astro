@@ -141,6 +141,7 @@ const eventsBase = lang === 'sv' ? '/evenemang' : '/en/events';
   .leaflet-popup-content {
     margin: 0 !important;
     width: 280px !important;
+    max-width: calc(100vw - 64px) !important;
   }
   .leaflet-popup-tip {
     background: #0a0a0a !important;
@@ -236,6 +237,11 @@ const eventsBase = lang === 'sv' ? '/evenemang' : '/en/events';
   async function initEventsMap() {
     if (mapInitStarted) return;
     mapInitStarted = true;
+
+    // Wait one frame so the view container has finished flipping from
+    // display:none → block. Leaflet needs a measurable host or its
+    // viewport math goes wrong (you'd see grey tiles in the corner).
+    await new Promise(r => requestAnimationFrame(() => r(null)));
 
     const host = document.getElementById('leaflet-map');
     if (!host) return; // empty state — no markers to render
@@ -334,7 +340,7 @@ const eventsBase = lang === 'sv' ? '/evenemang' : '/en/events';
         '</div>';
 
       const marker = L.marker([m.lat, m.lng], { icon: pinIcon(m.isOwn), title: m.title });
-      marker.bindPopup(html, { maxWidth: 280, minWidth: 280, autoPanPadding: [24, 24] });
+      marker.bindPopup(html, { maxWidth: 280, autoPanPadding: [24, 24], closeButton: true });
       cluster.addLayer(marker);
     }
 
