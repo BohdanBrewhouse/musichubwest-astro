@@ -1,0 +1,366 @@
+---
+/**
+ * Interactive Leaflet map for the /evenemang page.
+ *
+ * Receives pre-geocoded markers (lat/lng resolved at build time via the
+ * scripts/geocode-events.mjs prebuild) and renders them with a custom
+ * dark-themed popup. Leaflet is loaded lazily — the library and tile
+ * requests only fire on the first map-view activation, so the default
+ * grid view stays light.
+ *
+ * The component owns its own DOM ids:
+ *   #view-map       — the section that the view-toggle shows/hides
+ *   #leaflet-map    — the Leaflet container
+ * The toggle script in evenemang.astro listens for the [data-view="map"]
+ * button and calls window.__initEventsMap() the first time.
+ */
+export interface Marker {
+  slug: string;
+  lat: number;
+  lng: number;
+  title: string;
+  date: string;
+  time?: string;
+  location: string;
+  image: string;
+  category: string;
+  organizer: string | null;
+  isOwn: boolean;
+  eventType: string | null;
+}
+
+interface Props {
+  markers: Marker[];
+  lang: 'sv' | 'en';
+}
+const { markers, lang } = Astro.props;
+
+const t = lang === 'sv'
+  ? { readMore: 'Läs mer',  empty: 'Inga event på kartan just nu.', mhwOrg: 'MHW Arrangör' }
+  : { readMore: 'Read more', empty: 'No events on the map right now.', mhwOrg: 'MHW Organiser' };
+
+const eventsBase = lang === 'sv' ? '/evenemang' : '/en/events';
+---
+
+<div class="ev-view ev-view--map" id="view-map" style="display:none" aria-hidden="true">
+  <div class="map-wrap">
+    {markers.length === 0
+      ? <p class="map-empty">{t.empty}</p>
+      : <div id="leaflet-map" class="leaflet-host"></div>}
+  </div>
+</div>
+
+<!-- Markers data shipped as JSON so the script can pick it up without re-querying. -->
+<script type="application/json" id="map-markers-data" set:html={JSON.stringify(markers)}></script>
+<script type="application/json" id="map-i18n" set:html={JSON.stringify({ ...t, eventsBase })}></script>
+
+<style is:global>
+  /* ─── Map view container ─────────────────────────── */
+  .ev-view--map { padding: 0; }
+  .map-wrap {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 24px var(--px) 80px;
+  }
+  .map-empty {
+    text-align: center;
+    color: rgba(255,255,255,0.6);
+    padding: 80px 0;
+    font-size: 15px;
+  }
+  .leaflet-host {
+    height: 70vh;
+    min-height: 480px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--black-3);
+    background: var(--black-2);
+  }
+  @media (max-width: 640px) {
+    .map-wrap { padding: 12px var(--px) 80px; }
+    .leaflet-host { height: 75vh; min-height: 420px; border-radius: 8px; }
+  }
+
+  /* ─── Custom pin ─────────────────────────────────── */
+  .mhw-pin {
+    background: transparent;
+    border: none;
+  }
+  .mhw-pin__inner {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--lime);
+    border: 3px solid #000;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .mhw-pin__inner::after {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #000;
+  }
+  /* TIW / MHW-own get glow ring */
+  .mhw-pin--own .mhw-pin__inner {
+    box-shadow: 0 0 0 4px rgba(204,255,0,0.25), 0 2px 8px rgba(0,0,0,0.5);
+  }
+  /* Cluster bubble — dark with lime ring */
+  .marker-cluster-mhw {
+    background: rgba(204,255,0,0.18);
+    border-radius: 50%;
+  }
+  .marker-cluster-mhw div {
+    background: var(--lime);
+    color: #050505;
+    border-radius: 50%;
+    margin: 5px;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    font-family: var(--font-display, monospace);
+    font-weight: 700;
+    line-height: 30px;
+    font-size: 13px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+  }
+
+  /* ─── Popup styled to match MHW dark theme ───────── */
+  .leaflet-popup-content-wrapper {
+    background: #0a0a0a !important;
+    color: #fff !important;
+    border-radius: 12px !important;
+    border: 1px solid rgba(255,255,255,0.08) !important;
+    padding: 0 !important;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.45) !important;
+  }
+  .leaflet-popup-content {
+    margin: 0 !important;
+    width: 280px !important;
+  }
+  .leaflet-popup-tip {
+    background: #0a0a0a !important;
+    box-shadow: none !important;
+  }
+  .leaflet-popup-close-button {
+    color: rgba(255,255,255,0.7) !important;
+    padding: 6px 8px !important;
+    font-size: 20px !important;
+    z-index: 10;
+  }
+  .leaflet-popup-close-button:hover { color: var(--lime) !important; }
+
+  .mhw-popup__img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    background: #161616;
+    display: block;
+  }
+  .mhw-popup__body { padding: 14px 16px 16px; }
+  .mhw-popup__meta {
+    font-family: var(--font-display, monospace);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--lime);
+    margin: 0 0 6px;
+  }
+  .mhw-popup__title {
+    font-family: var(--font-display, system-ui);
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: #fff;
+    line-height: 1.25;
+    margin: 0 0 8px;
+  }
+  .mhw-popup__location {
+    font-size: 12px;
+    color: rgba(255,255,255,0.65);
+    margin: 0 0 14px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .mhw-popup__location::before {
+    content: '📍';
+    font-size: 11px;
+  }
+  .mhw-popup__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--lime);
+    color: #050505 !important;
+    text-decoration: none !important;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 8px 14px;
+    border-radius: 6px;
+    letter-spacing: 0.02em;
+    transition: transform 0.15s;
+  }
+  .mhw-popup__cta:hover { transform: translateX(2px); }
+  .mhw-popup__cta::after { content: '→'; }
+
+  /* Dim Leaflet attribution bar — keep it readable but unobtrusive */
+  .leaflet-control-attribution {
+    background: rgba(0,0,0,0.6) !important;
+    color: rgba(255,255,255,0.55) !important;
+    font-size: 10px !important;
+  }
+  .leaflet-control-attribution a {
+    color: rgba(204,255,0,0.85) !important;
+  }
+  .leaflet-control-zoom a {
+    background: #161616 !important;
+    color: #fff !important;
+    border: 1px solid rgba(255,255,255,0.1) !important;
+  }
+  .leaflet-control-zoom a:hover {
+    background: var(--lime) !important;
+    color: #050505 !important;
+  }
+</style>
+
+<script>
+  // Lazy-init guard — Leaflet only loads on the first map-view activation.
+  let mapInitStarted = false;
+
+  async function initEventsMap() {
+    if (mapInitStarted) return;
+    mapInitStarted = true;
+
+    const host = document.getElementById('leaflet-map');
+    if (!host) return; // empty state — no markers to render
+
+    const dataEl = document.getElementById('map-markers-data');
+    const i18nEl = document.getElementById('map-i18n');
+    if (!dataEl || !i18nEl) return;
+    const markers = JSON.parse(dataEl.textContent || '[]');
+    const i18n    = JSON.parse(i18nEl.textContent || '{}');
+    if (!markers.length) return;
+
+    // Inject Leaflet CSS (one stylesheet, idempotent)
+    if (!document.querySelector('link[data-leaflet]')) {
+      const css = document.createElement('link');
+      css.rel = 'stylesheet';
+      css.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+      css.integrity = 'sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=';
+      css.crossOrigin = '';
+      css.dataset.leaflet = '1';
+      document.head.appendChild(css);
+      const clusterCss = document.createElement('link');
+      clusterCss.rel = 'stylesheet';
+      clusterCss.href = 'https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css';
+      clusterCss.dataset.leaflet = '1';
+      document.head.appendChild(clusterCss);
+    }
+
+    // Dynamic import — keeps Leaflet (~40KB) out of the initial bundle.
+    const L = (await import('https://esm.sh/leaflet@1.9.4')).default;
+    await import('https://esm.sh/leaflet.markercluster@1.5.3');
+
+    // Centre roughly on Västra Götaland (Göteborg) with zoom that covers
+    // Sweden's south-west — pins will fitBounds afterwards.
+    const map = L.map(host, {
+      center: [57.7089, 11.9746],
+      zoom: 7,
+      scrollWheelZoom: false, // require modifier on desktop, two-finger on touch
+      zoomControl: true,
+    });
+
+    // CARTO Light tiles — clean grey base that doesn't fight with our lime pins.
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+      maxZoom: 19,
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
+      subdomains: 'abcd',
+    }).addTo(map);
+
+    // Touch-friendly: allow scroll-zoom on pinch, disable mouse-wheel by default.
+    map.on('focus', () => map.scrollWheelZoom.enable());
+    map.on('blur',  () => map.scrollWheelZoom.disable());
+
+    const pinIcon = (isOwn) => L.divIcon({
+      className: 'mhw-pin' + (isOwn ? ' mhw-pin--own' : ''),
+      iconSize:   [28, 28],
+      iconAnchor: [14, 14],
+      html: '<div class="mhw-pin__inner"></div>',
+    });
+
+    const cluster = L.markerClusterGroup({
+      iconCreateFunction: (c) => L.divIcon({
+        html: '<div><span>' + c.getChildCount() + '</span></div>',
+        className: 'marker-cluster-mhw',
+        iconSize: L.point(40, 40),
+      }),
+      showCoverageOnHover: false,
+      spiderfyOnMaxZoom: true,
+      maxClusterRadius: 40,
+    });
+
+    const dateFmt = new Intl.DateTimeFormat(i18n.eventsBase.startsWith('/en') ? 'en-US' : 'sv-SE', {
+      day: 'numeric', month: 'short', year: 'numeric',
+    });
+
+    for (const m of markers) {
+      const dateStr = /^\d{4}-\d{2}-\d{2}$/.test(m.date)
+        ? dateFmt.format(new Date(m.date + 'T12:00:00'))
+        : m.date;
+      const datetimeText = m.time ? `${dateStr} · ${m.time}` : dateStr;
+      const metaText = m.isOwn
+        ? `${i18n.mhwOrg.toUpperCase()} · ${datetimeText}`
+        : ((m.organizer || m.category) + ' · ' + datetimeText).toUpperCase();
+      const href = `${i18n.eventsBase}/${m.slug}`;
+
+      // Escape minimal HTML
+      const esc = (s) => String(s).replace(/[&<>"']/g, c => (
+        { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]
+      ));
+
+      const html =
+        '<img class="mhw-popup__img" src="' + esc(m.image) + '" alt="" loading="lazy">' +
+        '<div class="mhw-popup__body">' +
+          '<p class="mhw-popup__meta">' + esc(metaText) + '</p>' +
+          '<h3 class="mhw-popup__title">' + esc(m.title) + '</h3>' +
+          '<p class="mhw-popup__location">' + esc(m.location) + '</p>' +
+          '<a class="mhw-popup__cta" href="' + esc(href) + '">' + esc(i18n.readMore) + '</a>' +
+        '</div>';
+
+      const marker = L.marker([m.lat, m.lng], { icon: pinIcon(m.isOwn), title: m.title });
+      marker.bindPopup(html, { maxWidth: 280, minWidth: 280, autoPanPadding: [24, 24] });
+      cluster.addLayer(marker);
+    }
+
+    map.addLayer(cluster);
+
+    // Fit map to all markers (with padding for popups)
+    const group = L.featureGroup([...cluster.getLayers()]);
+    const bounds = group.getBounds();
+    if (bounds.isValid()) map.fitBounds(bounds.pad(0.18), { maxZoom: 12 });
+
+    // Astro hot-reload safety: force size recalc once the panel is visible.
+    requestAnimationFrame(() => map.invalidateSize());
+  }
+
+  // Expose for the view-toggle in evenemang.astro to call.
+  window.__initEventsMap = initEventsMap;
+  window.__refreshEventsMap = () => {
+    // Called when switching back to map view — fix size if panel was hidden.
+    setTimeout(() => {
+      const host = document.getElementById('leaflet-map');
+      // @ts-ignore — L is global after init
+      if (host && window.L && host._leaflet_id) {
+        // Trigger size recalc on any existing map instance
+        const ev = new Event('resize');
+        window.dispatchEvent(ev);
+      }
+    }, 50);
+  };
+</script>

@@ -3,7 +3,9 @@ import Base from '../layouts/Base.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import EventCard from '../components/EventCard.astro';
+import EventsMap from '../components/EventsMap.astro';
 import { getCollection } from 'astro:content';
+import geocache from '../data/geocache.json';
 
 const lang = 'sv';
 const events = await getCollection('events', e => e.id.startsWith('sv/'));
@@ -12,6 +14,35 @@ const sorted = events.sort((a, b) => a.data.date.localeCompare(b.data.date));
 const today = new Date().toISOString().split('T')[0];
 const upcoming = sorted.filter(ev => ev.data.date >= today);
 const past     = sorted.filter(ev => ev.data.date < today).reverse();
+
+// Build map markers: only upcoming events that successfully geocoded.
+type Geo = { lat: number | null; lng: number | null };
+const cache = geocache as Record<string, Geo>;
+const pickQuery = (ev: typeof sorted[number]) =>
+  ev.data.address || ev.data.map_query || (ev.data.location ? `${ev.data.location}, Sweden` : null);
+
+const mapMarkers = upcoming
+  .map(ev => {
+    const q = pickQuery(ev);
+    if (!q) return null;
+    const hit = cache[q];
+    if (!hit?.lat || !hit?.lng) return null;
+    return {
+      slug: ev.id.replace('sv/', ''),
+      lat: hit.lat,
+      lng: hit.lng,
+      title: ev.data.title,
+      date: ev.data.date,
+      time: ev.data.time,
+      location: ev.data.location,
+      image: ev.data.card_image ?? ev.data.image,
+      category: ev.data.category,
+      organizer: ev.data.organizer ?? null,
+      isOwn: !ev.data.external_registration_url,
+      eventType: ev.data.event_type ?? null,
+    };
+  })
+  .filter((m): m is NonNullable<typeof m> => m !== null);
 
 const monthsFull = ['Januari','Februari','Mars','April','Maj','Juni','Juli','Augusti','September','Oktober','November','December'];
 
@@ -137,6 +168,13 @@ function formatDate(d: string) {
               <line x1="1" y1="14" x2="17" y2="14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
             </svg>
             <span class="view-toggle__tooltip">Agenda view</span>
+          </button>
+          <button class="view-toggle__btn" id="btn-map" aria-pressed="false">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+              <path d="M9 1c-2.5 0-4.5 2-4.5 4.5C4.5 9 9 17 9 17s4.5-8 4.5-11.5C13.5 3 11.5 1 9 1z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+              <circle cx="9" cy="5.5" r="1.5" stroke="currentColor" stroke-width="1.5"/>
+            </svg>
+            <span class="view-toggle__tooltip">Map view</span>
           </button>
         </div>
         </div><!-- /view-toggle-wrap -->
@@ -315,6 +353,9 @@ function formatDate(d: string) {
     </div>
   </div>
 
+  <!-- MAP VIEW -->
+  <EventsMap markers={mapMarkers} lang={lang} />
+
   <Footer lang={lang} />
 
   <!-- Floating tab pill -->
@@ -333,18 +374,38 @@ function formatDate(d: string) {
 
   var btnGrid = document.getElementById('btn-grid');
   var btnList = document.getElementById('btn-list');
+  var btnMap  = document.getElementById('btn-map');
   var viewGrid = document.getElementById('view-grid');
   var viewList = document.getElementById('view-list');
+  var viewMap  = document.getElementById('view-map');
+  var evFloating = document.getElementById('ev-floating'); // Kommande/Arkiv pill
 
   function setView(v) {
-    var isGrid = v !== 'list';
-    viewGrid.style.display = isGrid ? '' : 'none';
-    viewList.style.display = isGrid ? 'none' : '';
-    btnGrid.classList.toggle('active', isGrid);
-    btnList.classList.toggle('active', !isGrid);
-    btnGrid.setAttribute('aria-pressed', isGrid ? 'true' : 'false');
-    btnList.setAttribute('aria-pressed', isGrid ? 'false' : 'true');
-    try { localStorage.setItem(STORAGE_KEY, v); } catch(e) {}
+    var view = (v === 'list' || v === 'map') ? v : 'grid';
+    var isGrid = view === 'grid';
+    var isList = view === 'list';
+    var isMap  = view === 'map';
+    if (viewGrid) viewGrid.style.display = isGrid ? '' : 'none';
+    if (viewList) viewList.style.display = isList ? '' : 'none';
+    if (viewMap)  {
+      viewMap.style.display = isMap ? '' : 'none';
+      viewMap.setAttribute('aria-hidden', isMap ? 'false' : 'true');
+    }
+    if (btnGrid) { btnGrid.classList.toggle('active', isGrid); btnGrid.setAttribute('aria-pressed', isGrid ? 'true' : 'false'); }
+    if (btnList) { btnList.classList.toggle('active', isList); btnList.setAttribute('aria-pressed', isList ? 'true' : 'false'); }
+    if (btnMap)  { btnMap.classList.toggle('active', isMap);   btnMap.setAttribute('aria-pressed', isMap  ? 'true' : 'false'); }
+    // Map only shows upcoming → hide the Kommande/Arkiv pill while in map view.
+    if (evFloating) evFloating.style.display = isMap ? 'none' : '';
+    if (isMap) {
+      try {
+        // Force-switch to Kommande tab when entering map view so filtering stays sane.
+        var upcomingBtn = document.querySelector('[data-tab="upcoming"]');
+        if (upcomingBtn && !upcomingBtn.classList.contains('active')) upcomingBtn.click();
+      } catch(e) {}
+      if (typeof window.__initEventsMap === 'function') window.__initEventsMap();
+      if (typeof window.__refreshEventsMap === 'function') window.__refreshEventsMap();
+    }
+    try { localStorage.setItem(STORAGE_KEY, view); } catch(e) {}
   }
 
   var NUDGE_KEY = 'mhw-nudge-dismissed';
@@ -361,8 +422,8 @@ function formatDate(d: string) {
 
   try {
     var saved = localStorage.getItem(STORAGE_KEY);
-    if (saved === 'list') {
-      setView('list');
+    if (saved === 'list' || saved === 'map') {
+      setView(saved);
       if (nudge) nudge.style.display = 'none';
     } else if (localStorage.getItem(NUDGE_KEY) === '1') {
       if (nudge) nudge.style.display = 'none';
@@ -386,6 +447,7 @@ function formatDate(d: string) {
 
   btnGrid.addEventListener('click', function() { setView('grid'); });
   btnList.addEventListener('click', function() { setView('list'); dismissNudge(); });
+  if (btnMap) btnMap.addEventListener('click', function() { setView('map'); dismissNudge(); });
 
   // ── Tab switching ──
   var gridUpcoming = document.getElementById('grid-upcoming');

@@ -1,0 +1,42 @@
+{
+  "Storgatan 47, 461 30 Trollhättan": {
+    "lat": 58.2844582,
+    "lng": 12.2851096,
+    "source": "nominatim"
+  },
+  "Pumpgatan 1, 417 55 Göteborg": {
+    "lat": 57.7112025,
+    "lng": 11.9463267,
+    "source": "nominatim"
+  },
+  "Göteborgsvägen 91, 431 37 Mölndal": {
+    "lat": 57.6681596,
+    "lng": 12.0105394,
+    "source": "nominatim"
+  },
+  "Amerikagatan 2, 414 63 Göteborg": {
+    "lat": 57.6995561,
+    "lng": 11.9345133,
+    "source": "nominatim"
+  },
+  "Töreboda, Västra Götaland": {
+    "lat": 58.716667,
+    "lng": 14.1,
+    "source": "nominatim"
+  },
+  "Djurgårdsgatan 13, 414 62 Göteborg": {
+    "lat": 57.6978577,
+    "lng": 11.9308009,
+    "source": "nominatim"
+  },
+  "Pumpgatan 1, 417 55 Gothenburg": {
+    "lat": 57.7112025,
+    "lng": 11.9463267,
+    "source": "nominatim"
+  },
+  "Amerikagatan 2, 414 63 Gothenburg": {
+    "lat": 57.6995561,
+    "lng": 11.9345133,
+    "source": "nominatim"
+  }
+}
