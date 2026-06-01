@@ -142,15 +142,8 @@ function formatDate(d: string) {
           </ul>
         </div>
 
-        <!-- View toggle + nudge -->
+        <!-- View toggle -->
         <div class="view-toggle-wrap">
-          <div class="agenda-nudge" id="agenda-nudge">
-            <span class="agenda-nudge__text">Try list view</span>
-            <svg class="agenda-nudge__arrow" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            <button class="agenda-nudge__close" id="agenda-nudge-close" aria-label="Close">
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 2l8 8M10 2l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-            </button>
-          </div>
           <div class="view-toggle" role="group" aria-label="Choose view">
           <button class="view-toggle__btn active" id="btn-grid" aria-pressed="true">
             <svg width="18" height="18" viewBox="0 0 100 100" fill="none">
@@ -404,43 +397,15 @@ function formatDate(d: string) {
     try { localStorage.setItem(STORAGE_KEY, view); } catch(e) {}
   }
 
-  var NUDGE_KEY = 'mhw-nudge-dismissed';
-  var nudge = document.getElementById('agenda-nudge');
-  var nudgeClose = document.getElementById('agenda-nudge-close');
-
-  function dismissNudge() {
-    if (!nudge) return;
-    nudge.style.display = 'none';
-    try { localStorage.setItem(NUDGE_KEY, '1'); } catch(e) {}
-  }
-
+  // Restore saved view preference
   try {
     var saved = localStorage.getItem(STORAGE_KEY);
-    if (saved === 'list' || saved === 'map') {
-      setView(saved);
-      if (nudge) nudge.style.display = 'none';
-    } else if (localStorage.getItem(NUDGE_KEY) === '1') {
-      if (nudge) nudge.style.display = 'none';
-    }
+    if (saved === 'list' || saved === 'map') setView(saved);
   } catch(e) {}
 
-  if (nudge) {
-    nudge.addEventListener('click', function(e) {
-      if (e.target === nudgeClose || nudgeClose.contains(e.target)) return;
-      setView('list');
-      dismissNudge();
-    });
-  }
-  if (nudgeClose) {
-    nudgeClose.addEventListener('click', function(e) {
-      e.stopPropagation();
-      dismissNudge();
-    });
-  }
-
   btnGrid.addEventListener('click', function() { setView('grid'); });
-  btnList.addEventListener('click', function() { setView('list'); dismissNudge(); });
-  if (btnMap) btnMap.addEventListener('click', function() { setView('map'); dismissNudge(); });
+  btnList.addEventListener('click', function() { setView('list'); });
+  if (btnMap) btnMap.addEventListener('click', function() { setView('map'); });
 
   // ── Tab switching ──
   var gridUpcoming = document.getElementById('grid-upcoming');
@@ -785,44 +750,8 @@ function formatDate(d: string) {
   .cat-drop__item:hover { background: rgba(255,255,255,0.06); color: var(--white); }
   .cat-drop__item.active { color: var(--lime); font-weight: 700; }
 
-  /* ── Nudge ── */
+  /* ── View toggle wrap ── */
   .view-toggle-wrap { position: relative; display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
-  .agenda-nudge {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    background: var(--lime);
-    color: var(--black);
-    border-radius: 4px;
-    padding: 6px 8px 6px 12px;
-    font-size: 12px;
-    font-weight: 800;
-    letter-spacing: 0.02em;
-    white-space: nowrap;
-    cursor: pointer;
-    transition: opacity 0.2s;
-    animation: nudge-in 0.3s ease both;
-  }
-  @keyframes nudge-in {
-    from { opacity: 0; transform: translateY(4px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-  .agenda-nudge__arrow { flex-shrink: 0; }
-  .agenda-nudge__close {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 20px;
-    height: 20px;
-    background: rgba(0,0,0,0.15);
-    border: none;
-    border-radius: 3px;
-    cursor: pointer;
-    color: var(--black);
-    margin-left: 2px;
-    flex-shrink: 0;
-  }
-  .agenda-nudge__close:hover { background: rgba(0,0,0,0.25); }
 
   .view-toggle { display: flex; gap: 4px; flex-shrink: 0; }
   .view-toggle__btn {
@@ -1053,8 +982,5 @@ function formatDate(d: string) {
   }
   @media (max-width: 640px) {
     .ev-header__right { display: none; }
-  }
-  @media (max-width: 520px) {
-    .agenda-nudge { display: none; }
   }
 </style>
