@@ -148,12 +148,38 @@ const eventsBase = lang === 'sv' ? '/evenemang' : '/en/events';
     box-shadow: none !important;
   }
   .leaflet-popup-close-button {
-    color: rgba(255,255,255,0.7) !important;
-    padding: 6px 8px !important;
-    font-size: 20px !important;
+    position: absolute !important;
+    top: 10px !important;
+    right: 10px !important;
+    width: 28px !important;
+    height: 28px !important;
+    padding: 0 !important;
+    font-size: 0 !important;
+    line-height: 0 !important;
+    color: #fff !important;
+    background: rgba(0,0,0,0.55) !important;
+    border-radius: 50% !important;
+    border: 1px solid rgba(255,255,255,0.15) !important;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
     z-index: 10;
+    transition: background 0.15s, transform 0.15s, color 0.15s;
   }
-  .leaflet-popup-close-button:hover { color: var(--lime) !important; }
+  /* Replace Leaflet's default × glyph with our own clean SVG */
+  .leaflet-popup-close-button > * { display: none !important; }
+  .leaflet-popup-close-button::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: currentColor;
+    -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.4' stroke-linecap='round'><path d='M6 6l12 12M18 6l-12 12'/></svg>") center / 12px 12px no-repeat;
+            mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.4' stroke-linecap='round'><path d='M6 6l12 12M18 6l-12 12'/></svg>") center / 12px 12px no-repeat;
+  }
+  .leaflet-popup-close-button:hover {
+    background: var(--lime) !important;
+    color: #050505 !important;
+    transform: scale(1.08);
+  }
 
   .mhw-popup__img {
     width: 100%;
