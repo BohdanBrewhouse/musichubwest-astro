@@ -8,6 +8,9 @@ import { getCollection } from 'astro:content';
 import geocache from '../data/geocache.json';
 
 const lang = 'sv';
+// Toggle to show/hide the "Publicera ditt event" CTA banner at the bottom
+// of the events page. Set to true when the submission backend is wired up.
+const SHOW_PUBLISH_CTA = false;
 const events = await getCollection('events', e => e.id.startsWith('sv/'));
 const sorted = events.sort((a, b) => a.data.date.localeCompare(b.data.date));
 
@@ -347,17 +350,19 @@ function formatDate(d: string) {
   <!-- MAP VIEW -->
   <EventsMap markers={mapMarkers} lang={lang} />
 
-  <!-- PUBLISH-YOUR-EVENT CTA -->
-  <section class="ev-cta">
-    <div class="ev-cta__inner">
-      <div class="ev-cta__text">
-        <p class="ev-cta__kicker">FÖR ARRANGÖRER</p>
-        <h2 class="ev-cta__title">Arrangerar du<br>ett event?</h2>
-        <p class="ev-cta__lead">Publicera det gratis på Music Hub West — vi designar omslaget och pushar i våra sociala kanaler.</p>
+  <!-- PUBLISH-YOUR-EVENT CTA (toggle SHOW_PUBLISH_CTA above) -->
+  {SHOW_PUBLISH_CTA && (
+    <section class="ev-cta">
+      <div class="ev-cta__inner">
+        <div class="ev-cta__text">
+          <p class="ev-cta__kicker">FÖR ARRANGÖRER</p>
+          <h2 class="ev-cta__title">Arrangerar du<br/>ett event?</h2>
+          <p class="ev-cta__lead">Publicera det gratis på Music Hub West — vi designar omslaget och pushar i våra sociala kanaler.</p>
+        </div>
+        <a href="/publicera-event" class="btn btn--primary ev-cta__btn">Skicka in ditt event →</a>
       </div>
-      <a href="/publicera-event" class="btn btn--primary ev-cta__btn">Skicka in ditt event →</a>
-    </div>
-  </section>
+    </section>
+  )}
 
   <Footer lang={lang} />
 

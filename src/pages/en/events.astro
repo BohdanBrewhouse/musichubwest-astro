@@ -8,6 +8,9 @@ import { getCollection } from 'astro:content';
 import geocache from '../../data/geocache.json';
 
 const lang = 'en';
+// Toggle to show/hide the "Publish your event" CTA banner at the bottom
+// of the events page. Set to true when the submission backend is wired up.
+const SHOW_PUBLISH_CTA = false;
 const events = await getCollection('events', e => e.id.startsWith('en/'));
 const sorted = events.sort((a, b) => a.data.date.localeCompare(b.data.date));
 
@@ -347,17 +350,19 @@ function formatDate(d: string) {
   <!-- MAP VIEW -->
   <EventsMap markers={mapMarkers} lang={lang} />
 
-  <!-- PUBLISH-YOUR-EVENT CTA -->
-  <section class="ev-cta">
-    <div class="ev-cta__inner">
-      <div class="ev-cta__text">
-        <p class="ev-cta__kicker">FOR ORGANISERS</p>
-        <h2 class="ev-cta__title">Hosting<br>an event?</h2>
-        <p class="ev-cta__lead">Publish it for free on Music Hub West — we design the cover and push it across our social channels.</p>
+  <!-- PUBLISH-YOUR-EVENT CTA (toggle SHOW_PUBLISH_CTA above) -->
+  {SHOW_PUBLISH_CTA && (
+    <section class="ev-cta">
+      <div class="ev-cta__inner">
+        <div class="ev-cta__text">
+          <p class="ev-cta__kicker">FOR ORGANISERS</p>
+          <h2 class="ev-cta__title">Hosting<br/>an event?</h2>
+          <p class="ev-cta__lead">Publish it for free on Music Hub West — we design the cover and push it across our social channels.</p>
+        </div>
+        <a href="/en/publish-event" class="btn btn--primary ev-cta__btn">Submit your event →</a>
       </div>
-      <a href="/en/publish-event" class="btn btn--primary ev-cta__btn">Submit your event →</a>
-    </div>
-  </section>
+    </section>
+  )}
 
   <Footer lang={lang} />
 
