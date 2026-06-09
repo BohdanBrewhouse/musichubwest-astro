@@ -48,9 +48,12 @@ const metaDescription = ev.data.seo_description
   ?? autoDescription(ev.body)
   ?? `${ev.data.title} – ${displayDate}, ${ev.data.location}. Event arrangerat av ${ev.data.organizer ?? 'Music Hub West'}.`;
 
-const related = await getCollection('events', e =>
-  e.id.startsWith('sv/') && e.id !== ev.id
-);
+// Only show upcoming events in the "Fler event" rail — past events live in
+// the archive on /evenemang, they shouldn't surface from a detail page.
+const todayIso = new Date().toISOString().split('T')[0];
+const related = (await getCollection('events', e =>
+  e.id.startsWith('sv/') && e.id !== ev.id && e.data.date >= todayIso
+)).sort((a, b) => a.data.date.localeCompare(b.data.date));
 
 const enEvents = await getCollection('events', e => e.id.startsWith('en/'));
 const enMatch = enEvents.find(e => e.data.translationKey === ev.data.translationKey);
