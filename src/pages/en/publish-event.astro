@@ -1,0 +1,872 @@
+---
+import Base from '../../layouts/Base.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+const lang = 'en';
+---
+<Base
+  title="Publish your event – Music Hub West"
+  lang={lang}
+  description="Are you hosting a music event in Västra Götaland? Publish it for free on Music Hub West — we design the cover and push it across our social channels."
+>
+  <Nav lang={lang} />
+
+  <!-- ─── HERO ─────────────────────────────── -->
+  <section class="pub-hero">
+    <div class="pub-hero__inner">
+      <p class="pub-eyebrow">FOR ORGANISERS</p>
+      <h1 class="pub-hero__title">
+        Publish<br>
+        your event<br>
+        <span class="pub-hero__title-lime">with us.</span>
+      </h1>
+      <p class="pub-hero__lead">
+        Are you hosting a music event in Västra Götaland? Publish it for free
+        on Music Hub West — we design the cover for you and share it across
+        our social channels.
+      </p>
+      <div class="pub-hero__ctas">
+        <a href="#form" class="btn btn--primary">Submit your event →</a>
+        <a href="#how" class="btn btn--ghost">How it works</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── VALUE PROPS ───────────────────────── -->
+  <section class="pub-value">
+    <div class="pub-value__inner">
+      <p class="pub-eyebrow">WHAT YOU GET</p>
+      <h2 class="pub-section__title">Four things. All free.</h2>
+      <div class="pub-value__grid">
+        <div class="pub-value__item">
+          <div class="pub-value__num">01</div>
+          <h3 class="pub-value__heading">A spot in the calendar</h3>
+          <p class="pub-value__text">Your event appears at musichubwest.com/en/events — where people actually look for music events in the region.</p>
+        </div>
+        <div class="pub-value__item">
+          <div class="pub-value__num">02</div>
+          <h3 class="pub-value__heading">Custom cover art</h3>
+          <p class="pub-value__text">Our in-house designer creates a cover that matches our brand — you don't need to be a graphic designer.</p>
+        </div>
+        <div class="pub-value__item">
+          <div class="pub-value__num">03</div>
+          <h3 class="pub-value__heading">Social channel push</h3>
+          <p class="pub-value__text">Instagram · LinkedIn · Facebook · TikTok. Your event reaches our community directly.</p>
+        </div>
+        <div class="pub-value__item">
+          <div class="pub-value__num">04</div>
+          <h3 class="pub-value__heading">We link to you</h3>
+          <p class="pub-value__text">Your own ticket or registration link is always included — we drive traffic to you, not to us.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── PROCESS ──────────────────────────── -->
+  <section class="pub-process" id="how">
+    <div class="pub-process__inner">
+      <p class="pub-eyebrow">HOW IT WORKS</p>
+      <h2 class="pub-section__title">Four steps.<br>No fuss.</h2>
+      <ol class="pub-process__steps">
+        <li class="pub-process__step">
+          <span class="pub-process__step-num">01</span>
+          <div>
+            <h3 class="pub-process__step-title">You submit</h3>
+            <p class="pub-process__step-text">Fill in the form below — your name, event details, and any images you have. Takes about 3 minutes.</p>
+          </div>
+        </li>
+        <li class="pub-process__step">
+          <span class="pub-process__step-num">02</span>
+          <div>
+            <h3 class="pub-process__step-title">We review</h3>
+            <p class="pub-process__step-text">Within 5 business days we get back to you — whether the event fits and can be published.</p>
+          </div>
+        </li>
+        <li class="pub-process__step">
+          <span class="pub-process__step-num">03</span>
+          <div>
+            <h3 class="pub-process__step-title">We design</h3>
+            <p class="pub-process__step-text">Our designer creates a cover that matches the Music Hub West brand — usually 3–5 days.</p>
+          </div>
+        </li>
+        <li class="pub-process__step">
+          <span class="pub-process__step-num">04</span>
+          <div>
+            <h3 class="pub-process__step-title">Published!</h3>
+            <p class="pub-process__step-text">Your event is live on the site — and across our social channels. Done.</p>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ─── ABOUT / PARTNERS ─────────────────── -->
+  <section class="pub-about">
+    <div class="pub-about__inner">
+      <p class="pub-eyebrow">WHO WE ARE</p>
+      <h2 class="pub-section__title">Music Hub West.<br>The platform for the music industry.</h2>
+      <p class="pub-about__text">
+        Music Hub West is a meeting place for the music industry in Västra
+        Götaland. We're driven by the <strong>Tune In West</strong> project —
+        a regional initiative 2026–2029 backed by five strong partners:
+      </p>
+      <div class="pub-about__partners">
+        <span class="pub-partner-chip">Västra Götalandsregionen</span>
+        <span class="pub-partner-chip">Tillväxtverket</span>
+        <span class="pub-partner-chip">Kulturförvaltningen i VGR</span>
+        <span class="pub-partner-chip">Brewhouse Inkubator</span>
+        <span class="pub-partner-chip">Högskolan för scen och musik</span>
+      </div>
+      <a href="/en/about" class="pub-about__link">Read more about the project →</a>
+    </div>
+  </section>
+
+  <!-- ─── SOCIAL REACH ─────────────────────── -->
+  <section class="pub-reach">
+    <div class="pub-reach__inner">
+      <p class="pub-eyebrow">OUR CHANNELS</p>
+      <h2 class="pub-section__title">We reach the music industry<br>where they actually are.</h2>
+      <div class="pub-reach__grid">
+        <a href="https://instagram.com/musichubwest" target="_blank" rel="noopener" class="pub-reach__item">
+          <span class="pub-reach__platform">Instagram</span>
+          <span class="pub-reach__handle">@musichubwest</span>
+        </a>
+        <a href="https://www.linkedin.com/company/music-hub-west" target="_blank" rel="noopener" class="pub-reach__item">
+          <span class="pub-reach__platform">LinkedIn</span>
+          <span class="pub-reach__handle">Music Hub West</span>
+        </a>
+        <a href="https://www.facebook.com/musichubwest" target="_blank" rel="noopener" class="pub-reach__item">
+          <span class="pub-reach__platform">Facebook</span>
+          <span class="pub-reach__handle">@musichubwest</span>
+        </a>
+        <a href="https://www.tiktok.com/@musichubwest" target="_blank" rel="noopener" class="pub-reach__item">
+          <span class="pub-reach__platform">TikTok</span>
+          <span class="pub-reach__handle">@musichubwest</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── CRITERIA ─────────────────────────── -->
+  <section class="pub-criteria">
+    <div class="pub-criteria__inner">
+      <p class="pub-eyebrow">DOES YOUR EVENT FIT?</p>
+      <h2 class="pub-section__title">We prioritise events that…</h2>
+      <ul class="pub-criteria__list">
+        <li class="pub-criteria__item">
+          <span class="pub-criteria__check">✓</span>
+          <span><strong>Happen in Västra Götaland.</strong> We're regionally focused.</span>
+        </li>
+        <li class="pub-criteria__item">
+          <span class="pub-criteria__check">✓</span>
+          <span><strong>Have music at the centre.</strong> Concerts, masterclasses, workshops, talks, releases — anything driven by music.</span>
+        </li>
+        <li class="pub-criteria__item">
+          <span class="pub-criteria__check">✓</span>
+          <span><strong>Are inclusive.</strong> Open to new audiences and new voices in the industry.</span>
+        </li>
+        <li class="pub-criteria__item">
+          <span class="pub-criteria__check">✓</span>
+          <span><strong>Are submitted at least 3 weeks in advance.</strong> We need time to review, design and push.</span>
+        </li>
+        <li class="pub-criteria__item">
+          <span class="pub-criteria__check">✓</span>
+          <span><strong>Are genuine.</strong> No pure adverts or pyramid schemes — we care about our community.</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ─── FORM ─────────────────────────────── -->
+  <section class="pub-form-section" id="form">
+    <div class="pub-form-section__inner">
+      <p class="pub-eyebrow">SUBMISSION FORM</p>
+      <h2 class="pub-section__title">Submit your event.</h2>
+      <p class="pub-form-section__lead">Takes 3 minutes. We get back to you within 5 business days.</p>
+
+      <form class="pub-form" id="pub-form" novalidate>
+        <div class="pub-form__honeypot" aria-hidden="true">
+          <label for="website">Website</label>
+          <input type="text" id="website" name="website" tabindex="-1" autocomplete="off" />
+        </div>
+
+        <div class="pub-form__row">
+          <div class="pub-form__field">
+            <label class="pub-form__label" for="firstName">First name <span class="pub-form__req">*</span></label>
+            <input class="pub-form__input" type="text" id="firstName" name="firstName" required />
+          </div>
+          <div class="pub-form__field">
+            <label class="pub-form__label" for="lastName">Last name <span class="pub-form__req">*</span></label>
+            <input class="pub-form__input" type="text" id="lastName" name="lastName" required />
+          </div>
+        </div>
+
+        <div class="pub-form__row">
+          <div class="pub-form__field">
+            <label class="pub-form__label" for="email">Email <span class="pub-form__req">*</span></label>
+            <input class="pub-form__input" type="email" id="email" name="email" placeholder="you@email.com" required />
+          </div>
+          <div class="pub-form__field">
+            <label class="pub-form__label" for="phone">Phone</label>
+            <input class="pub-form__input" type="tel" id="phone" name="phone" placeholder="+46 70-123 45 67" />
+          </div>
+        </div>
+
+        <div class="pub-form__field">
+          <label class="pub-form__label" for="organisation">Organisation / band / company <span class="pub-form__req">*</span></label>
+          <input class="pub-form__input" type="text" id="organisation" name="organisation" required />
+        </div>
+
+        <div class="pub-form__field">
+          <label class="pub-form__label" for="eventTitle">Event title <span class="pub-form__req">*</span></label>
+          <input class="pub-form__input" type="text" id="eventTitle" name="eventTitle" required />
+        </div>
+
+        <div class="pub-form__row">
+          <div class="pub-form__field">
+            <label class="pub-form__label" for="eventDate">Event date <span class="pub-form__req">*</span></label>
+            <input class="pub-form__input" type="date" id="eventDate" name="eventDate" required />
+          </div>
+          <div class="pub-form__field">
+            <label class="pub-form__label" for="eventLocation">Location (venue + city) <span class="pub-form__req">*</span></label>
+            <input class="pub-form__input" type="text" id="eventLocation" name="eventLocation" placeholder="Pustervik, Göteborg" required />
+          </div>
+        </div>
+
+        <div class="pub-form__field">
+          <label class="pub-form__label" for="description">Description <span class="pub-form__req">*</span></label>
+          <textarea class="pub-form__textarea" id="description" name="description" rows="5" maxlength="500" placeholder="Tell us briefly what the event is about, who's playing, and why it matters…" required></textarea>
+          <span class="pub-form__hint">Max 500 characters</span>
+        </div>
+
+        <div class="pub-form__field">
+          <label class="pub-form__label" for="registrationUrl">Registration / ticket link</label>
+          <input class="pub-form__input" type="url" id="registrationUrl" name="registrationUrl" placeholder="https://…" />
+        </div>
+
+        <div class="pub-form__field">
+          <label class="pub-form__label">Images / promo material</label>
+          <label class="pub-form__file-drop" for="files">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="pub-form__file-text">Click to choose files or drag them here</span>
+            <span class="pub-form__file-hint">JPG, PNG, WEBP or PDF · max 5 files · max 10 MB each</span>
+            <input class="pub-form__file-input" type="file" id="files" name="files" accept=".jpg,.jpeg,.png,.webp,.pdf" multiple />
+          </label>
+          <ul class="pub-form__file-list" id="file-list"></ul>
+        </div>
+
+        <div class="pub-form__field">
+          <span class="pub-form__label">Preferred publication <span class="pub-form__req">*</span></span>
+          <div class="pub-form__radios">
+            <label class="pub-form__radio">
+              <input type="radio" name="publishType" value="site" required />
+              <span>Website only</span>
+            </label>
+            <label class="pub-form__radio">
+              <input type="radio" name="publishType" value="site-and-social" defaultChecked />
+              <span>Website + social channels</span>
+            </label>
+          </div>
+        </div>
+
+        <fieldset class="pub-form__terms">
+          <legend class="pub-form__label">I agree that <span class="pub-form__req">*</span></legend>
+          <label class="pub-form__check">
+            <input type="checkbox" name="agree_design" required />
+            <span>Music Hub West designs a new cover that matches their brand. My original images are used as inspiration.</span>
+          </label>
+          <label class="pub-form__check">
+            <input type="checkbox" name="agree_share" required />
+            <span>Music Hub West may use the cover and event info across their channels (Instagram, LinkedIn, Facebook, TikTok, the website).</span>
+          </label>
+          <label class="pub-form__check">
+            <input type="checkbox" name="agree_credit" required />
+            <span>I commit to tagging and linking @musichubwest when I share the event.</span>
+          </label>
+          <label class="pub-form__check">
+            <input type="checkbox" name="agree_free" required />
+            <span>I understand that this service is 100% free — no invoice will be sent.</span>
+          </label>
+          <label class="pub-form__check">
+            <input type="checkbox" name="agree_rights" required />
+            <span>I own the rights to all images I upload, or have permission to use them.</span>
+          </label>
+        </fieldset>
+
+        <button type="submit" class="btn btn--primary pub-form__submit" id="pub-submit">
+          Submit event →
+        </button>
+
+        <div class="pub-form__error" id="pub-error" hidden>
+          Something went wrong. Try again or email us directly at hello@musichubwest.com.
+        </div>
+      </form>
+
+      <div class="pub-form__success" id="pub-success" hidden>
+        <div class="pub-form__success-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+            <path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h3 class="pub-form__success-title">Thanks — we've got your submission!</h3>
+        <p class="pub-form__success-text">
+          We'll get back to you within 5 business days. A confirmation has
+          also been sent to the email address you provided.
+        </p>
+        <a href="/en/events" class="btn btn--ghost">Back to all events →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FAQ ──────────────────────────────── -->
+  <section class="pub-faq">
+    <div class="pub-faq__inner">
+      <p class="pub-eyebrow">FAQ</p>
+      <h2 class="pub-section__title">Common questions.</h2>
+      <details class="pub-faq__item">
+        <summary class="pub-faq__q">What if my event doesn't meet all criteria?</summary>
+        <p class="pub-faq__a">Reach out anyway. We make case-by-case judgements — the criteria are guidelines, not strict rules.</p>
+      </details>
+      <details class="pub-faq__item">
+        <summary class="pub-faq__q">Can you share my event on social before publishing on the site?</summary>
+        <p class="pub-faq__a">We plan publication and social posts together. If you have a tight deadline — mention it in the description and we'll try to accommodate.</p>
+      </details>
+      <details class="pub-faq__item">
+        <summary class="pub-faq__q">How much does it cost?</summary>
+        <p class="pub-faq__a">Nothing. Music Hub West is run by the Tune In West project and funded by regional partners — this service is free for organisers.</p>
+      </details>
+      <details class="pub-faq__item">
+        <summary class="pub-faq__q">Do I keep the rights to my images?</summary>
+        <p class="pub-faq__a">Yes. You retain all rights to the originals. The new cover our designer creates is owned by Music Hub West, but you're free to use it for the event too.</p>
+      </details>
+      <details class="pub-faq__item">
+        <summary class="pub-faq__q">Can I submit multiple events at once?</summary>
+        <p class="pub-faq__a">Absolutely — send one form per event. It's quick and we process them in parallel.</p>
+      </details>
+    </div>
+  </section>
+
+  <Footer lang={lang} />
+</Base>
+
+<style>
+  /* ─── shared ─────────────────────────── */
+  .pub-eyebrow {
+    font-family: var(--font);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+    color: var(--lime);
+    margin-bottom: 16px;
+  }
+  .pub-section__title {
+    font-family: var(--font-display);
+    font-size: clamp(32px, 5vw, 56px);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1.05;
+    color: var(--white);
+    margin-bottom: 28px;
+  }
+
+  /* ─── HERO ───────────────────────────── */
+  .pub-hero {
+    background: var(--black);
+    padding: clamp(64px, 12vw, 140px) var(--px) clamp(56px, 10vw, 100px);
+    border-bottom: 1px solid var(--black-3);
+  }
+  .pub-hero__inner { max-width: var(--max); margin: 0 auto; }
+  .pub-hero__title {
+    font-family: var(--font-display);
+    font-size: clamp(48px, 9vw, 112px);
+    font-weight: 700;
+    letter-spacing: -0.035em;
+    line-height: 1.0;
+    color: var(--white);
+    margin-bottom: 32px;
+  }
+  .pub-hero__title-lime { color: var(--lime); }
+  .pub-hero__lead {
+    font-size: clamp(16px, 1.5vw, 19px);
+    color: rgba(255,255,255,0.7);
+    line-height: 1.6;
+    max-width: 620px;
+    margin-bottom: 40px;
+  }
+  .pub-hero__ctas { display: flex; gap: 14px; flex-wrap: wrap; }
+  .btn--ghost {
+    background: transparent;
+    border: 1px solid var(--black-3);
+    color: var(--white);
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .btn--ghost:hover { border-color: var(--lime); background: rgba(204,255,0,0.04); }
+
+  /* ─── VALUE PROPS ────────────────────── */
+  .pub-value { padding: clamp(64px, 10vw, 120px) var(--px); border-bottom: 1px solid var(--black-3); }
+  .pub-value__inner { max-width: var(--max); margin: 0 auto; }
+  .pub-value__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    margin-top: 40px;
+  }
+  .pub-value__item {
+    background: var(--black-2);
+    border: 1px solid var(--black-3);
+    border-radius: 8px;
+    padding: 32px 28px;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .pub-value__item:hover { border-color: var(--lime); background: rgba(204,255,0,0.03); }
+  .pub-value__num {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--lime);
+    margin-bottom: 16px;
+  }
+  .pub-value__heading {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 10px;
+  }
+  .pub-value__text {
+    font-size: 14px;
+    color: rgba(255,255,255,0.65);
+    line-height: 1.6;
+  }
+
+  /* ─── PROCESS ────────────────────────── */
+  .pub-process {
+    background: var(--black-2);
+    padding: clamp(64px, 10vw, 120px) var(--px);
+    border-bottom: 1px solid var(--black-3);
+  }
+  .pub-process__inner { max-width: var(--max); margin: 0 auto; }
+  .pub-process__steps {
+    list-style: none;
+    padding: 0;
+    margin: 40px 0 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 24px;
+  }
+  .pub-process__step {
+    display: flex;
+    gap: 20px;
+    padding: 24px;
+    background: var(--black);
+    border: 1px solid var(--black-3);
+    border-radius: 8px;
+  }
+  .pub-process__step-num {
+    font-family: var(--font-display);
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--lime);
+    line-height: 1;
+    flex-shrink: 0;
+  }
+  .pub-process__step-title {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+  .pub-process__step-text {
+    font-size: 14px;
+    color: rgba(255,255,255,0.65);
+    line-height: 1.6;
+  }
+
+  /* ─── ABOUT / PARTNERS ──────────────── */
+  .pub-about { padding: clamp(64px, 10vw, 120px) var(--px); border-bottom: 1px solid var(--black-3); }
+  .pub-about__inner { max-width: var(--max); margin: 0 auto; }
+  .pub-about__text {
+    font-size: 17px;
+    color: rgba(255,255,255,0.75);
+    line-height: 1.7;
+    max-width: 720px;
+    margin-bottom: 28px;
+  }
+  .pub-about__partners {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 32px;
+  }
+  .pub-partner-chip {
+    display: inline-block;
+    padding: 8px 16px;
+    background: var(--black-2);
+    border: 1px solid var(--black-3);
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--white);
+  }
+  .pub-about__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--lime);
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 15px;
+    transition: gap 0.2s;
+  }
+  .pub-about__link:hover { gap: 12px; }
+
+  /* ─── SOCIAL REACH ──────────────────── */
+  .pub-reach {
+    background: var(--black-2);
+    padding: clamp(64px, 10vw, 120px) var(--px);
+    border-bottom: 1px solid var(--black-3);
+  }
+  .pub-reach__inner { max-width: var(--max); margin: 0 auto; }
+  .pub-reach__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-top: 40px;
+  }
+  .pub-reach__item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 28px 24px;
+    background: var(--black);
+    border: 1px solid var(--black-3);
+    border-radius: 8px;
+    text-decoration: none;
+    transition: border-color 0.2s, background 0.2s, transform 0.2s;
+  }
+  .pub-reach__item:hover {
+    border-color: var(--lime);
+    background: rgba(204,255,0,0.04);
+    transform: translateY(-2px);
+  }
+  .pub-reach__platform {
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--lime);
+    text-transform: uppercase;
+  }
+  .pub-reach__handle {
+    font-family: var(--font);
+    font-size: 15px;
+    color: var(--white);
+  }
+
+  /* ─── CRITERIA ──────────────────────── */
+  .pub-criteria { padding: clamp(64px, 10vw, 120px) var(--px); border-bottom: 1px solid var(--black-3); }
+  .pub-criteria__inner { max-width: 880px; margin: 0 auto; }
+  .pub-criteria__list { list-style: none; padding: 0; margin: 40px 0 0; }
+  .pub-criteria__item {
+    display: flex;
+    gap: 16px;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--black-3);
+    color: rgba(255,255,255,0.85);
+    font-size: 16px;
+    line-height: 1.6;
+  }
+  .pub-criteria__item:last-child { border-bottom: none; }
+  .pub-criteria__check {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(204,255,0,0.12);
+    color: var(--lime);
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+  }
+  .pub-criteria__item strong { color: var(--white); font-weight: 700; }
+
+  /* ─── FORM ──────────────────────────── */
+  .pub-form-section {
+    background: var(--black-2);
+    padding: clamp(64px, 10vw, 120px) var(--px);
+    border-bottom: 1px solid var(--black-3);
+  }
+  .pub-form-section__inner { max-width: 720px; margin: 0 auto; }
+  .pub-form-section__lead {
+    font-size: 16px;
+    color: rgba(255,255,255,0.65);
+    margin-bottom: 40px;
+  }
+  .pub-form {
+    background: var(--black);
+    border: 1px solid var(--black-3);
+    border-radius: 12px;
+    padding: clamp(24px, 4vw, 40px);
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .pub-form__honeypot { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+  .pub-form__row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .pub-form__field { display: flex; flex-direction: column; gap: 8px; }
+  .pub-form__label { font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.85); }
+  .pub-form__req { color: var(--lime); margin-left: 2px; }
+  .pub-form__input,
+  .pub-form__textarea {
+    font-family: var(--font);
+    font-size: 15px;
+    color: var(--white);
+    background: var(--black-2);
+    border: 1px solid var(--black-3);
+    border-radius: 6px;
+    padding: 12px 14px;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .pub-form__textarea { resize: vertical; min-height: 110px; }
+  .pub-form__input:focus,
+  .pub-form__textarea:focus {
+    outline: none;
+    border-color: var(--lime);
+    box-shadow: 0 0 0 3px rgba(204,255,0,0.12);
+  }
+  .pub-form__hint { font-size: 12px; color: rgba(255,255,255,0.4); }
+
+  .pub-form__file-drop {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 28px 20px;
+    background: var(--black-2);
+    border: 2px dashed var(--black-3);
+    border-radius: 8px;
+    cursor: pointer;
+    color: rgba(255,255,255,0.6);
+    transition: border-color 0.15s, background 0.15s, color 0.15s;
+  }
+  .pub-form__file-drop:hover { border-color: var(--lime); color: var(--white); background: rgba(204,255,0,0.04); }
+  .pub-form__file-text { font-size: 14px; font-weight: 600; }
+  .pub-form__file-hint { font-size: 12px; color: rgba(255,255,255,0.4); }
+  .pub-form__file-input { display: none; }
+  .pub-form__file-list { list-style: none; padding: 0; margin: 8px 0 0; display: flex; flex-direction: column; gap: 6px; }
+  .pub-form__file-list li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    background: var(--black-2);
+    border: 1px solid var(--black-3);
+    border-radius: 6px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.8);
+  }
+  .pub-form__file-list .pub-form__file-remove {
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.5);
+    cursor: pointer;
+    padding: 4px 8px;
+    font-size: 13px;
+  }
+  .pub-form__file-list .pub-form__file-remove:hover { color: var(--lime); }
+
+  .pub-form__radios { display: flex; gap: 10px; flex-wrap: wrap; }
+  .pub-form__radio {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    background: var(--black-2);
+    border: 1px solid var(--black-3);
+    border-radius: 6px;
+    cursor: pointer;
+    color: rgba(255,255,255,0.85);
+    font-size: 14px;
+    flex: 1;
+    min-width: 180px;
+  }
+  .pub-form__radio:has(input:checked) {
+    border-color: var(--lime);
+    background: rgba(204,255,0,0.06);
+    color: var(--white);
+  }
+  .pub-form__radio input { accent-color: var(--lime); }
+
+  .pub-form__terms {
+    border: 1px solid var(--black-3);
+    border-radius: 8px;
+    padding: 20px;
+    background: var(--black-2);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .pub-form__terms legend { padding: 0 8px; }
+  .pub-form__check {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    font-size: 13px;
+    color: rgba(255,255,255,0.75);
+    line-height: 1.5;
+    cursor: pointer;
+  }
+  .pub-form__check input { accent-color: var(--lime); margin-top: 3px; flex-shrink: 0; }
+
+  .pub-form__submit { align-self: flex-start; margin-top: 8px; }
+  .pub-form__error {
+    padding: 14px 16px;
+    background: rgba(255,80,80,0.1);
+    border: 1px solid rgba(255,80,80,0.3);
+    border-radius: 6px;
+    color: #ff8080;
+    font-size: 14px;
+  }
+
+  .pub-form__success {
+    background: var(--black);
+    border: 1px solid var(--lime);
+    border-radius: 12px;
+    padding: 48px 32px;
+    text-align: center;
+  }
+  .pub-form__success-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--lime);
+    color: var(--black);
+    margin: 0 auto 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .pub-form__success-title {
+    font-family: var(--font-display);
+    font-size: 24px;
+    color: var(--white);
+    margin-bottom: 12px;
+  }
+  .pub-form__success-text {
+    font-size: 15px;
+    color: rgba(255,255,255,0.7);
+    line-height: 1.6;
+    max-width: 480px;
+    margin: 0 auto 28px;
+  }
+
+  /* ─── FAQ ───────────────────────────── */
+  .pub-faq { padding: clamp(64px, 10vw, 120px) var(--px); }
+  .pub-faq__inner { max-width: 720px; margin: 0 auto; }
+  .pub-faq__item { border-bottom: 1px solid var(--black-3); padding: 20px 0; }
+  .pub-faq__item:last-child { border-bottom: none; }
+  .pub-faq__q {
+    list-style: none;
+    cursor: pointer;
+    color: var(--white);
+    font-family: var(--font-display);
+    font-size: 17px;
+    font-weight: 700;
+    padding-right: 30px;
+    position: relative;
+  }
+  .pub-faq__q::-webkit-details-marker { display: none; }
+  .pub-faq__q::after {
+    content: '+';
+    position: absolute;
+    right: 0;
+    top: -2px;
+    font-size: 24px;
+    color: var(--lime);
+    transition: transform 0.2s;
+  }
+  .pub-faq__item[open] .pub-faq__q::after { content: '−'; }
+  .pub-faq__a {
+    margin-top: 12px;
+    font-size: 15px;
+    color: rgba(255,255,255,0.7);
+    line-height: 1.65;
+  }
+
+  @media (max-width: 640px) {
+    .pub-form__row { grid-template-columns: 1fr; }
+    .pub-form__radio { min-width: 0; }
+  }
+</style>
+
+<script is:inline>
+(function() {
+  const form = document.getElementById('pub-form');
+  const fileInput = document.getElementById('files');
+  const fileList = document.getElementById('file-list');
+  const submitBtn = document.getElementById('pub-submit');
+  const errorEl = document.getElementById('pub-error');
+  const successEl = document.getElementById('pub-success');
+  if (!form) return;
+
+  let files = [];
+  const MAX_FILES = 5;
+  const MAX_SIZE = 10 * 1024 * 1024;
+  const ALLOWED = ['image/jpeg', 'image/png', 'image/webp', 'application/pdf'];
+
+  function renderFiles() {
+    fileList.innerHTML = '';
+    files.forEach((f, i) => {
+      const li = document.createElement('li');
+      const size = (f.size / 1024 / 1024).toFixed(1) + ' MB';
+      li.innerHTML = '<span>' + escapeHtml(f.name) + ' · ' + size + '</span><button type="button" class="pub-form__file-remove" data-i="' + i + '">Remove</button>';
+      fileList.appendChild(li);
+    });
+    fileList.querySelectorAll('.pub-form__file-remove').forEach(btn => {
+      btn.addEventListener('click', () => {
+        files.splice(parseInt(btn.dataset.i), 1);
+        renderFiles();
+      });
+    });
+  }
+
+  function escapeHtml(s) {
+    return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  fileInput.addEventListener('change', (e) => {
+    const newFiles = Array.from(e.target.files);
+    for (const f of newFiles) {
+      if (files.length >= MAX_FILES) { alert('Max ' + MAX_FILES + ' files.'); break; }
+      if (f.size > MAX_SIZE) { alert('"' + f.name + '" is larger than 10 MB.'); continue; }
+      if (!ALLOWED.includes(f.type)) { alert('"' + f.name + '" is not a supported file type.'); continue; }
+      files.push(f);
+    }
+    renderFiles();
+    fileInput.value = '';
+  });
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    errorEl.hidden = true;
+    if (!form.checkValidity()) { form.reportValidity(); return; }
+    if (form.elements.website && form.elements.website.value) return;
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending…';
+
+    setTimeout(() => {
+      form.style.display = 'none';
+      successEl.hidden = false;
+      successEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 800);
+  });
+})();
+</script>

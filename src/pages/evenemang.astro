@@ -347,6 +347,18 @@ function formatDate(d: string) {
   <!-- MAP VIEW -->
   <EventsMap markers={mapMarkers} lang={lang} />
 
+  <!-- PUBLISH-YOUR-EVENT CTA -->
+  <section class="ev-cta">
+    <div class="ev-cta__inner">
+      <div class="ev-cta__text">
+        <p class="ev-cta__kicker">FÖR ARRANGÖRER</p>
+        <h2 class="ev-cta__title">Arrangerar du<br>ett event?</h2>
+        <p class="ev-cta__lead">Publicera det gratis på Music Hub West — vi designar omslaget och pushar i våra sociala kanaler.</p>
+      </div>
+      <a href="/publicera-event" class="btn btn--primary ev-cta__btn">Skicka in ditt event →</a>
+    </div>
+  </section>
+
   <Footer lang={lang} />
 
   <!-- Floating tab pill -->
@@ -1001,5 +1013,49 @@ function formatDate(d: string) {
   }
   @media (max-width: 640px) {
     .ev-header__right { display: none; }
+  }
+
+  /* ─── Publish-your-event CTA ─────────── */
+  .ev-cta {
+    padding: clamp(56px, 8vw, 96px) var(--px);
+    background: var(--black-2);
+    border-top: 1px solid var(--black-3);
+    border-bottom: 1px solid var(--black-3);
+  }
+  .ev-cta__inner {
+    max-width: var(--max);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 40px;
+    align-items: center;
+  }
+  .ev-cta__kicker {
+    font-family: var(--font);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+    color: var(--lime);
+    margin-bottom: 14px;
+  }
+  .ev-cta__title {
+    font-family: var(--font-display);
+    font-size: clamp(28px, 4.5vw, 48px);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1.05;
+    color: var(--white);
+    margin-bottom: 12px;
+  }
+  .ev-cta__lead {
+    font-size: 16px;
+    color: rgba(255,255,255,0.7);
+    line-height: 1.6;
+    max-width: 560px;
+  }
+  .ev-cta__btn { white-space: nowrap; }
+  @media (max-width: 720px) {
+    .ev-cta__inner { grid-template-columns: 1fr; gap: 24px; }
+    .ev-cta__btn { justify-self: start; }
   }
 </style>
