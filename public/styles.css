@@ -994,7 +994,7 @@ a:hover .featured-title { text-decoration-color: var(--lime); }
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center 20%;
+  object-position: center 8%;
   display: block;
   filter: grayscale(100%);
   transition: filter 0.3s;
