@@ -188,37 +188,6 @@ const lang = 'en';
     </div>
   </section>
 
-  <!-- ─── ORGANISATIONS ────────────────────── -->
-  <section class="pub-orgs">
-    <div class="pub-orgs__inner">
-      <p class="pub-eyebrow">ORGANISATIONS</p>
-      <h2 class="pub-section__title">Actors in the region's<br>music scene.</h2>
-      <p class="pub-orgs__lead">Some of the organisations we work with and highlight in the region.</p>
-      <div class="pub-orgs__grid">
-        <a href="https://kulturakademin.com" target="_blank" rel="noopener" class="pub-orgs__item">
-          <span class="pub-orgs__name">Kulturakademin</span>
-          <span class="pub-orgs__desc">Study association working with music</span>
-        </a>
-        <a href="https://goclip.org/en/" target="_blank" rel="noopener" class="pub-orgs__item">
-          <span class="pub-orgs__name">CLIP</span>
-          <span class="pub-orgs__desc">goclip.org</span>
-        </a>
-        <a href="https://www.vivasounds.se" target="_blank" rel="noopener" class="pub-orgs__item">
-          <span class="pub-orgs__name">Viva Sounds</span>
-          <span class="pub-orgs__desc">vivasounds.se</span>
-        </a>
-        <div class="pub-orgs__item pub-orgs__item--static">
-          <span class="pub-orgs__name">West Side Music Sweden</span>
-          <span class="pub-orgs__desc">Industry organisation</span>
-        </div>
-        <div class="pub-orgs__item pub-orgs__item--static">
-          <span class="pub-orgs__name">Musikcentrum Väst</span>
-          <span class="pub-orgs__desc">Industry organisation</span>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- ─── FORM ─────────────────────────────── -->
   <section class="pub-form-section" id="form">
     <div class="pub-form-section__inner">
@@ -659,53 +628,6 @@ const lang = 'en';
   }
   .pub-criteria__item--no { color: rgba(255,255,255,0.6); }
   .pub-criteria__item--no strong { color: rgba(255,255,255,0.85); }
-
-  /* ─── ORGANISATIONS ─────────────────── */
-  .pub-orgs {
-    padding: clamp(64px, 10vw, 120px) var(--px);
-    border-bottom: 1px solid var(--black-3);
-    background: var(--black-2);
-  }
-  .pub-orgs__inner { max-width: var(--max); margin: 0 auto; }
-  .pub-orgs__lead {
-    font-size: 16px;
-    color: rgba(255,255,255,0.7);
-    line-height: 1.6;
-    max-width: 620px;
-    margin-bottom: 36px;
-  }
-  .pub-orgs__grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 16px;
-  }
-  .pub-orgs__item {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    padding: 24px;
-    background: var(--black);
-    border: 1px solid var(--black-3);
-    border-radius: 8px;
-    text-decoration: none;
-    transition: border-color 0.2s, background 0.2s, transform 0.2s;
-  }
-  a.pub-orgs__item:hover {
-    border-color: var(--lime);
-    background: rgba(204,255,0,0.04);
-    transform: translateY(-2px);
-  }
-  .pub-orgs__item--static { cursor: default; }
-  .pub-orgs__name {
-    font-family: var(--font-display);
-    font-size: 17px;
-    font-weight: 700;
-    color: var(--white);
-  }
-  .pub-orgs__desc {
-    font-size: 13px;
-    color: rgba(255,255,255,0.55);
-  }
 
   /* ─── FORM ──────────────────────────── */
   .pub-form-section {
