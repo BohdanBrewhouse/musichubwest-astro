@@ -990,6 +990,15 @@ a:hover .featured-title { text-decoration-color: var(--lime); }
   margin-bottom: 10px;
   overflow: hidden;
 }
+.team-card__photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: grayscale(100%);
+  transition: filter 0.3s;
+}
+.team-card:hover .team-card__photo img { filter: grayscale(0%); }
 
 .team-card__name {
   font-family: var(--font-display);
@@ -1007,6 +1016,13 @@ a:hover .featured-title { text-decoration-color: var(--lime); }
   letter-spacing: 0.06em;
   margin-bottom: 4px;
   color: var(--lime);
+}
+
+.team-card__role {
+  font-family: var(--font);
+  font-size: 11px;
+  color: rgba(255,255,255,0.6);
+  margin-bottom: 4px;
 }
 
 .team-card__email {
