@@ -9,8 +9,8 @@ import geocache from '../data/geocache.json';
 
 const lang = 'sv';
 // Toggle to show/hide the "Publicera ditt event" CTA banner at the bottom
-// of the events page. Set to true when the submission backend is wired up.
-const SHOW_PUBLISH_CTA = false;
+// of the events page.
+const SHOW_PUBLISH_CTA = true;
 const events = await getCollection('events', e => e.id.startsWith('sv/'));
 const sorted = events.sort((a, b) => a.data.date.localeCompare(b.data.date));
 
@@ -355,11 +355,11 @@ function formatDate(d: string) {
     <section class="ev-cta">
       <div class="ev-cta__inner">
         <div class="ev-cta__text">
-          <p class="ev-cta__kicker">FÖR ARRANGÖRER</p>
-          <h2 class="ev-cta__title">Arrangerar du<br/>ett event?</h2>
-          <p class="ev-cta__lead">Publicera det gratis på Music Hub West — vi designar omslaget och pushar i våra sociala kanaler.</p>
+          <p class="ev-cta__kicker">FÖR DIG SOM VILL SYNAS</p>
+          <h2 class="ev-cta__title">Vill du synas på<br/>Music Hub West?</h2>
+          <p class="ev-cta__lead">Publicera ditt event eller händelse kostnadsfritt — vi designar omslaget och delar det i våra sociala kanaler.</p>
         </div>
-        <a href="/publicera-event" class="btn btn--primary ev-cta__btn">Skicka in ditt event →</a>
+        <a href="/publicera-event" class="btn btn--primary ev-cta__btn">Publicera ditt event →</a>
       </div>
     </section>
   )}
