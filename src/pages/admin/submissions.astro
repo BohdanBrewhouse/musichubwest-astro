@@ -129,6 +129,23 @@
     .a-card.collapsed .a-card__chev { transform: rotate(-90deg); }
     .a-card.collapsed .a-card__body,
     .a-card.collapsed .a-card__actions { display: none; }
+
+    /* Email composer */
+    .a-mail { display: none; padding: 18px 20px; border-top: 1px solid var(--a-border); background: var(--a-bg); }
+    .a-mail.open { display: block; }
+    .a-mail__row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
+    .a-mail__tpl { background: var(--a-bg2); border: 1px solid var(--a-border); color: var(--a-mut); border-radius: 7px; padding: 6px 12px; font-size: 12px; cursor: pointer; font-family: inherit; }
+    .a-mail__tpl:hover { color: var(--a-white); border-color: var(--a-lime); }
+    .a-mail label { font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--a-mut); display: block; margin: 10px 0 4px; }
+    .a-mail textarea { min-height: 160px; resize: vertical; line-height: 1.5; }
+    .a-mail__send-row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-top: 14px; }
+    .a-mail__mode { display: flex; gap: 8px; }
+    .a-mail__mode label { display: inline-flex; align-items: center; gap: 6px; margin: 0; text-transform: none; letter-spacing: 0; font-weight: 500; font-size: 13px; color: var(--a-white); cursor: pointer; }
+    .a-mail__when { display: none; }
+    .a-mail__when.show { display: inline-block; }
+    .a-mail__hint { font-size: 12px; }
+    .a-mail__hint.ok { color: #3FB950; }
+    .a-mail__hint.err { color: #ff7676; }
     @media (max-width: 640px) {
       .a-card__body { grid-template-columns: 1fr; }
     }
@@ -325,10 +342,52 @@
         <div class="a-card__actions">
           <label class="a-field__label" style="margin:0">Status</label>
           <select class="a-select" data-status>${opts}</select>
+          <button class="a-btn a-btn--ghost" data-mail-toggle>✉ Mejla sökanden</button>
           <div class="a-spacer"></div>
           <button class="a-btn a-btn--danger" data-delete>Ta bort</button>
         </div>
+
+        <div class="a-mail" data-mail>
+          <div class="a-mail__row">
+            <button class="a-mail__tpl" data-tpl="approved">Godkänd-mall</button>
+            <button class="a-mail__tpl" data-tpl="rejected">Avvisad-mall</button>
+            <button class="a-mail__tpl" data-tpl="info">Begär info</button>
+          </div>
+          <label>Till</label>
+          <input class="a-input" type="email" data-mail-to value="${esc(r.email)}" />
+          <label>Ämne</label>
+          <input class="a-input" type="text" data-mail-subject placeholder="Ämne…" />
+          <label>Meddelande</label>
+          <textarea class="a-input" data-mail-body placeholder="Skriv ditt meddelande…"></textarea>
+          <div class="a-mail__send-row">
+            <div class="a-mail__mode">
+              <label><input type="radio" name="mode-${r.id}" value="now" checked data-mode> Skicka nu</label>
+              <label><input type="radio" name="mode-${r.id}" value="later" data-mode> Schemalägg</label>
+            </div>
+            <input class="a-input a-mail__when" type="datetime-local" data-mail-when style="width:auto" />
+            <button class="a-btn" data-mail-send>Skicka</button>
+            <span class="a-mail__hint" data-mail-hint></span>
+          </div>
+        </div>
       </div>`;
+    }
+
+    // Quick-fill templates (Swedish). {name}/{title} get substituted.
+    function mailTemplate(kind, r) {
+      const name = r.first_name || 'där';
+      const title = r.event_title || 'ditt event';
+      if (kind === 'approved') return {
+        subject: `Ditt event är godkänt – Music Hub West`,
+        body: `Hej ${name},\n\nVad roligt — vi har granskat din ansökan för "${title}" och kommer att publicera den på Music Hub West!\n\nVi designar ett omslag som matchar vår profil och hör av oss om vi behöver något mer från dig.\n\nVänliga hälsningar,\nMusic Hub West`,
+      };
+      if (kind === 'rejected') return {
+        subject: `Angående din eventansökan – Music Hub West`,
+        body: `Hej ${name},\n\nTack för att du skickade in "${title}". Tyvärr kan vi inte publicera just detta event den här gången.\n\nDen här tjänsten är till för aktörer inom musikbranschen i Västra Götaland, och vi hoppas få se fler ansökningar från dig framöver.\n\nVänliga hälsningar,\nMusic Hub West`,
+      };
+      return {
+        subject: `Angående din eventansökan – Music Hub West`,
+        body: `Hej ${name},\n\nTack för din ansökan för "${title}". Vi behöver lite mer information innan vi kan gå vidare:\n\n- \n\nHör av dig så hjälps vi åt!\n\nVänliga hälsningar,\nMusic Hub West`,
+      };
     }
 
     function wireCards() {
@@ -339,6 +398,59 @@
         top.addEventListener('click', (e) => {
           if (e.target.closest('a')) return;
           card.classList.toggle('collapsed');
+        });
+
+        const row = all.find(r => r.id === id);
+        const mail = card.querySelector('[data-mail]');
+
+        // toggle composer
+        card.querySelector('[data-mail-toggle]').addEventListener('click', () => {
+          mail.classList.toggle('open');
+        });
+        // templates
+        card.querySelectorAll('[data-tpl]').forEach(btn => btn.addEventListener('click', () => {
+          const tpl = mailTemplate(btn.dataset.tpl, row);
+          card.querySelector('[data-mail-subject]').value = tpl.subject;
+          card.querySelector('[data-mail-body]').value = tpl.body;
+        }));
+        // send mode toggle (show datetime when "later")
+        const whenEl = card.querySelector('[data-mail-when]');
+        card.querySelectorAll('[data-mode]').forEach(radio => radio.addEventListener('change', () => {
+          whenEl.classList.toggle('show', card.querySelector('[data-mode]:checked').value === 'later');
+        }));
+        // send
+        const sendBtn = card.querySelector('[data-mail-send]');
+        const hint = card.querySelector('[data-mail-hint]');
+        sendBtn.addEventListener('click', async () => {
+          hint.className = 'a-mail__hint';
+          hint.textContent = '';
+          const to = card.querySelector('[data-mail-to]').value.trim();
+          const subject = card.querySelector('[data-mail-subject]').value.trim();
+          const bodyText = card.querySelector('[data-mail-body]').value;
+          const mode = card.querySelector('[data-mode]:checked').value;
+          if (!to || !subject || !bodyText.trim()) {
+            hint.className = 'a-mail__hint err'; hint.textContent = 'Fyll i till, ämne och meddelande.'; return;
+          }
+          let scheduledAt;
+          if (mode === 'later') {
+            const v = whenEl.value;
+            if (!v) { hint.className = 'a-mail__hint err'; hint.textContent = 'Välj datum och tid.'; return; }
+            const dt = new Date(v);
+            if (isNaN(dt) || dt <= new Date()) { hint.className = 'a-mail__hint err'; hint.textContent = 'Tiden måste vara i framtiden.'; return; }
+            if (dt - new Date() > 72 * 3600 * 1000) { hint.className = 'a-mail__hint err'; hint.textContent = 'Max 72 timmar fram i tiden.'; return; }
+            scheduledAt = dt.toISOString();
+          }
+          sendBtn.disabled = true; sendBtn.textContent = 'Skickar…';
+          try {
+            await api('email', { id, to, subject, bodyText, scheduledAt });
+            hint.className = 'a-mail__hint ok';
+            hint.textContent = scheduledAt ? `Schemalagt ✓ (${new Date(scheduledAt).toLocaleString('sv-SE')})` : 'Skickat ✓';
+          } catch (err) {
+            hint.className = 'a-mail__hint err';
+            hint.textContent = 'Kunde inte skicka.';
+          } finally {
+            sendBtn.disabled = false; sendBtn.textContent = 'Skicka';
+          }
         });
         // status change
         card.querySelector('[data-status]').addEventListener('change', async (e) => {

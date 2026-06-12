@@ -18,8 +18,12 @@
  *   SUPABASE_SERVICE_ROLE_KEY
  */
 import { createClient } from '@supabase/supabase-js';
+import { Resend } from 'resend';
+import { buildAdminEmail } from './_email-template.js';
 
 const BUCKET = 'event-uploads';
+const EMAIL_FROM = 'Music Hub West <hello@tuneinwest.se>';
+const EMAIL_REPLY_TO = 'hello@musichubwest.com';
 const VALID_STATUS = new Set(['new', 'reviewing', 'approved', 'published', 'rejected']);
 
 function unauthorized(res) {
@@ -109,6 +113,39 @@ export default async function handler(req, res) {
       const { error } = await supabase.from('event_submissions').delete().eq('id', id);
       if (error) throw error;
       return res.status(200).json({ ok: true });
+    }
+
+    // ── EMAIL (reply to applicant, now or scheduled) ─────
+    if (action === 'email') {
+      const { to, subject, bodyText, scheduledAt } = req.body;
+      if (!to || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(to).trim()))
+        return res.status(400).json({ ok: false, error: 'Invalid recipient' });
+      if (!subject || !String(subject).trim())   return res.status(400).json({ ok: false, error: 'Missing subject' });
+      if (!bodyText || !String(bodyText).trim()) return res.status(400).json({ ok: false, error: 'Missing body' });
+
+      const RESEND_API_KEY = process.env.RESEND_API_KEY;
+      if (!RESEND_API_KEY) return res.status(500).json({ ok: false, error: 'Resend not configured' });
+
+      const { subject: subj, html, text } = buildAdminEmail({ subject: String(subject).trim(), bodyText: String(bodyText) });
+      const resend = new Resend(RESEND_API_KEY);
+
+      const sendOpts = {
+        from: EMAIL_FROM,
+        to: String(to).trim(),
+        replyTo: EMAIL_REPLY_TO,
+        subject: subj,
+        html,
+        text,
+      };
+      // Resend native scheduling — accepts ISO 8601, up to 72h ahead
+      if (scheduledAt) sendOpts.scheduledAt = scheduledAt;
+
+      const sent = await resend.emails.send(sendOpts);
+      if (sent?.error) {
+        console.error('[admin] Resend error:', sent.error);
+        return res.status(502).json({ ok: false, error: sent.error.message || 'Email failed' });
+      }
+      return res.status(200).json({ ok: true, scheduled: !!scheduledAt, id: sent?.data?.id });
     }
 
     return res.status(400).json({ ok: false, error: 'Unknown action' });

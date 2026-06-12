@@ -225,6 +225,54 @@ https://musichubwest.com`;
 }
 
 /**
+ * Wraps free-typed admin text in the MHW dark brand shell. Used when the team
+ * replies to an applicant from the dashboard (approve / reject / ask).
+ */
+export function buildAdminEmail({ subject, bodyText }) {
+  const esc = (s) => String(s || '').replace(/[<>&]/g, c => ({ '<':'&lt;', '>':'&gt;', '&':'&amp;' }[c]));
+  const bodyHtml = esc(bodyText)
+    .split(/\n{2,}/)
+    .map(p => `<p style="font-family:'Outfit',-apple-system,Arial,sans-serif;font-size:16px;line-height:1.7;color:#e5e5e5;margin:0 0 16px;">${p.replace(/\n/g, '<br>')}</p>`)
+    .join('');
+
+  const html = `<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark only">
+<title>${esc(subject)}</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Syne+Mono&display=swap');
+  body { margin:0; padding:0; background:#050505; }
+  a { color:#CCFF00; }
+</style>
+</head>
+<body style="margin:0;padding:0;background:#050505;font-family:'Outfit',-apple-system,'Helvetica Neue',Arial,sans-serif;color:#ffffff;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#050505;padding:40px 16px;">
+  <tr><td align="center">
+    <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;width:100%;background:#050505;border:1px solid #1a1a1a;border-radius:16px;overflow:hidden;">
+      <tr><td align="center" style="padding:40px 32px 24px;background:#050505;">
+        <img src="https://musichubwest.com/logo-mhw.png" alt="Music Hub West" width="220" style="display:block;border:0;height:auto;max-width:220px;">
+      </td></tr>
+      <tr><td style="padding:0 32px;"><div style="height:1px;background:#1a1a1a;line-height:1px;font-size:1px;">&nbsp;</div></td></tr>
+      <tr><td style="padding:32px 32px 24px;background:#050505;">${bodyHtml}</td></tr>
+      <tr><td style="padding:24px 32px;background:#0a0a0a;border-top:1px solid #1a1a1a;">
+        <p style="font-family:'Outfit',Arial,sans-serif;font-size:12px;line-height:1.6;color:#666;margin:0;text-align:center;">
+          Music Hub West · Göteborg ·
+          <a href="mailto:hello@musichubwest.com" style="color:#CCFF00;text-decoration:none;">hello@musichubwest.com</a>
+        </p>
+      </td></tr>
+    </table>
+  </td></tr>
+</table>
+</body>
+</html>`;
+
+  return { subject, html, text: bodyText };
+}
+
+/**
  * Internal notification sent to the team when someone submits an event.
  */
 export function buildEventTeamNotification(data) {
