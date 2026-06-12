@@ -70,7 +70,14 @@ export default async function handler(req, res) {
         .select('*')
         .order('created_at', { ascending: false });
       if (error) throw error;
-      return res.status(200).json({ ok: true, submissions: data ?? [] });
+      // Email history (outgoing log). Best-effort — an absent table must not
+      // break the dashboard, so we just return an empty list on error.
+      const { data: msgs, error: msgErr } = await supabase
+        .from('email_messages')
+        .select('*')
+        .order('created_at', { ascending: true });
+      if (msgErr) console.warn('[admin] email_messages fetch failed:', msgErr.message);
+      return res.status(200).json({ ok: true, submissions: data ?? [], messages: msgs ?? [] });
     }
 
     // ── UPDATE (status and/or internal notes) ─────────────
@@ -145,6 +152,17 @@ export default async function handler(req, res) {
         console.error('[admin] Resend error:', sent.error);
         return res.status(502).json({ ok: false, error: sent.error.message || 'Email failed' });
       }
+
+      // Log to per-submission email history (non-fatal)
+      const { error: logErr } = await supabase.from('email_messages').insert([{
+        submission_id: req.body.id || null,
+        direction: 'out',
+        subject: subj,
+        body: String(bodyText),
+        scheduled_at: scheduledAt || null,
+      }]);
+      if (logErr) console.warn('[admin] history log failed:', logErr.message);
+
       return res.status(200).json({ ok: true, scheduled: !!scheduledAt, id: sent?.data?.id });
     }
 
