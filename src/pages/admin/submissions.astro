@@ -71,7 +71,13 @@
 
     /* Cards */
     .a-list { display: flex; flex-direction: column; gap: 16px; }
-    .a-card { background: var(--a-bg2); border: 1px solid var(--a-border); border-radius: 12px; overflow: hidden; }
+    .a-card { background: var(--a-bg2); border: 1px solid var(--a-border); border-left: 3px solid transparent; border-radius: 12px; overflow: hidden; transition: border-color .15s; }
+    .a-card:hover { border-color: rgba(255,255,255,0.2); }
+    .a-card[data-status="new"]        { border-left-color: var(--a-lime); }
+    .a-card[data-status="reviewing"]  { border-left-color: #F5C518; }
+    .a-card[data-status="approved"]   { border-left-color: #3FB950; }
+    .a-card[data-status="published"]  { border-left-color: #388BFD; }
+    .a-card[data-status="rejected"]   { border-left-color: #F85149; }
     .a-card__top { padding: 18px 20px; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
     .a-card__title { font-size: 17px; font-weight: 700; margin: 0 0 4px; }
     .a-card__meta { font-size: 13px; color: var(--a-mut); }
@@ -89,10 +95,13 @@
     .a-field__label { font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--a-mut); display: block; margin-bottom: 2px; }
     .a-field__value { color: #e5e5e5; word-break: break-word; }
     .a-field--full { grid-column: 1 / -1; }
-    .a-desc { white-space: pre-wrap; background: var(--a-bg); border: 1px solid var(--a-border); border-radius: 6px; padding: 10px 12px; color: #e5e5e5; }
-    .a-files { display: flex; flex-wrap: wrap; gap: 8px; }
+    .a-desc { white-space: pre-wrap; background: var(--a-bg); border: 1px solid var(--a-border); border-radius: 6px; padding: 10px 12px; color: #e5e5e5; max-height: 240px; overflow: auto; line-height: 1.6; }
+    .a-files { display: flex; flex-wrap: wrap; gap: 10px; }
     .a-file { display: inline-flex; align-items: center; gap: 6px; background: var(--a-bg); border: 1px solid var(--a-border); border-radius: 6px; padding: 6px 10px; font-size: 12px; color: var(--a-lime); text-decoration: none; }
     .a-file:hover { border-color: var(--a-lime); }
+    .a-file-thumb { display: block; width: 96px; height: 96px; border-radius: 8px; overflow: hidden; border: 1px solid var(--a-border); background: var(--a-bg); transition: border-color .15s, transform .15s; }
+    .a-file-thumb:hover { border-color: var(--a-lime); transform: translateY(-2px); }
+    .a-file-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
     .a-card__actions { padding: 16px 20px; border-top: 1px solid var(--a-border); display: flex; align-items: center; gap: 12px; flex-wrap: wrap; background: var(--a-bg); }
     .a-select { background: var(--a-bg2); color: var(--a-white); border: 1px solid var(--a-border); border-radius: 8px; padding: 9px 12px; font-size: 13px; font-family: inherit; cursor: pointer; }
     .a-notes { width: 100%; min-height: 60px; resize: vertical; margin-top: 4px; }
@@ -142,6 +151,11 @@
       { key: 'rejected',   label: 'Avvisade' },
     ];
     const STATUS_LABEL = Object.fromEntries(STATUSES.map(s => [s.key, s.label]));
+    const PUBLISH_LABEL = {
+      'site': 'Bara på sajten',
+      'site-and-social': 'Sajten + sociala kanaler',
+    };
+    const IMG_RE = /\.(jpe?g|png|webp|gif|avif)(\?|$)/i;
 
     const loginView = document.getElementById('login');
     const appView   = document.getElementById('app');
@@ -185,6 +199,7 @@
     }
 
     async function loadList() {
+      if (listEl) listEl.innerHTML = '<div class="a-empty">Laddar…</div>';
       const json = await api('list');
       all = json.submissions || [];
       renderTabs();
@@ -224,11 +239,14 @@
     function cardHtml(r) {
       const st = r.status || 'new';
       const files = (r.file_urls || []).map((u, i) =>
-        `<a class="a-file" href="${esc(u)}" target="_blank" rel="noopener">📎 Fil ${i+1}</a>`
+        IMG_RE.test(u)
+          ? `<a class="a-file-thumb" href="${esc(u)}" target="_blank" rel="noopener" title="Fil ${i+1}"><img src="${esc(u)}" alt="Fil ${i+1}" loading="lazy"></a>`
+          : `<a class="a-file" href="${esc(u)}" target="_blank" rel="noopener">📎 Fil ${i+1}</a>`
       ).join('') || '<span class="a-field__value" style="color:var(--a-mut)">Inga filer</span>';
+      const publishLabel = r.publish_type ? (PUBLISH_LABEL[r.publish_type] || r.publish_type) : '';
       const opts = STATUSES.map(s => `<option value="${s.key}"${s.key===st?' selected':''}>${s.label}</option>`).join('');
       return `
-      <div class="a-card" data-id="${r.id}">
+      <div class="a-card" data-id="${r.id}" data-status="${st}">
         <div class="a-card__top">
           <div>
             <h2 class="a-card__title">${esc(r.event_title)}</h2>
@@ -246,7 +264,7 @@
           <div><span class="a-field__label">Datum</span><span class="a-field__value">${fmtDate(r.event_date)}</span></div>
           <div><span class="a-field__label">Plats</span><span class="a-field__value">${esc(r.event_location)}</span></div>
           ${r.registration_url ? `<div class="a-field--full"><span class="a-field__label">Anmälningslänk</span><a class="a-field__value" style="color:var(--a-lime)" href="${esc(r.registration_url)}" target="_blank" rel="noopener">${esc(r.registration_url)}</a></div>` : ''}
-          ${r.publish_type ? `<div><span class="a-field__label">Publicering</span><span class="a-field__value">${esc(r.publish_type)}</span></div>` : ''}
+          ${publishLabel ? `<div><span class="a-field__label">Publicering</span><span class="a-field__value">${esc(publishLabel)}</span></div>` : ''}
           <div class="a-field--full"><span class="a-field__label">Beskrivning</span><div class="a-desc">${esc(r.description)}</div></div>
           <div class="a-field--full"><span class="a-field__label">Filer</span><div class="a-files">${files}</div></div>
           <div class="a-notes-wrap"><span class="a-field__label">Interna anteckningar</span>
@@ -273,6 +291,7 @@
             await api('update', { id, status });
             const row = all.find(r => r.id === id); if (row) row.status = status;
             renderTabs();
+            card.dataset.status = status;
             const badge = card.querySelector('.a-badge');
             badge.className = 'a-badge a-badge--' + status;
             badge.textContent = STATUS_LABEL[status] || status;
