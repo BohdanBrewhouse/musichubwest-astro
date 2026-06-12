@@ -102,3 +102,214 @@ https://musichubwest.com`;
 
   return { subject, html, text };
 }
+
+/**
+ * Confirmation sent to the person who submitted an event via /publicera-event.
+ * Mirrors the MHW dark template above.
+ */
+export function buildEventConfirmationEmail({ firstName, eventTitle, eventDate, eventLocation }) {
+  const safe = (s) => (s || '').toString().replace(/[<>]/g, '').trim();
+  const name = safe(firstName) || 'där';
+  const title = safe(eventTitle);
+  const date = safe(eventDate);
+  const location = safe(eventLocation);
+
+  const subject = `Tack för din eventansökan${title ? `: ${title}` : ''}!`;
+
+  const html = `<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark only">
+<meta name="supported-color-schemes" content="dark only">
+<title>${subject}</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Syne+Mono&display=swap');
+  body { margin:0; padding:0; background:#050505; }
+  a { color:#CCFF00; }
+  @media (prefers-color-scheme: light) {
+    body, table, td { background:#050505 !important; color:#ffffff !important; }
+  }
+</style>
+</head>
+<body style="margin:0;padding:0;background:#050505;font-family:'Outfit',-apple-system,'Helvetica Neue',Arial,sans-serif;color:#ffffff;">
+
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#050505;padding:40px 16px;">
+  <tr><td align="center">
+    <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;width:100%;background:#050505;border:1px solid #1a1a1a;border-radius:16px;overflow:hidden;">
+
+      <tr><td align="center" style="padding:48px 32px 32px;background:#050505;">
+        <img src="https://musichubwest.com/logo-mhw.png" alt="Music Hub West" width="240" style="display:block;border:0;outline:none;text-decoration:none;height:auto;max-width:240px;">
+      </td></tr>
+
+      <tr><td style="padding:0 32px;">
+        <div style="height:1px;background:#1a1a1a;line-height:1px;font-size:1px;">&nbsp;</div>
+      </td></tr>
+
+      <tr><td style="padding:40px 32px 16px;background:#050505;">
+        <h1 style="font-family:'Syne Mono','Courier New',monospace;font-size:28px;font-weight:400;color:#CCFF00;margin:0;line-height:1.2;letter-spacing:-0.01em;">
+          TACK FÖR DIN<br>ANSÖKAN!
+        </h1>
+      </td></tr>
+
+      <tr><td style="padding:0 32px 24px;background:#050505;">
+        <p style="font-family:'Outfit',-apple-system,Arial,sans-serif;font-size:16px;line-height:1.7;color:#ffffff;margin:0 0 16px;">
+          Hej ${name}!
+        </p>
+        <p style="font-family:'Outfit',-apple-system,Arial,sans-serif;font-size:16px;line-height:1.7;color:#e5e5e5;margin:0 0 16px;">
+          Vi har tagit emot din eventansökan och återkommer inom 5 arbetsdagar
+          med besked.
+        </p>
+
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:8px 0 4px;width:100%;background:#0a0a0a;border:1px solid #1a1a1a;border-radius:8px;">
+          ${title ? `<tr><td style="padding:14px 18px;border-bottom:1px solid #1a1a1a;">
+            <span style="font-family:'Outfit',Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#888;">Event</span><br>
+            <span style="font-family:'Outfit',Arial,sans-serif;font-size:15px;color:#ffffff;">${title}</span>
+          </td></tr>` : ''}
+          ${date ? `<tr><td style="padding:14px 18px;border-bottom:1px solid #1a1a1a;">
+            <span style="font-family:'Outfit',Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#888;">Datum</span><br>
+            <span style="font-family:'Outfit',Arial,sans-serif;font-size:15px;color:#ffffff;">${date}</span>
+          </td></tr>` : ''}
+          ${location ? `<tr><td style="padding:14px 18px;">
+            <span style="font-family:'Outfit',Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#888;">Plats</span><br>
+            <span style="font-family:'Outfit',Arial,sans-serif;font-size:15px;color:#ffffff;">${location}</span>
+          </td></tr>` : ''}
+        </table>
+
+        <p style="font-family:'Outfit',-apple-system,Arial,sans-serif;font-size:14px;line-height:1.7;color:#888888;margin:20px 0 0;">
+          Den här tjänsten är till för dig som är aktör inom musikbranschen i Västra Götaland.
+        </p>
+      </td></tr>
+
+      <tr><td align="center" style="padding:8px 32px 48px;background:#050505;">
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+          <tr><td style="background:#CCFF00;border-radius:8px;">
+            <a href="https://musichubwest.com/evenemang" target="_blank" style="display:inline-block;padding:14px 28px;font-family:'Syne Mono','Courier New',monospace;font-size:14px;font-weight:400;color:#050505;text-decoration:none;letter-spacing:0.02em;">
+              UTFORSKA EVENT →
+            </a>
+          </td></tr>
+        </table>
+      </td></tr>
+
+      <tr><td style="padding:32px;background:#0a0a0a;border-top:1px solid #1a1a1a;">
+        <p style="font-family:'Outfit',-apple-system,Arial,sans-serif;font-size:12px;line-height:1.6;color:#666666;margin:0 0 8px;text-align:center;">
+          Music Hub West · Göteborg
+        </p>
+        <p style="font-family:'Outfit',-apple-system,Arial,sans-serif;font-size:12px;line-height:1.6;color:#666666;margin:0;text-align:center;">
+          <a href="mailto:hello@musichubwest.com" style="color:#CCFF00;text-decoration:none;">hello@musichubwest.com</a>
+          &nbsp;·&nbsp;
+          <a href="https://musichubwest.com" style="color:#CCFF00;text-decoration:none;">musichubwest.com</a>
+        </p>
+      </td></tr>
+
+    </table>
+  </td></tr>
+</table>
+
+</body>
+</html>`;
+
+  const text = `Hej ${name}!
+
+Tack för din eventansökan${title ? ` "${title}"` : ''}. Vi har tagit emot den och återkommer inom 5 arbetsdagar med besked.
+${date ? `\nDatum: ${date}` : ''}${location ? `\nPlats: ${location}` : ''}
+
+Den här tjänsten är till för dig som är aktör inom musikbranschen i Västra Götaland.
+
+— Music Hub West
+hello@musichubwest.com
+https://musichubwest.com`;
+
+  return { subject, html, text };
+}
+
+/**
+ * Internal notification sent to the team when someone submits an event.
+ */
+export function buildEventTeamNotification(data) {
+  const safe = (s) => (s || '').toString().replace(/[<>]/g, '').trim();
+  const firstName = safe(data.firstName);
+  const lastName  = safe(data.lastName);
+  const email     = safe(data.email);
+  const phone     = safe(data.phone);
+  const org       = safe(data.organisation);
+  const title     = safe(data.eventTitle);
+  const date      = safe(data.eventDate);
+  const location  = safe(data.eventLocation);
+  const desc      = safe(data.description);
+  const regUrl    = safe(data.registrationUrl);
+  const publish   = safe(data.publishType);
+  const files     = Array.isArray(data.fileUrls) ? data.fileUrls : [];
+  const submissionId = safe(data.submissionId);
+
+  const subject = `🎵 Ny eventansökan: ${title || `${firstName} ${lastName}`}`;
+
+  const fileRows = files.length
+    ? files.map((url, i) => `<li style="margin:4px 0;"><a href="${url}" style="color:#CCFF00;">Fil ${i + 1}</a> <span style="color:#777;font-size:11px;">${url}</span></li>`).join('')
+    : '<li style="color:#888;">Inga bifogade filer.</li>';
+
+  const html = `<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>${subject}</title></head>
+<body style="margin:0;padding:0;background:#050505;font-family:-apple-system,Helvetica,Arial,sans-serif;color:#ffffff;">
+
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#050505;padding:32px 16px;">
+  <tr><td align="center">
+    <table role="presentation" width="640" cellpadding="0" cellspacing="0" border="0" style="max-width:640px;width:100%;background:#0a0a0a;border:1px solid #1a1a1a;border-radius:12px;overflow:hidden;">
+
+      <tr><td style="padding:24px 28px;border-bottom:1px solid #1a1a1a;">
+        <p style="margin:0 0 4px;font-size:11px;font-weight:700;letter-spacing:0.12em;color:#CCFF00;text-transform:uppercase;">Ny eventansökan</p>
+        <h1 style="margin:0;font-size:22px;color:#ffffff;font-weight:700;">${title || '(ingen titel)'}</h1>
+      </td></tr>
+
+      <tr><td style="padding:24px 28px;">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="font-size:14px;color:#e5e5e5;line-height:1.6;">
+          <tr><td style="padding:6px 0;width:140px;color:#888;">Namn</td><td>${firstName} ${lastName}</td></tr>
+          <tr><td style="padding:6px 0;color:#888;">E-post</td><td><a href="mailto:${email}" style="color:#CCFF00;">${email}</a></td></tr>
+          ${phone ? `<tr><td style="padding:6px 0;color:#888;">Telefon</td><td>${phone}</td></tr>` : ''}
+          <tr><td style="padding:6px 0;color:#888;">Organisation</td><td>${org}</td></tr>
+          <tr><td style="padding:6px 0;color:#888;">Datum</td><td>${date}</td></tr>
+          <tr><td style="padding:6px 0;color:#888;">Plats</td><td>${location}</td></tr>
+          ${regUrl ? `<tr><td style="padding:6px 0;color:#888;">Anmälningslänk</td><td><a href="${regUrl}" style="color:#CCFF00;">${regUrl}</a></td></tr>` : ''}
+          ${publish ? `<tr><td style="padding:6px 0;color:#888;">Publicering</td><td>${publish}</td></tr>` : ''}
+        </table>
+      </td></tr>
+
+      <tr><td style="padding:0 28px 24px;">
+        <p style="margin:0 0 6px;font-size:11px;font-weight:700;letter-spacing:0.08em;color:#888;text-transform:uppercase;">Beskrivning</p>
+        <div style="background:#050505;border:1px solid #1a1a1a;border-radius:6px;padding:14px 16px;font-size:14px;line-height:1.6;color:#e5e5e5;white-space:pre-wrap;">${desc}</div>
+      </td></tr>
+
+      <tr><td style="padding:0 28px 24px;">
+        <p style="margin:0 0 6px;font-size:11px;font-weight:700;letter-spacing:0.08em;color:#888;text-transform:uppercase;">Bifogade filer</p>
+        <ul style="margin:0;padding:0 0 0 20px;font-size:13px;color:#e5e5e5;">${fileRows}</ul>
+      </td></tr>
+
+      ${submissionId ? `<tr><td style="padding:16px 28px;background:#050505;border-top:1px solid #1a1a1a;">
+        <p style="margin:0;font-size:11px;color:#666;">Submission ID: <code style="color:#888;">${submissionId}</code></p>
+      </td></tr>` : ''}
+
+    </table>
+  </td></tr>
+</table>
+
+</body></html>`;
+
+  const text = `🎵 NY EVENTANSÖKAN
+
+Titel: ${title}
+Från: ${firstName} ${lastName} (${org})
+E-post: ${email}
+${phone ? `Telefon: ${phone}\n` : ''}Datum: ${date}
+Plats: ${location}
+${regUrl ? `Anmälan: ${regUrl}\n` : ''}${publish ? `Publicering: ${publish}\n` : ''}
+Beskrivning:
+${desc}
+
+Filer:
+${files.length ? files.map((u, i) => `  ${i + 1}. ${u}`).join('\n') : '  (inga)'}
+
+${submissionId ? `Submission ID: ${submissionId}` : ''}`;
+
+  return { subject, html, text };
+}
