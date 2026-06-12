@@ -3,6 +3,9 @@ import Base from '../../layouts/Base.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/Footer.astro';
 const lang = 'en';
+
+const SUPABASE_URL = import.meta.env.PUBLIC_SUPABASE_URL || '';
+const SUPABASE_ANON_KEY = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
 ---
 <Base
   title="Publish your event – Music Hub West"
@@ -359,6 +362,8 @@ const lang = 'en';
       </details>
     </div>
   </section>
+
+  <script type="application/json" id="pub-supabase" set:html={JSON.stringify({ url: SUPABASE_URL, key: SUPABASE_ANON_KEY })}></script>
 
   <Footer lang={lang} />
 </Base>
@@ -888,20 +893,100 @@ const lang = 'en';
     fileInput.value = '';
   });
 
-  form.addEventListener('submit', (e) => {
+  // Read public Supabase credentials shipped with the page
+  let SUPA = { url: '', key: '' };
+  try {
+    const el = document.getElementById('pub-supabase');
+    if (el) SUPA = JSON.parse(el.textContent || '{}');
+  } catch (_) {}
+
+  function randomKey(originalName) {
+    const ext = (originalName.match(/\.[a-z0-9]+$/i) || [''])[0].toLowerCase();
+    const rnd = (crypto?.randomUUID?.() || Math.random().toString(36).slice(2) + Date.now().toString(36));
+    return `${rnd}${ext}`;
+  }
+
+  async function uploadFile(file) {
+    if (!SUPA.url || !SUPA.key) throw new Error('Supabase not configured');
+    const objectName = randomKey(file.name);
+    const uploadUrl = `${SUPA.url}/storage/v1/object/event-uploads/${encodeURIComponent(objectName)}`;
+    const res = await fetch(uploadUrl, {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer ' + SUPA.key,
+        'apikey': SUPA.key,
+        'Content-Type': file.type || 'application/octet-stream',
+        'x-upsert': 'false',
+      },
+      body: file,
+    });
+    if (!res.ok) {
+      const txt = await res.text().catch(() => '');
+      throw new Error(`Upload failed (${res.status}): ${txt.slice(0, 120)}`);
+    }
+    return `${SUPA.url}/storage/v1/object/public/event-uploads/${encodeURIComponent(objectName)}`;
+  }
+
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
     errorEl.hidden = true;
     if (!form.checkValidity()) { form.reportValidity(); return; }
     if (form.elements.website && form.elements.website.value) return;
 
     submitBtn.disabled = true;
-    submitBtn.textContent = 'Sending…';
+    submitBtn.textContent = files.length ? `Uploading files (0/${files.length})…` : 'Sending…';
 
-    setTimeout(() => {
+    try {
+      let done = 0;
+      const fileUrls = files.length
+        ? await Promise.all(files.map(async (f) => {
+            const url = await uploadFile(f);
+            done++;
+            submitBtn.textContent = `Uploading files (${done}/${files.length})…`;
+            return url;
+          }))
+        : [];
+
+      submitBtn.textContent = 'Sending…';
+
+      const fd = new FormData(form);
+      const payload = {
+        firstName:       fd.get('firstName') || '',
+        lastName:        fd.get('lastName') || '',
+        email:           fd.get('email') || '',
+        phone:           fd.get('phone') || '',
+        organisation:    fd.get('organisation') || '',
+        eventTitle:      fd.get('eventTitle') || '',
+        eventDate:       fd.get('eventDate') || '',
+        eventLocation:   fd.get('eventLocation') || '',
+        description:     fd.get('description') || '',
+        registrationUrl: fd.get('registrationUrl') || '',
+        publishType:     fd.get('publishType') || '',
+        website:         fd.get('website') || '',
+        fileUrls,
+        lang: 'en',
+      };
+
+      const resp = await fetch('/api/event-submission', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      if (!resp.ok) {
+        const json = await resp.json().catch(() => ({}));
+        throw new Error(json.error || `Server error ${resp.status}`);
+      }
+
       form.style.display = 'none';
       successEl.hidden = false;
       successEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 800);
+    } catch (err) {
+      console.error('[publish-event] Submit failed:', err);
+      errorEl.hidden = false;
+      errorEl.textContent = 'Something went wrong. Try again or email us directly at hello@musichubwest.com.';
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Submit event →';
+    }
   });
 })();
 </script>
