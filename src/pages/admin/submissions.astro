@@ -1,0 +1,341 @@
+---
+// Standalone admin dashboard — no public Nav/Footer. Everything is rendered
+// client-side and gated by a password checked server-side via /api/admin.
+// noindex + robots disallow keep it out of search.
+---
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Eventansökningar · Admin · Music Hub West</title>
+  <link rel="stylesheet" href="/styles.css" />
+  <style>
+    :root {
+      --a-bg: #050505; --a-bg2: #111; --a-bg3: #1a1a1a;
+      --a-border: rgba(255,255,255,0.1);
+      --a-lime: #CCFF00; --a-white: #fff;
+      --a-mut: rgba(255,255,255,0.55);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; background: var(--a-bg); color: var(--a-white);
+      font-family: 'Outfit', -apple-system, 'Helvetica Neue', Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    .a-wrap { max-width: 1100px; margin: 0 auto; padding: 24px 20px 80px; }
+
+    /* Login */
+    .a-login { min-height: 80vh; display: flex; align-items: center; justify-content: center; }
+    .a-login__box {
+      width: 100%; max-width: 360px; background: var(--a-bg2);
+      border: 1px solid var(--a-border); border-radius: 14px; padding: 32px;
+    }
+    .a-login__title { font-family:'Syne Mono',monospace; font-size: 22px; color: var(--a-lime); margin: 0 0 6px; }
+    .a-login__sub { font-size: 13px; color: var(--a-mut); margin: 0 0 24px; }
+    .a-input {
+      width: 100%; background: var(--a-bg); color: var(--a-white);
+      border: 1px solid var(--a-border); border-radius: 8px; padding: 12px 14px;
+      font-size: 15px; font-family: inherit; outline: none;
+    }
+    .a-input:focus { border-color: var(--a-lime); box-shadow: 0 0 0 3px rgba(204,255,0,0.12); }
+    .a-btn {
+      background: var(--a-lime); color: #050505; border: none; border-radius: 8px;
+      padding: 12px 20px; font-weight: 700; font-size: 14px; cursor: pointer;
+      font-family: inherit; transition: opacity .15s;
+    }
+    .a-btn:hover { opacity: .88; }
+    .a-btn:disabled { opacity: .5; cursor: default; }
+    .a-btn--ghost { background: transparent; color: var(--a-mut); border: 1px solid var(--a-border); }
+    .a-btn--danger { background: transparent; color: #ff7676; border: 1px solid rgba(255,118,118,0.35); }
+    .a-btn--danger:hover { background: rgba(255,118,118,0.1); opacity: 1; }
+    .a-login__err { color: #ff7676; font-size: 13px; margin-top: 12px; min-height: 18px; }
+
+    /* Header */
+    .a-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 8px; }
+    .a-head__title { font-family:'Syne Mono',monospace; font-size: 24px; margin: 0; }
+    .a-head__title span { color: var(--a-lime); }
+    .a-search { flex: 1; min-width: 200px; max-width: 360px; }
+
+    /* Tabs */
+    .a-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 24px; }
+    .a-tab {
+      background: var(--a-bg2); border: 1px solid var(--a-border); color: var(--a-mut);
+      border-radius: 999px; padding: 7px 14px; font-size: 13px; cursor: pointer; font-family: inherit;
+      transition: all .15s;
+    }
+    .a-tab:hover { color: var(--a-white); }
+    .a-tab.active { background: var(--a-lime); color: #050505; border-color: var(--a-lime); font-weight: 700; }
+    .a-tab__count { opacity: .6; margin-left: 4px; }
+
+    /* Cards */
+    .a-list { display: flex; flex-direction: column; gap: 16px; }
+    .a-card { background: var(--a-bg2); border: 1px solid var(--a-border); border-radius: 12px; overflow: hidden; }
+    .a-card__top { padding: 18px 20px; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+    .a-card__title { font-size: 17px; font-weight: 700; margin: 0 0 4px; }
+    .a-card__meta { font-size: 13px; color: var(--a-mut); }
+    .a-card__date { font-size: 12px; color: var(--a-mut); white-space: nowrap; }
+    .a-badge {
+      display: inline-block; font-size: 10px; font-weight: 800; letter-spacing: .06em;
+      text-transform: uppercase; padding: 3px 9px; border-radius: 5px; line-height: 1.4;
+    }
+    .a-badge--new { background: var(--a-lime); color: #050505; }
+    .a-badge--reviewing { background: #F5C518; color: #050505; }
+    .a-badge--approved { background: #3FB950; color: #050505; }
+    .a-badge--published { background: #388BFD; color: #fff; }
+    .a-badge--rejected { background: #F85149; color: #fff; }
+    .a-card__body { padding: 0 20px 18px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px 24px; font-size: 14px; }
+    .a-field__label { font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--a-mut); display: block; margin-bottom: 2px; }
+    .a-field__value { color: #e5e5e5; word-break: break-word; }
+    .a-field--full { grid-column: 1 / -1; }
+    .a-desc { white-space: pre-wrap; background: var(--a-bg); border: 1px solid var(--a-border); border-radius: 6px; padding: 10px 12px; color: #e5e5e5; }
+    .a-files { display: flex; flex-wrap: wrap; gap: 8px; }
+    .a-file { display: inline-flex; align-items: center; gap: 6px; background: var(--a-bg); border: 1px solid var(--a-border); border-radius: 6px; padding: 6px 10px; font-size: 12px; color: var(--a-lime); text-decoration: none; }
+    .a-file:hover { border-color: var(--a-lime); }
+    .a-card__actions { padding: 16px 20px; border-top: 1px solid var(--a-border); display: flex; align-items: center; gap: 12px; flex-wrap: wrap; background: var(--a-bg); }
+    .a-select { background: var(--a-bg2); color: var(--a-white); border: 1px solid var(--a-border); border-radius: 8px; padding: 9px 12px; font-size: 13px; font-family: inherit; cursor: pointer; }
+    .a-notes { width: 100%; min-height: 60px; resize: vertical; margin-top: 4px; }
+    .a-notes-wrap { grid-column: 1 / -1; }
+    .a-save-hint { font-size: 12px; color: var(--a-lime); opacity: 0; transition: opacity .2s; }
+    .a-save-hint.show { opacity: 1; }
+    .a-empty { text-align: center; color: var(--a-mut); padding: 60px 0; }
+    .a-spacer { flex: 1; }
+    @media (max-width: 640px) {
+      .a-card__body { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <!-- LOGIN -->
+  <div class="a-login" id="login">
+    <div class="a-login__box">
+      <h1 class="a-login__title">Admin</h1>
+      <p class="a-login__sub">Eventansökningar · Music Hub West</p>
+      <form id="login-form">
+        <input class="a-input" type="password" id="pw" placeholder="Lösenord" autocomplete="current-password" />
+        <div class="a-login__err" id="login-err"></div>
+        <button class="a-btn" type="submit" id="login-btn" style="width:100%;margin-top:8px;">Logga in</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- APP -->
+  <div class="a-wrap" id="app" hidden>
+    <div class="a-head">
+      <h1 class="a-head__title">Event<span>ansökningar</span></h1>
+      <input class="a-input a-search" type="search" id="search" placeholder="Sök namn, organisation, titel…" />
+      <button class="a-btn a-btn--ghost" id="logout">Logga ut</button>
+    </div>
+    <div class="a-tabs" id="tabs"></div>
+    <div class="a-list" id="list"></div>
+    <div class="a-empty" id="empty" hidden>Inga ansökningar matchar.</div>
+  </div>
+
+  <script is:inline>
+  (function () {
+    const STATUSES = [
+      { key: 'new',        label: 'Nya' },
+      { key: 'reviewing',  label: 'Granskas' },
+      { key: 'approved',   label: 'Godkända' },
+      { key: 'published',  label: 'Publicerade' },
+      { key: 'rejected',   label: 'Avvisade' },
+    ];
+    const STATUS_LABEL = Object.fromEntries(STATUSES.map(s => [s.key, s.label]));
+
+    const loginView = document.getElementById('login');
+    const appView   = document.getElementById('app');
+    const loginForm = document.getElementById('login-form');
+    const pwInput   = document.getElementById('pw');
+    const loginBtn  = document.getElementById('login-btn');
+    const loginErr  = document.getElementById('login-err');
+    const tabsEl    = document.getElementById('tabs');
+    const listEl    = document.getElementById('list');
+    const emptyEl   = document.getElementById('empty');
+    const searchEl  = document.getElementById('search');
+
+    let password = sessionStorage.getItem('mhw-admin-pw') || '';
+    let all = [];
+    let activeTab = 'all';
+
+    function esc(s) {
+      return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    }
+    function fmtDate(d) {
+      if (!d) return '';
+      try { return new Intl.DateTimeFormat('sv-SE', { day:'numeric', month:'short', year:'numeric' }).format(new Date(d)); }
+      catch { return d; }
+    }
+    function fmtDateTime(d) {
+      if (!d) return '';
+      try { return new Intl.DateTimeFormat('sv-SE', { day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' }).format(new Date(d)); }
+      catch { return d; }
+    }
+
+    async function api(action, extra) {
+      const res = await fetch('/api/admin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password, action, ...extra }),
+      });
+      if (res.status === 401) throw new Error('unauthorized');
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok || !json.ok) throw new Error(json.error || 'error');
+      return json;
+    }
+
+    async function loadList() {
+      const json = await api('list');
+      all = json.submissions || [];
+      renderTabs();
+      render();
+    }
+
+    function counts() {
+      const c = { all: all.length };
+      for (const s of STATUSES) c[s.key] = all.filter(x => (x.status || 'new') === s.key).length;
+      return c;
+    }
+
+    function renderTabs() {
+      const c = counts();
+      const tabs = [{ key: 'all', label: 'Alla' }, ...STATUSES];
+      tabsEl.innerHTML = tabs.map(t =>
+        `<button class="a-tab${t.key === activeTab ? ' active' : ''}" data-tab="${t.key}">${t.label}<span class="a-tab__count">${c[t.key] ?? 0}</span></button>`
+      ).join('');
+      tabsEl.querySelectorAll('.a-tab').forEach(b => b.addEventListener('click', () => {
+        activeTab = b.dataset.tab; renderTabs(); render();
+      }));
+    }
+
+    function render() {
+      const q = (searchEl.value || '').toLowerCase().trim();
+      let rows = all;
+      if (activeTab !== 'all') rows = rows.filter(r => (r.status || 'new') === activeTab);
+      if (q) rows = rows.filter(r =>
+        [r.first_name, r.last_name, r.organisation, r.event_title, r.email].join(' ').toLowerCase().includes(q)
+      );
+
+      emptyEl.hidden = rows.length > 0;
+      listEl.innerHTML = rows.map(cardHtml).join('');
+      wireCards();
+    }
+
+    function cardHtml(r) {
+      const st = r.status || 'new';
+      const files = (r.file_urls || []).map((u, i) =>
+        `<a class="a-file" href="${esc(u)}" target="_blank" rel="noopener">📎 Fil ${i+1}</a>`
+      ).join('') || '<span class="a-field__value" style="color:var(--a-mut)">Inga filer</span>';
+      const opts = STATUSES.map(s => `<option value="${s.key}"${s.key===st?' selected':''}>${s.label}</option>`).join('');
+      return `
+      <div class="a-card" data-id="${r.id}">
+        <div class="a-card__top">
+          <div>
+            <h2 class="a-card__title">${esc(r.event_title)}</h2>
+            <div class="a-card__meta">${esc(r.first_name)} ${esc(r.last_name)} · ${esc(r.organisation)}</div>
+          </div>
+          <div style="text-align:right">
+            <span class="a-badge a-badge--${st}">${esc(STATUS_LABEL[st] || st)}</span>
+            <div class="a-card__date">Inskickad ${fmtDateTime(r.created_at)}</div>
+            ${r.lang === 'en' ? '<div class="a-card__date">🇬🇧 EN</div>' : ''}
+          </div>
+        </div>
+        <div class="a-card__body">
+          <div><span class="a-field__label">E-post</span><a class="a-field__value" style="color:var(--a-lime)" href="mailto:${esc(r.email)}">${esc(r.email)}</a></div>
+          <div><span class="a-field__label">Telefon</span><span class="a-field__value">${esc(r.phone) || '—'}</span></div>
+          <div><span class="a-field__label">Datum</span><span class="a-field__value">${fmtDate(r.event_date)}</span></div>
+          <div><span class="a-field__label">Plats</span><span class="a-field__value">${esc(r.event_location)}</span></div>
+          ${r.registration_url ? `<div class="a-field--full"><span class="a-field__label">Anmälningslänk</span><a class="a-field__value" style="color:var(--a-lime)" href="${esc(r.registration_url)}" target="_blank" rel="noopener">${esc(r.registration_url)}</a></div>` : ''}
+          ${r.publish_type ? `<div><span class="a-field__label">Publicering</span><span class="a-field__value">${esc(r.publish_type)}</span></div>` : ''}
+          <div class="a-field--full"><span class="a-field__label">Beskrivning</span><div class="a-desc">${esc(r.description)}</div></div>
+          <div class="a-field--full"><span class="a-field__label">Filer</span><div class="a-files">${files}</div></div>
+          <div class="a-notes-wrap"><span class="a-field__label">Interna anteckningar</span>
+            <textarea class="a-input a-notes" data-notes>${esc(r.internal_notes || '')}</textarea>
+            <div style="margin-top:6px;display:flex;gap:10px;align-items:center"><button class="a-btn a-btn--ghost" data-save-notes style="padding:6px 14px">Spara anteckning</button><span class="a-save-hint" data-hint>Sparat ✓</span></div>
+          </div>
+        </div>
+        <div class="a-card__actions">
+          <label class="a-field__label" style="margin:0">Status</label>
+          <select class="a-select" data-status>${opts}</select>
+          <div class="a-spacer"></div>
+          <button class="a-btn a-btn--danger" data-delete>Ta bort</button>
+        </div>
+      </div>`;
+    }
+
+    function wireCards() {
+      listEl.querySelectorAll('.a-card').forEach(card => {
+        const id = card.dataset.id;
+        // status change
+        card.querySelector('[data-status]').addEventListener('change', async (e) => {
+          const status = e.target.value;
+          try {
+            await api('update', { id, status });
+            const row = all.find(r => r.id === id); if (row) row.status = status;
+            renderTabs();
+            const badge = card.querySelector('.a-badge');
+            badge.className = 'a-badge a-badge--' + status;
+            badge.textContent = STATUS_LABEL[status] || status;
+          } catch (err) { alert('Kunde inte uppdatera status.'); }
+        });
+        // save notes
+        card.querySelector('[data-save-notes]').addEventListener('click', async () => {
+          const notes = card.querySelector('[data-notes]').value;
+          const hint = card.querySelector('[data-hint]');
+          try {
+            await api('update', { id, internalNotes: notes });
+            const row = all.find(r => r.id === id); if (row) row.internal_notes = notes;
+            hint.classList.add('show'); setTimeout(() => hint.classList.remove('show'), 1800);
+          } catch (err) { alert('Kunde inte spara anteckning.'); }
+        });
+        // delete
+        card.querySelector('[data-delete]').addEventListener('click', async () => {
+          if (!confirm('Ta bort den här ansökan permanent? Filerna raderas också.')) return;
+          try {
+            await api('delete', { id });
+            all = all.filter(r => r.id !== id);
+            renderTabs(); render();
+          } catch (err) { alert('Kunde inte ta bort.'); }
+        });
+      });
+    }
+
+    searchEl?.addEventListener('input', render);
+    document.getElementById('logout').addEventListener('click', () => {
+      sessionStorage.removeItem('mhw-admin-pw'); password = '';
+      appView.hidden = true; loginView.style.display = '';
+    });
+
+    async function enterApp() {
+      loginView.style.display = 'none';
+      appView.hidden = false;
+      await loadList();
+    }
+
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      loginErr.textContent = '';
+      password = pwInput.value;
+      loginBtn.disabled = true; loginBtn.textContent = 'Loggar in…';
+      try {
+        await loadList(); // doubles as auth check
+        sessionStorage.setItem('mhw-admin-pw', password);
+        loginView.style.display = 'none';
+        appView.hidden = false;
+      } catch (err) {
+        loginErr.textContent = err.message === 'unauthorized' ? 'Fel lösenord.' : 'Något gick fel.';
+        password = '';
+      } finally {
+        loginBtn.disabled = false; loginBtn.textContent = 'Logga in';
+      }
+    });
+
+    // Auto-login if password saved this session
+    if (password) {
+      loadList().then(() => { loginView.style.display = 'none'; appView.hidden = false; })
+        .catch(() => { sessionStorage.removeItem('mhw-admin-pw'); password = ''; });
+    }
+  })();
+  </script>
+</body>
+</html>
