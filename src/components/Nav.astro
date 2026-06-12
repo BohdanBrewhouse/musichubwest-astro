@@ -25,15 +25,17 @@ const currentPath = Astro.url.pathname;
 
 // Map EN slugs → SV paths (for language switcher on EN pages without altUrl)
 const enToSvMap: Record<string, string> = {
-  '/en/about':    '/om',
-  '/en/events':   '/evenemang',
-  '/en/articles': '/artiklar',
+  '/en/about':         '/om',
+  '/en/events':        '/evenemang',
+  '/en/articles':      '/artiklar',
+  '/en/publish-event': '/publicera-event',
 };
 // Map SV slugs → EN paths (for language switcher on SV pages without altUrl)
 const svToEnMap: Record<string, string> = {
-  '/om':       '/en/about',
-  '/evenemang':'/en/events',
-  '/artiklar': '/en/articles',
+  '/om':               '/en/about',
+  '/evenemang':        '/en/events',
+  '/artiklar':         '/en/articles',
+  '/publicera-event':  '/en/publish-event',
 };
 
 function getSvUrl(path: string): string {
