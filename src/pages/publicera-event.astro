@@ -52,7 +52,7 @@ const SUPABASE_ANON_KEY = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
         <div class="pub-value__item">
           <div class="pub-value__num">02</div>
           <h3 class="pub-value__heading">Custom omslag</h3>
-          <p class="pub-value__text">Vår in-house designer skapar ett omslag som matchar vårt brand — du behöver inte vara grafiker.</p>
+          <p class="pub-value__text">Vårt team tar fram ett omslag åt dig som matchar vårt brand — du behöver inte vara grafiker.</p>
         </div>
         <div class="pub-value__item">
           <div class="pub-value__num">03</div>
@@ -78,21 +78,21 @@ const SUPABASE_ANON_KEY = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
           <span class="pub-process__step-num">01</span>
           <div>
             <h3 class="pub-process__step-title">Du skickar in</h3>
-            <p class="pub-process__step-text">Fyll i formuläret nedan — namn, eventdetaljer och eventuella bilder du har. Tar ca 3 minuter.</p>
+            <p class="pub-process__step-text">Fyll i formuläret nedan — namn, eventdetaljer och eventuella bilder du har.</p>
           </div>
         </li>
         <li class="pub-process__step">
           <span class="pub-process__step-num">02</span>
           <div>
             <h3 class="pub-process__step-title">Vi granskar</h3>
-            <p class="pub-process__step-text">Inom 5 arbetsdagar återkommer vi med besked — om eventet passar och kan publiceras.</p>
+            <p class="pub-process__step-text">Vi återkommer med besked — om eventet passar och kan publiceras.</p>
           </div>
         </li>
         <li class="pub-process__step">
           <span class="pub-process__step-num">03</span>
           <div>
             <h3 class="pub-process__step-title">Vi designar</h3>
-            <p class="pub-process__step-text">Vår designer tar fram ett omslag som matchar Music Hub West — tar oftast 3–5 dagar.</p>
+            <p class="pub-process__step-text">Vårt team tar fram ett omslag som matchar Music Hub West.</p>
           </div>
         </li>
         <li class="pub-process__step">
@@ -113,9 +113,9 @@ const SUPABASE_ANON_KEY = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
       <h2 class="pub-section__title">Music Hub West.<br>Plattformen för musikbranschen.</h2>
       <p class="pub-about__text">
         Music Hub West är en mötesplats för musikbranschen i Västra Götaland.
-        Vi drivs av projektet <strong>Tune In West</strong> — en regional satsning
-        2026–2029 som backas av fem starka partners:
+        Vi drivs av projektet <strong>Tune In West</strong>.
       </p>
+      <p class="pub-about__partners-label">Partners &amp; finansiärer</p>
       <div class="pub-about__partners">
         <span class="pub-partner-chip">Västra Götalandsregionen</span>
         <span class="pub-partner-chip">Tillväxtverket</span>
@@ -176,7 +176,7 @@ const SUPABASE_ANON_KEY = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
         </li>
         <li class="pub-criteria__item">
           <span class="pub-criteria__check">✓</span>
-          <span><strong>Event som skickas in minst 3 veckor i förväg.</strong> Vi behöver tid att granska, designa och pusha.</span>
+          <span><strong>Event som skickas in i god tid.</strong> Vi behöver tid att granska, designa och pusha.</span>
         </li>
       </ul>
 
@@ -199,7 +199,7 @@ const SUPABASE_ANON_KEY = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
     <div class="pub-form-section__inner">
       <p class="pub-eyebrow">FORMULÄR</p>
       <h2 class="pub-section__title">Skicka in ditt event.</h2>
-      <p class="pub-form-section__lead">Tar 3 minuter. Vi återkommer inom 5 arbetsdagar. Obs — vi publicerar föreläsningar, workshops och branschträffar, men prioriterar inte rena konserter eller gigs.</p>
+      <p class="pub-form-section__lead">Vi återkommer med besked. Obs — vi publicerar föreläsningar, workshops och branschträffar, men prioriterar inte rena konserter eller gigs.</p>
 
       <form class="pub-form" id="pub-form" novalidate>
         <!-- Honeypot (hidden from users; bots fill it in) -->
@@ -334,8 +334,8 @@ const SUPABASE_ANON_KEY = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
         </div>
         <h3 class="pub-form__success-title">Tack — vi har tagit emot din ansökan!</h3>
         <p class="pub-form__success-text">
-          Vi återkommer inom 5 arbetsdagar med besked. Du har också fått en
-          bekräftelse på den e-post du angav.
+          Vi återkommer med besked. Du har också fått en bekräftelse på den
+          e-post du angav.
         </p>
         <a href="/evenemang" class="btn btn--ghost">Tillbaka till alla event →</a>
       </div>
@@ -519,6 +519,14 @@ const SUPABASE_ANON_KEY = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
     line-height: 1.7;
     max-width: 720px;
     margin-bottom: 28px;
+  }
+  .pub-about__partners-label {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--lime, #CCFF00);
+    margin: 0 0 14px;
   }
   .pub-about__partners {
     display: flex;

@@ -50,7 +50,7 @@ const SUPABASE_ANON_KEY = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
         <div class="pub-value__item">
           <div class="pub-value__num">02</div>
           <h3 class="pub-value__heading">Custom cover art</h3>
-          <p class="pub-value__text">Our in-house designer creates a cover that matches our brand — you don't need to be a graphic designer.</p>
+          <p class="pub-value__text">Our team creates a cover for you that matches our brand — you don't need to be a graphic designer.</p>
         </div>
         <div class="pub-value__item">
           <div class="pub-value__num">03</div>
@@ -76,21 +76,21 @@ const SUPABASE_ANON_KEY = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
           <span class="pub-process__step-num">01</span>
           <div>
             <h3 class="pub-process__step-title">You submit</h3>
-            <p class="pub-process__step-text">Fill in the form below — your name, event details, and any images you have. Takes about 3 minutes.</p>
+            <p class="pub-process__step-text">Fill in the form below — your name, event details, and any images you have.</p>
           </div>
         </li>
         <li class="pub-process__step">
           <span class="pub-process__step-num">02</span>
           <div>
             <h3 class="pub-process__step-title">We review</h3>
-            <p class="pub-process__step-text">Within 5 business days we get back to you — whether the event fits and can be published.</p>
+            <p class="pub-process__step-text">We get back to you — whether the event fits and can be published.</p>
           </div>
         </li>
         <li class="pub-process__step">
           <span class="pub-process__step-num">03</span>
           <div>
             <h3 class="pub-process__step-title">We design</h3>
-            <p class="pub-process__step-text">Our designer creates a cover that matches the Music Hub West brand — usually 3–5 days.</p>
+            <p class="pub-process__step-text">Our team creates a cover that matches the Music Hub West brand.</p>
           </div>
         </li>
         <li class="pub-process__step">
@@ -111,9 +111,9 @@ const SUPABASE_ANON_KEY = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
       <h2 class="pub-section__title">Music Hub West.<br>The platform for the music industry.</h2>
       <p class="pub-about__text">
         Music Hub West is a meeting place for the music industry in Västra
-        Götaland. We're driven by the <strong>Tune In West</strong> project —
-        a regional initiative 2026–2029 backed by five strong partners:
+        Götaland. We're driven by the <strong>Tune In West</strong> project.
       </p>
+      <p class="pub-about__partners-label">Partners &amp; funders</p>
       <div class="pub-about__partners">
         <span class="pub-partner-chip">Västra Götalandsregionen</span>
         <span class="pub-partner-chip">Tillväxtverket</span>
@@ -174,7 +174,7 @@ const SUPABASE_ANON_KEY = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
         </li>
         <li class="pub-criteria__item">
           <span class="pub-criteria__check">✓</span>
-          <span><strong>Events submitted at least 3 weeks in advance.</strong> We need time to review, design and push.</span>
+          <span><strong>Events submitted in good time.</strong> We need time to review, design and push.</span>
         </li>
       </ul>
 
@@ -197,7 +197,7 @@ const SUPABASE_ANON_KEY = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
     <div class="pub-form-section__inner">
       <p class="pub-eyebrow">SUBMISSION FORM</p>
       <h2 class="pub-section__title">Submit your event.</h2>
-      <p class="pub-form-section__lead">Takes 3 minutes. We get back to you within 5 business days. Note — we publish lectures, workshops and industry meetups, but don't prioritise pure concerts or gigs.</p>
+      <p class="pub-form-section__lead">We'll get back to you with a decision. Note — we publish lectures, workshops and industry meetups, but don't prioritise pure concerts or gigs.</p>
 
       <form class="pub-form" id="pub-form" novalidate>
         <div class="pub-form__honeypot" aria-hidden="true">
@@ -327,8 +327,8 @@ const SUPABASE_ANON_KEY = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
         </div>
         <h3 class="pub-form__success-title">Thanks — we've got your submission!</h3>
         <p class="pub-form__success-text">
-          We'll get back to you within 5 business days. A confirmation has
-          also been sent to the email address you provided.
+          We'll get back to you with a decision. A confirmation has also been
+          sent to the email address you provided.
         </p>
         <a href="/en/events" class="btn btn--ghost">Back to all events →</a>
       </div>
@@ -511,6 +511,14 @@ const SUPABASE_ANON_KEY = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
     line-height: 1.7;
     max-width: 720px;
     margin-bottom: 28px;
+  }
+  .pub-about__partners-label {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--lime, #CCFF00);
+    margin: 0 0 14px;
   }
   .pub-about__partners {
     display: flex;
