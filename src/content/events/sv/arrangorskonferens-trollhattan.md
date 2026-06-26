@@ -1,8 +1,6 @@
 ---
 title: Arrangörskonferens – Subkultfestivalen & VGR
-seo_description: >-
-  Heldagskonferens för kulturarrangörer i Västra Götaland. Arrangeras av
-  Subkultfestivalen & VGR den 26 juni 2026 på Scandic Swania i Trollhättan.
+seo_description: Heldagskonferens för kulturarrangörer i Västra Götaland. Arrangeras av Subkultfestivalen & VGR den 26 juni 2026 på Scandic Swania i Trollhättan.
 date: '2026-06-26'
 time: '10:00–17:00'
 location: 'Scandic Swania, Trollhättan'
@@ -13,7 +11,7 @@ event_type: Event
 event_language: Svenska
 image: /images/25be62cf-9f01-4733-ba68-9f0ab2c11b06.jpeg
 organizer: Subkultfestivalen & Kulturförvaltningen VGR
-translationKey: 'https://regionkalender.vgregion.se/sv/evenemang/22655'
+translationKey: 'https://regionkalender.vgregion.se/sv/evenemang/226'
 registration_open: false
 external_registration_url: 'https://regionkalender.vgregion.se/event/arrangorskonferens-2026'
 ---
