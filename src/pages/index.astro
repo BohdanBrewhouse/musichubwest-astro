@@ -108,6 +108,7 @@ const latestArticles = articles.sort((a, b) => b.data.date.localeCompare(a.data.
   </section>
   )}
 
+  {cardEvents.length > 0 && (
   <section class="section">
     <div class="section__inner">
       <div class="section__head">
@@ -143,6 +144,7 @@ const latestArticles = articles.sort((a, b) => b.data.date.localeCompare(a.data.
       </div>
     </div>
   </section>
+  )}
 
   <div class="divider-wave">
     <svg viewBox="0 0 1440 40" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
