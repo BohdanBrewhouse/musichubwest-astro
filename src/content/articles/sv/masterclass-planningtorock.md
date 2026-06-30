@@ -1,8 +1,9 @@
 ---
-title: 'Att hitta sin röst — masterclass med Planningtorock'
+title: Att hitta sin röst — masterclass med Planningtorock
 author: Music Hub West
 date: '2026-06-26'
 category: Tune In West
+image: /images/Masterclass%20in%20Music%20Production%20.png
 featured: true
 translationKey: masterclass-planningtorock-recap
 ---
