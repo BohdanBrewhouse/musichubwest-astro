@@ -1743,7 +1743,6 @@ dialog.mnav[open] .mnav__link:nth-child(4) .mnav__num { animation-delay: 0.22s; 
   padding: 64px 40px 0;
   position: relative;
   overflow: visible;
-  border-top: 2px solid var(--lime);
 }
 .event-header::before { display: none; }
 .event-header__inner {
