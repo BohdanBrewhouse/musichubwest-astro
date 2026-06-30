@@ -1,8 +1,9 @@
 ---
-title: 'Finding your voice — a masterclass with Planningtorock'
+title: Finding your voice — a masterclass with Planningtorock
 author: Music Hub West
 date: '2026-06-26'
 category: Tune In West
+image: /images/Masterclass%20in%20Music%20Production%20.png
 featured: true
 translationKey: masterclass-planningtorock-recap
 ---
