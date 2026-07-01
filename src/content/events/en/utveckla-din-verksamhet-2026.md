@@ -1,7 +1,7 @@
 ---
 title: Have you got an idea you want to take further?
 seo_description: A new programme in Västra Götaland for you in the music industry who wants to develop your idea or business. Five sessions starting autumn 2026. Registration open now.
-date: '2026-09-30'
+date: TBA
 time: Registration open now
 location: Brewhouse Göteborg
 address: 'Åvägen 24, 412 51 Göteborg'
@@ -9,10 +9,10 @@ map_query: Åvägen 24 Göteborg
 category: Tune In West
 event_type: Utlysning
 event_language: Swedish
-image: /images/event%20cover.png
+image: /images/event cover.jpg
 organizer: Brewhouse Göteborg
 translationKey: utveckla-din-verksamhet-2026
-registration_open: true
+registration_open: false
 serve_food: false
 ---
 
