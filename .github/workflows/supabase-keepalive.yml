@@ -1,0 +1,33 @@
+name: Supabase keep-alive
+
+# Keeps the free-tier Supabase project from auto-pausing (7-day inactivity).
+# Runs independently of Vercel — a scheduled GitHub Action makes one real
+# REST request per day, which counts as activity.
+#
+# Setup (one-time): add a repo secret SUPABASE_ANON_KEY
+#   Repo → Settings → Secrets and variables → Actions → New repository secret
+#   Name: SUPABASE_ANON_KEY   Value: the publishable/anon key (sb_publishable_…)
+# The project URL is public so it's hardcoded below.
+
+on:
+  schedule:
+    - cron: '0 6 * * *'   # every day at 06:00 UTC
+  workflow_dispatch:        # allows a manual run from the Actions tab
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Supabase REST
+        run: |
+          echo "Pinging Supabase to keep the project active…"
+          code=$(curl -s -o /dev/null -w "%{http_code}" \
+            "https://xubrgmwrhkkhyjtmnlqj.supabase.co/rest/v1/event_submissions?select=id&limit=1" \
+            -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}" \
+            -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}")
+          echo "HTTP status: $code"
+          # 200/206/401 all mean the request reached the project (activity counted)
+          if [ "$code" = "000" ]; then
+            echo "No response — request did not reach Supabase"; exit 1
+          fi
+          echo "Done."
