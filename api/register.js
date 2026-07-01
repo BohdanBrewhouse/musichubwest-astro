@@ -17,7 +17,12 @@
  * Run api/debug-columns.js endpoint to get/verify all column IDs and types.
  */
 
+import { Resend } from 'resend';
+import { buildRegistrationConfirmationEmail } from './_email-template.js';
+
 const MONDAY_API = 'https://api.monday.com/v2';
+const FROM     = 'Music Hub West <hello@tuneinwest.se>';
+const REPLY_TO = 'hello@musichubwest.com';
 
 // ── Helper: call Monday GraphQL with optional variables ──────
 async function monday(query, variables, token) {
@@ -72,7 +77,7 @@ export default async function handler(req, res) {
   try {
     const {
       namn, epost, telefon, foretag, matpreferenser,
-      eventTitle, eventSlug, eventDate,
+      eventTitle, eventSlug, eventDate, eventLocation,
       translationKey, lang,
     } = req.body;
 
@@ -85,6 +90,35 @@ export default async function handler(req, res) {
     const email = epost.trim().toLowerCase();
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       return res.status(400).json({ error: 'Ogiltig e-postadress' });
+    }
+
+    // ── Confirmation email to the registrant (non-fatal) ────
+    // Sent regardless of the Monday outcome below — the person signed up, so
+    // they get their "your spot is booked" email even if the CRM write hiccups.
+    const RESEND_API_KEY = process.env.RESEND_API_KEY;
+    if (RESEND_API_KEY) {
+      try {
+        const mail = buildRegistrationConfirmationEmail({
+          firstName:     namn.trim(),
+          eventTitle,
+          eventDate,
+          eventLocation,
+          lang,
+        });
+        await new Resend(RESEND_API_KEY).emails.send({
+          from: FROM,
+          to: email,
+          replyTo: REPLY_TO,
+          subject: mail.subject,
+          html: mail.html,
+          text: mail.text,
+        });
+        console.log(`[register] ✅ Confirmation email sent to ${email}`);
+      } catch (e) {
+        console.error('[register] Confirmation email failed (non-fatal):', e?.message || e);
+      }
+    } else {
+      console.warn('[register] RESEND_API_KEY missing — confirmation email skipped');
     }
 
     const MONDAY_API_TOKEN    = process.env.MONDAY_API_TOKEN;
