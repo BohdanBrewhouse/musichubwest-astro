@@ -12,7 +12,7 @@ event_language: Svenska
 image: /images/event%20cover.png
 organizer: Brewhouse Göteborg
 translationKey: utveckla-din-verksamhet-2026
-registration_open: true
+registration_open: false
 serve_food: false
 ---
 
