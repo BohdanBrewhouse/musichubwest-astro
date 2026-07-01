@@ -16,21 +16,21 @@ export function buildMhwEmail({ namn }) {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="color-scheme" content="dark only">
-<meta name="supported-color-schemes" content="dark only">
+<meta name="color-scheme" content="light only">
+<meta name="supported-color-schemes" content="light only">
 <title>${subject}</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Syne+Mono&display=swap');
-  body { margin:0; padding:0; background:#050505; }
+  body { margin:0; padding:0; background:#F7F6F2; }
   a { color:#CCFF00; }
   @media (prefers-color-scheme: light) {
-    body, table, td { background:#050505 !important; color:#ffffff !important; }
+    body { background:#F7F6F2 !important; }
   }
 </style>
 </head>
-<body style="margin:0;padding:0;background:#050505;font-family:'Outfit',-apple-system,'Helvetica Neue',Arial,sans-serif;color:#ffffff;">
+<body style="margin:0;padding:0;background:#F7F6F2;font-family:'Outfit',-apple-system,'Helvetica Neue',Arial,sans-serif;color:#1C1C1E;">
 
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#050505;padding:40px 16px;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#F7F6F2;padding:40px 16px;">
   <tr><td align="center">
 
     <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;width:100%;background:#050505;border:1px solid #1a1a1a;border-radius:16px;overflow:hidden;">
@@ -121,21 +121,21 @@ export function buildEventConfirmationEmail({ firstName, eventTitle, eventDate, 
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="color-scheme" content="dark only">
-<meta name="supported-color-schemes" content="dark only">
+<meta name="color-scheme" content="light only">
+<meta name="supported-color-schemes" content="light only">
 <title>${subject}</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Syne+Mono&display=swap');
-  body { margin:0; padding:0; background:#050505; }
+  body { margin:0; padding:0; background:#F7F6F2; }
   a { color:#CCFF00; }
   @media (prefers-color-scheme: light) {
-    body, table, td { background:#050505 !important; color:#ffffff !important; }
+    body { background:#F7F6F2 !important; }
   }
 </style>
 </head>
-<body style="margin:0;padding:0;background:#050505;font-family:'Outfit',-apple-system,'Helvetica Neue',Arial,sans-serif;color:#ffffff;">
+<body style="margin:0;padding:0;background:#F7F6F2;font-family:'Outfit',-apple-system,'Helvetica Neue',Arial,sans-serif;color:#1C1C1E;">
 
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#050505;padding:40px 16px;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#F7F6F2;padding:40px 16px;">
   <tr><td align="center">
     <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;width:100%;background:#050505;border:1px solid #1a1a1a;border-radius:16px;overflow:hidden;">
 
@@ -240,16 +240,16 @@ export function buildAdminEmail({ subject, bodyText }) {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="color-scheme" content="dark only">
+<meta name="color-scheme" content="light only">
 <title>${esc(subject)}</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Syne+Mono&display=swap');
-  body { margin:0; padding:0; background:#050505; }
+  body { margin:0; padding:0; background:#F7F6F2; }
   a { color:#CCFF00; }
 </style>
 </head>
-<body style="margin:0;padding:0;background:#050505;font-family:'Outfit',-apple-system,'Helvetica Neue',Arial,sans-serif;color:#ffffff;">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#050505;padding:40px 16px;">
+<body style="margin:0;padding:0;background:#F7F6F2;font-family:'Outfit',-apple-system,'Helvetica Neue',Arial,sans-serif;color:#1C1C1E;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#F7F6F2;padding:40px 16px;">
   <tr><td align="center">
     <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;width:100%;background:#050505;border:1px solid #1a1a1a;border-radius:16px;overflow:hidden;">
       <tr><td align="center" style="padding:40px 32px 24px;background:#050505;">
@@ -299,9 +299,9 @@ export function buildEventTeamNotification(data) {
 
   const html = `<!DOCTYPE html>
 <html><head><meta charset="utf-8"><title>${subject}</title></head>
-<body style="margin:0;padding:0;background:#050505;font-family:-apple-system,Helvetica,Arial,sans-serif;color:#ffffff;">
+<body style="margin:0;padding:0;background:#F7F6F2;font-family:-apple-system,Helvetica,Arial,sans-serif;color:#1C1C1E;">
 
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#050505;padding:32px 16px;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#F7F6F2;padding:32px 16px;">
   <tr><td align="center">
     <table role="presentation" width="640" cellpadding="0" cellspacing="0" border="0" style="max-width:640px;width:100%;background:#0a0a0a;border:1px solid #1a1a1a;border-radius:12px;overflow:hidden;">
 
@@ -399,21 +399,21 @@ export function buildRegistrationConfirmationEmail({ firstName, eventTitle, even
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="color-scheme" content="dark only">
-<meta name="supported-color-schemes" content="dark only">
+<meta name="color-scheme" content="light only">
+<meta name="supported-color-schemes" content="light only">
 <title>${t.subject}</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Syne+Mono&display=swap');
-  body { margin:0; padding:0; background:#050505; }
+  body { margin:0; padding:0; background:#F7F6F2; }
   a { color:#CCFF00; }
   @media (prefers-color-scheme: light) {
-    body, table, td { background:#050505 !important; color:#ffffff !important; }
+    body { background:#F7F6F2 !important; }
   }
 </style>
 </head>
-<body style="margin:0;padding:0;background:#050505;font-family:'Outfit',-apple-system,'Helvetica Neue',Arial,sans-serif;color:#ffffff;">
+<body style="margin:0;padding:0;background:#F7F6F2;font-family:'Outfit',-apple-system,'Helvetica Neue',Arial,sans-serif;color:#1C1C1E;">
 
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#050505;padding:40px 16px;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#F7F6F2;padding:40px 16px;">
   <tr><td align="center">
     <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;width:100%;background:#050505;border:1px solid #1a1a1a;border-radius:16px;overflow:hidden;">
 
