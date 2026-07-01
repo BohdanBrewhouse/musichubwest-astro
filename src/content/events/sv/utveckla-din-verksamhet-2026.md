@@ -1,9 +1,7 @@
 ---
 title: Har du en idé du vill ta vidare?
-seo_description: >-
-  Nytt program i Västra Götaland för dig i musikbranschen som vill utveckla din
-  idé eller verksamhet. Fem träffar med start hösten 2026. Anmälan öppen nu.
-date: '2026-09-30'
+seo_description: Nytt program i Västra Götaland för dig i musikbranschen som vill utveckla din idé eller verksamhet. Fem träffar med start hösten 2026. Anmälan öppen nu.
+date: TBA
 time: Datum meddelas snart
 location: Brewhouse Göteborg
 address: 'Åvägen 24, 412 51 Göteborg'
@@ -24,10 +22,10 @@ Under hösten startar vi ett nytt program för dig som jobbar i eller kring musi
 
 Kanske känner du igen dig i någon av de här frågorna:
 
-- **Behöver du nå en ny publik?**
-- **Vill du hitta nya samarbetspartners?**
-- **Funderar du på hur du kan utveckla eller bredda det du erbjuder?**
-- **Har du en idé du vill testa eller vidareutveckla?**
+* **Behöver du nå en ny publik?**
+* **Vill du hitta nya samarbetspartners?**
+* **Funderar du på hur du kan utveckla eller bredda det du erbjuder?**
+* **Har du en idé du vill testa eller vidareutveckla?**
 
 Om du nickar igenkännande är det här något för dig.
 
@@ -35,10 +33,10 @@ Om du nickar igenkännande är det här något för dig.
 
 Vi träffas vid fem tillfällen och jobbar praktiskt med just din verksamhet och dina idéer. Du får verktyg, stöd och nya perspektiv – och möter andra som står inför liknande frågor. Fokus ligger på att komma vidare på riktigt, i din egen takt.
 
-- Fem träffar á tre timmar
-- Start under hösten – datum meddelas snart
-- Plats: Brewhouse, Åvägen 24, Göteborg
-- Kostnadsfritt att delta
+* Fem träffar á tre timmar
+* Start under hösten – datum meddelas snart
+* Plats: Brewhouse, Åvägen 24, Göteborg
+* Kostnadsfritt att delta
 
 ### För vem?
 
@@ -48,4 +46,4 @@ Programmet riktar sig till dig som är verksam i musikbranschen i Västra Götal
 
 Anmälan är öppen nu. Fyll i formuläret så hör vi av oss med mer information. Antalet platser är begränsat.
 
-Har du frågor? Hör av dig till oss på hello@musichubwest.com.
+Har du frågor? Hör av dig till oss på [hello@musichubwest.com](mailto:hello@musichubwest.com).
