@@ -23,7 +23,7 @@ import { buildAdminEmail } from './_email-template.js';
 
 const BUCKET = 'event-uploads';
 const EMAIL_FROM = 'Music Hub West <hello@tuneinwest.se>';
-const EMAIL_REPLY_TO = 'hello@tuneinwest.se';
+const EMAIL_REPLY_TO = 'hello@musichubwest.se';
 const VALID_STATUS = new Set(['new', 'reviewing', 'approved', 'published', 'rejected']);
 
 function unauthorized(res) {
