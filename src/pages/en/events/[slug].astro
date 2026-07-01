@@ -78,6 +78,9 @@ function extractTimes(s: string): string[] {
 }
 function stockholmOffset(dateStr: string): number {
   const [y, mo, d] = dateStr.split('-').map(Number);
+  // Guard against non-date values (e.g. "TBA") — an invalid year makes the
+  // DST while-loops below spin forever and hang the build.
+  if (!Number.isFinite(y) || !Number.isFinite(mo) || !Number.isFinite(d)) return 1;
   const lastMarch = new Date(y, 2, 31);
   while (lastMarch.getDay() !== 0) lastMarch.setDate(lastMarch.getDate() - 1);
   const lastOct = new Date(y, 9, 31);
