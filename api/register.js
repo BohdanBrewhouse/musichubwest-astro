@@ -22,7 +22,7 @@ import { buildRegistrationConfirmationEmail } from './_email-template.js';
 
 const MONDAY_API = 'https://api.monday.com/v2';
 const FROM     = 'Music Hub West <hello@tuneinwest.se>';
-const REPLY_TO = 'hello@musichubwest.se';
+const REPLY_TO = 'hello@tuneinwest.se';
 
 // ── Helper: call Monday GraphQL with optional variables ──────
 async function monday(query, variables, token) {
