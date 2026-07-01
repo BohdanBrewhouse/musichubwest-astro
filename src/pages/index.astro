@@ -97,13 +97,27 @@ const latestArticles = articles.sort((a, b) => b.data.date.localeCompare(a.data.
             <p class="hero__subtitle">{ev.data.date} på {ev.data.location}</p>
             <div class="hero__controls">
               <div class="hero__dots" role="tablist" aria-label="Bildspel">
-                {heroSlides.map((_, j) => <button class={`hero__dot ${j === i ? 'active' : ''}`} role="tab" aria-label={`Slide ${j + 1}`} aria-selected={j === i ? 'true' : 'false'}></button>)}
+                {Array.from({ length: heroSlides.length + 1 }).map((_, j) => <button class={`hero__dot ${j === i ? 'active' : ''}`} role="tab" aria-label={`Slide ${j + 1}`} aria-selected={j === i ? 'true' : 'false'}></button>)}
               </div>
               <a href={`/evenemang/${ev.id.replace('sv/', '')}`} class="btn btn--primary">Läs mer</a>
             </div>
           </div>
         </div>
       ))}
+      <div class="hero__slide hero__slide--promo" aria-hidden="true">
+        <div class="hero__slide-bg"></div>
+        <div class="hero__slide-content">
+          <span class="badge badge--tiw hero__badge">FÖR ARRANGÖRER</span>
+          <h1 class="hero__title" data-text="Har du ett event?">Har du ett event?</h1>
+          <p class="hero__subtitle">Vi lyfter musikbranschens event i Västra Götaland — publicera ditt på vår sajt.</p>
+          <div class="hero__controls">
+            <div class="hero__dots" role="tablist" aria-label="Bildspel">
+              {Array.from({ length: heroSlides.length + 1 }).map((_, j) => <button class={`hero__dot ${j === heroSlides.length ? 'active' : ''}`} role="tab" aria-label={`Slide ${j + 1}`} aria-selected={j === heroSlides.length ? 'true' : 'false'}></button>)}
+            </div>
+            <a href="/publicera-event" class="btn btn--primary">Publicera ditt event →</a>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
   )}
