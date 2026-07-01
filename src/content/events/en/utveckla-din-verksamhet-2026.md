@@ -1,7 +1,7 @@
 ---
 title: Have you got an idea you want to take further?
 seo_description: A new programme in Västra Götaland for you in the music industry who wants to develop your idea or business. Five sessions starting autumn 2026. Registration open now.
-date: TBA
+date: '2026-09-30'
 time: Registration open now
 location: Brewhouse Göteborg
 address: 'Åvägen 24, 412 51 Göteborg'

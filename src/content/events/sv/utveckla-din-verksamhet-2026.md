@@ -1,7 +1,7 @@
 ---
 title: Har du en idé du vill ta vidare?
 seo_description: Nytt program i Västra Götaland för dig i musikbranschen som vill utveckla din idé eller verksamhet. Fem träffar med start hösten 2026. Anmälan öppen nu.
-date: TBA
+date: '2026-09-30'
 time: Datum meddelas snart
 location: Brewhouse Göteborg
 address: 'Åvägen 24, 412 51 Göteborg'
