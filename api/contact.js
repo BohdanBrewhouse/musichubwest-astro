@@ -22,7 +22,7 @@ const COLUMN_IDS = {
 };
 
 const FROM_ADDRESS = 'Music Hub West <hello@tuneinwest.se>';
-const REPLY_TO     = 'hello@musichubwest.com';
+const REPLY_TO     = 'hello@musichubwest.se';
 // NOTE: Område routing is handled on the Tune In West site (tuneinwest.se),
 // not here. MHW submissions go straight into the "om" group without a
 // status tag — the team triages them manually in Monday.

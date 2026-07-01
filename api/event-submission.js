@@ -28,7 +28,7 @@ import { buildEventConfirmationEmail, buildEventTeamNotification } from './_emai
 
 const TEAM_EMAIL  = 'bohdan@brewhouse.se';
 const FROM        = 'Music Hub West <hello@tuneinwest.se>';
-const REPLY_TO    = 'hello@musichubwest.com';
+const REPLY_TO    = 'hello@musichubwest.se';
 
 function badRequest(res, msg) {
   return res.status(400).json({ ok: false, error: msg });

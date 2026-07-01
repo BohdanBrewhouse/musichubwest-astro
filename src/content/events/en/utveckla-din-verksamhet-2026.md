@@ -47,4 +47,4 @@ The programme is for you who are active in the music industry in Västra Götala
 
 Registration is open now – the application deadline is 7 September. Fill in the form and we'll get back to you with more information. Places are limited.
 
-Questions? Get in touch at [hello@musichubwest.com](mailto:hello@musichubwest.com).
+Questions? Get in touch at [hello@musichubwest.se](mailto:hello@musichubwest.se).

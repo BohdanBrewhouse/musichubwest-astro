@@ -47,4 +47,4 @@ Programmet riktar sig till dig som är verksam i musikbranschen i Västra Götal
 
 Anmälan är öppen nu – sista anmälningsdatum är 7 september. Fyll i formuläret så hör vi av oss med mer information. Antalet platser är begränsat.
 
-Har du frågor? Hör av dig till oss på [hello@musichubwest.com](mailto:hello@musichubwest.com).
+Har du frågor? Hör av dig till oss på [hello@musichubwest.se](mailto:hello@musichubwest.se).

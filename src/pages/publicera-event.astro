@@ -321,7 +321,7 @@ const SUPABASE_ANON_KEY = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
         </button>
 
         <div class="pub-form__error" id="pub-error" hidden>
-          Något gick fel. Försök igen eller mejla oss direkt på hello@musichubwest.com.
+          Något gick fel. Försök igen eller mejla oss direkt på hello@musichubwest.se.
         </div>
       </form>
 
@@ -1036,7 +1036,7 @@ const SUPABASE_ANON_KEY = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
     } catch (err) {
       console.error('[publicera-event] Submit failed:', err);
       errorEl.hidden = false;
-      errorEl.textContent = 'Något gick fel. Försök igen eller mejla oss direkt på hello@musichubwest.com.';
+      errorEl.textContent = 'Något gick fel. Försök igen eller mejla oss direkt på hello@musichubwest.se.';
       submitBtn.disabled = false;
       submitBtn.textContent = 'Skicka in event →';
     }
