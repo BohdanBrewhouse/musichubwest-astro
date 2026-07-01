@@ -9,7 +9,7 @@ map_query: Åvägen 24 Göteborg
 category: Tune In West
 event_type: Utlysning
 event_language: Swedish
-image: /images/event cover.jpg
+image: /images/event%20cover.png
 organizer: Brewhouse Göteborg
 translationKey: utveckla-din-verksamhet-2026
 registration_open: false
