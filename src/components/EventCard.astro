@@ -73,7 +73,7 @@ const badgeText = isPartner ? partnerBadgeText : category;
 ---
 <a href={`${eventsBase}/${slug}`} class={`event-card${past ? ' event-card--past' : ''}${isOwn ? ' event-card--own' : ''}`} data-category={category}>
   <div class="event-card__image">
-    <Image src={image} alt={title} width={800} height={600}
+    <Image src={image} alt={title} width={800} height={600} quality={80}
       loading={priority ? 'eager' : 'lazy'}
       fetchpriority={priority ? 'high' : 'auto'}
       decoding="async"
