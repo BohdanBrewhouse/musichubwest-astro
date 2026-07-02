@@ -4,6 +4,7 @@ import Nav from '../../components/Nav.astro';
 import Footer from '../../components/Footer.astro';
 import EventCard from '../../components/EventCard.astro';
 import ShareBar from '../../components/ShareBar.astro';
+import { Image } from 'astro:assets';
 import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
@@ -220,7 +221,7 @@ const icsContent = dtStart ? [
   <div class="event-layout">
     <div>
       <div class="event-image">
-        <img src={ev.data.image} alt={ev.data.title} loading="lazy" decoding="async" />
+        <Image src={ev.data.image} alt={ev.data.title} width={1280} height={720} quality={80} loading="lazy" decoding="async" />
       </div>
       <div class="event-content">
         <Content />

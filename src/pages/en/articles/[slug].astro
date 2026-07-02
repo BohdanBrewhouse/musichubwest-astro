@@ -4,6 +4,7 @@ import Nav from '../../../components/Nav.astro';
 import Footer from '../../../components/Footer.astro';
 import ArticleCard from '../../../components/ArticleCard.astro';
 import ShareBar from '../../../components/ShareBar.astro';
+import { Image } from 'astro:assets';
 import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
@@ -77,7 +78,7 @@ const badgeClass: Record<string, string> = {
   {article.data.image && (
     <div class="article-image">
       <div class="article-image__inner">
-        <img src={article.data.image} alt={article.data.title} />
+        <Image src={article.data.image} alt={article.data.title} width={1280} height={720} quality={80} loading="eager" fetchpriority="high" decoding="async" />
       </div>
     </div>
   )}
