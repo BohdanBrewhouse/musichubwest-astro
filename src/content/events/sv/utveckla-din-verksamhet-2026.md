@@ -2,8 +2,8 @@
 title: Har du en idé du vill ta vidare?
 seo_description: Nytt program i Västra Götaland för dig i musikbranschen som vill utveckla din idé eller verksamhet. Fem träffar med start hösten 2026. Anmälan öppen nu.
 date: '2026-10-01'
-time: Start kl. 15:00
-location: Brewhouse Göteborg
+time: 'Start kl. 15:00'
+location: Brewhouse Inkubator
 address: 'Åvägen 24, 412 51 Göteborg'
 map_query: Åvägen 24 Göteborg
 category: Tune In West
