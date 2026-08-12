@@ -222,6 +222,40 @@ const icsContent = dtStart ? [
       <div class="event-content">
         <Content />
       </div>
+
+      {ev.data.sessions && ev.data.sessions.length > 0 && (
+        <section class="sessions">
+          <div class="sessions__head">
+            <h2 class="sessions__title">Programme</h2>
+            {ev.data.external_registration_url && (
+              <p class="sessions__note">
+                Registration is handled per session by the organiser ·
+                <a href={ev.data.external_registration_url} target="_blank" rel="noopener noreferrer"> See the full programme ↗</a>
+              </p>
+            )}
+          </div>
+          {ev.data.sessions.map(s => (
+            <div class={`session${s.highlight ? ' session--highlight' : ''}`}>
+              <div class="session__when">
+                {s.day}
+                {s.time && <span>{s.time}</span>}
+              </div>
+              <div>
+                <p class="session__title">
+                  {s.title}
+                  {s.highlight && <span class="session__star" title="Especially relevant for the music industry">★</span>}
+                </p>
+                <p class="session__meta">
+                  {s.location}{s.description ? ` — ${s.description}` : ''}
+                </p>
+              </div>
+              {s.registration_url ? (
+                <a href={s.registration_url} target="_blank" rel="noopener noreferrer" class="session__cta">Register ↗</a>
+              ) : <span></span>}
+            </div>
+          ))}
+        </section>
+      )}
     </div>
 
     <div class="event-sidebar" id="register">

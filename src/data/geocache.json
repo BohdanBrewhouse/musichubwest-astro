@@ -43,5 +43,11 @@
     "lat": 57.7003494,
     "lng": 11.9924573,
     "source": "nominatim"
+  },
+  "Stationshuset, Göteborg": {
+    "lat": null,
+    "lng": null,
+    "source": "nominatim",
+    "failed": true
   }
 }

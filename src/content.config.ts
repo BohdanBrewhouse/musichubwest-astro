@@ -25,6 +25,17 @@ const events = defineCollection({
     serve_food: z.boolean().optional().default(false),
     address: z.string().optional(),
     map_query: z.string().optional(),
+    // Multi-part events (conference weeks, programmes with several träffar):
+    // each session gets its own time, venue and registration link.
+    sessions: z.array(z.object({
+      title: z.string(),
+      day: z.string().optional(),
+      time: z.string().optional(),
+      location: z.string().optional(),
+      description: z.string().optional(),
+      registration_url: z.string().optional(),
+      highlight: z.boolean().optional().default(false),
+    })).optional(),
   }),
 });
 
