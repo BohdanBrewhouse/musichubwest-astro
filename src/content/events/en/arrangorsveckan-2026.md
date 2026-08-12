@@ -34,14 +34,12 @@ sessions:
     location: 'Stationshuset, Gothenburg'
     description: A new live venue and support system in Borås through collaboration
     registration_url: 'https://regionkalender.vgregion.se/sv/evenemang/23225'
-    highlight: true
   - title: Masterclass in data-driven audience development
     day: 1 Sep
     time: '09:00–12:00'
     location: Digital
     description: Concrete methods for organisers in music and performing arts
     registration_url: 'https://regionkalender.vgregion.se/sv/evenemang/23221'
-    highlight: true
   - title: Dare to test – reaching more visitors
     day: 1 Sep
     time: '15:00–17:00'
@@ -58,14 +56,12 @@ sessions:
     location: Digital
     description: Everything you need to know about licensing in practice
     registration_url: 'https://regionkalender.vgregion.se/sv/evenemang/23058'
-    highlight: true
   - title: Working with the independent culture scene – finding the right acts
     day: 4 Sep
     time: '10:00–12:00'
     location: 'Musikens hus, Gothenburg'
     description: Musikcentrum Väst on choosing artists and successful bookings
     registration_url: 'https://regionkalender.vgregion.se/sv/evenemang/23293'
-    highlight: true
 ---
 
 ### A full week for anyone organising culture in Västra Götaland

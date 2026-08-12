@@ -34,14 +34,12 @@ sessions:
     location: 'Stationshuset, Göteborg'
     description: Ny livescen och stödsystem i Borås genom samverkan
     registration_url: 'https://regionkalender.vgregion.se/sv/evenemang/23225'
-    highlight: true
   - title: Masterclass i datadriven publikutveckling
     day: 1 sep
     time: '09:00–12:00'
     location: Digitalt
     description: Konkreta metoder för arrangörer inom musik och scenkonst
     registration_url: 'https://regionkalender.vgregion.se/sv/evenemang/23221'
-    highlight: true
   - title: Våga testa – att få fler besökare
     day: 1 sep
     time: '15:00–17:00'
@@ -58,14 +56,12 @@ sessions:
     location: Digitalt
     description: Allt du behöver veta om licenser i praktiken
     registration_url: 'https://regionkalender.vgregion.se/sv/evenemang/23058'
-    highlight: true
   - title: Att samarbeta med det fria kulturlivet – hur hittar vi rätt akter?
     day: 4 sep
     time: '10:00–12:00'
     location: 'Musikens hus, Göteborg'
     description: Musikcentrum Väst om artistval och lyckade bokningar
     registration_url: 'https://regionkalender.vgregion.se/sv/evenemang/23293'
-    highlight: true
 ---
 
 ### En hel vecka för dig som arrangerar kultur i Västra Götaland
