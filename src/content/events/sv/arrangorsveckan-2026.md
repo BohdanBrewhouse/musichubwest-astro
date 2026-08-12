@@ -74,12 +74,6 @@ Kulturförvaltningen i Västra Götalandsregionen bjuder in till Arrangörsvecka
 
 Veckan är uppbyggd så att du **väljer fritt ur programmet**. Vissa punkter sker på plats i Göteborg, andra digitalt — och varje programpunkt har sin egen anmälan.
 
-### Därför är det intressant för musikbranschen
-
-Vi har lyft fram de programpunkter som ligger närmast dig som arbetar med musik: finansiering, publikutveckling, bokning av akter och inte minst det praktiska kring **STIM, upphovsrätt och visningsrättigheter** när du arrangerar livemusik.
-
-Punkterna märkta med ★ är de vi tror ger mest för dig i musikbranschen.
-
 ### Bra att veta
 
 * Alla programpunkter är kostnadsfria

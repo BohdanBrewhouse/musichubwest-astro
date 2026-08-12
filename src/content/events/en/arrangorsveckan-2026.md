@@ -74,12 +74,6 @@ The Culture Administration of Västra Götalandsregionen invites you to Arrangö
 
 The week is built so that you **pick freely from the programme**. Some sessions take place in Gothenburg, others online — and each one has its own registration.
 
-### Why it matters for the music industry
-
-We've highlighted the sessions closest to those working with music: funding, audience development, booking acts, and the practical side of **STIM, copyright and screening rights** when you put on live music.
-
-Sessions marked ★ are the ones we think give the most if you work in music.
-
 ### Good to know
 
 * All sessions are free of charge
