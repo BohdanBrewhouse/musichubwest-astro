@@ -1,8 +1,6 @@
 ---
 title: Arrangörsveckan 2026
-seo_description: >-
-  En vecka med kostnadsfria programpunkter för dig som arrangerar kultur i
-  Västra Götaland. 31 augusti–5 september 2026 i Göteborg och digitalt.
+seo_description: En vecka med kostnadsfria programpunkter för dig som arrangerar kultur i Västra Götaland. 31 augusti–5 september 2026 i Göteborg och digitalt.
 date: '2026-08-31'
 time: 31 augusti – 5 september
 location: Flera platser i Göteborg + digitalt
@@ -11,30 +9,29 @@ map_query: Stationshuset Göteborg
 category: VGR
 event_type: Event
 event_language: Svenska
-image: /images/vgr26-va42186.jpg.webp
+image: /images/vgr26-va45252.jpg.webp
 cost: Kostnadsfritt
 organizer: Kulturförvaltningen i Västra Götalandsregionen
 organizer_email: kultur@vgregion.se
 translationKey: arrangorsveckan-2026
 registration_open: false
-external_registration_url: >-
-  https://www.vgregion.se/f/kulturforvaltningen/samhallsutveckling/arrangorsutveckling/arrangorsveckan/arrangorsveckan-2026/
+external_registration_url: 'https://www.vgregion.se/f/kulturforvaltningen/samhallsutveckling/arrangorsutveckling/arrangorsveckan/arrangorsveckan-2026/'
 sessions:
   - title: Breddad finansiering
     day: 31 aug
     time: '09:00–09:55'
-    location: Stationshuset, Göteborg
+    location: 'Stationshuset, Göteborg'
     description: Nya vägar till pengar för din verksamhet
     registration_url: 'https://regionkalender.vgregion.se/sv/evenemang/23243'
   - title: Framtidens mötesplatser
     day: 31 aug
     time: '10:00–10:45'
-    location: Stationshuset, Göteborg
+    location: 'Stationshuset, Göteborg'
     registration_url: 'https://regionkalender.vgregion.se/sv/evenemang/23304'
   - title: Boråsmodellen – kraftsamling för att lyfta musikarrangörer
     day: 31 aug
     time: '10:50–11:45'
-    location: Stationshuset, Göteborg
+    location: 'Stationshuset, Göteborg'
     description: Ny livescen och stödsystem i Borås genom samverkan
     registration_url: 'https://regionkalender.vgregion.se/sv/evenemang/23225'
     highlight: true
@@ -55,7 +52,7 @@ sessions:
     time: '17:00–18:00'
     location: Digitalt
     registration_url: 'https://regionkalender.vgregion.se/sv/evenemang/23241'
-  - title: Arrangera livemusik och visa film – STIM, upphovsrätt och andra regler
+  - title: 'Arrangera livemusik och visa film – STIM, upphovsrätt och andra regler'
     day: 3 sep
     time: '17:30–19:00'
     location: Digitalt
@@ -65,7 +62,7 @@ sessions:
   - title: Att samarbeta med det fria kulturlivet – hur hittar vi rätt akter?
     day: 4 sep
     time: '10:00–12:00'
-    location: Musikens hus, Göteborg
+    location: 'Musikens hus, Göteborg'
     description: Musikcentrum Väst om artistval och lyckade bokningar
     registration_url: 'https://regionkalender.vgregion.se/sv/evenemang/23293'
     highlight: true
@@ -85,8 +82,8 @@ Punkterna märkta med ★ är de vi tror ger mest för dig i musikbranschen.
 
 ### Bra att veta
 
-- Alla programpunkter är kostnadsfria
-- Anmälan görs separat för varje punkt, via Västra Götalandsregionens regionkalender
-- Hela programmet omfattar 19 punkter — nedan visar vi ett urval. Se arrangörens sida för allt.
+* Alla programpunkter är kostnadsfria
+* Anmälan görs separat för varje punkt, via Västra Götalandsregionens regionkalender
+* Hela programmet omfattar 19 punkter — nedan visar vi ett urval. Se arrangörens sida för allt.
 
-Frågor om veckan? Kontakta Helén Liljedal på Kulturförvaltningen, helen.liljedal@vgregion.se.
+Frågor om veckan? Kontakta Helén Liljedal på Kulturförvaltningen, [helen.liljedal@vgregion.se](mailto:helen.liljedal@vgregion.se).
