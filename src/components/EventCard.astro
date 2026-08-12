@@ -156,7 +156,9 @@ const badgeText = isPartner ? partnerBadgeText : category;
     bottom: 10px;
     left: 10px;
     background: #F59E0B;
-    color: #fff;
+    /* Dark text on amber: white gave 2.1:1, this gives ~9:1 (and matches
+       how the lime badges pair dark text with a bright fill). */
+    color: var(--black);
     font-size: 10px;
     font-weight: 800;
     letter-spacing: 0.07em;

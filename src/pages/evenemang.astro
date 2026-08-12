@@ -958,7 +958,8 @@ function formatDate(d: string) {
     display: inline-flex;
     align-items: center;
     background: #F59E0B;
-    color: #fff;
+    /* Dark text on amber — white was only 2.1:1 contrast */
+    color: var(--black);
     font-size: 9px;
     font-weight: 800;
     letter-spacing: 0.08em;
