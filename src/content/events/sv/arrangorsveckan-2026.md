@@ -17,51 +17,107 @@ translationKey: arrangorsveckan-2026
 registration_open: false
 external_registration_url: 'https://www.vgregion.se/f/kulturforvaltningen/samhallsutveckling/arrangorsutveckling/arrangorsveckan/arrangorsveckan-2026/'
 sessions:
-  - title: Breddad finansiering
+  - title: 'Breddad finansiering'
     day: 31 aug
     time: '09:00–09:55'
     location: 'Stationshuset, Göteborg'
-    description: Nya vägar till pengar för din verksamhet
     registration_url: 'https://regionkalender.vgregion.se/sv/evenemang/23243'
-  - title: Framtidens mötesplatser
+  - title: 'Framtidens mötesplatser'
     day: 31 aug
     time: '10:00–10:45'
     location: 'Stationshuset, Göteborg'
     registration_url: 'https://regionkalender.vgregion.se/sv/evenemang/23304'
-  - title: Boråsmodellen – kraftsamling för att lyfta musikarrangörer
+  - title: 'Boråsmodellen – kraftsamling för att lyfta musikarrangörer'
     day: 31 aug
     time: '10:50–11:45'
     location: 'Stationshuset, Göteborg'
     description: Ny livescen och stödsystem i Borås genom samverkan
     registration_url: 'https://regionkalender.vgregion.se/sv/evenemang/23225'
-  - title: Masterclass i datadriven publikutveckling
+  - title: 'Erfarenheter av att arrangera med fastighetsägare och föreningar'
+    day: 31 aug
+    time: '12:45–13:30'
+    location: 'Stationshuset, Göteborg'
+    registration_url: 'https://regionkalender.vgregion.se/sv/evenemang/23157'
+  - title: 'Körcentrum Väst – körlivets ekosystem'
+    day: 31 aug
+    time: '13:30–14:00'
+    location: 'Stationshuset, Göteborg'
+    description: Ny kartläggning av körlivets strukturer i Sverige och regionen
+    registration_url: 'https://regionkalender.vgregion.se/sv/evenemang/23296'
+  - title: 'Kulturpolitiken live – partierna möts inför valet'
+    day: 31 aug
+    time: '14:00–16:00'
+    location: 'Stationshuset, Göteborg'
+    registration_url: 'https://regionkalender.vgregion.se/sv/evenemang/23034'
+  - title: 'Masterclass i datadriven publikutveckling'
     day: 1 sep
     time: '09:00–12:00'
     location: Digitalt
     description: Konkreta metoder för arrangörer inom musik och scenkonst
     registration_url: 'https://regionkalender.vgregion.se/sv/evenemang/23221'
-  - title: Våga testa – att få fler besökare
+  - title: 'Hur gör vi hela regionens kulturväv synlig?'
+    day: 1 sep
+    time: '14:00–15:00'
+    location: Digitalt
+    description: Riksteatern Väst om kulturens ekosystem i regionens 49 kommuner
+    registration_url: 'https://regionkalender.vgregion.se/sv/evenemang/23240'
+  - title: 'Våga testa – att få fler besökare börjar med publikutveckling'
     day: 1 sep
     time: '15:00–17:00'
     location: Digitalt
     registration_url: 'https://regionkalender.vgregion.se/sv/evenemang/22256'
-  - title: När modiga arrangörer flyttar gränser – nya arrangörsstödet för scenkonst
+  - title: 'Bli fler aktiva i föreningen!'
+    day: 1 sep
+    time: '17:30–19:00'
+    location: Digitalt
+    registration_url: 'https://regionkalender.vgregion.se/sv/evenemang/23095'
+  - title: 'Masterclass – att hålla publika författarsamtal'
+    day: 2 sep
+    time: '08:30–12:00'
+    location: 'Stationshuset konferens, Göteborg'
+    registration_url: 'https://regionkalender.vgregion.se/sv/evenemang/23035'
+  - title: 'Arrangera för fler – universell utformning i praktiken'
+    day: 2 sep
+    time: '13:30–15:00'
+    location: Digitalt
+    registration_url: 'https://regionkalender.vgregion.se/sv/evenemang/22374'
+  - title: 'När modiga arrangörer flyttar gränser – om det nya arrangörsstödet för scenkonst'
     day: 2 sep
     time: '17:00–18:00'
     location: Digitalt
     registration_url: 'https://regionkalender.vgregion.se/sv/evenemang/23241'
-  - title: 'Arrangera livemusik och visa film – STIM, upphovsrätt och andra regler'
+  - title: 'Arrangörskap som nytt ämne i kulturskolan – hur börjar vi?'
+    day: 3 sep
+    time: '13:00–15:00'
+    location: Digitalt
+    registration_url: 'https://regionkalender.vgregion.se/sv/evenemang/22718'
+  - title: 'Besök Grunden Grand Bazaar – Göteborgs nya mötesplats'
+    day: 3 sep
+    time: '14:00–17:00'
+    location: 'Grunden Grand Bazaar, Göteborg'
+    registration_url: 'https://regionkalender.vgregion.se/sv/evenemang/22942'
+  - title: 'Tillgänglighetsresan – kultur för fler, på riktigt'
+    day: 3 sep
+    time: '16:00–17:00'
+    location: 'Grunden Grand Bazaar, Göteborg'
+    registration_url: 'https://regionkalender.vgregion.se/sv/evenemang/23239'
+  - title: 'Arrangera livemusik och visa film – allt du behöver veta om STIM, upphovsrätt och andra regler'
     day: 3 sep
     time: '17:30–19:00'
     location: Digitalt
-    description: Allt du behöver veta om licenser i praktiken
     registration_url: 'https://regionkalender.vgregion.se/sv/evenemang/23058'
-  - title: Att samarbeta med det fria kulturlivet – hur hittar vi rätt akter?
+  - title: 'Att samarbeta med det fria kulturlivet – hur hittar vi rätt akter och får det att funka?'
     day: 4 sep
     time: '10:00–12:00'
     location: 'Musikens hus, Göteborg'
     description: Musikcentrum Väst om artistval och lyckade bokningar
     registration_url: 'https://regionkalender.vgregion.se/sv/evenemang/23293'
+  - title: 'Körsångens dag – Körcentrum Väst fyller 10 år'
+    day: 5 sep
+    time: '11:30–16:00'
+    location: 'Esperantoplatsen, Göteborg'
+    description: Körmaraton, workshops och nätverkande
+    registration_url: 'https://regionkalender.vgregion.se/sv/evenemang/23297'
 ---
 
 ### En hel vecka för dig som arrangerar kultur i Västra Götaland
@@ -74,6 +130,6 @@ Veckan är uppbyggd så att du **väljer fritt ur programmet**. Vissa punkter sk
 
 * Alla programpunkter är kostnadsfria
 * Anmälan görs separat för varje punkt, via Västra Götalandsregionens regionkalender
-* Hela programmet omfattar 19 punkter — nedan visar vi ett urval. Se arrangörens sida för allt.
+* Hela programmet omfattar 19 punkter — samtliga listas nedan
 
 Frågor om veckan? Kontakta Helén Liljedal på Kulturförvaltningen, [helen.liljedal@vgregion.se](mailto:helen.liljedal@vgregion.se).
