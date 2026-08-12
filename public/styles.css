@@ -1917,12 +1917,31 @@ dialog.mnav[open] .mnav__link:nth-child(4) .mnav__num { animation-delay: 0.22s; 
   font-size: 24px;
   font-weight: 800;
   letter-spacing: -0.025em;
-  margin: 40px 0 14px;
+  margin: 44px 0 18px;
   color: var(--white);
 }
+/* Markdown '###' — was unstyled, so headings sat flush against the next
+   block with zero margin. */
+.event-content h3 {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+  margin: 38px 0 16px;
+  color: var(--white);
+}
+.event-content h4 {
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  margin: 32px 0 12px;
+  color: var(--white);
+}
+/* No leading gap when a heading opens the body */
+.event-content > :first-child { margin-top: 0; }
 .event-content ul {
   list-style: none;
-  margin-bottom: 24px;
+  margin-bottom: 26px;
 }
 .event-content ul li {
   display: flex;
@@ -1931,7 +1950,7 @@ dialog.mnav[open] .mnav__link:nth-child(4) .mnav__num { animation-delay: 0.22s; 
   font-size: 16px;
   color: rgba(255,255,255,0.75);
   line-height: 1.6;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 .event-content ul li::before {
   content: '';
@@ -2171,9 +2190,67 @@ dialog.mnav[open] .mnav__link:nth-child(4) .mnav__num { animation-delay: 0.22s; 
   font-size: 26px;
   font-weight: 700;
   letter-spacing: -0.025em;
-  margin: 48px 0 16px;
+  margin: 48px 0 18px;
   color: var(--white);
 }
+/* '###' / '####' were unstyled — zero margin made them collide with the
+   following paragraph or list. */
+.article-body h3 {
+  font-size: 21px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+  margin: 40px 0 16px;
+  color: var(--white);
+}
+.article-body h4 {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin: 32px 0 12px;
+  color: var(--white);
+}
+.article-body > :first-child { margin-top: 0; }
+
+/* Lists: the global reset zeroes ul padding, so without this a bullet list
+   written in Tina loses its indent and markers entirely. */
+.article-body ul,
+.article-body ol {
+  list-style: none;
+  margin: 0 0 26px;
+}
+.article-body li {
+  position: relative;
+  padding-left: 20px;
+  font-family: var(--font);
+  font-size: 17px;
+  line-height: 1.7;
+  color: rgba(255,255,255,0.75);
+  margin-bottom: 12px;
+}
+.article-body li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 11px;
+  width: 6px;
+  height: 6px;
+  background: var(--lime);
+  border-radius: 50%;
+}
+.article-body ol { counter-reset: li; }
+.article-body ol li::before {
+  counter-increment: li;
+  content: counter(li) '.';
+  background: none;
+  border-radius: 0;
+  top: 0;
+  width: auto;
+  height: auto;
+  color: var(--lime);
+  font-weight: 700;
+}
+.article-body li strong { color: var(--white); }
 
 .article-body blockquote {
   border-left: 3px solid var(--lime);
@@ -2823,9 +2900,24 @@ dialog.mnav[open] .mnav__link:nth-child(4) .mnav__num { animation-delay: 0.22s; 
   margin-bottom: 10px;
   transition: border-color 0.18s, background 0.18s;
 }
-.session:hover { border-color: rgba(204,255,0,0.35); background: rgba(204,255,0,0.03); }
+/* Hover stays neutral on purpose — lime always means "music-relevant",
+   so a hovered row must never look like a highlighted one. */
+.session:hover { border-color: var(--grey-700); background: rgba(255,255,255,0.03); }
 .session--highlight { border-color: rgba(204,255,0,0.45); }
-.session--highlight::before { content: none; }
+.session--highlight:hover { border-color: var(--lime); background: rgba(204,255,0,0.04); }
+
+.sessions__legend {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--lime);
+  border: 1px solid rgba(204,255,0,0.3);
+  border-radius: 999px;
+  padding: 5px 12px;
+}
 
 .session__when {
   font-family: var(--font-display);
