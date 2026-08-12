@@ -227,15 +227,16 @@ const icsContent = dtStart ? [
         <section class="sessions">
           <div class="sessions__head">
             <div>
-              <h2 class="sessions__title">Programme</h2>
+              <h2 class="sessions__title">{ev.data.sessions_title ?? 'Programme'}</h2>
               {ev.data.sessions.some(s => s.highlight) && (
                 <p style="margin-top:10px"><span class="sessions__legend">★ Especially relevant for the music industry</span></p>
               )}
             </div>
             {ev.data.external_registration_url && (
               <p class="sessions__note">
-                Registration is handled per session by the organiser ·
-                <a href={ev.data.external_registration_url} target="_blank" rel="noopener noreferrer"> See the full programme ↗</a>
+                {/* Only claim per-session registration when sessions actually link somewhere */}
+                {ev.data.sessions.some(s => s.registration_url) && 'Registration is handled per session by the organiser · '}
+                <a href={ev.data.external_registration_url} target="_blank" rel="noopener noreferrer">See the full programme ↗</a>
               </p>
             )}
           </div>

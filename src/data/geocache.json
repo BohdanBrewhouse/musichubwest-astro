@@ -49,5 +49,34 @@
     "lng": null,
     "source": "nominatim",
     "failed": true
+  },
+  "Online (Zoom) + hybrid i Stockholm, Sweden": {
+    "lat": null,
+    "lng": null,
+    "source": "nominatim",
+    "failed": true
+  },
+  "411 17 Göteborg": {
+    "lat": 57.7037884,
+    "lng": 11.9648074,
+    "source": "nominatim"
+  },
+  "Sverige, Danmark & Tyskland, Sweden": {
+    "lat": null,
+    "lng": null,
+    "source": "nominatim",
+    "failed": true
+  },
+  "Online (Zoom) + hybrid in Stockholm, Sweden": {
+    "lat": null,
+    "lng": null,
+    "source": "nominatim",
+    "failed": true
+  },
+  "Sweden, Denmark & Germany, Sweden": {
+    "lat": null,
+    "lng": null,
+    "source": "nominatim",
+    "failed": true
   }
 }

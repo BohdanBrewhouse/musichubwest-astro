@@ -231,15 +231,16 @@ const icsContent = dtStart ? [
         <section class="sessions">
           <div class="sessions__head">
             <div>
-              <h2 class="sessions__title">Programpunkter</h2>
+              <h2 class="sessions__title">{ev.data.sessions_title ?? 'Programpunkter'}</h2>
               {ev.data.sessions.some(s => s.highlight) && (
                 <p style="margin-top:10px"><span class="sessions__legend">★ Extra relevant för musikbranschen</span></p>
               )}
             </div>
             {ev.data.external_registration_url && (
               <p class="sessions__note">
-                Anmälan sker per programpunkt hos arrangören ·
-                <a href={ev.data.external_registration_url} target="_blank" rel="noopener noreferrer"> Se hela programmet ↗</a>
+                {/* Only claim per-session registration when sessions actually link somewhere */}
+                {ev.data.sessions.some(s => s.registration_url) && 'Anmälan sker per programpunkt hos arrangören · '}
+                <a href={ev.data.external_registration_url} target="_blank" rel="noopener noreferrer">Se hela programmet ↗</a>
               </p>
             )}
           </div>

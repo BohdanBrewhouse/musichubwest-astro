@@ -27,6 +27,8 @@ const events = defineCollection({
     map_query: z.string().optional(),
     // Multi-part events (conference weeks, programmes with several träffar):
     // each session gets its own time, venue and registration link.
+    // sessions_title overrides the block heading ("Spelschema", "Kurser"…).
+    sessions_title: z.string().optional(),
     sessions: z.array(z.object({
       title: z.string(),
       day: z.string().optional(),
