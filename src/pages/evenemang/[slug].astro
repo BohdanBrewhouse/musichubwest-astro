@@ -26,6 +26,13 @@ function formatDate(d: string) {
 }
 const displayDate = formatDate(ev.data.date);
 
+// External-link wording. Never say "biljetter" — almost none of these events
+// sell tickets, and claiming it is misleading. Open calls get application
+// wording instead.
+const isOpenCall = ev.data.event_type === 'Utlysning';
+const extCtaLabel = isOpenCall ? 'Till ansökan ↗' : 'Läs mer ↗';
+const ctaBoxTitle = isOpenCall ? 'Ansök till utlysningen' : 'Anmäl dig till eventet';
+
 // Build per-event meta description: explicit seo_description > auto from body > smart fallback
 function stripMarkdown(md: string): string {
   return md
@@ -189,7 +196,7 @@ const icsContent = dtStart ? [
                class="btn btn--primary ext-reg-link"
                data-slug={ev.id.replace('sv/','')}
                data-title={ev.data.title}>
-              Läs mer &amp; biljetter ↗
+              {extCtaLabel}
             </a>
           ) : ev.data.registration_open && (
             <button class="btn btn--primary" onclick="openRegModal()">Anmäl dig nu</button>
@@ -270,7 +277,7 @@ const icsContent = dtStart ? [
 
     <div class="event-sidebar" id="anmal">
       <div class="event-cta-box">
-        <p class="event-cta-box__title">Anmäl dig till eventet</p>
+        <p class="event-cta-box__title">{ctaBoxTitle}</p>
         <div class="event-cta-box__detail">
           <span class="event-cta-box__detail-label">Datum</span>
           <span class="event-cta-box__detail-value">{displayDate}</span>
@@ -300,7 +307,7 @@ const icsContent = dtStart ? [
              class="btn btn--primary ext-reg-link"
              data-slug={ev.id.replace('sv/','')}
              data-title={ev.data.title}>
-            Läs mer &amp; biljetter ↗
+            {extCtaLabel}
           </a>
         ) : ev.data.registration_open ? (
           <button class="btn btn--primary" onclick="openRegModal()">Anmäl dig nu</button>
