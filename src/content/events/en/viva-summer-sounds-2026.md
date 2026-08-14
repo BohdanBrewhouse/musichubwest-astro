@@ -13,6 +13,7 @@ image: /images/vss_liggande_clean_gbg.png.avif
 cost: 195 SEK (Early Bird) / 250 SEK (Regular)
 organizer: Westside Music Sweden
 organizer_email: info@westsidemusicsweden.se
+cta_label: 'Buy tickets ↗'
 translationKey: viva-summer-sounds-2026
 registration_open: true
 external_registration_url: 'https://musichubwest.vercel.app/en/events/viva-summer-sounds-2026'

@@ -12,6 +12,7 @@ category: Partners
 image: /images/bisju18q6ewmz296mz5un9qyrira.avif
 cost: 200 SEK
 organizer: Katarina Cup
+cta_label: 'Köp biljetter ↗'
 translationKey: katarina-cup-max-martin-workshop
 registration_open: true
 external_registration_url: 'https://billetto.se/en/e/katarina-cup-max-martin-musikworkshop-biljetter-1908803?utm_source=billetto+advertising&utm_medium=search+engines&utm_campaign=google&utm_content=1SE&gad_source=1'

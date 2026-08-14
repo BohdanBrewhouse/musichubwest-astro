@@ -62,6 +62,7 @@ export default defineConfig({
           { type: 'boolean', name: 'registration_open', label: '✅ Anmälan öppen' },
           { type: 'string', name: 'external_registration_url', label: '🔗 Extern anmälningslänk (lämna tom om vi hanterar anmälan)' },
           { type: 'boolean', name: 'serve_food', label: '🍕 Serveras mat / fika? (visar allergifält i anmälningsformuläret)' },
+          { type: 'string', name: 'cta_label', label: 'Knapptext (t.ex. "Köp biljetter ↗", "Till anmälan ↗" — lämna tom för automatisk text)' },
           { type: 'string', name: 'sessions_title', label: 'Rubrik för programlistan (t.ex. Spelschema, Kurser — standard: Programpunkter)' },
           {
             type: 'object', name: 'sessions', label: '📅 Programpunkter (för event med flera delar — t.ex. konferensveckor)',
@@ -124,6 +125,7 @@ export default defineConfig({
           { type: 'boolean', name: 'registration_open', label: '✅ Registration open' },
           { type: 'string', name: 'external_registration_url', label: '🔗 External registration link (leave empty if we handle registration)' },
           { type: 'boolean', name: 'serve_food', label: '🍕 Food / fika served? (shows allergy field in registration form)' },
+          { type: 'string', name: 'cta_label', label: 'Button text (e.g. "Buy tickets ↗", "To registration ↗" — leave empty for automatic text)' },
           { type: 'string', name: 'sessions_title', label: 'Heading for the session list (e.g. Line-up, Courses — default: Programme)' },
           {
             type: 'object', name: 'sessions', label: '📅 Programme sessions (for multi-part events — e.g. conference weeks)',

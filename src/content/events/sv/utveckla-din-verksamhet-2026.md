@@ -11,6 +11,7 @@ event_type: Utlysning
 event_language: Svenska
 image: /images/event%20cover.png
 organizer: Brewhouse Göteborg
+cta_label: 'Ansök till programmet'
 translationKey: utveckla-din-verksamhet-2026
 registration_open: true
 serve_food: false

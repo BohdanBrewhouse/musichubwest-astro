@@ -30,8 +30,10 @@ const displayDate = formatDate(ev.data.date);
 // sell tickets, and claiming it is misleading. Open calls get application
 // wording instead.
 const isOpenCall = ev.data.event_type === 'Utlysning';
-const extCtaLabel = isOpenCall ? 'To the application ↗' : 'Read more ↗';
-const ctaBoxTitle = isOpenCall ? 'Apply to the open call' : 'Register for this event';
+const extCtaLabel = ev.data.cta_label ?? (isOpenCall ? 'To the application ↗' : 'Read more ↗');
+// Internal form (our own DB) — only utveckla-din-verksamhet uses this path.
+const ownCtaLabel = ev.data.cta_label ?? (isOpenCall ? 'Apply now' : 'Register now');
+const ctaBoxTitle = isOpenCall ? 'Apply' : 'Register for this event';
 
 // Build per-event meta description: explicit seo_description > auto from body > smart fallback
 function stripMarkdown(md: string): string {
@@ -195,7 +197,7 @@ const icsContent = dtStart ? [
               {extCtaLabel}
             </a>
           ) : ev.data.registration_open && (
-            <button class="btn btn--primary" onclick="openRegModal()">Register now</button>
+            <button class="btn btn--primary" onclick="openRegModal()">{ownCtaLabel}</button>
           )}
           {googleUrl && (
             <div class="cal-drop" id="cal-drop-en">
@@ -306,7 +308,7 @@ const icsContent = dtStart ? [
             {extCtaLabel}
           </a>
         ) : ev.data.registration_open ? (
-          <button class="btn btn--primary" onclick="openRegModal()">Register now</button>
+          <button class="btn btn--primary" onclick="openRegModal()">{ownCtaLabel}</button>
         ) : (
           <span class="btn btn--primary btn--disabled">Registration opens soon</span>
         )}

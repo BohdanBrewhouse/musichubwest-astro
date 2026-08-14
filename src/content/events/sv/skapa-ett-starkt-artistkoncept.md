@@ -14,6 +14,7 @@ spots_total: 11
 cost: Kostnadsfri (Västra Götaland) / 1 900 kr (övriga)
 organizer: Kulturakademin & Musikcentrum Väst
 organizer_email: erik@kulturakademin.com
+cta_label: 'Till anmälan ↗'
 translationKey: skapa-ett-starkt-artistkoncept
 registration_open: true
 external_registration_url: 'https://kulturakademin.com/kurskatalog/skapa-ett-starkt-artistkoncept/'

@@ -13,6 +13,7 @@ image: /images/vgr26-va45252.jpg.webp
 cost: Kostnadsfritt
 organizer: Kulturförvaltningen i Västra Götalandsregionen
 organizer_email: kultur@vgregion.se
+cta_label: 'Se hela programmet ↗'
 translationKey: arrangorsveckan-2026
 registration_open: false
 external_registration_url: 'https://www.vgregion.se/f/kulturforvaltningen/samhallsutveckling/arrangorsutveckling/arrangorsveckan/arrangorsveckan-2026/'

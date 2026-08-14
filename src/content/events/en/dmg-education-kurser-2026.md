@@ -9,6 +9,7 @@ event_type: Utlysning
 event_language: Swedish
 image: /images/dmg-education-kurser.jpg
 organizer: DMG Education
+cta_label: 'To course application ↗'
 translationKey: dmg-education-kurser-2026
 registration_open: false
 external_registration_url: 'https://www.dmgeducation.se/kurser/'

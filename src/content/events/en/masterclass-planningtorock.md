@@ -12,6 +12,7 @@ image: /images/Masterclass%20in%20Music%20Production%20.png
 card_image: /images/Masterclass%20in%20Music%20Production%20with%20Planningtorock%204%D1%853.png
 cost: Free of charge (registration required by 18 June)
 organizer: Tune In West
+cta_label: 'To registration ↗'
 translationKey: masterclass-planningtorock
 registration_open: true
 external_registration_url: 'https://regionkalender.vgregion.se/sv/evenemang/22893'

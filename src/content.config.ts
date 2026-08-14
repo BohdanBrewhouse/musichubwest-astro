@@ -23,6 +23,9 @@ const events = defineCollection({
     registration_open: z.boolean().optional().default(false),
     external_registration_url: z.string().optional(),
     serve_food: z.boolean().optional().default(false),
+    // Overrides the CTA button text. Without it the label is derived from
+    // event_type — never say "biljetter" unless the event really sells them.
+    cta_label: z.string().optional(),
     address: z.string().optional(),
     map_query: z.string().optional(),
     // Multi-part events (conference weeks, programmes with several träffar):

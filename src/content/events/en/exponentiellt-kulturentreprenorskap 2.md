@@ -15,6 +15,7 @@ image: /images/Cover.png
 cost: Free (for residents of Västra Götaland) / 1 900 SEK (others)
 organizer: Kulturakademin
 organizer_email: sassa@kulturakademin.com
+cta_label: 'To registration ↗'
 translationKey: exponentiellt-kulturentreprenorskap
 registration_open: true
 external_registration_url: 'https://kulturakademin.com/kurskatalog/exponentiellt-kulturentreprenorskap/'
