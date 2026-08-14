@@ -8,7 +8,7 @@ address: 'Pumpgatan 1, 417 55 Gothenburg'
 map_query: United Spaces Lindholmen Göteborg
 category: Kulturakademin
 event_language: Swedish
-image: /images/himlavalv-bla-och-rod-3-w300.jpg
+image: /images/Cover.png
 cost: Free (for residents of Västra Götaland) / 1 900 SEK (others)
 organizer: Kulturakademin
 organizer_email: sassa@kulturakademin.com
