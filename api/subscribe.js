@@ -149,31 +149,44 @@ export default async function handler(req, res) {
 
     if (!isEmail(email)) return res.status(400).json({ ok: false, error: 'invalid_email' });
 
-    // New address: created active and straight into the newsletter segment.
+    // Two plain steps rather than one clever one.
+    //
+    // An earlier version passed `segments: [{ id }]` to create() so the contact
+    // would land in the segment in a single call. That call failed for a brand
+    // new address — silently, because the SDK returns errors instead of throwing
+    // — and no contact was created at all. The parameter is in the SDK types but
+    // not in Resend's own create-contact example, so it is not used here.
+    // Creating the contact and adding it to the segment are separate calls, each
+    // in the exact shape the API reference documents.
     const createErr = await call('create contact', resend.contacts.create({
       email,
       unsubscribed: false,
-      segments: [{ id: SEGMENT_ID }],
     }));
 
-    // create() rejects when the address is already a contact — from an earlier
-    // signup, a manual add, or someone who unsubscribed before — and leaves
-    // both the subscription flag and the segment untouched. Set them here.
+    // create() also rejects when the address is already a contact — an earlier
+    // signup, a manual add, or someone who unsubscribed before — leaving the
+    // subscription flag untouched. Either way, set it explicitly.
     //
     // Note this re-activates a contact who had unsubscribed. With single opt-in
-    // that is the intended reading of a fresh form submission, but it also
-    // means a third party could put an unsubscribed address back on the list.
-    // Double opt-in is what would prevent it.
+    // that is the intended reading of a fresh form submission, but it also means
+    // a third party could put an unsubscribed address back on the list. Double
+    // opt-in is what would prevent it.
     if (createErr) {
       const updateErr = await call('reactivate', resend.contacts.update({ email, unsubscribed: false }));
-      // Both create and update failed — we cannot claim they are subscribed.
+      // Neither create nor update worked — we cannot claim they are subscribed.
       if (updateErr) return res.status(500).json({ ok: false, error: 'subscribe_failed' });
-
-      // Segment membership decides whether broadcasts reach them, so a failure
-      // here matters. It is reported rather than swallowed, but it does not
-      // fail the request: they are subscribed, and re-submitting would not help.
-      await call('add to segment', resend.contacts.segments.add({ email, segmentId: SEGMENT_ID }));
     }
+
+    // Always: segment membership is what decides whether broadcasts reach them,
+    // and it is needed for a new contact just as much as an existing one.
+    // Idempotent, so re-adding an existing member is harmless.
+    const segErr = await call('add to segment', resend.contacts.segments.add({
+      email,
+      segmentId: SEGMENT_ID,
+    }));
+    // Subscribed but not in the segment means they would silently receive
+    // nothing, so this is worth failing the request over.
+    if (segErr) return res.status(500).json({ ok: false, error: 'subscribe_failed' });
 
     // Welcome mail. A failure is logged but does not fail the request — they are
     // subscribed either way, and an error would invite a duplicate submission.
