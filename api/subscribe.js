@@ -14,9 +14,14 @@
  * The token is a stateless HMAC over `email.expiry` — no database needed.
  *
  * Required environment variables (Vercel → Settings → Environment Variables):
- *   RESEND_API_KEY       — same key as the other endpoints
- *   RESEND_AUDIENCE_ID   — Resend → Audiences → the "Nyhetsbrev" audience
- *   NEWSLETTER_SECRET    — any long random string; signs the confirm links
+ *   RESEND_API_KEY               — same key as the other endpoints
+ *   RESEND_NEWSLETTER_SEGMENT_ID — Resend → Audience → Segments → "Newsletter"
+ *   NEWSLETTER_SECRET            — any long random string; signs the links
+ *
+ * Note on segments vs audiences: Resend has migrated from audiences to
+ * segments, and `audienceId` is deprecated across the contacts API. Contacts
+ * are created straight into a segment instead.
+ * @see https://resend.com/docs/dashboard/segments/migrating-from-audiences-to-segments
  */
 import crypto from 'node:crypto';
 import { Resend } from 'resend';
@@ -79,13 +84,13 @@ export default async function handler(req, res) {
 
   if (req.method === 'OPTIONS') return res.status(200).end();
 
-  const RESEND_API_KEY     = process.env.RESEND_API_KEY;
-  const RESEND_AUDIENCE_ID = process.env.RESEND_AUDIENCE_ID;
-  const NEWSLETTER_SECRET  = process.env.NEWSLETTER_SECRET;
+  const RESEND_API_KEY    = process.env.RESEND_API_KEY;
+  const SEGMENT_ID        = process.env.RESEND_NEWSLETTER_SEGMENT_ID;
+  const NEWSLETTER_SECRET = process.env.NEWSLETTER_SECRET;
 
-  if (!RESEND_API_KEY || !RESEND_AUDIENCE_ID || !NEWSLETTER_SECRET) {
+  if (!RESEND_API_KEY || !SEGMENT_ID || !NEWSLETTER_SECRET) {
     console.error('[subscribe] missing env:', {
-      key: !!RESEND_API_KEY, audience: !!RESEND_AUDIENCE_ID, secret: !!NEWSLETTER_SECRET,
+      key: !!RESEND_API_KEY, segment: !!SEGMENT_ID, secret: !!NEWSLETTER_SECRET,
     });
     if (req.method === 'GET') return res.redirect(302, `${SITE}/nyhetsbrev?status=error`);
     return res.status(500).json({ ok: false, error: 'not_configured' });
@@ -104,11 +109,8 @@ export default async function handler(req, res) {
     if (result !== 'ok') return res.redirect(302, `${base}?status=${result}`);
 
     try {
-      await resend.contacts.update({
-        audienceId: RESEND_AUDIENCE_ID,
-        email,
-        unsubscribed: unsub,
-      });
+      // Selected by email; audienceId is deprecated and omitted.
+      await resend.contacts.update({ email, unsubscribed: unsub });
     } catch (err) {
       console.error(`[subscribe] ${unsub ? 'unsubscribe' : 'confirm'} failed:`, err?.message || err);
       return res.redirect(302, `${base}?status=error`);
@@ -147,13 +149,24 @@ export default async function handler(req, res) {
 
     if (!isEmail(email)) return res.status(400).json({ ok: false, error: 'invalid_email' });
 
-    // Created as unsubscribed — the contact exists but receives nothing until
-    // the click. Re-signing up an existing address is a no-op on Resend's side.
-    await resend.contacts.create({
-      audienceId: RESEND_AUDIENCE_ID,
-      email,
-      unsubscribed: true,
-    });
+    // Created as unsubscribed and placed straight into the newsletter segment:
+    // the contact exists but receives nothing until the confirm click.
+    //
+    // Non-fatal on purpose. If the address is already a contact this call
+    // fails, and that is a normal case — someone re-subscribing, or finishing
+    // a signup they abandoned. We still want to send them a fresh confirm
+    // link. Because we never call update() here, an already-confirmed
+    // subscriber cannot be knocked back to unsubscribed by someone else
+    // typing their address into the form.
+    try {
+      await resend.contacts.create({
+        email,
+        unsubscribed: true,
+        segments: [{ id: SEGMENT_ID }],
+      });
+    } catch (err) {
+      console.warn('[subscribe] contact exists or create failed:', err?.message || err);
+    }
 
     const exp        = Date.now() + TOKEN_TTL_MS;
     const token      = `${exp}.${sign(email, exp, NEWSLETTER_SECRET, 'confirm')}`;
