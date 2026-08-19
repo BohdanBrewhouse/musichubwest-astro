@@ -15,7 +15,8 @@
  *
  * Required environment variables (Vercel → Settings → Environment Variables):
  *   RESEND_API_KEY               — same key as the other endpoints
- *   RESEND_NEWSLETTER_SEGMENT_ID — Resend → Audience → Segments → "Newsletter"
+ *   RESEND_NEWSLETTER_SEGMENT_ID — the "Newsletter" segment. Find it in Resend:
+ *     Audience → Segments → click the segment; it is the `segmentId` in the URL.
  *   NEWSLETTER_SECRET            — any long random string; signs the links
  *
  * Note on segments vs audiences: Resend has migrated from audiences to
