@@ -174,7 +174,12 @@ export default async function handler(req, res) {
     if (createErr) {
       const updateErr = await call('reactivate', resend.contacts.update({ email, unsubscribed: false }));
       // Neither create nor update worked — we cannot claim they are subscribed.
-      if (updateErr) return res.status(500).json({ ok: false, error: 'subscribe_failed' });
+      if (updateErr) return res.status(500).json({
+        ok: false, error: 'subscribe_failed',
+        // Which step broke, and Resend's error code — an enum, not free text, so
+        // it carries no address or key. Saves digging through Vercel logs.
+        step: 'create+update', code: `${createErr.name}|${updateErr.name}`,
+      });
     }
 
     // Always: segment membership is what decides whether broadcasts reach them,
@@ -186,7 +191,10 @@ export default async function handler(req, res) {
     }));
     // Subscribed but not in the segment means they would silently receive
     // nothing, so this is worth failing the request over.
-    if (segErr) return res.status(500).json({ ok: false, error: 'subscribe_failed' });
+    if (segErr) return res.status(500).json({
+      ok: false, error: 'subscribe_failed',
+      step: 'segment', code: segErr.name,
+    });
 
     // Welcome mail. A failure is logged but does not fail the request — they are
     // subscribed either way, and an error would invite a duplicate submission.
