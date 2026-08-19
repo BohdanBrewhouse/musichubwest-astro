@@ -119,6 +119,18 @@ export default async function handler(req, res) {
 
     if (unsub) return res.redirect(302, `${base}?status=unsubscribed`);
 
+    // Make sure they are actually in the newsletter segment. The signup path
+    // creates the contact with the segment attached, but that create fails when
+    // the address is already a contact (added by hand, or subscribed before) —
+    // and then nothing had put them in the segment. Without this they would be
+    // marked subscribed yet never receive a broadcast sent to the segment.
+    // Idempotent and non-fatal: adding an existing member is not a problem.
+    try {
+      await resend.contacts.segments.add({ email, segmentId: SEGMENT_ID });
+    } catch (err) {
+      console.warn('[subscribe] segment add skipped:', err?.message || err);
+    }
+
     // Thank-you mail — the first one they get as a confirmed subscriber.
     // Non-fatal: a failure here must not make a successful confirmation look broken.
     try {
