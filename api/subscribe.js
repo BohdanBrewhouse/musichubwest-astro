@@ -1,17 +1,19 @@
 /**
- * Newsletter signup with double opt-in — Resend Contacts/Audiences.
+ * Newsletter signup — Resend contacts + segments.
  *
- *   POST /api/subscribe        { email, lang }  → creates the contact as
- *                                                unsubscribed:true and mails a
- *                                                confirmation link
- *   GET  /api/subscribe?token= &email= &lang=  → verifies and flips the contact
- *                                                to unsubscribed:false
+ *   POST /api/subscribe   { email, lang }        → subscribes immediately and
+ *                                                  sends the welcome mail
+ *   GET  /api/subscribe?action=unsubscribe&…     → verifies the signed link and
+ *                                                  unsubscribes the contact
  *
- * Why double opt-in: a broadcast may only go to addresses whose owner asked for
- * it. Confirming by click is what makes that provable, and it keeps typos and
- * malicious signups out of the list.
+ * Single opt-in: submitting the form is the act of consent, and the subscriber
+ * is active from that moment. That is legal, but it means anyone can subscribe
+ * any address — including one they mistyped. Every mail therefore carries a
+ * one-click unsubscribe link, and the link is HMAC-signed so it cannot be used
+ * to unsubscribe somebody else.
  *
- * The token is a stateless HMAC over `email.expiry` — no database needed.
+ * Unsubscribe tokens are a stateless HMAC over `purpose.email.expiry`, so no
+ * database is needed and a link keeps working for as long as the mail exists.
  *
  * Required environment variables (Vercel → Settings → Environment Variables):
  *   RESEND_API_KEY               — same key as the other endpoints
@@ -26,24 +28,18 @@
  */
 import crypto from 'node:crypto';
 import { Resend } from 'resend';
-import {
-  buildNewsletterConfirmEmail,
-  buildNewsletterWelcomeEmail,
-} from './_email-template.js';
+import { buildNewsletterWelcomeEmail } from './_email-template.js';
 
 const FROM     = 'Music Hub West <hello@tuneinwest.se>';
 const REPLY_TO = 'hello@musichubwest.se';
 const SITE     = 'https://www.musichubwest.com';
 
-// Confirmation links stay valid for a week — long enough for a mail that got
-// buried, short enough that a leaked link is not useful forever.
-const TOKEN_TTL_MS = 7 * 24 * 60 * 60 * 1000;
 // Unsubscribe links live in the reader's inbox indefinitely, so they must not expire.
 const UNSUB_EXP = 0;
 
 /**
- * `purpose` is part of the signed payload so a confirm token can never be
- * replayed as an unsubscribe token, or the other way round.
+ * `purpose` is part of the signed payload, so a token minted for one action can
+ * never be replayed as another if more link types are added later.
  */
 function sign(email, exp, secret, purpose) {
   return crypto.createHmac('sha256', secret)
@@ -99,54 +95,24 @@ export default async function handler(req, res) {
 
   const resend = new Resend(RESEND_API_KEY);
 
-  // ── Confirm / unsubscribe (links from the emails) ─────────────────────
+  // ── Unsubscribe (link from the bottom of every mail) ───────────────────
   if (req.method === 'GET') {
-    const { token, email: raw, lang, action } = req.query;
-    const base   = lang === 'en' ? `${SITE}/en/newsletter` : `${SITE}/nyhetsbrev`;
-    const email  = normalise(raw);
-    const unsub  = action === 'unsubscribe';
-    const result = verify(email, token, NEWSLETTER_SECRET, unsub ? 'unsub' : 'confirm');
+    const { token, email: raw, lang } = req.query;
+    const base  = lang === 'en' ? `${SITE}/en/newsletter` : `${SITE}/nyhetsbrev`;
+    const email = normalise(raw);
 
+    const result = verify(email, token, NEWSLETTER_SECRET, 'unsub');
     if (result !== 'ok') return res.redirect(302, `${base}?status=${result}`);
 
     try {
       // Selected by email; audienceId is deprecated and omitted.
-      await resend.contacts.update({ email, unsubscribed: unsub });
+      await resend.contacts.update({ email, unsubscribed: true });
     } catch (err) {
-      console.error(`[subscribe] ${unsub ? 'unsubscribe' : 'confirm'} failed:`, err?.message || err);
+      console.error('[subscribe] unsubscribe failed:', err?.message || err);
       return res.redirect(302, `${base}?status=error`);
     }
 
-    if (unsub) return res.redirect(302, `${base}?status=unsubscribed`);
-
-    // Make sure they are actually in the newsletter segment. The signup path
-    // creates the contact with the segment attached, but that create fails when
-    // the address is already a contact (added by hand, or subscribed before) —
-    // and then nothing had put them in the segment. Without this they would be
-    // marked subscribed yet never receive a broadcast sent to the segment.
-    // Idempotent and non-fatal: adding an existing member is not a problem.
-    try {
-      await resend.contacts.segments.add({ email, segmentId: SEGMENT_ID });
-    } catch (err) {
-      console.warn('[subscribe] segment add skipped:', err?.message || err);
-    }
-
-    // Thank-you mail — the first one they get as a confirmed subscriber.
-    // Non-fatal: a failure here must not make a successful confirmation look broken.
-    try {
-      const mail = buildNewsletterWelcomeEmail({
-        unsubscribeUrl: unsubscribeUrl(email, NEWSLETTER_SECRET, lang === 'en' ? 'en' : 'sv'),
-        lang: lang === 'en' ? 'en' : 'sv',
-      });
-      await resend.emails.send({
-        from: FROM, to: email, replyTo: REPLY_TO,
-        subject: mail.subject, html: mail.html, text: mail.text,
-      });
-    } catch (err) {
-      console.error('[subscribe] welcome mail failed:', err?.message || err);
-    }
-
-    return res.redirect(302, `${base}?status=confirmed`);
+    return res.redirect(302, `${base}?status=unsubscribed`);
   }
 
   if (req.method !== 'POST') return res.status(405).json({ ok: false, error: 'method_not_allowed' });
@@ -162,39 +128,60 @@ export default async function handler(req, res) {
 
     if (!isEmail(email)) return res.status(400).json({ ok: false, error: 'invalid_email' });
 
-    // Created as unsubscribed and placed straight into the newsletter segment:
-    // the contact exists but receives nothing until the confirm click.
-    //
-    // Non-fatal on purpose. If the address is already a contact this call
-    // fails, and that is a normal case — someone re-subscribing, or finishing
-    // a signup they abandoned. We still want to send them a fresh confirm
-    // link. Because we never call update() here, an already-confirmed
-    // subscriber cannot be knocked back to unsubscribed by someone else
-    // typing their address into the form.
+    // New address: created active and straight into the newsletter segment.
+    let created = true;
     try {
       await resend.contacts.create({
         email,
-        unsubscribed: true,
+        unsubscribed: false,
         segments: [{ id: SEGMENT_ID }],
       });
     } catch (err) {
+      created = false;
       console.warn('[subscribe] contact exists or create failed:', err?.message || err);
     }
 
-    const exp        = Date.now() + TOKEN_TTL_MS;
-    const token      = `${exp}.${sign(email, exp, NEWSLETTER_SECRET, 'confirm')}`;
-    const confirmUrl = `${SITE}/api/subscribe?token=${encodeURIComponent(token)}`
-      + `&email=${encodeURIComponent(email)}&lang=${lang}`;
+    // Address already known — from an earlier signup, a manual add, or someone
+    // who unsubscribed before. create() fails in that case and leaves both the
+    // subscription flag and the segment untouched, so set them explicitly.
+    //
+    // Note this does re-activate a contact who had unsubscribed. With single
+    // opt-in that is the intended reading of a fresh form submission, but it
+    // also means a third party could put an unsubscribed address back on the
+    // list. Double opt-in is what would prevent it.
+    if (!created) {
+      try {
+        await resend.contacts.update({ email, unsubscribed: false });
+      } catch (err) {
+        console.error('[subscribe] reactivate failed:', err?.message || err);
+        return res.status(500).json({ ok: false, error: 'send_failed' });
+      }
+      // Idempotent and non-fatal: adding an existing member is not a problem.
+      try {
+        await resend.contacts.segments.add({ email, segmentId: SEGMENT_ID });
+      } catch (err) {
+        console.warn('[subscribe] segment add skipped:', err?.message || err);
+      }
+    }
 
-    const mail = buildNewsletterConfirmEmail({ confirmUrl, lang });
-    await resend.emails.send({
-      from: FROM,
-      to: email,
-      replyTo: REPLY_TO,
-      subject: mail.subject,
-      html: mail.html,
-      text: mail.text,
-    });
+    // Welcome mail. Non-fatal: the person is subscribed either way, and failing
+    // the request would invite them to submit again and get a duplicate.
+    try {
+      const mail = buildNewsletterWelcomeEmail({
+        unsubscribeUrl: unsubscribeUrl(email, NEWSLETTER_SECRET, lang),
+        lang,
+      });
+      await resend.emails.send({
+        from: FROM,
+        to: email,
+        replyTo: REPLY_TO,
+        subject: mail.subject,
+        html: mail.html,
+        text: mail.text,
+      });
+    } catch (err) {
+      console.error('[subscribe] welcome mail failed:', err?.message || err);
+    }
 
     return res.status(200).json({ ok: true });
   } catch (err) {

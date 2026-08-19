@@ -28,30 +28,20 @@ const lang = 'en';
 
 <script is:inline>
   const STATES = {
-    confirmed: {
-      icon: '✓',
-      title: 'Thanks — you’re in!',
-      text: 'Your address is confirmed. The next newsletter will land in your inbox. You can unsubscribe via the link at the bottom of every email.',
-    },
     unsubscribed: {
       icon: '—',
       title: 'You’re unsubscribed',
       text: 'We won’t include you in the newsletter any more. If you change your mind you’re very welcome back — sign up again below.',
     },
-    expired: {
-      icon: '⏳',
-      title: 'That link has expired',
-      text: 'Confirmation links are valid for seven days. Sign up again below and we’ll send a new one.',
-    },
     invalid: {
       icon: '✕',
       title: 'That link didn’t work',
-      text: 'The link seems to have broken on the way — some email clients cut long addresses. Sign up again below.',
+      text: 'The link seems to have broken on the way — some email clients cut long addresses. Email us at hello@musichubwest.se and we’ll remove you manually.',
     },
     error: {
       icon: '✕',
       title: 'Something went wrong',
-      text: 'We couldn’t confirm your address right now. Try again, or email us at hello@musichubwest.se.',
+      text: 'We couldn’t process your request right now. Try again, or email us at hello@musichubwest.se.',
     },
   };
 
@@ -63,8 +53,6 @@ const lang = 'en';
     document.getElementById('nlStatusText').textContent  = state.text;
     const box = document.getElementById('nlStatus');
     box.hidden = false;
-    box.classList.add(status === 'confirmed' ? 'nl-status--ok' : 'nl-status--err');
-    // A confirmed reader has no reason to see the signup form again.
-    if (status === 'confirmed') document.querySelector('.nl--band')?.remove();
+    box.classList.add(status === 'unsubscribed' ? 'nl-status--ok' : 'nl-status--err');
   }
 </script>

@@ -28,30 +28,20 @@ const lang = 'sv';
 
 <script is:inline>
   const STATES = {
-    confirmed: {
-      icon: '✓',
-      title: 'Tack — du är med!',
-      text: 'Din adress är bekräftad. Nästa nyhetsbrev landar i din inkorg. Du kan avregistrera dig via länken längst ner i varje mejl.',
-    },
     unsubscribed: {
       icon: '—',
       title: 'Du är avregistrerad',
       text: 'Vi tar inte längre med dig i nyhetsbrevet. Ändrar du dig är du varmt välkommen tillbaka — anmäl dig igen nedan.',
     },
-    expired: {
-      icon: '⏳',
-      title: 'Länken har gått ut',
-      text: 'Bekräftelselänken var giltig i sju dagar. Anmäl dig igen nedan och vi skickar en ny.',
-    },
     invalid: {
       icon: '✕',
       title: 'Länken fungerade inte',
-      text: 'Länken verkar ha blivit trasig på vägen — vissa mejlprogram klipper långa adresser. Anmäl dig igen nedan.',
+      text: 'Länken verkar ha blivit trasig på vägen — vissa mejlprogram klipper långa adresser. Mejla oss på hello@musichubwest.se och vi tar bort dig manuellt.',
     },
     error: {
       icon: '✕',
       title: 'Något gick fel',
-      text: 'Vi kunde inte bekräfta din adress just nu. Försök igen, eller mejla oss på hello@musichubwest.se.',
+      text: 'Vi kunde inte behandla din begäran just nu. Försök igen, eller mejla oss på hello@musichubwest.se.',
     },
   };
 
@@ -63,8 +53,6 @@ const lang = 'sv';
     document.getElementById('nlStatusText').textContent  = state.text;
     const box = document.getElementById('nlStatus');
     box.hidden = false;
-    box.classList.add(status === 'confirmed' ? 'nl-status--ok' : 'nl-status--err');
-    // A confirmed reader has no reason to see the signup form again.
-    if (status === 'confirmed') document.querySelector('.nl--band')?.remove();
+    box.classList.add(status === 'unsubscribed' ? 'nl-status--ok' : 'nl-status--err');
   }
 </script>
