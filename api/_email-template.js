@@ -513,9 +513,8 @@ https://musichubwest.com`;
 }
 
 /**
- * Welcome / thank-you mail, sent once the subscriber has clicked the confirm
- * link. This is the first mail they receive as a real subscriber, so it carries
- * the unsubscribe link too.
+ * Welcome / thank-you mail, sent immediately on signup. This is the first mail
+ * they receive as a subscriber, so it carries the unsubscribe link too.
  */
 export function buildNewsletterWelcomeEmail({ unsubscribeUrl, lang = 'sv' }) {
   const en = lang === 'en';
@@ -523,21 +522,21 @@ export function buildNewsletterWelcomeEmail({ unsubscribeUrl, lang = 'sv' }) {
     subject: 'Welcome to the Music Hub West newsletter',
     head: 'YOU’RE IN.<br>THANK YOU!',
     hi: 'Hi!',
-    body: 'Your address is confirmed and you’re on the list. From now on you’ll get events, open calls and news from the music industry in Western Sweden — roughly once a month, never more often than we have something worth your time.',
+    body: 'You’re on the list. From now on you’ll get events, open calls and news from the music industry in Västra Götaland — roughly once a month, never more often than we have something worth your time.',
     while: 'While you wait for the first one, there’s plenty happening already:',
     btn: 'SEE ALL EVENTS →',
     btn2: 'PUBLISH YOUR OWN EVENT →',
-    foot: 'You’re receiving this because you confirmed your newsletter signup.',
+    foot: 'You’re receiving this because you signed up for our newsletter at musichubwest.com.',
     unsub: 'Unsubscribe',
   } : {
     subject: 'Välkommen till Music Hub Wests nyhetsbrev',
     head: 'DU ÄR MED.<br>TACK!',
     hi: 'Hej!',
-    body: 'Din adress är bekräftad och du finns på listan. Från och med nu får du event, utlysningar och nyheter från musikbranschen i Västsverige — ungefär en gång i månaden, och aldrig oftare än vi har något som är värt din tid.',
+    body: 'Du finns nu på listan. Från och med nu får du event, utlysningar och nyheter från musikbranschen i Västra Götaland — ungefär en gång i månaden, och aldrig oftare än vi har något som är värt din tid.',
     while: 'I väntan på det första brevet händer det redan en hel del:',
     btn: 'SE ALLA EVENT →',
     btn2: 'PUBLICERA DITT EGET EVENT →',
-    foot: 'Du får detta mejl för att du bekräftat din anmälan till nyhetsbrevet.',
+    foot: 'Du får detta mejl för att du anmält dig till vårt nyhetsbrev på musichubwest.com.',
     unsub: 'Avregistrera dig',
   };
 
