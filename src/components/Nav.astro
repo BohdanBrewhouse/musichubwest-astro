@@ -29,6 +29,7 @@ const enToSvMap: Record<string, string> = {
   '/en/events':        '/evenemang',
   '/en/articles':      '/artiklar',
   '/en/publish-event': '/publicera-event',
+  '/en/newsletter':    '/nyhetsbrev',
 };
 // Map SV slugs → EN paths (for language switcher on SV pages without altUrl)
 const svToEnMap: Record<string, string> = {
@@ -36,6 +37,7 @@ const svToEnMap: Record<string, string> = {
   '/evenemang':        '/en/events',
   '/artiklar':         '/en/articles',
   '/publicera-event':  '/en/publish-event',
+  '/nyhetsbrev':       '/en/newsletter',
 };
 
 function getSvUrl(path: string): string {

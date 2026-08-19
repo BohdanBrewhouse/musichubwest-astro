@@ -3083,9 +3083,15 @@ dialog.mnav[open] .mnav__link:nth-child(4) .mnav__num { animation-delay: 0.22s; 
 @media (max-width: 900px) {
   .nl--band .nl__inner { grid-template-columns: 1fr; gap: 36px; padding: 60px var(--px); }
 }
-@media (max-width: 520px) {
-  .nl__row { flex-direction: column; }
-  .nl__btn { width: 100%; }
+@media (max-width: 560px) {
+  /* Both variants are listed explicitly so the selectors match the specificity
+     of `.nl--inline .nl__row` above. With a bare `.nl__row` here, the footer
+     variant kept flex-direction:row while the button still picked up
+     width:100% — which pushed the input to nothing and the button off-screen. */
+  .nl--band .nl__row,
+  .nl--inline .nl__row { flex-direction: column; gap: 8px; }
+  .nl--band .nl__btn,
+  .nl--inline .nl__btn { width: 100%; padding: 15px 24px; }
 }
 
 /* Newsletter row inside the footer */
@@ -3143,4 +3149,15 @@ dialog.mnav[open] .mnav__link:nth-child(4) .mnav__num { animation-delay: 0.22s; 
 }
 @media (max-width: 900px) {
   .nl-status__inner { padding: 64px var(--px); }
+}
+
+/* Footer newsletter row on phones: tighten the vertical rhythm so the block
+   does not eat a whole screen, and keep the lead measure readable. */
+@media (max-width: 560px) {
+  .footer__nl {
+    gap: 18px;
+    padding-bottom: 28px;
+    margin-bottom: 32px;
+  }
+  .footer__nl-lead { font-size: 14px; max-width: 38ch; }
 }
