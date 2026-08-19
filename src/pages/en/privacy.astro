@@ -4,46 +4,108 @@ import Nav from '../../components/Nav.astro';
 import Footer from '../../components/Footer.astro';
 const lang = 'en';
 ---
-<Base title="Cookie Policy · Music Hub West" lang={lang}
-  description="Learn how Music Hub West uses cookies and how to manage your consent settings.">
+<Base title="Privacy & cookie policy · Music Hub West" lang={lang}
+  description="How Music Hub West handles personal data and cookies — which services we use, what they collect and how you control your consent.">
   <Nav lang={lang} active="" />
 
   <main class="privacy">
     <div class="privacy__inner">
-      <h1 class="privacy__title">Cookie Policy</h1>
-      <p class="privacy__updated">Last updated: April 2026</p>
+      <h1 class="privacy__title">Privacy &amp; cookie policy</h1>
+      <p class="privacy__updated">Last updated: August 2026</p>
 
       <section class="privacy__section">
-        <h2>What are cookies?</h2>
-        <p>Cookies are small text files stored on your device when you visit a website. They are used to make the website work correctly and to help us improve your experience.</p>
+        <h2>In short</h2>
+        <p>Music Hub West is run by Brewhouse Göteborg as part of the Tune In West project. We collect as little as possible: statistics on how the site is used (only if you consent), and the details you provide yourself when you register for an event, contact us, submit an event or subscribe to the newsletter.</p>
+        <p>We never sell your data and we do not use it for advertising.</p>
       </section>
 
       <section class="privacy__section">
-        <h2>How we use cookies</h2>
-        <p>Music Hub West uses cookies for the following purposes:</p>
+        <h2>Data controller</h2>
+        <p>Brewhouse Göteborg, Åvägen 24, 412 51 Gothenburg, Sweden. Questions about personal data: <a href="mailto:hello@musichubwest.se">hello@musichubwest.se</a>.</p>
+      </section>
+
+      <section class="privacy__section">
+        <h2>What are cookies?</h2>
+        <p>Cookies are small text files stored on your device when you visit a website. We also use similar technologies: your browser’s local storage, and a service worker that caches pages so the site loads faster and works offline.</p>
+      </section>
+
+      <section class="privacy__section">
+        <h2>Cookies we use</h2>
+        <p><strong>Necessary</strong> – required for the site to work and cannot be switched off:</p>
         <ul>
-          <li><strong>Necessary cookies</strong> – Required for the website to function. These cannot be turned off.</li>
-          <li><strong>Preferences</strong> – Saves your settings, such as language choice.</li>
-          <li><strong>Statistics</strong> – Helps us understand how visitors use the website (Google Analytics). Data is anonymised and not used to identify individuals.</li>
+          <li>CookieYes – remembers your choice in the consent banner so you are not asked every visit.</li>
+          <li>Language preference – your choice of Swedish or English is stored locally in your browser.</li>
+          <li>Service worker cache – stores pages and images locally for faster loading. Contains no personal data.</li>
         </ul>
+        <p style="margin-top:16px"><strong>Statistics</strong> – set only if you accept the “statistics” category:</p>
+        <ul>
+          <li>Google Analytics 4 (measurement ID G-WNLNN5Z6V7) – shows how many people visit, which pages are read and how visitors found us. We do not use it to identify individuals.</li>
+          <li>Google Tag Manager (container ID GTM-5QPCVQDS) – the tool that loads the measurement scripts above.</li>
+        </ul>
+        <p style="margin-top:16px">We use <strong>no</strong> marketing, advertising or retargeting cookies, and we have no Meta pixel or equivalent installed.</p>
       </section>
 
       <section class="privacy__section">
         <h2>Your consent</h2>
-        <p>When you visit the website for the first time, a cookie banner is shown where you can choose which cookies you accept. You can change or withdraw your consent at any time by clicking the button below.</p>
+        <p>The first time you visit, a consent banner lets you choose which categories you accept. Statistics cookies are not set until you actively accept them. You can change or withdraw your consent at any time using the button below.</p>
         <button class="btn btn--outline cky-btn-revisit">
           Change cookie settings
         </button>
       </section>
 
       <section class="privacy__section">
-        <h2>Third-party providers</h2>
-        <p>We use CookieYes for consent management and Google Analytics for website statistics. These services may place their own cookies on your device in accordance with their own privacy policies.</p>
+        <h2>Information you provide yourself</h2>
+        <p>Besides statistics, we process data you actively submit:</p>
+        <ul>
+          <li><strong>Event registration</strong> – name, email and the answers you give in the form. Used to administer the event and send your confirmation. Legal basis: contract.</li>
+          <li><strong>Contact form</strong> – name, email, organisation and your message. Used to reply to you. Legal basis: legitimate interest.</li>
+          <li><strong>Submit an event</strong> – your contact and event details, so we can review and publish the event. Legal basis: legitimate interest.</li>
+          <li><strong>Newsletter</strong> – your email address. You sign up yourself and confirm via a link in the email (double opt-in), and can unsubscribe via the link in every newsletter. Legal basis: consent.</li>
+        </ul>
+        <p style="margin-top:16px">Registering for an event does not add you to the newsletter — they are two separate choices.</p>
+      </section>
+
+      <section class="privacy__section">
+        <h2>Logs and click statistics</h2>
+        <p>Our web server logs technical details about each visit, such as IP address, timestamp and the page requested. This is necessary to operate and secure the site, and is kept for a maximum of 30 days.</p>
+        <p>When you click through to an external registration link we record that the click happened — which event and in which language. We do not link it to you as an individual.</p>
+      </section>
+
+      <section class="privacy__section">
+        <h2>Services we use</h2>
+        <p>We use the following providers, who process data on our behalf or receive it as part of delivering their service:</p>
+        <ul>
+          <li><strong>Vercel</strong> – hosting and server logs.</li>
+          <li><strong>CookieYes</strong> – consent management.</li>
+          <li><strong>Google</strong> – Analytics and Tag Manager (statistics), plus Google Fonts, which serves the typefaces and therefore receives your IP address.</li>
+          <li><strong>Monday.com</strong> – case handling for registrations, contact messages and submitted events.</li>
+          <li><strong>Supabase</strong> – database for event registrations.</li>
+          <li><strong>Resend</strong> – sending confirmation emails and newsletters, and storing newsletter subscribers.</li>
+          <li><strong>CARTO and OpenStreetMap</strong> – map imagery on event pages. The map loads only when you open it, at which point the provider receives your IP address.</li>
+        </ul>
+        <p style="margin-top:16px">Several of these providers are established outside the EU/EEA. Transfers are made with the safeguards required under the GDPR, such as the European Commission’s standard contractual clauses.</p>
+      </section>
+
+      <section class="privacy__section">
+        <h2>How long we keep data</h2>
+        <ul>
+          <li>Event registrations – for the duration of the Tune In West project (through 2029) for follow-up and reporting to our funders.</li>
+          <li>Contact messages – as long as the matter is active, as a rule no more than 24 months.</li>
+          <li>Newsletter subscription – until you unsubscribe.</li>
+          <li>Server logs – maximum 30 days.</li>
+          <li>Google Analytics statistics – according to the retention period configured in the service.</li>
+        </ul>
+      </section>
+
+      <section class="privacy__section">
+        <h2>Your rights</h2>
+        <p>You have the right to request a copy of the data we hold about you, to have inaccurate data corrected, to have data erased, to object to processing and to withdraw consent you have given. Email <a href="mailto:hello@musichubwest.se">hello@musichubwest.se</a> and we will get back to you as soon as we can.</p>
+        <p>If you are unhappy with how we handle your data you can contact the <a href="https://www.imy.se/en/" target="_blank" rel="noopener">Swedish Authority for Privacy Protection (IMY)</a>.</p>
       </section>
 
       <section class="privacy__section">
         <h2>Contact</h2>
-        <p>Do you have questions about how we handle cookies or personal data? Contact us at <a href="mailto:hello@musichubwest.se">hello@musichubwest.se</a>.</p>
+        <p>Questions about how we handle cookies or personal data? Email us at <a href="mailto:hello@musichubwest.se">hello@musichubwest.se</a>.</p>
       </section>
     </div>
   </main>

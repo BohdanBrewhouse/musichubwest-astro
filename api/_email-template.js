@@ -511,3 +511,184 @@ https://musichubwest.com`;
 
   return { subject: t.subject, html, text };
 }
+
+/**
+ * Double opt-in confirmation for the newsletter.
+ * Sent immediately on signup; the contact stays `unsubscribed: true` in Resend
+ * until they click through, so an unconfirmed address never receives a broadcast.
+ */
+export function buildNewsletterConfirmEmail({ confirmUrl, lang = 'sv' }) {
+  const en = lang === 'en';
+  const t = en ? {
+    subject: 'Confirm your newsletter signup',
+    head: 'ONE CLICK<br>AND YOU’RE IN',
+    hi: 'Hi!',
+    body: 'You asked to receive the Music Hub West newsletter. Confirm your address and we’ll add you to the list.',
+    btn: 'CONFIRM SIGNUP →',
+    note: 'Didn’t sign up? Just ignore this email — nothing happens without your click.',
+    what: 'What you get: events, open calls and news from the music industry in Western Sweden. Roughly once a month. Unsubscribe whenever you like.',
+  } : {
+    subject: 'Bekräfta din anmälan till nyhetsbrevet',
+    head: 'ETT KLICK<br>OCH DU ÄR MED',
+    hi: 'Hej!',
+    body: 'Du har anmält dig till Music Hub Wests nyhetsbrev. Bekräfta din adress så lägger vi till dig i listan.',
+    btn: 'BEKRÄFTA ANMÄLAN →',
+    note: 'Har du inte anmält dig? Bortse från det här mejlet — inget händer utan att du klickar.',
+    what: 'Det du får: event, utlysningar och nyheter från musikbranschen i Västsverige. Ungefär en gång i månaden. Du kan avregistrera dig när du vill.',
+  };
+
+  const html = `<!DOCTYPE html>
+<html lang="${en ? 'en' : 'sv'}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light only">
+<meta name="supported-color-schemes" content="light only">
+<title>${t.subject}</title>
+</head>
+<body style="margin:0;padding:0;background:#F7F6F2;font-family:'Outfit',-apple-system,'Helvetica Neue',Arial,sans-serif;color:#1C1C1E;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#F7F6F2;padding:40px 16px;">
+<tr><td align="center">
+  <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;width:100%;background:#050505;border:1px solid #1a1a1a;border-radius:16px;overflow:hidden;">
+    <tr><td align="center" style="padding:44px 32px 28px;">
+      <img src="${LOGO_URL}" alt="Music Hub West" width="220" style="display:block;border:0;height:auto;max-width:220px;">
+    </td></tr>
+    <tr><td style="padding:0 32px;"><div style="height:1px;background:#1a1a1a;line-height:1px;font-size:1px;">&nbsp;</div></td></tr>
+    <tr><td style="padding:36px 32px 0;">
+      <h1 style="font-family:'Syne Mono','Courier New',monospace;font-size:26px;font-weight:400;color:#CCFF00;margin:0 0 20px;line-height:1.25;">${t.head}</h1>
+      <p style="font-size:16px;line-height:1.7;color:#ffffff;margin:0 0 14px;">${t.hi}</p>
+      <p style="font-size:16px;line-height:1.7;color:#d5d5d5;margin:0;">${t.body}</p>
+    </td></tr>
+    <tr><td align="center" style="padding:30px 32px 12px;">
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+        <tr><td style="background:#CCFF00;border-radius:8px;">
+          <a href="${confirmUrl}" target="_blank" style="display:inline-block;padding:15px 30px;font-family:'Syne Mono','Courier New',monospace;font-size:14px;color:#050505;text-decoration:none;letter-spacing:0.02em;">${t.btn}</a>
+        </td></tr>
+      </table>
+    </td></tr>
+    <tr><td style="padding:16px 32px 40px;">
+      <p style="font-size:14px;line-height:1.7;color:#8a8a8a;margin:0 0 12px;">${t.what}</p>
+      <p style="font-size:13px;line-height:1.7;color:#6a6a6a;margin:0;">${t.note}</p>
+    </td></tr>
+    <tr><td style="padding:26px 32px;background:#0a0a0a;border-top:1px solid #1a1a1a;">
+      <p style="font-size:12px;line-height:1.6;color:#777777;margin:0;text-align:center;">
+        Music Hub West · Göteborg ·
+        <a href="mailto:hello@musichubwest.se" style="color:#CCFF00;text-decoration:none;">hello@musichubwest.se</a>
+      </p>
+    </td></tr>
+  </table>
+</td></tr>
+</table>
+</body>
+</html>`;
+
+  const text = `${t.hi}
+
+${t.body}
+
+${confirmUrl}
+
+${t.what}
+
+${t.note}
+
+— Music Hub West
+hello@musichubwest.se`;
+
+  return { subject: t.subject, html, text };
+}
+
+/**
+ * Welcome / thank-you mail, sent once the subscriber has clicked the confirm
+ * link. This is the first mail they receive as a real subscriber, so it carries
+ * the unsubscribe link too.
+ */
+export function buildNewsletterWelcomeEmail({ unsubscribeUrl, lang = 'sv' }) {
+  const en = lang === 'en';
+  const t = en ? {
+    subject: 'Welcome to the Music Hub West newsletter',
+    head: 'YOU’RE IN.<br>THANK YOU!',
+    hi: 'Hi!',
+    body: 'Your address is confirmed and you’re on the list. From now on you’ll get events, open calls and news from the music industry in Western Sweden — roughly once a month, never more often than we have something worth your time.',
+    while: 'While you wait for the first one, there’s plenty happening already:',
+    btn: 'SEE ALL EVENTS →',
+    btn2: 'PUBLISH YOUR OWN EVENT →',
+    foot: 'You’re receiving this because you confirmed your newsletter signup.',
+    unsub: 'Unsubscribe',
+  } : {
+    subject: 'Välkommen till Music Hub Wests nyhetsbrev',
+    head: 'DU ÄR MED.<br>TACK!',
+    hi: 'Hej!',
+    body: 'Din adress är bekräftad och du finns på listan. Från och med nu får du event, utlysningar och nyheter från musikbranschen i Västsverige — ungefär en gång i månaden, och aldrig oftare än vi har något som är värt din tid.',
+    while: 'I väntan på det första brevet händer det redan en hel del:',
+    btn: 'SE ALLA EVENT →',
+    btn2: 'PUBLICERA DITT EGET EVENT →',
+    foot: 'Du får detta mejl för att du bekräftat din anmälan till nyhetsbrevet.',
+    unsub: 'Avregistrera dig',
+  };
+
+  const html = `<!DOCTYPE html>
+<html lang="${en ? 'en' : 'sv'}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light only">
+<meta name="supported-color-schemes" content="light only">
+<title>${t.subject}</title>
+</head>
+<body style="margin:0;padding:0;background:#F7F6F2;font-family:'Outfit',-apple-system,'Helvetica Neue',Arial,sans-serif;color:#1C1C1E;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#F7F6F2;padding:40px 16px;">
+<tr><td align="center">
+  <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;width:100%;background:#050505;border:1px solid #1a1a1a;border-radius:16px;overflow:hidden;">
+    <tr><td align="center" style="padding:44px 32px 28px;">
+      <img src="${LOGO_URL}" alt="Music Hub West" width="220" style="display:block;border:0;height:auto;max-width:220px;">
+    </td></tr>
+    <tr><td style="padding:0 32px;"><div style="height:1px;background:#1a1a1a;line-height:1px;font-size:1px;">&nbsp;</div></td></tr>
+    <tr><td style="padding:36px 32px 0;">
+      <h1 style="font-family:'Syne Mono','Courier New',monospace;font-size:26px;font-weight:400;color:#CCFF00;margin:0 0 20px;line-height:1.25;">${t.head}</h1>
+      <p style="font-size:16px;line-height:1.7;color:#ffffff;margin:0 0 14px;">${t.hi}</p>
+      <p style="font-size:16px;line-height:1.7;color:#d5d5d5;margin:0 0 18px;">${t.body}</p>
+      <p style="font-size:15px;line-height:1.7;color:#8a8a8a;margin:0;">${t.while}</p>
+    </td></tr>
+    <tr><td align="center" style="padding:26px 32px 40px;">
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center">
+        <tr><td style="background:#CCFF00;border-radius:8px;">
+          <a href="https://www.musichubwest.com${en ? '/en/events' : '/evenemang'}" target="_blank" style="display:inline-block;padding:14px 26px;font-family:'Syne Mono','Courier New',monospace;font-size:14px;color:#050505;text-decoration:none;">${t.btn}</a>
+        </td></tr>
+        <tr><td height="10" style="height:10px;line-height:10px;font-size:1px;">&nbsp;</td></tr>
+        <tr><td align="center" style="border:1px solid #333333;border-radius:8px;">
+          <a href="https://www.musichubwest.com${en ? '/en/publish-event' : '/publicera-event'}" target="_blank" style="display:inline-block;padding:13px 24px;font-family:'Syne Mono','Courier New',monospace;font-size:13px;color:#ffffff;text-decoration:none;">${t.btn2}</a>
+        </td></tr>
+      </table>
+    </td></tr>
+    <tr><td style="padding:26px 32px;background:#0a0a0a;border-top:1px solid #1a1a1a;">
+      <p style="font-size:12px;line-height:1.6;color:#777777;margin:0 0 10px;text-align:center;">
+        Music Hub West · Göteborg ·
+        <a href="mailto:hello@musichubwest.se" style="color:#CCFF00;text-decoration:none;">hello@musichubwest.se</a>
+      </p>
+      <p style="font-size:11px;line-height:1.6;color:#5a5a5a;margin:0;text-align:center;">
+        ${t.foot}<br>
+        <a href="${unsubscribeUrl}" style="color:#8a8a8a;text-decoration:underline;">${t.unsub}</a>
+      </p>
+    </td></tr>
+  </table>
+</td></tr>
+</table>
+</body>
+</html>`;
+
+  const text = `${t.hi}
+
+${t.body}
+
+${t.while}
+https://www.musichubwest.com${en ? '/en/events' : '/evenemang'}
+
+${t.foot}
+${unsubscribeUrl}
+
+— Music Hub West
+hello@musichubwest.se`;
+
+  return { subject: t.subject, html, text };
+}

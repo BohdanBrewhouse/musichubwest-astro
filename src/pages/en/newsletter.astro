@@ -1,0 +1,70 @@
+---
+import Base from '../../layouts/Base.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+import NewsletterForm from '../../components/NewsletterForm.astro';
+const lang = 'en';
+---
+<Base title="Newsletter · Music Hub West" lang={lang}
+  description="Subscribe to the Music Hub West newsletter — events, open calls and news from the music scene in Western Sweden, roughly once a month.">
+  <Nav lang={lang} active="" />
+
+  <main>
+    {/* Confirmation states — filled in client-side from ?status=, since the page is static */}
+    <div class="nl-status" id="nlStatus" hidden>
+      <div class="nl-status__inner">
+        <p class="nl-status__icon" id="nlStatusIcon"></p>
+        <h1 class="nl-status__title" id="nlStatusTitle"></h1>
+        <p class="nl-status__text" id="nlStatusText"></p>
+        <a href="/en/events" class="btn btn--primary">See all events →</a>
+      </div>
+    </div>
+
+    <NewsletterForm lang={lang} variant="band" />
+  </main>
+
+  <Footer lang={lang} newsletter={false} />
+</Base>
+
+<script is:inline>
+  const STATES = {
+    confirmed: {
+      icon: '✓',
+      title: 'Thanks — you’re in!',
+      text: 'Your address is confirmed. The next newsletter will land in your inbox. You can unsubscribe via the link at the bottom of every email.',
+    },
+    unsubscribed: {
+      icon: '—',
+      title: 'You’re unsubscribed',
+      text: 'We won’t include you in the newsletter any more. If you change your mind you’re very welcome back — sign up again below.',
+    },
+    expired: {
+      icon: '⏳',
+      title: 'That link has expired',
+      text: 'Confirmation links are valid for seven days. Sign up again below and we’ll send a new one.',
+    },
+    invalid: {
+      icon: '✕',
+      title: 'That link didn’t work',
+      text: 'The link seems to have broken on the way — some email clients cut long addresses. Sign up again below.',
+    },
+    error: {
+      icon: '✕',
+      title: 'Something went wrong',
+      text: 'We couldn’t confirm your address right now. Try again, or email us at hello@musichubwest.se.',
+    },
+  };
+
+  const status = new URLSearchParams(location.search).get('status');
+  const state = STATES[status];
+  if (state) {
+    document.getElementById('nlStatusIcon').textContent  = state.icon;
+    document.getElementById('nlStatusTitle').textContent = state.title;
+    document.getElementById('nlStatusText').textContent  = state.text;
+    const box = document.getElementById('nlStatus');
+    box.hidden = false;
+    box.classList.add(status === 'confirmed' ? 'nl-status--ok' : 'nl-status--err');
+    // A confirmed reader has no reason to see the signup form again.
+    if (status === 'confirmed') document.querySelector('.nl--band')?.remove();
+  }
+</script>

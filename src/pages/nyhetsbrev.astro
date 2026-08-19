@@ -1,0 +1,70 @@
+---
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import NewsletterForm from '../components/NewsletterForm.astro';
+const lang = 'sv';
+---
+<Base title="Nyhetsbrev · Music Hub West" lang={lang}
+  description="Prenumerera på Music Hub Wests nyhetsbrev — event, utlysningar och nyheter från musiklivet i Västra Götaland, ungefär en gång i månaden.">
+  <Nav lang={lang} active="" />
+
+  <main>
+    {/* Confirmation states — filled in client-side from ?status=, since the page is static */}
+    <div class="nl-status" id="nlStatus" hidden>
+      <div class="nl-status__inner">
+        <p class="nl-status__icon" id="nlStatusIcon"></p>
+        <h1 class="nl-status__title" id="nlStatusTitle"></h1>
+        <p class="nl-status__text" id="nlStatusText"></p>
+        <a href="/evenemang" class="btn btn--primary">Se alla event →</a>
+      </div>
+    </div>
+
+    <NewsletterForm lang={lang} variant="band" />
+  </main>
+
+  <Footer lang={lang} newsletter={false} />
+</Base>
+
+<script is:inline>
+  const STATES = {
+    confirmed: {
+      icon: '✓',
+      title: 'Tack — du är med!',
+      text: 'Din adress är bekräftad. Nästa nyhetsbrev landar i din inkorg. Du kan avregistrera dig via länken längst ner i varje mejl.',
+    },
+    unsubscribed: {
+      icon: '—',
+      title: 'Du är avregistrerad',
+      text: 'Vi tar inte längre med dig i nyhetsbrevet. Ändrar du dig är du varmt välkommen tillbaka — anmäl dig igen nedan.',
+    },
+    expired: {
+      icon: '⏳',
+      title: 'Länken har gått ut',
+      text: 'Bekräftelselänken var giltig i sju dagar. Anmäl dig igen nedan och vi skickar en ny.',
+    },
+    invalid: {
+      icon: '✕',
+      title: 'Länken fungerade inte',
+      text: 'Länken verkar ha blivit trasig på vägen — vissa mejlprogram klipper långa adresser. Anmäl dig igen nedan.',
+    },
+    error: {
+      icon: '✕',
+      title: 'Något gick fel',
+      text: 'Vi kunde inte bekräfta din adress just nu. Försök igen, eller mejla oss på hello@musichubwest.se.',
+    },
+  };
+
+  const status = new URLSearchParams(location.search).get('status');
+  const state = STATES[status];
+  if (state) {
+    document.getElementById('nlStatusIcon').textContent  = state.icon;
+    document.getElementById('nlStatusTitle').textContent = state.title;
+    document.getElementById('nlStatusText').textContent  = state.text;
+    const box = document.getElementById('nlStatus');
+    box.hidden = false;
+    box.classList.add(status === 'confirmed' ? 'nl-status--ok' : 'nl-status--err');
+    // A confirmed reader has no reason to see the signup form again.
+    if (status === 'confirmed') document.querySelector('.nl--band')?.remove();
+  }
+</script>

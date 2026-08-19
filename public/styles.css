@@ -747,15 +747,17 @@ a:hover .featured-title { text-decoration-color: var(--lime); }
 .home-project__btn {
   display: inline-flex;
   align-items: center;
-  font-size: 15px;
+  /* Typography matched to .btn so this one-off reads as the same button family. */
+  font-family: var(--font);
+  font-size: 14px;
   font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
   color: var(--black);
   background: var(--lime);
   text-decoration: none;
   padding: 14px 28px;
-  border-radius: 4px;
   transition: opacity 0.15s;
-  letter-spacing: 0.01em;
 }
 .home-project__btn:hover { opacity: 0.85; }
 
@@ -2958,4 +2960,187 @@ dialog.mnav[open] .mnav__link:nth-child(4) .mnav__num { animation-delay: 0.22s; 
 @media (max-width: 720px) {
   .session { grid-template-columns: minmax(0, 1fr); gap: 12px; padding: 16px; }
   .session__cta { justify-self: start; }
+}
+
+/* ─── NEWSLETTER SIGNUP ───────────────────────────── */
+.nl--band {
+  border-top: 1px solid var(--black-3);
+  border-bottom: 1px solid var(--black-3);
+  background: var(--black-2);
+}
+/* Single centred column, not a 2-up grid: the form is short, so a side-by-side
+   layout on a 1320px band leaves a large empty half. */
+.nl--band .nl__inner {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 96px var(--px);
+  text-align: center;
+}
+.nl--band .nl__copy { margin-bottom: 36px; }
+.nl--band .nl__lead { margin-left: auto; margin-right: auto; }
+.nl--band .nl__form { max-width: 520px; margin: 0 auto; }
+.nl--band .nl__label { text-align: left; }
+.nl--band .nl__consent { max-width: none; }
+.nl__eyebrow {
+  font-family: var(--font-display);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--lime);
+  margin-bottom: 18px;
+}
+.nl__title {
+  font-family: var(--font-display);
+  font-size: clamp(26px, 3.4vw, 44px);
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--white);
+  white-space: pre-line;
+  margin-bottom: 20px;
+}
+.nl__lead {
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--grey-500);
+  max-width: 46ch;
+}
+.nl__label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.5);
+  margin-bottom: 8px;
+}
+.nl__row { display: flex; gap: 10px; }
+.nl__input {
+  flex: 1 1 auto;
+  /* Without this a long placeholder can push the row past its container. */
+  min-width: 0;
+  padding: 14px 16px;
+  border: 1px solid var(--black-3);
+  background: var(--black);
+  color: var(--white);
+  font-family: var(--font);
+  font-size: 15px;
+  outline: none;
+  transition: border-color 0.15s;
+  -webkit-appearance: none;
+}
+.nl__input::placeholder { color: rgba(255,255,255,0.25); }
+.nl__input:focus { border-color: var(--lime); }
+.nl__btn {
+  flex: 0 0 auto;
+  padding: 14px 24px;
+  border: none;
+  background: var(--lime);
+  color: var(--black);
+  /* Match .btn — bold uppercase Outfit, same as every other button on the site. */
+  font-family: var(--font);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  transition: opacity 0.15s, transform 0.15s;
+}
+.nl__btn:hover { opacity: 0.85; transform: translateY(-1px); }
+.nl__btn:disabled { opacity: 0.5; transform: none; cursor: wait; }
+/* Honeypot: off-screen rather than display:none — some bots skip hidden fields. */
+.nl__hp {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+.nl__consent {
+  font-size: 12px;
+  line-height: 1.6;
+  /* grey-700 (#444) on the #111 band is ~1.9:1 — unreadable. grey-500 is ~5.3:1. */
+  color: var(--grey-500);
+  margin-top: 12px;
+  max-width: 44ch;
+}
+.nl__msg { font-size: 14px; line-height: 1.6; margin-top: 12px; }
+.nl__msg--ok  { color: var(--lime); }
+.nl__msg--err { color: #ff8a8a; }
+.nl__form--done .nl__row,
+.nl__form--done .nl__consent { display: none; }
+
+/* Footer variant */
+.nl--inline { border: none; background: none; }
+.nl--inline .nl__inner { padding: 0; max-width: none; }
+.nl--inline .nl__label { display: none; }
+.nl--inline .nl__consent { display: none; }
+/* Keep input and button on one line — a full-width lime bar in the footer
+   outweighs everything around it. */
+.nl--inline .nl__row { flex-direction: row; gap: 10px; }
+.nl--inline .nl__btn { flex: 0 0 auto; }
+
+@media (max-width: 900px) {
+  .nl--band .nl__inner { grid-template-columns: 1fr; gap: 36px; padding: 60px var(--px); }
+}
+@media (max-width: 520px) {
+  .nl__row { flex-direction: column; }
+  .nl__btn { width: 100%; }
+}
+
+/* Newsletter row inside the footer */
+.footer__nl {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 48px;
+  align-items: end;
+  padding-bottom: 40px;
+  margin-bottom: 48px;
+  border-bottom: 1px solid var(--black-3);
+}
+.footer__nl-lead {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--grey-500);
+  max-width: 52ch;
+}
+.footer__nl .nl--inline .nl__col-title { display: none; }
+@media (max-width: 900px) {
+  .footer__nl { grid-template-columns: 1fr; gap: 24px; align-items: stretch; }
+}
+
+/* Confirmation / error state on the newsletter page */
+.nl-status { border-bottom: 1px solid var(--black-3); }
+.nl-status__inner {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 96px var(--px);
+  text-align: center;
+}
+.nl-status__icon {
+  font-family: var(--font-display);
+  font-size: 40px;
+  line-height: 1;
+  margin-bottom: 24px;
+}
+.nl-status--ok  .nl-status__icon { color: var(--lime); }
+.nl-status--err .nl-status__icon { color: #ff8a8a; }
+.nl-status__title {
+  font-family: var(--font-display);
+  font-size: clamp(26px, 3.4vw, 44px);
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--white);
+  margin-bottom: 18px;
+}
+.nl-status__text {
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--grey-500);
+  max-width: 52ch;
+  margin: 0 auto 32px;
+}
+@media (max-width: 900px) {
+  .nl-status__inner { padding: 64px var(--px); }
 }

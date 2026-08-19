@@ -1,10 +1,29 @@
 ---
-export interface Props { lang: 'sv' | 'en' }
-const { lang } = Astro.props;
+import NewsletterForm from './NewsletterForm.astro';
+export interface Props {
+  lang: 'sv' | 'en';
+  /** Off on the newsletter page itself — two signup forms on one page reads as a bug. */
+  newsletter?: boolean;
+}
+const { lang, newsletter = true } = Astro.props;
 const base = lang === 'en' ? '/en' : '';
 ---
 <footer class="footer">
   <div class="footer__inner">
+    {newsletter && (
+    <div class="footer__nl">
+      <div class="footer__nl-copy">
+        <p class="footer__col-title">{ lang === 'sv' ? 'Håll dig uppdaterad' : 'Stay updated' }</p>
+        <p class="footer__nl-lead">
+          { lang === 'sv'
+            ? 'Event, utlysningar och nyheter från musiklivet i Västsverige — ungefär en gång i månaden.'
+            : 'Events, open calls and news from the music scene in Western Sweden — roughly once a month.' }
+        </p>
+      </div>
+      <NewsletterForm lang={lang} variant="inline" />
+    </div>
+    )}
+
     <div class="footer__grid">
       <div>
         <div class="footer__logo">
@@ -35,6 +54,7 @@ const base = lang === 'en' ? '/en' : '';
         <a href={`${base}/evenemang`}>{ lang === 'sv' ? 'Event' : 'Events' }</a>
         <a href={`${base}/artiklar`}>{ lang === 'sv' ? 'Artiklar' : 'Articles' }</a>
         <a href={`${base}/om`}>{ lang === 'sv' ? 'Om oss' : 'About us' }</a>
+        <a href={lang === 'sv' ? '/nyhetsbrev' : '/en/newsletter'}>{ lang === 'sv' ? 'Nyhetsbrev' : 'Newsletter' }</a>
       </div>
       <div class="footer__col">
         <p class="footer__col-title">{ lang === 'sv' ? 'Projekt' : 'Projects' }</p>
@@ -53,7 +73,7 @@ const base = lang === 'en' ? '/en' : '';
       <span class="footer__copy">© 2026 Music Hub West</span>
       <span class="footer__copy">{ lang === 'sv' ? 'En del av Tune In West 2026–2029' : 'Part of Tune In West 2026–2029' }</span>
       <a href={lang === 'sv' ? '/privacy' : '/en/privacy'} class="footer__privacy">
-        { lang === 'sv' ? 'Cookiepolicy' : 'Cookie policy' }
+        { lang === 'sv' ? 'Integritetspolicy' : 'Privacy policy' }
       </a>
     </div>
   </div>

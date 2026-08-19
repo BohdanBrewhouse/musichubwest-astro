@@ -4,41 +4,103 @@ import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 const lang = 'sv';
 ---
-<Base title="Cookiepolicy · Music Hub West" lang={lang}
-  description="Läs om hur Music Hub West använder cookies och hur du hanterar dina samtyckesinställningar.">
+<Base title="Integritets- och cookiepolicy · Music Hub West" lang={lang}
+  description="Så hanterar Music Hub West personuppgifter och cookies — vilka tjänster vi använder, vad de samlar in och hur du styr ditt samtycke.">
   <Nav lang={lang} active="" />
 
   <main class="privacy">
     <div class="privacy__inner">
-      <h1 class="privacy__title">Cookiepolicy</h1>
-      <p class="privacy__updated">Senast uppdaterad: april 2026</p>
+      <h1 class="privacy__title">Integritets- och cookiepolicy</h1>
+      <p class="privacy__updated">Senast uppdaterad: augusti 2026</p>
 
       <section class="privacy__section">
-        <h2>Vad är cookies?</h2>
-        <p>Cookies är små textfiler som lagras på din enhet när du besöker en webbplats. De används för att webbplatsen ska fungera korrekt och för att vi ska kunna förbättra din upplevelse.</p>
+        <h2>Kort sammanfattning</h2>
+        <p>Music Hub West drivs av Brewhouse Göteborg inom projektet Tune In West. Vi samlar in så lite information som möjligt: statistik om hur webbplatsen används (bara om du samtycker), och de uppgifter du själv lämnar när du anmäler dig till ett event, kontaktar oss, publicerar ett event eller prenumererar på nyhetsbrevet.</p>
+        <p>Vi säljer aldrig dina uppgifter och använder dem inte för annonsering.</p>
       </section>
 
       <section class="privacy__section">
-        <h2>Hur vi använder cookies</h2>
-        <p>Music Hub West använder cookies i följande syfte:</p>
+        <h2>Personuppgiftsansvarig</h2>
+        <p>Brewhouse Göteborg, Åvägen 24, 412 51 Göteborg. Frågor om personuppgifter: <a href="mailto:hello@musichubwest.se">hello@musichubwest.se</a>.</p>
+      </section>
+
+      <section class="privacy__section">
+        <h2>Vad är cookies?</h2>
+        <p>Cookies är små textfiler som lagras på din enhet när du besöker en webbplats. Vi använder även liknande tekniker, som webbläsarens lokala lagring (localStorage) och en service worker som cachar sidor så att webbplatsen fungerar snabbare och även offline.</p>
+      </section>
+
+      <section class="privacy__section">
+        <h2>Cookies vi använder</h2>
+        <p><strong>Nödvändiga</strong> – krävs för att webbplatsen ska fungera och kan inte stängas av:</p>
         <ul>
-          <li><strong>Nödvändiga cookies</strong> – Krävs för att webbplatsen ska fungera. Dessa kan inte stängas av.</li>
-          <li><strong>Preferenser</strong> – Sparar dina inställningar, exempelvis språkval.</li>
-          <li><strong>Statistik</strong> – Hjälper oss förstå hur besökare använder webbplatsen (Google Analytics). Data anonymiseras och används inte för att identifiera enskilda personer.</li>
+          <li>CookieYes – sparar ditt val i samtyckesbannern så att du inte får frågan varje gång.</li>
+          <li>Språkval – ditt val av svenska eller engelska sparas lokalt i din webbläsare.</li>
+          <li>Service worker-cache – sparar sidor och bilder lokalt för snabbare laddning. Innehåller inga personuppgifter.</li>
         </ul>
+        <p style="margin-top:16px"><strong>Statistik</strong> – sätts bara om du godkänner kategorin ”statistik”:</p>
+        <ul>
+          <li>Google Analytics 4 (mätnings-ID G-WNLNN5Z6V7) – visar hur många som besöker webbplatsen, vilka sidor som läses och hur besökare hittade hit. Vi använder inte uppgifterna för att identifiera enskilda personer.</li>
+          <li>Google Tag Manager (behållar-ID GTM-5QPCVQDS) – verktyget som laddar mätskripten ovan.</li>
+        </ul>
+        <p style="margin-top:16px">Vi använder <strong>inga</strong> cookies för marknadsföring, annonsering eller retargeting, och har ingen Meta-pixel eller motsvarande installerad.</p>
       </section>
 
       <section class="privacy__section">
         <h2>Ditt samtycke</h2>
-        <p>När du besöker webbplatsen för första gången visas en cookie-banner där du kan välja vilka cookies du godkänner. Du kan när som helst ändra eller återkalla ditt samtycke genom att klicka på knappen nedan.</p>
+        <p>Första gången du besöker webbplatsen visas en samtyckesbanner där du väljer vilka kategorier du godkänner. Statistikcookies sätts inte förrän du aktivt godkänt dem. Du kan ändra eller återkalla ditt samtycke när som helst med knappen nedan.</p>
         <button class="btn btn--outline cky-btn-revisit">
           Ändra cookie-inställningar
         </button>
       </section>
 
       <section class="privacy__section">
-        <h2>Tredjepartsleverantörer</h2>
-        <p>Vi använder CookieYes för hantering av samtycke och Google Analytics för webbplatsstatistik. Dessa tjänster kan placera egna cookies på din enhet i enlighet med sina egna integritetspolicyer.</p>
+        <h2>Uppgifter du själv lämnar</h2>
+        <p>Utöver statistik behandlar vi uppgifter du aktivt skickar in:</p>
+        <ul>
+          <li><strong>Anmälan till event</strong> – namn, e-post och de svar du lämnar i formuläret. Används för att administrera eventet och skicka bekräftelse. Rättslig grund: avtal.</li>
+          <li><strong>Kontaktformulär</strong> – namn, e-post, organisation och ditt meddelande. Används för att svara dig. Rättslig grund: berättigat intresse.</li>
+          <li><strong>Publicera event</strong> – dina kontakt- och eventuppgifter, så att vi kan granska och publicera eventet. Rättslig grund: berättigat intresse.</li>
+          <li><strong>Nyhetsbrev</strong> – din e-postadress. Du anmäler dig själv och bekräftar via en länk i mejlet (dubbel opt-in), och kan avregistrera dig via länken i varje nyhetsbrev. Rättslig grund: samtycke.</li>
+        </ul>
+        <p style="margin-top:16px">Anmälan till ett event ger dig inte automatiskt nyhetsbrevet — det är två separata val.</p>
+      </section>
+
+      <section class="privacy__section">
+        <h2>Loggar och klickstatistik</h2>
+        <p>Vår webbserver loggar tekniska uppgifter om varje besök, exempelvis IP-adress, tidpunkt och vilken sida som efterfrågades. Detta krävs för att driva och säkra webbplatsen och lagras i högst 30 dagar.</p>
+        <p>När du klickar vidare till en extern anmälningslänk registrerar vi att klicket skett — vilket event det gällde och på vilket språk. Vi kopplar inte det till dig som person.</p>
+      </section>
+
+      <section class="privacy__section">
+        <h2>Tjänster vi anlitar</h2>
+        <p>Vi använder följande leverantörer, som behandlar uppgifter för vår räkning eller tar emot dem som en del av tjänsten:</p>
+        <ul>
+          <li><strong>Vercel</strong> – webbhotell och serverloggar.</li>
+          <li><strong>CookieYes</strong> – hantering av samtycke.</li>
+          <li><strong>Google</strong> – Analytics och Tag Manager (statistik), samt Google Fonts, som laddar typsnitt och därmed tar emot din IP-adress.</li>
+          <li><strong>Monday.com</strong> – ärendehantering för anmälningar, kontaktmeddelanden och inskickade event.</li>
+          <li><strong>Supabase</strong> – databas för eventanmälningar.</li>
+          <li><strong>Resend</strong> – utskick av bekräftelsemejl och nyhetsbrev, samt lagring av nyhetsbrevsprenumeranter.</li>
+          <li><strong>CARTO och OpenStreetMap</strong> – kartbilder på eventsidor. Kartan laddas först när du öppnar den, och leverantören tar då emot din IP-adress.</li>
+        </ul>
+        <p style="margin-top:16px">Flera av dessa leverantörer är etablerade utanför EU/EES. Överföringar sker med de skyddsåtgärder som gäller enligt dataskyddsförordningen, exempelvis EU-kommissionens standardavtalsklausuler.</p>
+      </section>
+
+      <section class="privacy__section">
+        <h2>Hur länge vi sparar uppgifter</h2>
+        <ul>
+          <li>Eventanmälningar – under projekttiden Tune In West (till och med 2029) för uppföljning och redovisning till våra finansiärer.</li>
+          <li>Kontaktmeddelanden – så länge ärendet är aktuellt, som regel högst 24 månader.</li>
+          <li>Nyhetsbrevsprenumeration – till dess att du avregistrerar dig.</li>
+          <li>Serverloggar – högst 30 dagar.</li>
+          <li>Statistik i Google Analytics – enligt tjänstens inställda lagringstid.</li>
+        </ul>
+      </section>
+
+      <section class="privacy__section">
+        <h2>Dina rättigheter</h2>
+        <p>Du har rätt att begära ett registerutdrag över de uppgifter vi har om dig, att få felaktiga uppgifter rättade, att få uppgifter raderade, att invända mot behandling och att återkalla ett samtycke du lämnat. Mejla <a href="mailto:hello@musichubwest.se">hello@musichubwest.se</a> och vi återkommer så snart vi kan.</p>
+        <p>Är du inte nöjd med hur vi hanterar dina uppgifter kan du vända dig till <a href="https://www.imy.se" target="_blank" rel="noopener">Integritetsskyddsmyndigheten (IMY)</a>.</p>
       </section>
 
       <section class="privacy__section">

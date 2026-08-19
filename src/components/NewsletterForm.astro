@@ -1,0 +1,139 @@
+---
+export interface Props {
+  lang: 'sv' | 'en';
+  /** 'band' = full-width block for pages, 'inline' = compact, for the footer */
+  variant?: 'band' | 'inline';
+}
+const { lang, variant = 'band' } = Astro.props;
+const t = lang === 'en' ? {
+  eyebrow: 'Newsletter',
+  title: 'Everything happening in\nthe music industry — in one email',
+  lead: 'Events, open calls and news from the music scene in Western Sweden. Roughly once a month. Unsubscribe whenever you like.',
+  label: 'Email address',
+  placeholder: 'your@email.com',
+  btn: 'Subscribe',
+  sending: 'Sending…',
+  done: 'Almost there — check your inbox and confirm the link we just sent.',
+  errInvalid: 'That email address doesn’t look right.',
+  errGeneric: 'Something went wrong. Try again, or email us at hello@musichubwest.se.',
+  consent: 'By subscribing you agree that we store your email address to send the newsletter.',
+} : {
+  eyebrow: 'Nyhetsbrev',
+  title: 'Allt som händer i\nmusiklivet — i ett mejl',
+  lead: 'Event, utlysningar och nyheter från musikbranschen i Västsverige. Ungefär en gång i månaden. Avregistrera dig när du vill.',
+  label: 'E-postadress',
+  placeholder: 'din@epost.se',
+  btn: 'Prenumerera',
+  sending: 'Skickar…',
+  done: 'Nästan klart — kolla din inkorg och bekräfta länken vi just skickade.',
+  errInvalid: 'Den e-postadressen ser inte rätt ut.',
+  errGeneric: 'Något gick fel. Försök igen, eller mejla oss på hello@musichubwest.se.',
+  consent: 'Genom att prenumerera godkänner du att vi lagrar din e-postadress för att skicka nyhetsbrevet.',
+};
+---
+{/*
+  Copy travels on data-* attributes rather than define:vars: this component can
+  appear twice on one page (band + footer), and two define:vars blocks would
+  declare the same top-level consts and throw a SyntaxError.
+*/}
+<section
+  class={`nl nl--${variant}`}
+  data-lang={lang}
+  data-msg-done={t.done}
+  data-msg-invalid={t.errInvalid}
+  data-msg-generic={t.errGeneric}
+>
+  <div class="nl__inner">
+    {variant === 'band' && (
+      <div class="nl__copy">
+        <p class="nl__eyebrow">{t.eyebrow}</p>
+        <h2 class="nl__title">{t.title}</h2>
+        <p class="nl__lead">{t.lead}</p>
+      </div>
+    )}
+    {variant === 'inline' && <p class="nl__col-title">{t.eyebrow}</p>}
+
+    <form class="nl__form" novalidate>
+      <label class="nl__label" for={`nl-email-${variant}`}>{t.label}</label>
+      <div class="nl__row">
+        <input
+          class="nl__input"
+          id={`nl-email-${variant}`}
+          type="email"
+          name="email"
+          required
+          autocomplete="email"
+          placeholder={t.placeholder}
+        />
+        <button class="nl__btn" type="submit" data-idle={t.btn} data-sending={t.sending}>{t.btn}</button>
+      </div>
+      {/* Honeypot — hidden from people, filled in by bots */}
+      <input class="nl__hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
+      <p class="nl__consent">{t.consent}</p>
+      <p class="nl__msg" role="status" aria-live="polite"></p>
+    </form>
+  </div>
+</section>
+
+<script is:inline>
+(() => {
+  document.querySelectorAll('.nl').forEach((block) => {
+    if (block.dataset.bound) return;
+    block.dataset.bound = '1';
+
+    const lang        = block.dataset.lang === 'en' ? 'en' : 'sv';
+    const done        = block.dataset.msgDone;
+    const errInvalid  = block.dataset.msgInvalid;
+    const errGeneric  = block.dataset.msgGeneric;
+
+    const form  = block.querySelector('.nl__form');
+    const input = block.querySelector('.nl__input');
+    const btn   = block.querySelector('.nl__btn');
+    const msg   = block.querySelector('.nl__msg');
+
+    const say = (text, kind) => {
+      msg.textContent = text;
+      msg.className = 'nl__msg' + (kind ? ' nl__msg--' + kind : '');
+    };
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = input.value.trim();
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
+        say(errInvalid, 'err');
+        input.focus();
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = btn.dataset.sending;
+      say('');
+
+      try {
+        const res = await fetch('/api/subscribe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email,
+            lang,
+            website: form.querySelector('.nl__hp').value,
+          }),
+        });
+        const data = await res.json().catch(() => ({}));
+        if (res.ok && data.ok) {
+          form.classList.add('nl__form--done');
+          say(done, 'ok');
+          input.value = '';
+        } else {
+          say(data.error === 'invalid_email' ? errInvalid : errGeneric, 'err');
+        }
+      } catch {
+        say(errGeneric, 'err');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = btn.dataset.idle;
+      }
+    });
+  });
+})();
+</script>
