@@ -564,13 +564,17 @@ export function buildNewsletterWelcomeEmail({ unsubscribeUrl, lang = 'sv' }) {
       <p style="font-size:15px;line-height:1.7;color:#8a8a8a;margin:0;">${t.while}</p>
     </td></tr>
     <tr><td align="center" style="padding:26px 32px 40px;">
+      <!-- Both buttons share one table column, so the column is as wide as the
+           longer label. The anchors are display:block with centred text, which
+           makes the two buttons equal width and keeps each label centred
+           instead of hugging the left edge of the wider cell. -->
       <table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center">
-        <tr><td style="background:#CCFF00;border-radius:8px;">
-          <a href="https://www.musichubwest.com${en ? '/en/events' : '/evenemang'}" target="_blank" style="display:inline-block;padding:14px 26px;font-family:'Syne Mono','Courier New',monospace;font-size:14px;color:#050505;text-decoration:none;">${t.btn}</a>
+        <tr><td align="center" style="background:#CCFF00;border-radius:8px;">
+          <a href="https://www.musichubwest.com${en ? '/en/events' : '/evenemang'}" target="_blank" style="display:block;padding:14px 26px;font-family:'Syne Mono','Courier New',monospace;font-size:14px;color:#050505;text-decoration:none;text-align:center;">${t.btn}</a>
         </td></tr>
         <tr><td height="10" style="height:10px;line-height:10px;font-size:1px;">&nbsp;</td></tr>
         <tr><td align="center" style="border:1px solid #333333;border-radius:8px;">
-          <a href="https://www.musichubwest.com${en ? '/en/publish-event' : '/publicera-event'}" target="_blank" style="display:inline-block;padding:13px 24px;font-family:'Syne Mono','Courier New',monospace;font-size:13px;color:#ffffff;text-decoration:none;">${t.btn2}</a>
+          <a href="https://www.musichubwest.com${en ? '/en/publish-event' : '/publicera-event'}" target="_blank" style="display:block;padding:13px 24px;font-family:'Syne Mono','Courier New',monospace;font-size:13px;color:#ffffff;text-decoration:none;text-align:center;">${t.btn2}</a>
         </td></tr>
       </table>
     </td></tr>
