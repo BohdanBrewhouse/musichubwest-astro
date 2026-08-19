@@ -60,6 +60,29 @@ function verify(email, token, secret, purpose) {
   return ok ? 'ok' : 'invalid';
 }
 
+/**
+ * The Resend SDK does not throw on API errors — it resolves with
+ * `{ data, error }`. Awaiting inside a try/catch therefore catches nothing, and
+ * a rejected call (contact already exists, daily quota exceeded, bad address)
+ * looks exactly like success. Every call goes through here instead.
+ *
+ * Returns the error object, or null when the call succeeded. The try/catch is
+ * still needed for genuine network failures, which do reject.
+ */
+async function call(label, promise) {
+  try {
+    const res = await promise;
+    if (res?.error) {
+      console.error(`[subscribe] ${label} failed:`, res.error.name, res.error.message);
+      return res.error;
+    }
+    return null;
+  } catch (err) {
+    console.error(`[subscribe] ${label} threw:`, err?.message || err);
+    return { name: 'network_error', message: String(err?.message || err) };
+  }
+}
+
 function normalise(email) {
   return String(email || '').trim().toLowerCase();
 }
@@ -104,13 +127,11 @@ export default async function handler(req, res) {
     const result = verify(email, token, NEWSLETTER_SECRET, 'unsub');
     if (result !== 'ok') return res.redirect(302, `${base}?status=${result}`);
 
-    try {
-      // Selected by email; audienceId is deprecated and omitted.
-      await resend.contacts.update({ email, unsubscribed: true });
-    } catch (err) {
-      console.error('[subscribe] unsubscribe failed:', err?.message || err);
-      return res.redirect(302, `${base}?status=error`);
-    }
+    // Selected by email; audienceId is deprecated and omitted.
+    const err = await call('unsubscribe', resend.contacts.update({ email, unsubscribed: true }));
+    // Telling someone they are unsubscribed when the call failed is the one
+    // outcome we must never produce — they would keep receiving mail.
+    if (err) return res.redirect(302, `${base}?status=error`);
 
     return res.redirect(302, `${base}?status=unsubscribed`);
   }
@@ -129,59 +150,47 @@ export default async function handler(req, res) {
     if (!isEmail(email)) return res.status(400).json({ ok: false, error: 'invalid_email' });
 
     // New address: created active and straight into the newsletter segment.
-    let created = true;
-    try {
-      await resend.contacts.create({
-        email,
-        unsubscribed: false,
-        segments: [{ id: SEGMENT_ID }],
-      });
-    } catch (err) {
-      created = false;
-      console.warn('[subscribe] contact exists or create failed:', err?.message || err);
-    }
+    const createErr = await call('create contact', resend.contacts.create({
+      email,
+      unsubscribed: false,
+      segments: [{ id: SEGMENT_ID }],
+    }));
 
-    // Address already known — from an earlier signup, a manual add, or someone
-    // who unsubscribed before. create() fails in that case and leaves both the
-    // subscription flag and the segment untouched, so set them explicitly.
+    // create() rejects when the address is already a contact — from an earlier
+    // signup, a manual add, or someone who unsubscribed before — and leaves
+    // both the subscription flag and the segment untouched. Set them here.
     //
-    // Note this does re-activate a contact who had unsubscribed. With single
-    // opt-in that is the intended reading of a fresh form submission, but it
-    // also means a third party could put an unsubscribed address back on the
-    // list. Double opt-in is what would prevent it.
-    if (!created) {
-      try {
-        await resend.contacts.update({ email, unsubscribed: false });
-      } catch (err) {
-        console.error('[subscribe] reactivate failed:', err?.message || err);
-        return res.status(500).json({ ok: false, error: 'send_failed' });
-      }
-      // Idempotent and non-fatal: adding an existing member is not a problem.
-      try {
-        await resend.contacts.segments.add({ email, segmentId: SEGMENT_ID });
-      } catch (err) {
-        console.warn('[subscribe] segment add skipped:', err?.message || err);
-      }
+    // Note this re-activates a contact who had unsubscribed. With single opt-in
+    // that is the intended reading of a fresh form submission, but it also
+    // means a third party could put an unsubscribed address back on the list.
+    // Double opt-in is what would prevent it.
+    if (createErr) {
+      const updateErr = await call('reactivate', resend.contacts.update({ email, unsubscribed: false }));
+      // Both create and update failed — we cannot claim they are subscribed.
+      if (updateErr) return res.status(500).json({ ok: false, error: 'subscribe_failed' });
+
+      // Segment membership decides whether broadcasts reach them, so a failure
+      // here matters. It is reported rather than swallowed, but it does not
+      // fail the request: they are subscribed, and re-submitting would not help.
+      await call('add to segment', resend.contacts.segments.add({ email, segmentId: SEGMENT_ID }));
     }
 
-    // Welcome mail. Non-fatal: the person is subscribed either way, and failing
-    // the request would invite them to submit again and get a duplicate.
-    try {
-      const mail = buildNewsletterWelcomeEmail({
-        unsubscribeUrl: unsubscribeUrl(email, NEWSLETTER_SECRET, lang),
-        lang,
-      });
-      await resend.emails.send({
-        from: FROM,
-        to: email,
-        replyTo: REPLY_TO,
-        subject: mail.subject,
-        html: mail.html,
-        text: mail.text,
-      });
-    } catch (err) {
-      console.error('[subscribe] welcome mail failed:', err?.message || err);
-    }
+    // Welcome mail. A failure is logged but does not fail the request — they are
+    // subscribed either way, and an error would invite a duplicate submission.
+    // Watch for daily_quota_exceeded here: on the free plan the newsletter and
+    // the event-registration confirmations share one quota.
+    const mail = buildNewsletterWelcomeEmail({
+      unsubscribeUrl: unsubscribeUrl(email, NEWSLETTER_SECRET, lang),
+      lang,
+    });
+    await call('welcome mail', resend.emails.send({
+      from: FROM,
+      to: email,
+      replyTo: REPLY_TO,
+      subject: mail.subject,
+      html: mail.html,
+      text: mail.text,
+    }));
 
     return res.status(200).json({ ok: true });
   } catch (err) {
