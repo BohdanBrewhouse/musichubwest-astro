@@ -1,6 +1,6 @@
 ---
 title: Har du en idé du vill ta vidare?
-seo_description: Nytt program i Västra Götaland för dig i musikbranschen som vill utveckla din idé eller verksamhet. Fem träffar med start hösten 2026. Anmälan öppen nu.
+seo_description: Nytt program i Västra Götaland för dig i musikbranschen som vill utveckla din idé eller verksamhet. Fem träffar med start 1 oktober 2026. Sista anmälningsdag 18 september.
 date: '2026-10-01'
 time: 'Start kl. 15:00'
 location: Brewhouse Inkubator
@@ -36,7 +36,7 @@ Vi träffas vid fem tillfällen och jobbar praktiskt med just din verksamhet och
 
 * Fem träffar á tre timmar
 * Start: 1 oktober kl. 15:00
-* Sista anmälningsdatum: 7 september
+* Sista anmälningsdatum: fredag 18 september
 * Plats: Brewhouse, Åvägen 24, Göteborg
 * Kostnadsfritt att delta
 
@@ -46,6 +46,6 @@ Programmet riktar sig till dig som är verksam i musikbranschen i Västra Götal
 
 ### Så anmäler du dig
 
-Anmälan är öppen nu – sista anmälningsdatum är 7 september. Fyll i formuläret så hör vi av oss med mer information. Antalet platser är begränsat.
+Anmälan är öppen nu – sista anmälningsdatum är fredag 18 september. Fyll i formuläret så hör vi av oss med mer information. Antalet platser är begränsat.
 
 Har du frågor? Hör av dig till oss på [hello@musichubwest.se](mailto:hello@musichubwest.se).

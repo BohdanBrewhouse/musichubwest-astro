@@ -36,7 +36,7 @@ We meet five times and work hands-on with your business and your ideas. You'll g
 
 * Five sessions of three hours each
 * Starts: 1 October, 15:00
-* Application deadline: 7 September
+* Application deadline: Friday 18 September
 * Location: Brewhouse, Åvägen 24, Gothenburg
 * Free to take part
 
@@ -46,6 +46,6 @@ The programme is for you who are active in the music industry in Västra Götala
 
 ### How to register
 
-Registration is open now – the application deadline is 7 September. Fill in the form and we'll get back to you with more information. Places are limited.
+Registration is open now – the application deadline is Friday 18 September. Fill in the form and we'll get back to you with more information. Places are limited.
 
 Questions? Get in touch at [hello@musichubwest.se](mailto:hello@musichubwest.se).
