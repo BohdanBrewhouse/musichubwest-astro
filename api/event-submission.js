@@ -25,6 +25,7 @@
 import { createClient } from '@supabase/supabase-js';
 import { Resend } from 'resend';
 import { buildEventConfirmationEmail, buildEventTeamNotification } from './_email-template.js';
+import { resendCall } from './_resend.js';
 
 const TEAM_EMAIL  = 'bohdan@brewhouse.se';
 const FROM        = 'Music Hub West <hello@tuneinwest.se>';
@@ -122,14 +123,15 @@ export default async function handler(req, res) {
         eventDate:     row.event_date,
         eventLocation: row.event_location,
       });
-      await resend.emails.send({
+      const userErr = await resendCall('event-submission/user', resend.emails.send({
         from: FROM,
         to: row.email,
         replyTo: REPLY_TO,
         subject: userEmail.subject,
         html: userEmail.html,
         text: userEmail.text,
-      });
+      }));
+      if (userErr) console.error(`[event-submission] ⚠️ Confirmation NOT sent to ${row.email} (${userErr.name})`);
     } catch (e) {
       console.error('[event-submission] User email failed (non-fatal):', e?.message || e);
     }
@@ -151,14 +153,17 @@ export default async function handler(req, res) {
         fileUrls:        row.file_urls,
         submissionId,
       });
-      await resend.emails.send({
+      const teamErr = await resendCall('event-submission/team', resend.emails.send({
         from: FROM,
         to: TEAM_EMAIL,
         replyTo: row.email, // reply jumps straight back to the submitter
         subject: teamEmail.subject,
         html: teamEmail.html,
         text: teamEmail.text,
-      });
+      }));
+      // The team not hearing about a submission is the worse failure of the two:
+      // the submitter got their confirmation and will expect a reply.
+      if (teamErr) console.error(`[event-submission] ⚠️ TEAM NOT NOTIFIED of ${submissionId} (${teamErr.name})`);
     } catch (e) {
       console.error('[event-submission] Team email failed (non-fatal):', e?.message || e);
     }

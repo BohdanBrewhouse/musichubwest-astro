@@ -29,6 +29,7 @@
 import crypto from 'node:crypto';
 import { Resend } from 'resend';
 import { buildNewsletterWelcomeEmail } from './_email-template.js';
+import { resendCall as call } from './_resend.js';
 
 const FROM     = 'Music Hub West <hello@tuneinwest.se>';
 const REPLY_TO = 'hello@musichubwest.se';
@@ -58,29 +59,6 @@ function verify(email, token, secret, purpose) {
   const ok = expected.length === sig.length
     && crypto.timingSafeEqual(Buffer.from(expected), Buffer.from(sig));
   return ok ? 'ok' : 'invalid';
-}
-
-/**
- * The Resend SDK does not throw on API errors — it resolves with
- * `{ data, error }`. Awaiting inside a try/catch therefore catches nothing, and
- * a rejected call (contact already exists, daily quota exceeded, bad address)
- * looks exactly like success. Every call goes through here instead.
- *
- * Returns the error object, or null when the call succeeded. The try/catch is
- * still needed for genuine network failures, which do reject.
- */
-async function call(label, promise) {
-  try {
-    const res = await promise;
-    if (res?.error) {
-      console.error(`[subscribe] ${label} failed:`, res.error.name, res.error.message);
-      return res.error;
-    }
-    return null;
-  } catch (err) {
-    console.error(`[subscribe] ${label} threw:`, err?.message || err);
-    return { name: 'network_error', message: String(err?.message || err) };
-  }
 }
 
 function normalise(email) {

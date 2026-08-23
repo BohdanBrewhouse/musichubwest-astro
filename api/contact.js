@@ -14,6 +14,7 @@
  */
 import { Resend } from 'resend';
 import { buildMhwEmail } from './_email-template.js';
+import { resendCall } from './_resend.js';
 
 const COLUMN_IDS = {
   email: 'text_mm2dg4hr',   // Email
@@ -137,15 +138,19 @@ export default async function handler(req, res) {
       try {
         const resend = new Resend(RESEND_API_KEY);
         const { subject, html, text } = buildMhwEmail({ namn: namn.trim() });
-        const sent = await resend.emails.send({
+        const mailErr = await resendCall('contact', resend.emails.send({
           from: FROM_ADDRESS,
           to: emailVal,
           replyTo: REPLY_TO,
           subject,
           html,
           text,
-        });
-        console.log(`[contact] ✉️ Resend email sent → ${emailVal}`, sent?.data?.id || '');
+        }));
+        if (mailErr) {
+          console.error(`[contact] ⚠️ Email NOT sent → ${emailVal} (${mailErr.name})`);
+        } else {
+          console.log(`[contact] ✉️ Resend email sent → ${emailVal}`);
+        }
       } catch (mailErr) {
         console.error('[contact] Resend send failed (non-fatal):', mailErr?.message || mailErr);
       }
