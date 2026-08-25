@@ -2707,6 +2707,12 @@ dialog.mnav[open] .mnav__link:nth-child(4) .mnav__num { animation-delay: 0.22s; 
   flex-direction: column;
   gap: 7px;
 }
+/* A class that sets `display` outranks the browser's own [hidden] rule, so the
+   organisationsnummer field stayed on screen — asking for a personnummer — even
+   with Nej selected. Any element hidden via the attribute must actually hide. */
+[hidden] {
+  display: none !important;
+}
 .reg-form__label {
   font-size: 11px;
   text-transform: uppercase;
