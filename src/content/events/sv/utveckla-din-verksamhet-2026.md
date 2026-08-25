@@ -1,5 +1,5 @@
 ---
-title: Lev på din musik - boosta din business
+title: Lev på din musik  - boosta din business
 seo_description: Program i Västra Götaland för dig som tar betalt för musik och vill att företaget ska gå runt. Fem träffar med start 1 oktober 2026. Sista ansökningsdag 18 september.
 date: '2026-10-01'
 time: 'Start kl. 15:00'
@@ -14,7 +14,7 @@ organizer: Brewhouse Göteborg
 translationKey: utveckla-din-verksamhet-2026
 registration_open: true
 serve_food: false
-cta_label: cAnsök till programmet
+cta_label: Ansök till programmet
 ---
 
 ### Du driver redan ett företag
