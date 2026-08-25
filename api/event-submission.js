@@ -28,8 +28,8 @@ import { buildEventConfirmationEmail, buildEventTeamNotification } from './_emai
 import { resendCall } from './_resend.js';
 
 const TEAM_EMAIL  = 'bohdan@brewhouse.se';
-const FROM        = 'Music Hub West <hello@tuneinwest.se>';
-const REPLY_TO    = 'hello@musichubwest.se';
+const FROM        = process.env.EMAIL_FROM || 'Music Hub West <hello@musichubwest.com>';
+const REPLY_TO    = process.env.EMAIL_REPLY_TO || 'hello@musichubwest.se';
 
 function badRequest(res, msg) {
   return res.status(400).json({ ok: false, error: msg });

@@ -31,8 +31,8 @@ import { Resend } from 'resend';
 import { buildNewsletterWelcomeEmail } from './_email-template.js';
 import { resendCall as call } from './_resend.js';
 
-const FROM     = 'Music Hub West <hello@tuneinwest.se>';
-const REPLY_TO = 'hello@musichubwest.se';
+const FROM     = process.env.EMAIL_FROM || 'Music Hub West <hello@musichubwest.com>';
+const REPLY_TO = process.env.EMAIL_REPLY_TO || 'hello@musichubwest.se';
 const SITE     = 'https://www.musichubwest.com';
 
 // Unsubscribe links live in the reader's inbox indefinitely, so they must not expire.

@@ -22,8 +22,8 @@ import { Resend } from 'resend';
 import { buildAdminEmail } from './_email-template.js';
 
 const BUCKET = 'event-uploads';
-const EMAIL_FROM = 'Music Hub West <hello@tuneinwest.se>';
-const EMAIL_REPLY_TO = 'hello@musichubwest.se';
+const EMAIL_FROM = process.env.EMAIL_FROM || 'Music Hub West <hello@musichubwest.com>';
+const EMAIL_REPLY_TO = process.env.EMAIL_REPLY_TO || 'hello@musichubwest.se';
 const VALID_STATUS = new Set(['new', 'reviewing', 'approved', 'published', 'rejected']);
 
 function unauthorized(res) {

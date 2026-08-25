@@ -22,8 +22,8 @@ import { buildRegistrationConfirmationEmail } from './_email-template.js';
 import { resendCall } from './_resend.js';
 
 const MONDAY_API = 'https://api.monday.com/v2';
-const FROM     = 'Music Hub West <hello@tuneinwest.se>';
-const REPLY_TO = 'hello@musichubwest.se';
+const FROM     = process.env.EMAIL_FROM || 'Music Hub West <hello@musichubwest.com>';
+const REPLY_TO = process.env.EMAIL_REPLY_TO || 'hello@musichubwest.se';
 
 // ── Helper: call Monday GraphQL with optional variables ──────
 async function monday(query, variables, token) {
