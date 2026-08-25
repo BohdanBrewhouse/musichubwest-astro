@@ -3161,3 +3161,24 @@ dialog.mnav[open] .mnav__link:nth-child(4) .mnav__num { animation-delay: 0.22s; 
   }
   .footer__nl-lead { font-size: 14px; max-width: 38ch; }
 }
+
+/* ── Registration: company question ───────────────────── */
+.reg-form__radios { display: flex; gap: 10px; margin-top: 4px; }
+.reg-form__radio {
+  flex: 1 1 0; min-width: 0;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 12px 14px; cursor: pointer;
+  border: 1px solid var(--black-3); background: var(--black-2);
+  font-size: 15px; color: rgba(255,255,255,0.72);
+  transition: border-color .15s, color .15s, background .15s;
+}
+.reg-form__radio:hover { border-color: var(--grey-700); }
+.reg-form__radio input { accent-color: var(--lime); margin: 0; }
+/* :has keeps the checked state on the label without extra JS */
+.reg-form__radio:has(input:checked) {
+  border-color: var(--lime); color: var(--white); background: rgba(204,255,0,0.06);
+}
+.reg-form__radio:focus-within { border-color: var(--lime); }
+.reg-form__hint {
+  font-size: 12px; line-height: 1.6; color: var(--grey-500); margin: 8px 0 0;
+}

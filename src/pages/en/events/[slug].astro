@@ -518,6 +518,21 @@ const icsContent = dtStart ? [
             <label class="reg-form__label" for="reg-foretag">Current role / workplace <span class="reg-form__optional">(optional)</span></label>
             <input class="reg-form__input" type="text" id="reg-foretag" name="foretag" autocomplete="organization" placeholder="E.g. artist, producer at Sony, student at HSM..." />
           </div>
+          {/* Asked because the number of participating companies is reported to
+              Tillväxtverket. Required, or the report has gaps. */}
+          <div class="reg-form__field">
+            <span class="reg-form__label">Do you have a company? <span class="reg-form__required">*</span></span>
+            <div class="reg-form__radios">
+              <label class="reg-form__radio"><input type="radio" name="harBolag" value="Ja" required /><span>Yes</span></label>
+              <label class="reg-form__radio"><input type="radio" name="harBolag" value="Nej" required /><span>No</span></label>
+            </div>
+          </div>
+          <div class="reg-form__field" id="reg-orgnr-field" hidden>
+            <label class="reg-form__label" for="reg-orgnr">Company registration number <span class="reg-form__required">*</span></label>
+            <input class="reg-form__input" type="text" id="reg-orgnr" name="orgnr" inputmode="numeric" autocomplete="off" placeholder="XXXXXX-XXXX" pattern="[0-9]{6}-?[0-9]{4}" title="Ten digits, with or without a hyphen" />
+            <p class="reg-form__hint">We report the number of participating companies to Tillv&auml;xtverket. The number is used for that only.</p>
+          </div>
+
           {ev.data.serve_food && (
             <div class="reg-form__field">
               <label class="reg-form__label" for="reg-mat">Food preferences / allergies <span class="reg-form__optional">(optional)</span></label>
@@ -580,6 +595,23 @@ const icsContent = dtStart ? [
       var successEl = document.getElementById('reg-success');
 
       if (form) {
+        // The registration number is only asked for when there is a company, and
+        // is only required while visible — a hidden required field blocks submit.
+        var orgnrField = document.getElementById('reg-orgnr-field');
+        var orgnrInput = document.getElementById('reg-orgnr');
+        function syncOrgnr() {
+          var picked = form.querySelector('input[name="harBolag"]:checked');
+          var show = !!picked && picked.value === 'Ja';
+          orgnrField.hidden = !show;
+          orgnrInput.required = show;
+          if (!show) orgnrInput.value = '';
+        }
+        Array.prototype.forEach.call(
+          form.querySelectorAll('input[name="harBolag"]'),
+          function (r) { r.addEventListener('change', syncOrgnr); }
+        );
+        syncOrgnr();
+
         form.addEventListener('submit', function (e) {
           e.preventDefault();
           submitBtn.textContent = 'Sending...';

@@ -66,6 +66,30 @@ async function findGroupId(boardId, groupName, token) {
   return match?.id ?? null;
 }
 
+
+/**
+ * Find a column id by its title.
+ *
+ * Column ids on a Monday board are generated, not chosen, so hard-coding new
+ * ones means someone has to go dig them out first. Matching on the title means
+ * the team can create the column and it just works. Several spellings are
+ * accepted because nobody remembers the exact wording.
+ */
+async function findColumnId(boardId, titles, token) {
+  const data = await monday(
+    `{ boards(ids: [${boardId}]) { columns { id title type } } }`,
+    null,
+    token
+  );
+  const cols = data?.boards?.[0]?.columns ?? [];
+  const wanted = titles.map(t => t.toLowerCase().trim());
+  const match = cols.find(c => wanted.includes(c.title.toLowerCase().trim()));
+  if (!match) {
+    console.warn(`[register] No column titled ${titles.map(t => `"${t}"`).join(' / ')} on board ${boardId}. Available: ${cols.map(c => c.title).join(', ')}`);
+  }
+  return match ?? null;
+}
+
 // ── Main handler ─────────────────────────────────────────────
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -78,11 +102,12 @@ export default async function handler(req, res) {
   try {
     const {
       namn, epost, telefon, foretag, matpreferenser,
+      harBolag, orgnr,
       eventTitle, eventSlug, eventDate, eventLocation,
       translationKey, lang,
     } = req.body;
 
-    console.log('[register] Incoming:', { namn, epost, telefon, foretag, matpreferenser, eventTitle, eventSlug, eventDate, translationKey, lang });
+    console.log('[register] Incoming:', { namn, epost, telefon, foretag, matpreferenser, harBolag, hasOrgnr: !!orgnr, eventTitle, eventSlug, eventDate, translationKey, lang });
 
     // ── Validation ─────────────────────────────────────────
     if (!namn?.trim() || !epost?.trim()) {
@@ -91,6 +116,23 @@ export default async function handler(req, res) {
     const email = epost.trim().toLowerCase();
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       return res.status(400).json({ error: 'Ogiltig e-postadress' });
+    }
+
+    // Required for the Tillväxtverket report, so a missing answer is rejected
+    // rather than stored as unknown.
+    const hasCompany = harBolag === 'Ja' ? 'Ja' : harBolag === 'Nej' ? 'Nej' : null;
+    if (!hasCompany) {
+      return res.status(400).json({ error: 'Ange om du har bolag' });
+    }
+
+    // Ten digits, hyphen optional on input, always stored as NNNNNN-NNNN.
+    let orgNumber = null;
+    if (hasCompany === 'Ja') {
+      const digits = String(orgnr || '').replace(/\D/g, '');
+      if (digits.length !== 10) {
+        return res.status(400).json({ error: 'Ogiltigt organisationsnummer' });
+      }
+      orgNumber = `${digits.slice(0, 6)}-${digits.slice(6)}`;
     }
 
     // ── Confirmation email to the registrant (non-fatal) ────
@@ -176,6 +218,33 @@ export default async function handler(req, res) {
     // Matpreferenser / allergier (optional)
     if (matpreferenser?.trim()) {
       colObj[MONDAY_FOOD_COL] = matpreferenser.trim();
+    }
+
+    // Company answer. Ids are looked up by title so the team can add the columns
+    // without anyone hunting for generated ids; env vars pin them if wanted.
+    // Whatever cannot be written to a column is posted as an update on the item
+    // below, so the answer is never silently dropped.
+    const unwritten = [];
+
+    const hasCol = process.env.MONDAY_HAS_COMPANY_COL
+      ? { id: process.env.MONDAY_HAS_COMPANY_COL, type: 'text' }
+      : await findColumnId(MONDAY_BOARD_ID, ['Har bolag', 'Har du bolag', 'Bolag'], MONDAY_API_TOKEN);
+    if (hasCol) {
+      // A status column needs {"label": …}; a text column takes the string.
+      colObj[hasCol.id] = hasCol.type === 'status' ? { label: hasCompany } : hasCompany;
+    } else {
+      unwritten.push(`Har bolag: ${hasCompany}`);
+    }
+
+    if (orgNumber) {
+      const orgCol = process.env.MONDAY_ORGNR_COL
+        ? { id: process.env.MONDAY_ORGNR_COL, type: 'text' }
+        : await findColumnId(MONDAY_BOARD_ID, ['Organisationsnummer', 'Orgnr', 'Org.nr'], MONDAY_API_TOKEN);
+      if (orgCol) {
+        colObj[orgCol.id] = orgNumber;
+      } else {
+        unwritten.push(`Organisationsnummer: ${orgNumber}`);
+      }
     }
 
     console.log('[register] Column values to send:', JSON.stringify(colObj));
