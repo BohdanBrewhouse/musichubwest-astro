@@ -1,5 +1,5 @@
 ---
-title: Anser du dig vara företagare?
+title: Lev på din musik - boosta din business
 seo_description: Program i Västra Götaland för dig som tar betalt för musik och vill att företaget ska gå runt. Fem träffar med start 1 oktober 2026. Sista ansökningsdag 18 september.
 date: '2026-10-01'
 time: 'Start kl. 15:00'
@@ -11,10 +11,10 @@ event_type: Utlysning
 event_language: Svenska
 image: /images/event%20cover.png
 organizer: Brewhouse Göteborg
-cta_label: 'Ansök till programmet'
 translationKey: utveckla-din-verksamhet-2026
 registration_open: true
 serve_food: false
+cta_label: cAnsök till programmet
 ---
 
 ### Du driver redan ett företag
