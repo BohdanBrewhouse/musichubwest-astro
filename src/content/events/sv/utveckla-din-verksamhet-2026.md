@@ -14,7 +14,7 @@ organizer: Brewhouse Göteborg
 translationKey: utveckla-din-verksamhet-2026
 registration_open: true
 serve_food: false
-cta_label: Ansök till programmet
+cta_label: Anmäl intresse
 ---
 
 Ett kostnadsfritt utvecklingsprogram för dig som arbetar med musik i Västra Götaland och vill få mer fart på din verksamhet.
