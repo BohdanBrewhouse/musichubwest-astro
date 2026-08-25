@@ -1,5 +1,5 @@
 ---
-title: Lev på din musik  - boosta din business
+title: Lev på din musik  - Boosta din business
 seo_description: Program i Västra Götaland för dig som tar betalt för musik och vill att företaget ska gå runt. Fem träffar med start 1 oktober 2026. Sista ansökningsdag 18 september.
 date: '2026-10-01'
 time: 'Start kl. 15:00'
