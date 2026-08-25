@@ -1,6 +1,6 @@
 ---
 title: Make a living from music. Boost your business.
-seo_description: A free development programme in Västra Götaland for you who work with music and want to build momentum in your business. Five sessions starting 1 October. Application deadline 18 September.
+seo_description: A free development programme in Västra Götaland for you who work with music and want to build momentum in your business. Five sessions starting 1 October. Register your interest by 18 September.
 date: '2026-10-01'
 time: 'Starts 1 October, 15:00'
 location: Brewhouse Inkubator
@@ -59,12 +59,12 @@ This time we are especially reaching out to those we haven't met before.
 * Format: five sessions of three hours each
 * Location: Brewhouse, Åvägen 24, Gothenburg
 * Free to take part
-* Application deadline: Friday 18 September
+* Last day to register interest: Friday 18 September
 
 Places are limited. The programme runs within Tune In West together with Brewhouse Inkubator.
 
 ### Curious?
 
-Fill in the form and we'll tell you more. The application deadline is Friday 18 September.
+Fill in the form and we'll get in touch and tell you more. This is not an application — you are simply saying you are interested. The last day to register interest is Friday 18 September.
 
 Questions? Get in touch at [hello@musichubwest.se](mailto:hello@musichubwest.se).

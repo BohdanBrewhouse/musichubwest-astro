@@ -1,6 +1,6 @@
 ---
 title: Lev på din musik. Boosta din business.
-seo_description: Kostnadsfritt utvecklingsprogram i Västra Götaland för dig som arbetar med musik och vill få mer fart på din verksamhet. Fem träffar med start 1 oktober. Sista ansökningsdag 18 september.
+seo_description: Kostnadsfritt utvecklingsprogram i Västra Götaland för dig som arbetar med musik och vill få mer fart på din verksamhet. Fem träffar med start 1 oktober. Anmäl ditt intresse senast 18 september.
 date: '2026-10-01'
 time: 'Start kl. 15:00'
 location: Brewhouse Inkubator
@@ -59,12 +59,12 @@ Den här gången vänder vi oss särskilt till dig som vi inte träffat tidigare
 * Omfattning: fem träffar á tre timmar
 * Plats: Brewhouse, Åvägen 24, Göteborg
 * Kostnadsfritt att delta
-* Sista ansökningsdatum: fredag 18 september
+* Sista dag att anmäla intresse: fredag 18 september
 
 Antalet platser är begränsat. Programmet genomförs inom Tune In West tillsammans med Brewhouse Inkubator.
 
 ### Nyfiken?
 
-Fyll i formuläret så berättar vi mer. Sista ansökningsdatum är fredag 18 september.
+Fyll i formuläret så hör vi av oss och berättar mer. Det är ingen ansökan — du säger bara att du är intresserad. Sista dagen att anmäla intresse är fredag 18 september.
 
 Har du frågor? Hör av dig till oss på [hello@musichubwest.se](mailto:hello@musichubwest.se).
