@@ -1,6 +1,6 @@
 ---
-title: Har du en idé du vill ta vidare?
-seo_description: Nytt program i Västra Götaland för dig i musikbranschen som vill utveckla din idé eller verksamhet. Fem träffar med start 1 oktober 2026. Sista anmälningsdag 18 september.
+title: Anser du dig vara företagare?
+seo_description: Program i Västra Götaland för dig som tar betalt för musik och vill att företaget ska gå runt. Fem träffar med start 1 oktober 2026. Sista ansökningsdag 18 september.
 date: '2026-10-01'
 time: 'Start kl. 15:00'
 location: Brewhouse Inkubator
@@ -17,22 +17,29 @@ registration_open: true
 serve_food: false
 ---
 
-### Har du en idé eller verksamhet du vill ta vidare?
+### Du driver redan ett företag
 
-Under hösten startar vi ett nytt program för dig som jobbar i eller kring musikbranschen i Västra Götaland – artist, kreatör, driver verksamhet eller är på väg att bygga något eget.
+Om du tar betalt för det du gör inom musik – som artist, producent, studiomusiker, tekniker, arrangör eller något annat – då driver du ett företag. Även om du aldrig kallat det så själv.
 
-Kanske känner du igen dig i någon av de här frågorna:
+Och det är där det ofta stannar. Du är bra på musiken. Men ingen har visat dig hur du får det att gå runt.
 
-* **Behöver du nå en ny publik?**
-* **Vill du hitta nya samarbetspartners?**
-* **Funderar du på hur du kan utveckla eller bredda det du erbjuder?**
-* **Har du en idé du vill testa eller vidareutveckla?**
+Under hösten startar vi ett program för dig som vill ändra på det.
+
+### Kanske känner du igen dig
+
+* Du får jobb, men vet inte om det går ihop i slutet av året
+* Du säger ja till allt, för du vet inte vad du har råd att säga nej till
+* Du vill nå en ny publik eller nya kunder, men inte hur
+* Du har byggt det här i flera år och vill att det ska hålla längre
+* Du har en idé du vill testa, men aldrig hunnit
 
 Om du nickar igenkännande är det här något för dig.
 
-### Vad är det?
+### Vad vi gör
 
-Vi träffas vid fem tillfällen och jobbar praktiskt med just din verksamhet och dina idéer. Du får verktyg, stöd och nya perspektiv – och möter andra som står inför liknande frågor. Fokus ligger på att komma vidare på riktigt, i din egen takt.
+Vi träffas fem gånger och jobbar praktiskt med ditt företag – inte med teori. Vad du säljer, till vem, vad det kostar dig och vad det borde kosta. Du får verktyg, stöd och nya perspektiv, och du möter andra som står i samma sak.
+
+Fokus ligger på att komma vidare på riktigt, i din egen takt.
 
 * Fem träffar á tre timmar
 * Start: 1 oktober kl. 15:00
@@ -42,7 +49,13 @@ Vi träffas vid fem tillfällen och jobbar praktiskt med just din verksamhet och
 
 ### För vem?
 
-Programmet riktar sig till dig som är verksam i musikbranschen i Västra Götaland och vill utvecklas. Du behöver inte ha allt klart – det räcker med en idé eller en vilja att ta nästa steg. Den här gången vänder vi oss särskilt till dig som vi inte träffat tidigare.
+Programmet är för dig som är verksam i musikbranschen i Västra Götaland och tar betalt för det du gör – oavsett om du har enskild firma, aktiebolag, fakturerar via en förening eller ännu inte hunnit bestämma formen.
+
+Du behöver inte ha en färdig affärsplan. Du behöver inte ha ett lönsamt företag. Det räcker att du gör något inom musik som du vill ska hålla över tid.
+
+**Det här är inte för dig om** du söker en kurs i musikproduktion eller låtskrivande. Vi jobbar med företaget bakom musiken, inte med musiken.
+
+Den här gången vänder vi oss särskilt till dig som vi inte träffat tidigare.
 
 ### Så anmäler du dig
 
