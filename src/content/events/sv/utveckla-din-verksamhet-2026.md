@@ -1,6 +1,6 @@
 ---
-title: Lev på din musik  - Boosta din business
-seo_description: Program i Västra Götaland för dig som tar betalt för musik och vill att företaget ska gå runt. Fem träffar med start 1 oktober 2026. Sista ansökningsdag 18 september.
+title: Lev på din musik. Boosta din business.
+seo_description: Kostnadsfritt utvecklingsprogram i Västra Götaland för dig som arbetar med musik och vill få mer fart på din verksamhet. Fem träffar med start 1 oktober. Sista ansökningsdag 18 september.
 date: '2026-10-01'
 time: 'Start kl. 15:00'
 location: Brewhouse Inkubator
@@ -17,48 +17,54 @@ serve_food: false
 cta_label: Ansök till programmet
 ---
 
-### Du driver redan ett företag
+Ett kostnadsfritt utvecklingsprogram för dig som arbetar med musik i Västra Götaland och vill få mer fart på din verksamhet.
 
-Om du tar betalt för det du gör inom musik – som artist, producent, studiomusiker, tekniker, arrangör eller något annat – då driver du ett företag. Även om du aldrig kallat det så själv.
+Du kan vara artist, producent, låtskrivare, manager, arrangör, driva studio, label eller arbeta med musik på något helt annat sätt. Det viktiga är att du vill utveckla det du redan gör och skapa en starkare och mer hållbar verksamhet.
 
-Och det är där det ofta stannar. Du är bra på musiken. Men ingen har visat dig hur du får det att gå runt.
+**Kostnadsfritt · Fem träffar · Start 1 oktober**
 
-Under hösten startar vi ett program för dig som vill ändra på det.
+### Idé. Boost. Action.
 
-### Kanske känner du igen dig
+Du kan vara riktigt bra på det du gör och ändå fastna i frågor som:
 
-* Du får jobb, men vet inte om det går ihop i slutet av året
-* Du säger ja till allt, för du vet inte vad du har råd att säga nej till
-* Du vill nå en ny publik eller nya kunder, men inte hur
-* Du har byggt det här i flera år och vill att det ska hålla längre
-* Du har en idé du vill testa, men aldrig hunnit
+* Vem är egentligen min viktigaste målgrupp?
+* Är mitt erbjudande tydligt?
+* Hur når jag fler kunder eller uppdragsgivare?
+* Tar jag rätt betalt?
+* Finns det nya sätt att utveckla det jag redan gör?
 
-Om du nickar igenkännande är det här något för dig.
+Under fem träffar arbetar vi praktiskt med din egen verksamhet. Vi hjälper dig att titta på den med nya ögon, testa idéer och hitta konkreta vägar framåt.
 
-### Vad vi gör
+### Det här får du
 
-Vi träffas fem gånger och jobbar praktiskt med ditt företag – inte med teori. Vad du säljer, till vem, vad det kostar dig och vad det borde kosta. Du får verktyg, stöd och nya perspektiv, och du möter andra som står i samma sak.
+**IDÉ** — Se nya möjligheter i det du redan gör. Vi tittar på målgrupp, behov och vad som faktiskt skapar värde.
 
-Fokus ligger på att komma vidare på riktigt, i din egen takt.
+**BOOST** — Vässa ditt erbjudande och utforska hur din verksamhet kan utvecklas. Testa, utmana och förbättra.
 
-* Fem träffar á tre timmar
-* Start: 1 oktober kl. 15:00
-* Sista anmälningsdatum: fredag 18 september
-* Plats: Brewhouse, Åvägen 24, Göteborg
-* Kostnadsfritt att delta
+**ACTION** — Gå från tanke till handling. Du lämnar programmet med tydligare fokus och konkreta nästa steg.
 
-### För vem?
+### Vem är programmet för?
 
-Programmet är för dig som är verksam i musikbranschen i Västra Götaland och tar betalt för det du gör – oavsett om du har enskild firma, aktiebolag, fakturerar via en förening eller ännu inte hunnit bestämma formen.
+För dig som är yrkesverksam inom musik i Västra Götaland och vill utveckla din verksamhet.
 
-Du behöver inte ha en färdig affärsplan. Du behöver inte ha ett lönsamt företag. Det räcker att du gör något inom musik som du vill ska hålla över tid.
+Du kan till exempel vara artist, musiker, producent, låtskrivare, manager, arrangör, driva studio eller label, vara musikskapare eller frilansare.
 
-**Det här är inte för dig om** du söker en kurs i musikproduktion eller låtskrivande. Vi jobbar med företaget bakom musiken, inte med musiken.
+**Det här är inte för dig om** du söker en kurs i musikproduktion eller låtskrivande. Vi arbetar med verksamheten bakom musiken, inte med musiken.
 
 Den här gången vänder vi oss särskilt till dig som vi inte träffat tidigare.
 
-### Så anmäler du dig
+### Praktiskt
 
-Anmälan är öppen nu – sista anmälningsdatum är fredag 18 september. Fyll i formuläret så hör vi av oss med mer information. Antalet platser är begränsat.
+* Start: 1 oktober 2026 kl. 15:00
+* Omfattning: fem träffar á tre timmar
+* Plats: Brewhouse, Åvägen 24, Göteborg
+* Kostnadsfritt att delta
+* Sista ansökningsdatum: fredag 18 september
+
+Antalet platser är begränsat. Programmet genomförs inom Tune In West tillsammans med Brewhouse Inkubator.
+
+### Nyfiken?
+
+Fyll i formuläret så berättar vi mer. Sista ansökningsdatum är fredag 18 september.
 
 Har du frågor? Hör av dig till oss på [hello@musichubwest.se](mailto:hello@musichubwest.se).

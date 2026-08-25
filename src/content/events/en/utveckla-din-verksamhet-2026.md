@@ -1,6 +1,6 @@
 ---
-title: Do you consider yourself a business owner?
-seo_description: A programme in Västra Götaland for you who get paid for music and want the business to add up. Five sessions starting 1 October 2026. Application deadline 18 September.
+title: Make a living from music. Boost your business.
+seo_description: A free development programme in Västra Götaland for you who work with music and want to build momentum in your business. Five sessions starting 1 October. Application deadline 18 September.
 date: '2026-10-01'
 time: 'Starts 1 October, 15:00'
 location: Brewhouse Inkubator
@@ -11,54 +11,60 @@ event_type: Utlysning
 event_language: Swedish
 image: /images/event%20cover.png
 organizer: Brewhouse Göteborg
-cta_label: 'Apply to the programme'
 translationKey: utveckla-din-verksamhet-2026
 registration_open: true
 serve_food: false
+cta_label: Apply to the programme
 ---
 
-### You already run a business
+A free development programme for you who work with music in Västra Götaland and want to build momentum in your business.
 
-If you get paid for what you do in music – as an artist, producer, session musician, engineer, promoter or anything else – you are running a business. Even if you have never called it that.
+You might be an artist, producer, songwriter, manager or promoter, run a studio or a label, or work with music in some entirely different way. What matters is that you want to develop what you already do and build something stronger and more sustainable.
 
-And that is usually where it stops. You are good at the music. But nobody has shown you how to make it add up.
+**Free · Five sessions · Starts 1 October**
 
-This autumn we are starting a programme for you who want to change that.
+### Idea. Boost. Action.
 
-### You might recognise yourself
+You can be genuinely good at what you do and still get stuck on questions like:
 
-* You get work, but you don't know whether it adds up at the end of the year
-* You say yes to everything, because you don't know what you can afford to turn down
-* You want to reach a new audience or new clients, but not how
-* You have built this for years and want it to last longer
-* You have an idea you want to test, but never had the time
+* Who is actually my most important audience?
+* Is my offer clear?
+* How do I reach more clients or customers?
+* Am I charging what I should?
+* Are there new ways to develop what I already do?
 
-If you are nodding, this is for you.
+Across five sessions we work hands-on with your own business. We help you look at it with fresh eyes, test ideas and find concrete ways forward.
 
-### What we do
+### What you get
 
-We meet five times and work hands-on with your business – not with theory. What you sell, to whom, what it costs you and what it should cost. You get tools, support and new perspectives, and you meet others in the same situation.
+**IDEA** — See new possibilities in what you already do. We look at audience, needs and what actually creates value.
 
-The focus is on genuinely moving forward, at your own pace.
+**BOOST** — Sharpen your offer and explore how your business can develop. Test it, challenge it, improve it.
 
-* Five sessions of three hours each
-* Starts: 1 October, 15:00
-* Application deadline: Friday 18 September
-* Location: Brewhouse, Åvägen 24, Gothenburg
-* Free to take part
+**ACTION** — Go from thought to action. You leave the programme with clearer focus and concrete next steps.
 
 ### Who is it for?
 
-The programme is for you who are active in the music industry in Västra Götaland and get paid for what you do – whether you have a sole proprietorship, a limited company, invoice through an association, or haven't settled on a form yet.
+For you who work professionally with music in Västra Götaland and want to develop your business.
 
-You don't need a finished business plan. You don't need a profitable business. It is enough that you do something in music that you want to last.
+You might be an artist, musician, producer, songwriter, manager or promoter, run a studio or a label, be a music creator or a freelancer.
 
 **This is not for you if** you are looking for a course in music production or songwriting. We work on the business behind the music, not on the music itself.
 
 This time we are especially reaching out to those we haven't met before.
 
-### How to register
+### Practical details
 
-Registration is open now – the application deadline is Friday 18 September. Fill in the form and we'll get back to you with more information. Places are limited.
+* Starts: 1 October 2026, 15:00
+* Format: five sessions of three hours each
+* Location: Brewhouse, Åvägen 24, Gothenburg
+* Free to take part
+* Application deadline: Friday 18 September
+
+Places are limited. The programme runs within Tune In West together with Brewhouse Inkubator.
+
+### Curious?
+
+Fill in the form and we'll tell you more. The application deadline is Friday 18 September.
 
 Questions? Get in touch at [hello@musichubwest.se](mailto:hello@musichubwest.se).
