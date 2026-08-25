@@ -250,13 +250,22 @@ export default async function handler(req, res) {
     console.log('[register] Column values to send:', JSON.stringify(colObj));
 
     // ── Create item using GraphQL variables (avoids escaping issues) ──
+    //
+    // create_labels_if_missing matters more than it looks. "Har bolag" is a
+    // status column, and Monday rejects a label that is not already defined on
+    // it — so a column created with Monday's default labels (Klar / Arbetar på
+    // det / …) refused "Ja". That rejection killed the whole mutation, and the
+    // catch below then recreated the item with NO columns at all: one bad field
+    // silently emptied every other one. With this flag Monday adds Ja/Nej
+    // itself, so the team does not have to name the labels by hand.
     const mutation = `
       mutation CreateItem($boardId: ID!, $groupId: String!, $itemName: String!, $colVals: JSON) {
         create_item(
           board_id: $boardId,
           group_id: $groupId,
           item_name: $itemName,
-          column_values: $colVals
+          column_values: $colVals,
+          create_labels_if_missing: true
         ) { id }
       }
     `;
@@ -274,8 +283,31 @@ export default async function handler(req, res) {
       itemId = r?.create_item?.id;
       console.log(`[register] ✅ Created item #${itemId} with columns for ${email}`);
     } catch (colErr) {
-      // Column values rejected — fall back to name-only so registration isn't lost
-      console.warn('[register] create_item with columns failed, trying name-only. Error:', colErr.message);
+      console.warn('[register] create_item with columns failed:', colErr.message);
+
+      // Before giving up on every column, drop only the ones Monday is fussy
+      // about. A status column is the usual culprit — its value must match an
+      // existing label — and losing the whole registration's data because of
+      // one dropdown is a bad trade. Text columns take anything.
+      const fussy = Object.keys(colObj).filter((id) => id.startsWith('color_'));
+      if (fussy.length) {
+        const reduced = { ...colObj };
+        for (const id of fussy) {
+          unwritten.push(`${id}: ${JSON.stringify(colObj[id])}`);
+          delete reduced[id];
+        }
+        try {
+          const r1 = await monday(mutation, { ...variables, colVals: JSON.stringify(reduced) }, MONDAY_API_TOKEN);
+          itemId = r1?.create_item?.id;
+          console.warn(`[register] ⚠️ Created item #${itemId} without ${fussy.join(', ')} — values posted as an update instead`);
+        } catch (reducedErr) {
+          console.warn('[register] reduced column set also failed:', reducedErr.message);
+        }
+      }
+    }
+
+    // Last resort: name-only, so a registration is never lost outright.
+    if (!itemId) {
       const fallbackVars = {
         boardId:  String(MONDAY_BOARD_ID),
         groupId,
@@ -289,6 +321,25 @@ export default async function handler(req, res) {
       const r2 = await monday(fallbackMutation, fallbackVars, MONDAY_API_TOKEN);
       itemId = r2?.create_item?.id;
       console.warn(`[register] ⚠️ Created item #${itemId} NAME-ONLY for ${email} — fix column IDs`);
+    }
+
+    // Anything that could not go into a column is posted as an update on the
+    // item. Tillväxtverket reporting depends on the bolag answer, so it must be
+    // visible somewhere in Monday even when the column is missing or fussy —
+    // silently dropping it would be discovered at reporting time, too late.
+    if (itemId && unwritten.length) {
+      try {
+        await monday(
+          `mutation AddNote($itemId: ID!, $body: String!) {
+             create_update(item_id: $itemId, body: $body) { id }
+           }`,
+          { itemId: String(itemId), body: unwritten.join('\n') },
+          MONDAY_API_TOKEN
+        );
+        console.warn(`[register] Posted ${unwritten.length} unwritten value(s) as an update on #${itemId}`);
+      } catch (noteErr) {
+        console.error('[register] Could not post unwritten values:', noteErr.message, unwritten.join(' | '));
+      }
     }
 
     return res.status(200).json({ ok: true });
