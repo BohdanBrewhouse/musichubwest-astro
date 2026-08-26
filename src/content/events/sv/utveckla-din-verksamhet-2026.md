@@ -9,14 +9,14 @@ map_query: Åvägen 24 Göteborg
 category: Tune In West
 event_type: Utlysning
 event_language: Svenska
-image: /images/event%20cover.png
+image: /images/Lev på din musik Boosta din business cover.png
+cost: Kostnadsfritt
+duration: Fem träffar á tre timmar
+deadline: Fredag 18 september
 organizer: Brewhouse Göteborg
 translationKey: utveckla-din-verksamhet-2026
 registration_open: true
 serve_food: false
-cost: Kostnadsfritt
-duration: Fem träffar á tre timmar
-deadline: Fredag 18 september
 cta_label: Anmäl intresse
 ---
 
