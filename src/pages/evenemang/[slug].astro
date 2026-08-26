@@ -34,6 +34,13 @@ const extCtaLabel = ev.data.cta_label ?? (isOpenCall ? 'Till ansökan ↗' : 'L�
 // Internal form (our own DB) — only utveckla-din-verksamhet uses this path.
 const ownCtaLabel = ev.data.cta_label ?? (isOpenCall ? 'Ansök nu' : 'Anmäl dig nu');
 const ctaBoxTitle = isOpenCall ? 'Intresseanmälan' : 'Anmäl dig till eventet';
+// A two-sentence title ("Lev på din musik. Boosta din business.") wrapped
+// wherever the column ran out, landing on three ragged lines. Breaking at the
+// sentence instead gives one thought per line, and it works for both languages
+// without a hardcoded break — a single-sentence title comes back unchanged and
+// wraps naturally as before.
+const titleLines = ev.data.title.split(/(?<=\.)\s+/).filter(Boolean);
+
 
 // Build per-event meta description: explicit seo_description > auto from body > smart fallback
 function stripMarkdown(md: string): string {
@@ -176,7 +183,7 @@ const icsContent = dtStart ? [
       <div class="event-header__badge">
         <span class={`badge ${badgeClass[ev.data.category]}`}>{headerBadgeText}</span>
       </div>
-      <h1 class="event-header__title">{ev.data.title}</h1>
+      <h1 class="event-header__title">{titleLines.map((line) => <span class="event-header__title-line">{line}</span>)}</h1>
       <div class="event-header__bottom">
         <div class="event-meta-row">
           <div class="event-meta-item">

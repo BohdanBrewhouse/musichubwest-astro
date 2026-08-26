@@ -1783,6 +1783,11 @@ dialog.mnav[open] .mnav__link:nth-child(4) .mnav__num { animation-delay: 0.22s; 
   margin-bottom: 0;
   color: var(--white);
 }
+/* One sentence per line. On a narrow screen a long sentence may still wrap
+   inside its own line, which is the right outcome — better than overflowing. */
+.event-header__title-line {
+  display: block;
+}
 .event-header__bottom {
   display: flex;
   flex-direction: column;
@@ -1915,6 +1920,24 @@ dialog.mnav[open] .mnav__link:nth-child(4) .mnav__num { animation-delay: 0.22s; 
   color: rgba(255,255,255,0.75);
   margin-bottom: 24px;
 }
+/* Blockquote was unstyled, so Tina's quote button appeared to do nothing —
+   the markup was there, it just looked like an ordinary paragraph. It is the
+   one place in the body copy that carries the accent colour, which suits the
+   single line of headline facts it is used for. */
+.event-content blockquote {
+  margin: 0 0 28px;
+  padding: 0 0 0 18px;
+  border-left: 2px solid var(--lime);
+}
+.event-content blockquote p {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--lime);
+  margin-bottom: 0;
+}
+.event-content blockquote p + p { margin-top: 8px; }
+.event-content blockquote strong { font-weight: 700; color: inherit; }
+
 .event-content h2 {
   font-size: 24px;
   font-weight: 800;
