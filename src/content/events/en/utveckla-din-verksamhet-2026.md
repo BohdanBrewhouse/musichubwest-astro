@@ -24,7 +24,7 @@ A free development programme for you who work with music in Västra Götaland an
 
 You might be an artist, producer, songwriter, manager or promoter, run a studio or a label, or work with music in some entirely different way. What matters is that you want to develop what you already do and build something stronger and more sustainable.
 
-**Free · Five sessions · Starts 1 October**
+> **Free · Five sessions · Starts 1 October**
 
 ### Idea. Boost. Action.
 
