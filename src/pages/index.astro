@@ -26,6 +26,13 @@ const heroSlides = sorted.slice(0, 5);
 const cardEvents = sorted.slice(0, 6);
 const articles = await getCollection('articles', a => a.id.startsWith('sv/'));
 const latestArticles = articles.sort((a, b) => b.data.date.localeCompare(a.data.date)).slice(0, 3);
+// The glitch effect draws two copies of the title through ::before/::after with
+// content: attr(data-text). A copy that wraps differently from the real text
+// makes the coloured layers land on the wrong words, so the break cannot be
+// spans here — both the attribute and the text carry the same newline instead,
+// and white-space: pre-line makes them break identically.
+const heroTitle = (t) => t.split(/(?<=\.)\s+/).filter(Boolean).join('\n');
+
 ---
 <Base title="Music Hub West – Start" lang={lang} description="Möt musikbranschen i Västra Götaland. Music Hub West samlar musiker, producenter och kreatörer med events, masterclasses och ett community byggt för dig.">
   <fragment slot="hreflang">
@@ -93,7 +100,7 @@ const latestArticles = articles.sort((a, b) => b.data.date.localeCompare(a.data.
           </div>
           <div class="hero__slide-content">
             <span class={`badge ${({'Tune In West':'badge--tiw','Kulturverkstaden':'badge--kv','Högskolan för scen och musik':'badge--hsm','VGR':'badge--vgr','Partners':'badge--partner','Externa event':'badge--partner','Kulturakademin':'badge--kulturakademin'} as Record<string,string>)[ev.data.category] ?? ''} hero__badge`}>{(ev.data.category === 'Partners' || ev.data.category === 'Externa event') ? (ev.data.organizer ?? 'Partner') : ev.data.category}</span>
-            <h1 class="hero__title" data-text={ev.data.title}>{ev.data.title}</h1>
+            <h1 class="hero__title" data-text={heroTitle(ev.data.title)}>{heroTitle(ev.data.title)}</h1>
             <p class="hero__subtitle">{ev.data.date} på {ev.data.location}</p>
             <div class="hero__controls">
               <div class="hero__dots" role="tablist" aria-label="Bildspel">

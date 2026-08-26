@@ -294,14 +294,20 @@ h1, h2, h3, h4 { font-family: var(--font-display); }
 .hero__badge { margin-bottom: 16px; align-self: flex-start; }
 
 .hero__title {
-  font-size: clamp(40px, 6vw, 80px);
+  /* Capped at 72px rather than 80px: at 80px the English "Make a living from
+     music." needs 1040px, which would run across the photo. At 72px it needs
+     930px and stays clear of the subject. */
+  font-size: clamp(40px, 6vw, 72px);
   font-weight: 700;
   line-height: 1.0;
   letter-spacing: -0.03em;
-  max-width: 760px;
+  max-width: 960px;
   margin-bottom: 12px;
   color: var(--white);
   position: relative;
+  /* The title carries a newline between sentences; the glitch layers read the
+     same string from data-text, so both must honour it to stay aligned. */
+  white-space: pre-line;
 }
 
 .hero__title::before,
@@ -1779,7 +1785,11 @@ dialog.mnav[open] .mnav__link:nth-child(4) .mnav__num { animation-delay: 0.22s; 
   font-weight: 800;
   letter-spacing: -0.035em;
   line-height: 1.02;
-  max-width: 760px;
+  /* Was 760px, which pushed the longest sentence onto a line of its own.
+     Measured in Syne Mono at the 72px cap: "Boosta din business." needs 744px,
+     and the English "Make a living from music." needs 930px. 960px clears both
+     with slack for the wider monospace fallback shown before the webfont loads. */
+  max-width: 960px;
   margin-bottom: 0;
   color: var(--white);
 }
