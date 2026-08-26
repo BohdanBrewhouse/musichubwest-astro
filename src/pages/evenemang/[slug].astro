@@ -33,7 +33,7 @@ const isOpenCall = ev.data.event_type === 'Utlysning';
 const extCtaLabel = ev.data.cta_label ?? (isOpenCall ? 'Till ansökan ↗' : 'Läs mer ↗');
 // Internal form (our own DB) — only utveckla-din-verksamhet uses this path.
 const ownCtaLabel = ev.data.cta_label ?? (isOpenCall ? 'Ansök nu' : 'Anmäl dig nu');
-const ctaBoxTitle = isOpenCall ? 'Ansök' : 'Anmäl dig till eventet';
+const ctaBoxTitle = isOpenCall ? 'Intresseanmälan' : 'Anmäl dig till eventet';
 
 // Build per-event meta description: explicit seo_description > auto from body > smart fallback
 function stripMarkdown(md: string): string {
@@ -298,10 +298,22 @@ const icsContent = dtStart ? [
             <span class="event-cta-box__detail-value">{ev.data.spots_left} av {ev.data.spots_total}</span>
           </div>
         )}
+        {ev.data.duration && (
+          <div class="event-cta-box__detail">
+            <span class="event-cta-box__detail-label">Omfattning</span>
+            <span class="event-cta-box__detail-value">{ev.data.duration}</span>
+          </div>
+        )}
         {ev.data.cost && (
           <div class="event-cta-box__detail">
             <span class="event-cta-box__detail-label">Kostnad</span>
             <span class="event-cta-box__detail-value">{ev.data.cost}</span>
+          </div>
+        )}
+        {ev.data.deadline && (
+          <div class="event-cta-box__detail event-cta-box__detail--deadline">
+            <span class="event-cta-box__detail-label">Sista dag</span>
+            <span class="event-cta-box__detail-value">{ev.data.deadline}</span>
           </div>
         )}
         {ev.data.external_registration_url ? (

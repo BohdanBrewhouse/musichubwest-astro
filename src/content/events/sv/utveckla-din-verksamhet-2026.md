@@ -14,6 +14,9 @@ organizer: Brewhouse Göteborg
 translationKey: utveckla-din-verksamhet-2026
 registration_open: true
 serve_food: false
+cost: Kostnadsfritt
+duration: Fem träffar á tre timmar
+deadline: Fredag 18 september
 cta_label: Anmäl intresse
 ---
 

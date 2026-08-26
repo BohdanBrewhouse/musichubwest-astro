@@ -1989,8 +1989,23 @@ dialog.mnav[open] .mnav__link:nth-child(4) .mnav__num { animation-delay: 0.22s; 
   font-size: 14px;
 }
 .event-cta-box__detail:last-of-type { border-bottom: none; }
-.event-cta-box__detail-label { color: rgba(255,255,255,0.4); font-weight: 500; }
-.event-cta-box__detail-value { font-weight: 700; color: var(--white); text-align: right; }
+.event-cta-box__detail-label {
+  color: rgba(255,255,255,0.4);
+  font-weight: 500;
+  /* "Omfattning" must not be squeezed to one character per line by a long value */
+  flex: 0 0 auto;
+}
+.event-cta-box__detail-value {
+  font-weight: 700;
+  color: var(--white);
+  text-align: right;
+  /* Values like "Fem träffar á tre timmar" wrap instead of overflowing the card */
+  min-width: 0;
+  padding-left: 14px;
+}
+/* The deadline is the one fact that decides whether to act now or later, so it
+   carries the accent colour rather than sitting level with date and place. */
+.event-cta-box__detail--deadline .event-cta-box__detail-value { color: var(--lime); }
 .event-cta-box .btn {
   width: 100%;
   justify-content: center;

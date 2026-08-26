@@ -17,6 +17,10 @@ const events = defineCollection({
     spots_left: z.number().optional(),
     spots_total: z.number().optional(),
     cost: z.string().optional(),
+    // Practical facts that were only in the body text, so a reader scanning the
+    // sidebar could not see them before deciding.
+    duration: z.string().optional(),
+    deadline: z.string().optional(),
     organizer: z.string().optional(),
     organizer_email: z.string().optional(),
     translationKey: z.string(),

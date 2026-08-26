@@ -14,6 +14,9 @@ organizer: Brewhouse Göteborg
 translationKey: utveckla-din-verksamhet-2026
 registration_open: true
 serve_food: false
+cost: Free
+duration: Five sessions of three hours
+deadline: Friday 18 September
 cta_label: Register interest
 ---
 
