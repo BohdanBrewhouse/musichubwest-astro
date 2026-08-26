@@ -24,7 +24,7 @@ Ett kostnadsfritt utvecklingsprogram för dig som arbetar med musik i Västra G�
 
 Du kan vara artist, producent, låtskrivare, manager, arrangör, driva studio, label eller arbeta med musik på något helt annat sätt. Det viktiga är att du vill utveckla det du redan gör och skapa en starkare och mer hållbar verksamhet.
 
-**Kostnadsfritt · Fem träffar · Start 1 oktober**
+> **Kostnadsfritt · Fem träffar · Start 1 oktober**
 
 ### Idé. Boost. Action.
 
