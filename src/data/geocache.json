@@ -78,5 +78,23 @@
     "lng": null,
     "source": "nominatim",
     "failed": true
+  },
+  "Hamburg, Tyskland, Sweden": {
+    "lat": null,
+    "lng": null,
+    "source": "nominatim",
+    "failed": true
+  },
+  "Las Palmas, Gran Canaria, Sweden": {
+    "lat": null,
+    "lng": null,
+    "source": "nominatim",
+    "failed": true
+  },
+  "Hamburg, Germany, Sweden": {
+    "lat": null,
+    "lng": null,
+    "source": "nominatim",
+    "failed": true
   }
 }
