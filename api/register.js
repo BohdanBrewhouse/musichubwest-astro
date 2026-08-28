@@ -102,12 +102,12 @@ export default async function handler(req, res) {
   try {
     const {
       namn, epost, telefon, foretag, matpreferenser,
-      harBolag, orgnr,
+      harBolag, orgnr, source,
       eventTitle, eventSlug, eventDate, eventLocation,
       translationKey, lang,
     } = req.body;
 
-    console.log('[register] Incoming:', { namn, epost, telefon, foretag, matpreferenser, harBolag, hasOrgnr: !!orgnr, eventTitle, eventSlug, eventDate, translationKey, lang });
+    console.log('[register] Incoming:', { namn, epost, telefon, foretag, matpreferenser, harBolag, hasOrgnr: !!orgnr, source, eventTitle, eventSlug, eventDate, translationKey, lang });
 
     // ── Validation ─────────────────────────────────────────
     if (!namn?.trim() || !epost?.trim()) {
@@ -117,6 +117,15 @@ export default async function handler(req, res) {
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       return res.status(400).json({ error: 'Ogiltig e-postadress' });
     }
+
+    // Where the registration came from. Sent by the form as a single readable
+    // string ("meta / paid / lev-pa-din-musik / 178-foto") so the team can read
+    // the board without decoding parameters. Trimmed and capped because it goes
+    // into a cell, and stripped of characters that would break a CSV export.
+    const trafficSource = String(source || 'direkt')
+      .replace(/[\r\n\t]/g, ' ')
+      .trim()
+      .slice(0, 120) || 'direkt';
 
     // Required for the Tillväxtverket report, so a missing answer is rejected
     // rather than stored as unknown.
@@ -234,6 +243,15 @@ export default async function handler(req, res) {
       colObj[hasCol.id] = hasCol.type === 'status' ? { label: hasCompany } : hasCompany;
     } else {
       unwritten.push(`Har bolag: ${hasCompany}`);
+    }
+
+    const srcCol = process.env.MONDAY_SOURCE_COL
+      ? { id: process.env.MONDAY_SOURCE_COL, type: 'text' }
+      : await findColumnId(MONDAY_BOARD_ID, ['Källa', 'Kalla', 'Source', 'Kampanj'], MONDAY_API_TOKEN);
+    if (srcCol) {
+      colObj[srcCol.id] = trafficSource;
+    } else {
+      unwritten.push(`Källa: ${trafficSource}`);
     }
 
     if (orgNumber) {

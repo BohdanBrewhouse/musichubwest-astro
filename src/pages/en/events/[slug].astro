@@ -590,8 +590,47 @@ const icsContent = dtStart ? [
       content_name: vcTitle,
       content_category: vcType === 'Utlysning' ? 'open_call' : 'event',
     });
+
+    // Same signal on the dataLayer, so a tag in GTM can fire on it without any
+    // code change. This is what makes GTM a real option: the site publishes
+    // events, GTM decides which vendors hear them.
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: 'mhw_event_view',
+      event_title: vcTitle,
+      event_kind: vcType === 'Utlysning' ? 'open_call' : 'event',
+    });
   </script>
   <script is:inline>
+    // Attribution. The ad click lands here, but someone may read this page, look
+    // at another event and register later — so the source is stored per tab and
+    // survives that navigation. First touch wins: we want to know which ad
+    // brought them, not which page they happened to be on at the end.
+    function mhwCaptureSource() {
+      try {
+        var p = new URLSearchParams(location.search);
+        var src = p.get('utm_source');
+        if (!src) return;
+        if (sessionStorage.getItem('mhw_src')) return;
+        var parts = [src, p.get('utm_medium'), p.get('utm_campaign'), p.get('utm_content')];
+        sessionStorage.setItem('mhw_src', parts.filter(Boolean).join(' / '));
+      } catch (e) {}
+    }
+    function mhwReadSource() {
+      try {
+        var s = sessionStorage.getItem('mhw_src');
+        if (s) return s;
+      } catch (e) {}
+      try {
+        if (document.referrer) {
+          var h = new URL(document.referrer).hostname;
+          if (h && h !== location.hostname) return 'referral / ' + h;
+        }
+      } catch (e) {}
+      return 'direkt';
+    }
+    mhwCaptureSource();
+
     (function () {
       var regModal = document.getElementById('reg-modal');
       if (!regModal) return;
@@ -612,6 +651,12 @@ const icsContent = dtStart ? [
         // there are too few completed registrations to optimise on.
         if (typeof fbq === 'function') fbq('track', 'InitiateCheckout', {
           content_name: regModal.dataset.eventTitle,
+        });
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          event: 'mhw_registration_start',
+          event_title: regModal.dataset.eventTitle,
+          event_slug: regModal.dataset.eventSlug,
         });
       }
 
@@ -654,6 +699,7 @@ const icsContent = dtStart ? [
 
           var data = {};
           new FormData(form).forEach(function (val, key) { data[key] = val; });
+          data.source = mhwReadSource();
 
           fetch('/api/register', {
             method: 'POST',
@@ -678,6 +724,13 @@ const icsContent = dtStart ? [
               if (typeof fbq === 'function') fbq('track', 'Lead', {
                 content_name: regModal.dataset.eventTitle,
                 content_category: 'event_registration',
+              });
+              window.dataLayer = window.dataLayer || [];
+              window.dataLayer.push({
+                event: 'mhw_registration_complete',
+                event_title: regModal.dataset.eventTitle,
+                event_slug: regModal.dataset.eventSlug,
+                traffic_source: data.source,
               });
             })
             .catch(function () {
