@@ -581,6 +581,16 @@ const icsContent = dtStart ? [
     </div>
   </div>
 
+  <script is:inline define:vars={{ vcTitle: ev.data.title, vcType: ev.data.event_type }}>
+    // Meta: earliest signal in the funnel. Fires on every event page, so Meta has
+    // something to learn from long before there are enough completed
+    // registrations to optimise on. Guarded: fbq is absent without consent, and
+    // absent entirely until PUBLIC_META_PIXEL_ID is set.
+    if (typeof fbq === 'function') fbq('track', 'ViewContent', {
+      content_name: vcTitle,
+      content_category: vcType === 'Utlysning' ? 'open_call' : 'event',
+    });
+  </script>
   <script is:inline>
     (function () {
       var regModal = document.getElementById('reg-modal');
