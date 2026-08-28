@@ -25,7 +25,11 @@ t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];
 s.parentNode.insertBefore(t,s)}(window,document,'script',
 'https://connect.facebook.net/en_US/fbevents.js');
 fbq('init', '${PIXEL_ID}');
-fbq('track', 'PageView');`;
+fbq('track', 'PageView');
+/* Tells the pages that Meta events are owned here. When the pixel lives in GTM
+   instead, this is never set, the pages stay quiet, and GTM's own tags are the
+   only source — otherwise every event would be counted twice. */
+window.__mhwPixelInCode = true;`;
 
 const noscriptImg = `<img height="1" width="1" style="display:none" alt="" src="https://www.facebook.com/tr?id=${PIXEL_ID}&amp;ev=PageView&amp;noscript=1" />`;
 ---
