@@ -1,0 +1,38 @@
+---
+/**
+ * Meta (Facebook) Pixel — loads only when PUBLIC_META_PIXEL_ID is set.
+ *
+ * Nothing renders without the variable, so the pixel cannot go live by
+ * accident: adding the env var in Vercel is the deliberate act that turns it on,
+ * and removing it turns it off without a code change.
+ *
+ * data-cookiecategory="advertisement" hands the script to CookieYes, which
+ * holds it back until the visitor accepts that category — the same mechanism
+ * already gating GA4. Without consent the pixel never loads and Meta receives
+ * nothing, which is what makes this lawful here rather than merely quiet.
+ *
+ * Consequence worth knowing before optimising campaigns on it: visitors who
+ * decline marketing cookies are invisible to Meta, so reported conversions will
+ * undercount real ones. Judge performance on Monday registrations, not on the
+ * number Meta shows.
+ */
+const PIXEL_ID = import.meta.env.PUBLIC_META_PIXEL_ID;
+
+const pixelScript = `!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];
+t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window,document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '${PIXEL_ID}');
+fbq('track', 'PageView');`;
+
+const noscriptImg = `<img height="1" width="1" style="display:none" alt="" src="https://www.facebook.com/tr?id=${PIXEL_ID}&amp;ev=PageView&amp;noscript=1" />`;
+---
+
+{PIXEL_ID && (
+  <Fragment>
+    <script is:inline data-cookiecategory="advertisement" set:html={pixelScript}></script>
+    <noscript set:html={noscriptImg}></noscript>
+  </Fragment>
+)}

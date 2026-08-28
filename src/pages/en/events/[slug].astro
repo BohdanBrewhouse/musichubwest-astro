@@ -598,6 +598,11 @@ const icsContent = dtStart ? [
           event_title: regModal.dataset.eventTitle,
           event_slug:  regModal.dataset.eventSlug,
         });
+        // Meta: someone opened the form. Useful as a mid-funnel signal while
+        // there are too few completed registrations to optimise on.
+        if (typeof fbq === 'function') fbq('track', 'InitiateCheckout', {
+          content_name: regModal.dataset.eventTitle,
+        });
       }
 
       function closeRegModal() {
@@ -656,6 +661,13 @@ const icsContent = dtStart ? [
               if (typeof gtag === 'function') gtag('event', 'registration_complete', {
                 event_title: regModal.dataset.eventTitle,
                 event_slug:  regModal.dataset.eventSlug,
+              });
+              // Meta: the conversion campaigns optimise on. Guarded because the
+              // pixel is absent without consent, and absent entirely until
+              // PUBLIC_META_PIXEL_ID is set.
+              if (typeof fbq === 'function') fbq('track', 'Lead', {
+                content_name: regModal.dataset.eventTitle,
+                content_category: 'event_registration',
               });
             })
             .catch(function () {

@@ -10,6 +10,8 @@ const resolvedOgImage = ogImage ?? (lang === 'en' ? '/images/og-cover-en.jpg' : 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const ogLocale = lang === 'sv' ? 'sv_SE' : 'en_GB';
 const ogImageUrl = new URL(resolvedOgImage, Astro.site).toString();
+
+import MetaPixel from '../components/MetaPixel.astro';
 ---
 <!DOCTYPE html>
 <html lang={lang}>
@@ -35,6 +37,10 @@ const ogImageUrl = new URL(resolvedOgImage, Astro.site).toString();
     gtag('js', new Date());
     gtag('config', 'G-WNLNN5Z6V7');
   </script>
+  <!-- Meta Pixel — inert unless PUBLIC_META_PIXEL_ID is set, and held by
+       CookieYes until the visitor accepts marketing cookies. -->
+  <MetaPixel />
+
   <meta name="google-site-verification" content="Pn-dEjXzmEcuTc4zHd2gYBHCDLYSzMR-mN6tRy-8fvs" />
   <title>{title}</title>
   <meta name="description" content={description} />
