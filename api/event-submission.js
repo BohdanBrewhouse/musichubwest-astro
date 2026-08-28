@@ -29,7 +29,7 @@ import { resendCall } from './_resend.js';
 
 const TEAM_EMAIL  = 'bohdan@brewhouse.se';
 const FROM        = process.env.EMAIL_FROM || 'Music Hub West <hello@musichubwest.com>';
-const REPLY_TO    = process.env.EMAIL_REPLY_TO || 'hello@musichubwest.se';
+const REPLY_TO    = process.env.EMAIL_REPLY_TO || 'hello@musichubwest.com';
 
 function badRequest(res, msg) {
   return res.status(400).json({ ok: false, error: msg });

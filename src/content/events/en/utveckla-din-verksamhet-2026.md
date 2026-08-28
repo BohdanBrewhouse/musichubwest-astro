@@ -70,4 +70,4 @@ Places are limited. The programme runs within Tune In West together with Brewhou
 
 Fill in the form and we'll get in touch and tell you more. This is not an application — you are simply saying you are interested. The last day to register interest is Friday 18 September.
 
-Questions? Get in touch at [hello@musichubwest.se](mailto:hello@musichubwest.se).
+Questions? Get in touch at [hello@musichubwest.com](mailto:hello@musichubwest.com).

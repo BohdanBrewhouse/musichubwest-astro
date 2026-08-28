@@ -18,7 +18,7 @@ import { readFileSync, existsSync } from 'node:fs';
 import { Resend } from 'resend';
 
 const FROM     = 'Music Hub West <hello@tuneinwest.se>';
-const REPLY_TO = 'hello@musichubwest.se';
+const REPLY_TO = 'hello@musichubwest.com';
 
 // ── Config from the command line ──────────────────────────────────────
 const [id, file] = process.argv.slice(2);

@@ -76,7 +76,7 @@ export function buildMhwEmail({ namn }) {
           Music Hub West · Göteborg
         </p>
         <p style="font-family:'Outfit',-apple-system,Arial,sans-serif;font-size:12px;line-height:1.6;color:#666666;margin:0;text-align:center;">
-          <a href="mailto:hello@musichubwest.se" style="color:#CCFF00;text-decoration:none;">hello@musichubwest.se</a>
+          <a href="mailto:hello@musichubwest.com" style="color:#CCFF00;text-decoration:none;">hello@musichubwest.com</a>
           &nbsp;·&nbsp;
           <a href="https://musichubwest.com" style="color:#CCFF00;text-decoration:none;">musichubwest.com</a>
         </p>
@@ -97,7 +97,7 @@ Tack för ditt meddelande till Music Hub West. Vi har tagit emot det och återko
 Du får detta meddelande från Tune In West — projektet bakom Music Hub West.
 
 — Music Hub West
-hello@musichubwest.se
+hello@musichubwest.com
 https://musichubwest.com`;
 
   return { subject, html, text };
@@ -197,7 +197,7 @@ export function buildEventConfirmationEmail({ firstName, eventTitle, eventDate, 
           Music Hub West · Göteborg
         </p>
         <p style="font-family:'Outfit',-apple-system,Arial,sans-serif;font-size:12px;line-height:1.6;color:#666666;margin:0;text-align:center;">
-          <a href="mailto:hello@musichubwest.se" style="color:#CCFF00;text-decoration:none;">hello@musichubwest.se</a>
+          <a href="mailto:hello@musichubwest.com" style="color:#CCFF00;text-decoration:none;">hello@musichubwest.com</a>
           &nbsp;·&nbsp;
           <a href="https://musichubwest.com" style="color:#CCFF00;text-decoration:none;">musichubwest.com</a>
         </p>
@@ -218,7 +218,7 @@ ${date ? `\nDatum: ${date}` : ''}${location ? `\nPlats: ${location}` : ''}
 Den här tjänsten är till för dig som är aktör inom musikbranschen i Västra Götaland.
 
 — Music Hub West
-hello@musichubwest.se
+hello@musichubwest.com
 https://musichubwest.com`;
 
   return { subject, html, text };
@@ -260,7 +260,7 @@ export function buildAdminEmail({ subject, bodyText }) {
       <tr><td style="padding:24px 32px;background:#0a0a0a;border-top:1px solid #1a1a1a;">
         <p style="font-family:'Outfit',Arial,sans-serif;font-size:12px;line-height:1.6;color:#666;margin:0;text-align:center;">
           Music Hub West · Göteborg ·
-          <a href="mailto:hello@musichubwest.se" style="color:#CCFF00;text-decoration:none;">hello@musichubwest.se</a>
+          <a href="mailto:hello@musichubwest.com" style="color:#CCFF00;text-decoration:none;">hello@musichubwest.com</a>
         </p>
       </td></tr>
     </table>
@@ -474,7 +474,7 @@ export function buildRegistrationConfirmationEmail({ firstName, eventTitle, even
           Music Hub West · Göteborg
         </p>
         <p style="font-family:'Outfit',-apple-system,Arial,sans-serif;font-size:12px;line-height:1.6;color:#666666;margin:0;text-align:center;">
-          <a href="mailto:hello@musichubwest.se" style="color:#CCFF00;text-decoration:none;">hello@musichubwest.se</a>
+          <a href="mailto:hello@musichubwest.com" style="color:#CCFF00;text-decoration:none;">hello@musichubwest.com</a>
           &nbsp;·&nbsp;
           <a href="https://musichubwest.com" style="color:#CCFF00;text-decoration:none;">musichubwest.com</a>
         </p>
@@ -496,7 +496,7 @@ ${date ? `\nDate: ${date}` : ''}${location ? `\nLocation: ${location}` : ''}
 Can't make it after all? Just reply to this email and we'll take you off the list.
 
 — Music Hub West
-hello@musichubwest.se
+hello@musichubwest.com
 https://musichubwest.com`
     : `Hej ${name}!
 
@@ -506,7 +506,7 @@ ${date ? `\nDatum: ${date}` : ''}${location ? `\nPlats: ${location}` : ''}
 Får du förhinder? Svara bara på det här mejlet så tar vi bort dig från listan.
 
 — Music Hub West
-hello@musichubwest.se
+hello@musichubwest.com
 https://musichubwest.com`;
 
   return { subject: t.subject, html, text };
@@ -581,7 +581,7 @@ export function buildNewsletterWelcomeEmail({ unsubscribeUrl, lang = 'sv' }) {
     <tr><td style="padding:26px 32px;background:#0a0a0a;border-top:1px solid #1a1a1a;">
       <p style="font-size:12px;line-height:1.6;color:#777777;margin:0 0 10px;text-align:center;">
         Music Hub West · Göteborg ·
-        <a href="mailto:hello@musichubwest.se" style="color:#CCFF00;text-decoration:none;">hello@musichubwest.se</a>
+        <a href="mailto:hello@musichubwest.com" style="color:#CCFF00;text-decoration:none;">hello@musichubwest.com</a>
       </p>
       <p style="font-size:11px;line-height:1.6;color:#5a5a5a;margin:0;text-align:center;">
         ${t.foot}<br>
@@ -605,7 +605,7 @@ ${t.foot}
 ${unsubscribeUrl}
 
 — Music Hub West
-hello@musichubwest.se`;
+hello@musichubwest.com`;
 
   return { subject: t.subject, html, text };
 }

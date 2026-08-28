@@ -315,7 +315,7 @@ const SUPABASE_ANON_KEY = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
         </button>
 
         <div class="pub-form__error" id="pub-error" hidden>
-          Something went wrong. Try again or email us directly at hello@musichubwest.se.
+          Something went wrong. Try again or email us directly at hello@musichubwest.com.
         </div>
       </form>
 
@@ -991,7 +991,7 @@ const SUPABASE_ANON_KEY = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
     } catch (err) {
       console.error('[publish-event] Submit failed:', err);
       errorEl.hidden = false;
-      errorEl.textContent = 'Something went wrong. Try again or email us directly at hello@musichubwest.se.';
+      errorEl.textContent = 'Something went wrong. Try again or email us directly at hello@musichubwest.com.';
       submitBtn.disabled = false;
       submitBtn.textContent = 'Submit event →';
     }

@@ -70,4 +70,4 @@ Antalet platser är begränsat. Programmet genomförs inom Tune In West tillsamm
 
 Fyll i formuläret så hör vi av oss och berättar mer. Det är ingen ansökan — du säger bara att du är intresserad. Sista dagen att anmäla intresse är fredag 18 september.
 
-Har du frågor? Hör av dig till oss på [hello@musichubwest.se](mailto:hello@musichubwest.se).
+Har du frågor? Hör av dig till oss på [hello@musichubwest.com](mailto:hello@musichubwest.com).
