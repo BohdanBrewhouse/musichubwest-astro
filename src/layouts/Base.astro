@@ -72,6 +72,11 @@ import MetaPixel from '../components/MetaPixel.astro';
   <MetaPixel />
 
   <meta name="google-site-verification" content="Pn-dEjXzmEcuTc4zHd2gYBHCDLYSzMR-mN6tRy-8fvs" />
+  <!-- Meta domain verification. Must sit in <head> and be server-rendered:
+       Facebook's crawler does not run JavaScript, so a tag injected at runtime
+       would never be found. Astro renders this at build time, so it is in the
+       HTML source of every page. -->
+  <meta name="facebook-domain-verification" content="dtlktxeefec6aszhskn10iy7vxnbh2" />
   <title>{title}</title>
   <meta name="description" content={description} />
   <link rel="canonical" href={canonicalURL} />
