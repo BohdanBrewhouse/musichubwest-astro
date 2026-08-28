@@ -31,11 +31,15 @@ import MetaPixel from '../components/MetaPixel.astro';
   <script is:inline>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
+    /* All seven Consent Mode v2 storage types must be listed. Leaving one out
+       reads as an incomplete configuration — CookieYes' own GCM check reports
+       "Default consent not set" rather than naming the missing key. */
     gtag('consent', 'default', {
       ad_storage: 'denied',
       ad_user_data: 'denied',
       ad_personalization: 'denied',
       analytics_storage: 'denied',
+      personalization_storage: 'denied',
       functionality_storage: 'granted',
       security_storage: 'granted',
       wait_for_update: 500
