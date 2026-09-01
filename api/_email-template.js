@@ -73,7 +73,7 @@ export function buildMhwEmail({ namn }) {
 
       <tr><td style="padding:32px;background:#0a0a0a;border-top:1px solid #1a1a1a;">
         <p style="font-family:'Outfit',-apple-system,Arial,sans-serif;font-size:12px;line-height:1.6;color:#666666;margin:0 0 8px;text-align:center;">
-          Music Hub West · Göteborg
+          Music Hub West
         </p>
         <p style="font-family:'Outfit',-apple-system,Arial,sans-serif;font-size:12px;line-height:1.6;color:#666666;margin:0;text-align:center;">
           <a href="mailto:hello@musichubwest.com" style="color:#CCFF00;text-decoration:none;">hello@musichubwest.com</a>
@@ -194,7 +194,7 @@ export function buildEventConfirmationEmail({ firstName, eventTitle, eventDate, 
 
       <tr><td style="padding:32px;background:#0a0a0a;border-top:1px solid #1a1a1a;">
         <p style="font-family:'Outfit',-apple-system,Arial,sans-serif;font-size:12px;line-height:1.6;color:#666666;margin:0 0 8px;text-align:center;">
-          Music Hub West · Göteborg
+          Music Hub West
         </p>
         <p style="font-family:'Outfit',-apple-system,Arial,sans-serif;font-size:12px;line-height:1.6;color:#666666;margin:0;text-align:center;">
           <a href="mailto:hello@musichubwest.com" style="color:#CCFF00;text-decoration:none;">hello@musichubwest.com</a>
@@ -259,7 +259,7 @@ export function buildAdminEmail({ subject, bodyText }) {
       <tr><td style="padding:32px 32px 24px;background:#050505;">${bodyHtml}</td></tr>
       <tr><td style="padding:24px 32px;background:#0a0a0a;border-top:1px solid #1a1a1a;">
         <p style="font-family:'Outfit',Arial,sans-serif;font-size:12px;line-height:1.6;color:#666;margin:0;text-align:center;">
-          Music Hub West · Göteborg ·
+          Music Hub West ·
           <a href="mailto:hello@musichubwest.com" style="color:#CCFF00;text-decoration:none;">hello@musichubwest.com</a>
         </p>
       </td></tr>
@@ -471,7 +471,7 @@ export function buildRegistrationConfirmationEmail({ firstName, eventTitle, even
 
       <tr><td style="padding:32px;background:#0a0a0a;border-top:1px solid #1a1a1a;">
         <p style="font-family:'Outfit',-apple-system,Arial,sans-serif;font-size:12px;line-height:1.6;color:#666666;margin:0 0 8px;text-align:center;">
-          Music Hub West · Göteborg
+          Music Hub West
         </p>
         <p style="font-family:'Outfit',-apple-system,Arial,sans-serif;font-size:12px;line-height:1.6;color:#666666;margin:0;text-align:center;">
           <a href="mailto:hello@musichubwest.com" style="color:#CCFF00;text-decoration:none;">hello@musichubwest.com</a>
@@ -580,7 +580,7 @@ export function buildNewsletterWelcomeEmail({ unsubscribeUrl, lang = 'sv' }) {
     </td></tr>
     <tr><td style="padding:26px 32px;background:#0a0a0a;border-top:1px solid #1a1a1a;">
       <p style="font-size:12px;line-height:1.6;color:#777777;margin:0 0 10px;text-align:center;">
-        Music Hub West · Göteborg ·
+        Music Hub West ·
         <a href="mailto:hello@musichubwest.com" style="color:#CCFF00;text-decoration:none;">hello@musichubwest.com</a>
       </p>
       <p style="font-size:11px;line-height:1.6;color:#5a5a5a;margin:0;text-align:center;">
