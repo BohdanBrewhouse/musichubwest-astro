@@ -88,6 +88,10 @@ import MetaPixel from '../components/MetaPixel.astro';
   <!-- PWA -->
   <link rel="manifest" href="/manifest.json" />
   <meta name="theme-color" content="#0a0a0a" />
+  {/* The apple- prefix is deprecated and warns in the console; the
+      standard name is what browsers read now. Both are kept because
+      older iOS still only understands the prefixed one. */}
+  <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Music Hub West" />
