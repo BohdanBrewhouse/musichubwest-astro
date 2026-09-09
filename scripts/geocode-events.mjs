@@ -42,7 +42,45 @@ function parseFrontmatter(md) {
   return out;
 }
 
-async function readAllEvents() {
+/**
+ * Read events from Sanity instead of the disk.
+ *
+ * This is the one part of the migration that fails without an error: with the
+ * content in Sanity there are no markdown files, readAllEvents() would find
+ * nothing, the old cache would still be there, the build would stay green — and
+ * every new event would simply have no pin on the map. So a zero result is a
+ * hard failure here, not an empty list.
+ */
+async function readAllEventsFromSanity() {
+  const projectId = process.env.SANITY_PROJECT_ID;
+  const dataset = process.env.SANITY_DATASET || 'production';
+  const token = process.env.SANITY_TOKEN;
+  if (!projectId || !token) {
+    throw new Error('CONTENT_SOURCE=sanity but SANITY_PROJECT_ID / SANITY_TOKEN are not set');
+  }
+  // Only the three fields pickQuery() looks at. Address and location are
+  // localised; map_query is shared.
+  const groq = encodeURIComponent(
+    '*[_type == "event"]{ "sv": {"address": address.sv, "location": location.sv, "map_query": map_query}, "en": {"address": address.en, "location": location.en, "map_query": map_query} }'
+  );
+  const url = `https://${projectId}.api.sanity.io/v2024-10-01/data/query/${dataset}?query=${groq}`;
+  const res = await fetch(url, { headers: { Authorization: `Bearer ${token}` } });
+  if (!res.ok) throw new Error(`Sanity query failed: ${res.status} ${await res.text().catch(() => '')}`);
+  const { result } = await res.json();
+  if (!Array.isArray(result) || result.length === 0) {
+    throw new Error('Sanity returned 0 events. A private dataset answers an unauthenticated read with an empty set, so this is almost certainly the token.');
+  }
+  const events = [];
+  for (const d of result) {
+    for (const lang of ['sv', 'en']) {
+      const e = d[lang] || {};
+      events.push({ lang, file: `${lang}/sanity`, address: e.address ?? undefined, location: e.location ?? undefined, map_query: e.map_query ?? undefined });
+    }
+  }
+  return events;
+}
+
+async function readAllEventsFromDisk() {
   const events = [];
   for (const lang of ['sv', 'en']) {
     const dir = path.join(EVENTS_DIR, lang);
@@ -97,7 +135,9 @@ function pickQuery(ev) {
 }
 
 async function main() {
-  const events = await readAllEvents();
+  const useSanity = process.env.CONTENT_SOURCE === 'sanity';
+  console.log(`📍 Source: ${useSanity ? 'Sanity' : 'markdown on disk'}`);
+  const events = useSanity ? await readAllEventsFromSanity() : await readAllEventsFromDisk();
   const cache  = await loadCache();
   const queries = new Set();
 

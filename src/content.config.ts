@@ -1,8 +1,23 @@
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
+import { sanityEvents, sanityArticles } from './loaders/sanity';
+
+/*
+  One switch decides where content comes from.
+
+  CONTENT_SOURCE=sanity is set only on Vercel's Preview environment, so
+  production physically cannot read Sanity even though the code is present —
+  and rolling back is removing one environment variable, not reverting code.
+
+  The zod schemas below are shared by both paths on purpose: they are the
+  contract, and the Sanity loader has to satisfy exactly the same shape the
+  markdown files do. If a field drifts, the build fails here rather than on a
+  page.
+*/
+const USE_SANITY = (import.meta.env.CONTENT_SOURCE ?? process.env.CONTENT_SOURCE) === 'sanity';
 
 const events = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/events' }),
+  loader: USE_SANITY ? sanityEvents() : glob({ pattern: '**/*.md', base: './src/content/events' }),
   schema: z.object({
     title: z.string(),
     seo_description: z.string().optional(),
@@ -49,7 +64,7 @@ const events = defineCollection({
 });
 
 const articles = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/articles' }),
+  loader: USE_SANITY ? sanityArticles() : glob({ pattern: '**/*.md', base: './src/content/articles' }),
   schema: z.object({
     title: z.string(),
     author: z.string(),

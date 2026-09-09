@@ -6,6 +6,13 @@ import vercel from '@astrojs/vercel';
 
 export default defineConfig({
   site: 'https://www.musichubwest.com',
+  // Content images live on Sanity's CDN once CONTENT_SOURCE=sanity. Both the
+  // Astro <Image> component and Vercel's image service refuse remote hosts they
+  // were not told about — and they refuse silently, so the images would simply
+  // not appear while the build stayed green.
+  image: {
+    domains: ['cdn.sanity.io'],
+  },
   integrations: [mdx(), sitemap()],
   i18n: {
     defaultLocale: 'sv',
@@ -23,7 +30,7 @@ export default defineConfig({
     imagesConfig: {
       sizes: [320, 640, 768, 1024, 1280, 1920],
       formats: ['image/webp'],
-      domains: [],
+      domains: ['cdn.sanity.io'],
     },
   }),
 });
