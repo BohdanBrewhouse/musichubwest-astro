@@ -10,7 +10,7 @@ category: Partners
 event_type: Event
 event_language: Svenska
 image: /images/goteborgskalaset-musiklabbet.jpg
-cost: Gratis
+cost: Kostnadsfritt
 organizer: Göteborgskalaset / Göteborg & Co
 translationKey: musiklabbet-goteborgskalaset-2026
 registration_open: false
