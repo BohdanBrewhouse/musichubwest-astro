@@ -1785,11 +1785,13 @@ dialog.mnav[open] .mnav__link:nth-child(4) .mnav__num { animation-delay: 0.22s; 
   font-weight: 800;
   letter-spacing: -0.035em;
   line-height: 1.02;
-  /* Was 760px, which pushed the longest sentence onto a line of its own.
-     Measured in Syne Mono at the 72px cap: "Boosta din business." needs 744px,
-     and the English "Make a living from music." needs 930px. 960px clears both
-     with slack for the wider monospace fallback shown before the webfont loads. */
-  max-width: 960px;
+  /* Sized in ch, not px, because the title is set in Syne Mono: one ch is one
+     character, so the limit tracks the clamp above instead of being re-measured
+     every time a title changes. The longest sentence in either language is
+     "Make a living from music." at 25 characters; 26ch leaves one character of
+     slack for the monospace fallback shown before the webfont loads. Two px
+     guesses in a row put the English title on three lines. */
+  max-width: 26ch;
   margin-bottom: 0;
   color: var(--white);
 }
