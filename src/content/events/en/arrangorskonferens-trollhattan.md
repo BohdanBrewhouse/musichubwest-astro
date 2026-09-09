@@ -1,7 +1,7 @@
 ---
 title: Event Organiser Conference – Subkultfestivalen & VGR
 seo_description: >-
-  Full-day conference for cultural event organisers in Western Sweden. Hosted by
+  Full-day conference for cultural event organisers in Västra Götaland. Hosted by
   Subkultfestivalen & VGR on 26 June 2026 at Scandic Swania, Trollhättan.
 date: '2026-06-26'
 time: '10:00–17:00'

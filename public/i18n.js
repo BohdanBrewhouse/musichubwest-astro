@@ -12,7 +12,7 @@ const TRANSLATIONS = {
     'nav.about':    'About',
 
     // FOOTER
-    'footer.tagline':  "A platform for the music industry's growth in Western Sweden.",
+    'footer.tagline':  "A platform for the music industry's growth in Västra Götaland.",
     'footer.col.nav':  'Navigate',
     'footer.col.proj': 'Project',
     'footer.col.part': 'Partners',
@@ -43,7 +43,7 @@ const TRANSLATIONS = {
     'index.news.title':   'News & Articles',
     'index.news.more':    'All articles',
     'index.strip.kicker': 'Project 2026–2029',
-    'index.strip.text':   "Funded by Tillväxtverket, Västra Götalandsregionen, the Academy of Music and Drama, and Brewhouse Göteborg to support the music industry's growth in Western Sweden.",
+    'index.strip.text':   "Funded by Tillväxtverket, Västra Götalandsregionen, the Academy of Music and Drama, and Brewhouse Göteborg to support the music industry's growth in Västra Götaland.",
 
     // HERO SLIDES
     'hero.s1.title': 'Masterclass in AI for the Music Industry',
@@ -71,7 +71,7 @@ const TRANSLATIONS = {
 
     // ARTICLES PAGE
     'art.hero.title':    'Articles &\nNews',
-    'art.hero.sub':      'Reportage, reflections and news from music industry players in Western Sweden.',
+    'art.hero.sub':      'Reportage, reflections and news from music industry players in Västra Götaland.',
     'art.feat.title':    '20 Companies Attended the AI Agents Workshop',
     'art.feat.meta':     'Angelica Kranz · May 12th 2026',
     'art.feat.desc':     'Musicians, Producers and Record Labels gathered at Brewhouse to learn how AI agents can streamline their work. "So much fun" said one participant spontaneously after the workshop.',
@@ -80,7 +80,7 @@ const TRANSLATIONS = {
     'art.c2.title': 'AI and Copyright – A Legal Vacuum',
     'art.c2.desc':  'Learn how to leverage AI for making good decisions.',
     'art.c3.title': 'New Report: Music Industry Growth in the West',
-    'art.c3.desc':  'A new report from Tillväxtverket shows that the music industry in Western Sweden is growing faster than the national average.',
+    'art.c3.desc':  'A new report from Tillväxtverket shows that the music industry in Västra Götaland is growing faster than the national average.',
     'art.c4.title': 'Five Tips for Booking Your First Tour',
     'art.c4.desc':  'Booking a tour can feel overwhelming. Here are five concrete steps to get started.',
     'art.c5.title': 'Streaming Revenue – What Actually Reaches the Artist?',
@@ -89,7 +89,7 @@ const TRANSLATIONS = {
     'art.c6.desc':  'A brand new recording studio with state-of-the-art equipment opens for Brewhouse members on March 1st.',
 
     // OM PAGE
-    'om.hero.sub':     'A platform that brings together music industry players in Western Sweden.',
+    'om.hero.sub':     'A platform that brings together music industry players in Västra Götaland.',
     'om.contact.title': 'Contact us',
     'om.contact.sub':  "Funded by Tillväxtverket, Västra Götalandsregionen, the Academy of Music and Drama, and Brewhouse Göteborg to support the growth of the music industry.",
     'om.form.title':   'Send a message',
@@ -102,19 +102,19 @@ const TRANSLATIONS = {
     'om.form.org.ph':  'Company / Organisation',
     'om.form.msg.ph':  'How can we help you?',
     'om.form.btn':     'Send',
-    'om.strip.text':   "Funded by Tillväxtverket, Västra Götalandsregionen, the Academy of Music and Drama, and Brewhouse Göteborg to support the music industry's growth in Western Sweden.",
+    'om.strip.text':   "Funded by Tillväxtverket, Västra Götalandsregionen, the Academy of Music and Drama, and Brewhouse Göteborg to support the music industry's growth in Västra Götaland.",
     'om.strip.link':   'Read more about the project',
 
     // TIW PAGE
     'tiw.hero.kicker': 'Project 2026–2029',
-    'tiw.hero.text':   "Funded by Tillväxtverket, Västra Götalandsregionen, the Academy of Music and Drama, and Brewhouse Göteborg to create conditions for the music industry's growth in Western Sweden.",
+    'tiw.hero.text':   "Funded by Tillväxtverket, Västra Götalandsregionen, the Academy of Music and Drama, and Brewhouse Göteborg to create conditions for the music industry's growth in Västra Götaland.",
     'tiw.hero.link':   'Contact us →',
     'tiw.stats.title': 'The project in numbers',
     'tiw.stat1.lbl':   'participating companies',
     'tiw.stat2.lbl':   'in funding',
     'tiw.stat3.lbl':   'events per year',
     'tiw.about.t1':    'What is Tune In West?',
-    'tiw.about.p1':    "Tune In West is a time-limited project (2026–2029) aimed at strengthening the music industry's infrastructure and growth in Western Sweden.",
+    'tiw.about.p1':    "Tune In West is a time-limited project (2026–2029) aimed at strengthening the music industry's infrastructure and growth in Västra Götaland.",
     'tiw.about.p2':    "The project is jointly funded by Tillväxtverket, Västra Götalandsregionen, the Academy of Music and Drama (HSM), and Brewhouse Göteborg — and is run through the Music Hub West platform.",
     'tiw.about.p3':    "Tune In West is the sender and co-organiser of a range of activities within Music Hub West — but Music Hub West is an open platform for the entire industry.",
     'tiw.about.t2':    'What do we do?',
@@ -156,7 +156,7 @@ const TRANSLATIONS = {
     'ev.practical.title': 'Practical information',
     'ev.body.p1':      '<strong>During an intensive half-day you\'ll learn how AI agents can streamline work in the music industry</strong> — whether you\'re an artist, producer, manager or run a record label.',
     'ev.body.p2':      'The workshop is practical and hands-on. We go through tools available today and show you how to start using them immediately — no technical background required.',
-    'ev.body.p3':      'The workshop is aimed at those working in the music industry in Western Sweden — artist, songwriter, producer, manager, booker, or running a music-related business. No technical knowledge required.',
+    'ev.body.p3':      'The workshop is aimed at those working in the music industry in Västra Götaland — artist, songwriter, producer, manager, booker, or running a music-related business. No technical knowledge required.',
     'ev.body.p4':      'The workshop is held at Brewhouse in central Gothenburg. Coffee and a light lunch are included. Max 25 participants — register early to secure your spot.',
     'ev.li1': 'Introduction to AI agents and what they can actually do',
     'ev.li2': 'Hands-on: Automate communication with bookers and promoters',
@@ -182,7 +182,7 @@ const TRANSLATIONS = {
     'nav.about':    'Om',
 
     // FOOTER
-    'footer.tagline':  'En plattform för musikindustrins tillväxt i Västra Sverige.',
+    'footer.tagline':  'En plattform för musikindustrins tillväxt i Västra Götaland.',
     'footer.col.nav':  'Navigera',
     'footer.col.proj': 'Projekt',
     'footer.col.part': 'Partners',
@@ -241,7 +241,7 @@ const TRANSLATIONS = {
 
     // ARTICLES PAGE
     'art.hero.title':    'Artiklar &\nNyheter',
-    'art.hero.sub':      'Reportage, reflektioner och nyheter från musikindustrins aktörer i Västra Sverige.',
+    'art.hero.sub':      'Reportage, reflektioner och nyheter från musikindustrins aktörer i Västra Götaland.',
     'art.feat.title':    '20 bolag deltog i workshoppen om AI-agenter',
     'art.feat.meta':     'Angelica Kranz · 12:e maj 2026',
     'art.feat.desc':     'Musiker, Producenter och Skivbolag hängde tillsammans på Brewhouse och lärde sig hur AI agenter kan effektivisera deras arbete. "Kul som fan" sa en deltagare spontant efter workshopen.',
@@ -259,7 +259,7 @@ const TRANSLATIONS = {
     'art.c6.desc':  'En helt ny inspelningsstudio med toppmodern utrustning öppnar för Brewhouse-members den 1 mars.',
 
     // OM PAGE
-    'om.hero.sub':     'En plattform som samlar musikindustrins aktörer i Västra Sverige.',
+    'om.hero.sub':     'En plattform som samlar musikindustrins aktörer i Västra Götaland.',
     'om.contact.title': 'Kontakta oss',
     'om.contact.sub':  'Med finansiering från Tillväxtverket, Västra Götalandsregionen, Högskolan för Scen och Musik samt Brewhouse Göteborg skapas förutsättningar för musikindustrins tillväxt.',
     'om.form.title':   'Skicka ett meddelande',
@@ -326,7 +326,7 @@ const TRANSLATIONS = {
     'ev.practical.title': 'Praktisk information',
     'ev.body.p1':      '<strong>Under en intensiv halvdag lär du dig hur AI-agenter kan effektivisera arbetet i musikbranschen</strong> — oavsett om du är artist, producent, manager eller driver ett skivbolag.',
     'ev.body.p2':      'Workshopen är praktisk och hands-on. Vi går igenom verktyg som redan finns tillgängliga idag och visar hur du kan börja använda dem direkt i din vardag — utan teknisk bakgrund.',
-    'ev.body.p3':      'Workshopen riktar sig till dig som jobbar inom musikbranschen i Västra Sverige — artist, låtskrivare, producent, manager, bokare, eller driver ett musikrelaterat företag. Inga tekniska förkunskaper krävs.',
+    'ev.body.p3':      'Workshopen riktar sig till dig som jobbar inom musikbranschen i Västra Götaland — artist, låtskrivare, producent, manager, bokare, eller driver ett musikrelaterat företag. Inga tekniska förkunskaper krävs.',
     'ev.body.p4':      'Workshopen hålls på Brewhouse i centrala Göteborg. Kaffe och enklare lunch ingår. Max 25 deltagare — anmäl dig tidigt för att säkra din plats.',
     'ev.li1': 'Introduktion till AI-agenter och vad de faktiskt kan göra',
     'ev.li2': 'Hands-on: Automatisera kommunikation med bokare och promotors',

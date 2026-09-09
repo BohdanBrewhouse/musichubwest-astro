@@ -18,7 +18,7 @@ registration_open: false
 external_registration_url: 'https://www.vgregion.se/f/kulturforvaltningen/vi-erbjuder/stod-och-stipendier/aktuella-utlysningar/utlysningar-aktuella/residens-for-popularmusik-i-strawberry-studio--med-fokus-pa-musikproduktion/'
 ---
 
-### Ansök om residens i ett av Västsveriges mest välkända studior
+### Ansök om residens i ett av Västra Götalands mest välkända studior
 
 Kulturförvaltningen i Västra Götalandsregionen erbjuder ett residens i Strawberry Studio i Töreboda – en legendarisk studio med en gedigen historia av inspelningar på toppnivå.
 

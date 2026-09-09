@@ -20,7 +20,7 @@ external_registration_url: 'https://www.vgregion.se/f/kulturforvaltningen/vi-erb
 
 > **Note:** The application form is in Swedish. This residency is open to producers and artists based in Västra Götaland, Sweden.
 
-### Apply for a residency at one of Western Sweden's most renowned studios
+### Apply for a residency at one of Västra Götaland's most renowned studios
 
 The Cultural Department of the Västra Götaland Region is offering a residency at Strawberry Studio in Töreboda – a legendary studio with an outstanding track record of professional recordings.
 
