@@ -236,6 +236,12 @@ const eventsBase = lang === 'sv' ? '/evenemang' : '/en/events';
   .mhw-popup__cta:hover { transform: translateX(2px); }
   .mhw-popup__cta::after { content: '→'; }
 
+  /* Desaturate the basemap so the lime pins keep their contrast. OSM tiles are
+     full-colour; this reproduces the muted grey CARTO used to give us. */
+  .leaflet-tile-pane {
+    filter: grayscale(1) contrast(0.92) brightness(1.06);
+  }
+
   /* Dim Leaflet attribution bar — keep it readable but unobtrusive */
   .leaflet-control-attribution {
     background: rgba(0,0,0,0.6) !important;
@@ -320,11 +326,16 @@ const eventsBase = lang === 'sv' ? '/evenemang' : '/en/events';
       zoomControl: true,
     });
 
-    // CARTO Light tiles — clean grey base that doesn't fight with our lime pins.
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+    /* OpenStreetMap's own tiles, which need no API key.
+       CARTO's light_all basemap used to be here. It still answers 200, but it
+       now stamps every unkeyed tile with "API KEY REQUIRED" — so the map looked
+       broken on the live site while nothing errored. The grey base was a
+       deliberate choice so the lime pins stand out, and OSM's tiles are
+       colourful, so that look is restored with a CSS filter below rather than
+       by signing up for another key. */
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
-      subdomains: 'abcd',
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     }).addTo(map);
 
     // Touch-friendly: allow scroll-zoom on pinch, disable mouse-wheel by default.
