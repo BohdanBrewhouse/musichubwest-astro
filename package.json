@@ -6,9 +6,9 @@
     "node": ">=22.12.0"
   },
   "scripts": {
-    "dev": "tinacms dev -c \"astro dev\"",
+    "dev": "astro dev",
     "geocode": "node scripts/geocode-events.mjs",
-    "build": "node scripts/geocode-events.mjs && tinacms build --skip-cloud-checks && astro build",
+    "build": "node scripts/geocode-events.mjs && astro build",
     "preview": "astro preview",
     "astro": "astro"
   },
@@ -18,10 +18,8 @@
     "@astrojs/vercel": "^10.0.7",
     "@portabletext/to-html": "^6.0.0",
     "@sanity/client": "^8.6.1",
-    "@tinacms/cli": "^2.2.2",
     "astro": "^6.1.4",
-    "resend": "^6.12.4",
-    "tinacms": "^3.7.2"
+    "resend": "^6.12.4"
   },
   "devDependencies": {
     "pg": "^8.20.0"
