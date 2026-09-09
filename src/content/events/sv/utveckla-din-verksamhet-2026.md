@@ -1,6 +1,6 @@
 ---
 title: Lev på din musik. Boosta din business.
-seo_description: Kostnadsfritt utvecklingsprogram i Västra Götaland för dig som arbetar med musik och vill få mer fart på din verksamhet. Fem träffar med start 1 oktober. Anmäl ditt intresse senast 18 september.
+seo_description: Kostnadsfritt utvecklingsprogram i Västra Götaland för dig som arbetar med musik och vill få mer fart på din verksamhet. Fyra träffar med start 1 oktober. Anmäl ditt intresse senast 18 september.
 date: '2026-10-01'
 time: 'Start kl. 15:00'
 location: Brewhouse Inkubator
@@ -11,7 +11,7 @@ event_type: Utlysning
 event_language: Svenska
 image: /images/Lev på din musik Boosta din business cover.png
 cost: Kostnadsfritt
-duration: Fem träffar á tre timmar
+duration: Fyra träffar á tre timmar
 deadline: Fredag 18 september
 organizer: Brewhouse Göteborg
 translationKey: utveckla-din-verksamhet-2026
@@ -24,7 +24,7 @@ Ett kostnadsfritt utvecklingsprogram för dig som arbetar med musik i Västra G�
 
 Du kan vara artist, producent, låtskrivare, manager, arrangör, driva studio, label eller arbeta med musik på något helt annat sätt. Det viktiga är att du vill utveckla det du redan gör och skapa en starkare och mer hållbar verksamhet.
 
-> **Kostnadsfritt · Fem träffar · Start 1 oktober**
+> **Kostnadsfritt · Fyra träffar · Start 1 oktober**
 
 ### Idé. Boost. Action.
 
@@ -36,7 +36,7 @@ Du kan vara riktigt bra på det du gör och ändå fastna i frågor som:
 * Tar jag rätt betalt?
 * Finns det nya sätt att utveckla det jag redan gör?
 
-Under fem träffar arbetar vi praktiskt med din egen verksamhet. Vi hjälper dig att titta på den med nya ögon, testa idéer och hitta konkreta vägar framåt.
+Under fyra träffar arbetar vi praktiskt med din egen verksamhet. Vi hjälper dig att titta på den med nya ögon, testa idéer och hitta konkreta vägar framåt.
 
 ### Det här får du
 
@@ -59,7 +59,7 @@ Den här gången vänder vi oss särskilt till dig som vi inte träffat tidigare
 ### Praktiskt
 
 * Start: 1 oktober 2026 kl. 15:00
-* Omfattning: fem träffar á tre timmar
+* Omfattning: fyra träffar á tre timmar
 * Plats: Brewhouse, Åvägen 24, Göteborg
 * Kostnadsfritt att delta
 * Sista dag att anmäla intresse: fredag 18 september

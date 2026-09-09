@@ -1,6 +1,6 @@
 ---
 title: Make a living from music. Boost your business.
-seo_description: A free development programme in Västra Götaland for you who work with music and want to build momentum in your business. Five sessions starting 1 October. Register your interest by 18 September.
+seo_description: A free development programme in Västra Götaland for you who work with music and want to build momentum in your business. Four sessions starting 1 October. Register your interest by 18 September.
 date: '2026-10-01'
 time: 'Starts 1 October, 15:00'
 location: Brewhouse Inkubator
@@ -11,7 +11,7 @@ event_type: Utlysning
 event_language: Swedish
 image: /images/Lev%20pa%CC%8A%20din%20musik%20Boosta%20din%20business%20cover.png
 cost: Free
-duration: Five sessions of three hours
+duration: Four sessions of three hours
 deadline: Friday 18 September
 organizer: Brewhouse Göteborg
 translationKey: utveckla-din-verksamhet-2026
@@ -24,7 +24,7 @@ A free development programme for you who work with music in Västra Götaland an
 
 You might be an artist, producer, songwriter, manager or promoter, run a studio or a label, or work with music in some entirely different way. What matters is that you want to develop what you already do and build something stronger and more sustainable.
 
-> **Free · Five sessions · Starts 1 October**
+> **Free · Four sessions · Starts 1 October**
 
 ### Idea. Boost. Action.
 
@@ -36,7 +36,7 @@ You can be genuinely good at what you do and still get stuck on questions like:
 * Am I charging what I should?
 * Are there new ways to develop what I already do?
 
-Across five sessions we work hands-on with your own business. We help you look at it with fresh eyes, test ideas and find concrete ways forward.
+Across four sessions we work hands-on with your own business. We help you look at it with fresh eyes, test ideas and find concrete ways forward.
 
 ### What you get
 
@@ -59,7 +59,7 @@ This time we are especially reaching out to those we haven't met before.
 ### Practical details
 
 * Starts: 1 October 2026, 15:00
-* Format: five sessions of three hours each
+* Format: four sessions of three hours each
 * Location: Brewhouse, Åvägen 24, Gothenburg
 * Free to take part
 * Last day to register interest: Friday 18 September
