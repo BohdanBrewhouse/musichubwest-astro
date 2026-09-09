@@ -29,27 +29,10 @@ export default async function handler(req, res) {
     }
   }
 
-  // Keep the Supabase free-tier project from auto-pausing: a tiny real query
-  // each night counts as activity, so event submissions never hit a sleeping
-  // database. Runs regardless of whether the deploy hook is configured, and
-  // is best-effort — never blocks anything.
-  const SUPABASE_URL = process.env.PUBLIC_SUPABASE_URL;
-  const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if (SUPABASE_URL && SUPABASE_KEY) {
-    try {
-      const pingRes = await fetch(`${SUPABASE_URL}/rest/v1/event_submissions?select=id&limit=1`, {
-        headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` },
-      });
-      console.log(`[rebuild] Supabase keep-alive ping → status ${pingRes.status}`);
-    } catch (e) {
-      console.warn('[rebuild] Supabase ping failed (non-fatal):', e?.message || e);
-    }
-  }
-
   const hook = process.env.VERCEL_DEPLOY_HOOK_URL;
   if (!hook) {
-    console.warn('[rebuild] VERCEL_DEPLOY_HOOK_URL not set — pinged Supabase only, no rebuild');
-    return res.status(200).json({ ok: true, pinged: true, triggered: false });
+    console.warn('[rebuild] VERCEL_DEPLOY_HOOK_URL not set — nothing to do');
+    return res.status(200).json({ ok: true, triggered: false });
   }
 
   try {

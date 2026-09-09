@@ -4,10 +4,6 @@ import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 const lang = 'sv';
 
-// Supabase public credentials — embedded into the page so the browser can
-// upload files directly to Storage without needing a server proxy.
-const SUPABASE_URL = import.meta.env.PUBLIC_SUPABASE_URL || '';
-const SUPABASE_ANON_KEY = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
 ---
 <Base
   title="Publicera ditt event – Music Hub West"
@@ -262,18 +258,14 @@ const SUPABASE_ANON_KEY = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
           <input class="pub-form__input" type="url" id="registrationUrl" name="registrationUrl" placeholder="https://…" />
         </div>
 
-        <!-- File upload -->
+        {/* No uploads. A browser cannot write to Sanity without a token,
+            and a Vercel function cannot take a 10 MB body — so submitters
+            give links and we ask for artwork by email once accepted. */}
         <div class="pub-form__field">
-          <label class="pub-form__label">Bilder / promo-material</label>
-          <label class="pub-form__file-drop" for="files">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            <span class="pub-form__file-text">Klicka för att välja filer eller dra hit</span>
-            <span class="pub-form__file-hint">JPG, PNG, WEBP eller PDF · max 5 filer · max 10MB per fil</span>
-            <input class="pub-form__file-input" type="file" id="files" name="files" accept=".jpg,.jpeg,.png,.webp,.pdf" multiple />
-          </label>
-          <ul class="pub-form__file-list" id="file-list"></ul>
+          <label class="pub-form__label" for="links">Länkar till affisch, bilder & sociala medier</label>
+          <textarea class="pub-form__input pub-form__textarea" id="links" name="links" rows="3" placeholder={`https://…
+En länk per rad. Vi hör av oss om vi behöver material i högre upplösning.`}></textarea>
+          <span class="pub-form__hint">Vi ber om bilder via mejl om vi publicerar eventet.</span>
         </div>
 
         <!-- Publication channels -->
@@ -370,8 +362,6 @@ const SUPABASE_ANON_KEY = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
     </div>
   </section>
 
-  <!-- Public Supabase creds for the client-side upload (anon key, safe to expose) -->
-  <script type="application/json" id="pub-supabase" set:html={JSON.stringify({ url: SUPABASE_URL, key: SUPABASE_ANON_KEY })}></script>
 
   <Footer lang={lang} />
 </Base>
@@ -710,56 +700,6 @@ const SUPABASE_ANON_KEY = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
     color: rgba(255,255,255,0.4);
   }
 
-  /* File drop */
-  .pub-form__file-drop {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    padding: 28px 20px;
-    background: var(--black-2);
-    border: 2px dashed var(--black-3);
-    border-radius: 8px;
-    cursor: pointer;
-    color: rgba(255,255,255,0.6);
-    transition: border-color 0.15s, background 0.15s, color 0.15s;
-  }
-  .pub-form__file-drop:hover {
-    border-color: var(--lime);
-    color: var(--white);
-    background: rgba(204,255,0,0.04);
-  }
-  .pub-form__file-text { font-size: 14px; font-weight: 600; }
-  .pub-form__file-hint { font-size: 12px; color: rgba(255,255,255,0.4); }
-  .pub-form__file-input { display: none; }
-  .pub-form__file-list {
-    list-style: none;
-    padding: 0;
-    margin: 8px 0 0;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-  .pub-form__file-list li {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 8px 12px;
-    background: var(--black-2);
-    border: 1px solid var(--black-3);
-    border-radius: 6px;
-    font-size: 13px;
-    color: rgba(255,255,255,0.8);
-  }
-  .pub-form__file-list .pub-form__file-remove {
-    background: none;
-    border: none;
-    color: rgba(255,255,255,0.5);
-    cursor: pointer;
-    padding: 4px 8px;
-    font-size: 13px;
-  }
-  .pub-form__file-list .pub-form__file-remove:hover { color: var(--lime); }
 
   /* Radios */
   .pub-form__radios { display: flex; gap: 10px; flex-wrap: wrap; }
@@ -895,87 +835,10 @@ const SUPABASE_ANON_KEY = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
 <script is:inline>
 (function() {
   const form = document.getElementById('pub-form');
-  const fileInput = document.getElementById('files');
-  const fileList = document.getElementById('file-list');
   const submitBtn = document.getElementById('pub-submit');
   const errorEl = document.getElementById('pub-error');
   const successEl = document.getElementById('pub-success');
   if (!form) return;
-
-  // File list rendering
-  let files = [];
-  const MAX_FILES = 5;
-  const MAX_SIZE = 10 * 1024 * 1024; // 10MB
-  const ALLOWED = ['image/jpeg', 'image/png', 'image/webp', 'application/pdf'];
-
-  function renderFiles() {
-    fileList.innerHTML = '';
-    files.forEach((f, i) => {
-      const li = document.createElement('li');
-      const size = (f.size / 1024 / 1024).toFixed(1) + ' MB';
-      li.innerHTML = '<span>' + escapeHtml(f.name) + ' · ' + size + '</span><button type="button" class="pub-form__file-remove" data-i="' + i + '">Ta bort</button>';
-      fileList.appendChild(li);
-    });
-    fileList.querySelectorAll('.pub-form__file-remove').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const i = parseInt(btn.dataset.i);
-        files.splice(i, 1);
-        renderFiles();
-      });
-    });
-  }
-
-  function escapeHtml(s) {
-    return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  }
-
-  fileInput.addEventListener('change', (e) => {
-    const newFiles = Array.from(e.target.files);
-    for (const f of newFiles) {
-      if (files.length >= MAX_FILES) { alert('Max ' + MAX_FILES + ' filer.'); break; }
-      if (f.size > MAX_SIZE) { alert('"' + f.name + '" är större än 10 MB.'); continue; }
-      if (!ALLOWED.includes(f.type)) { alert('"' + f.name + '" är inte ett tillåtet filformat.'); continue; }
-      files.push(f);
-    }
-    renderFiles();
-    fileInput.value = '';
-  });
-
-  // Read public Supabase credentials shipped with the page
-  let SUPA = { url: '', key: '' };
-  try {
-    const el = document.getElementById('pub-supabase');
-    if (el) SUPA = JSON.parse(el.textContent || '{}');
-  } catch (_) {}
-
-  // Generate a random, URL-safe object key for Storage
-  function randomKey(originalName) {
-    const ext = (originalName.match(/\.[a-z0-9]+$/i) || [''])[0].toLowerCase();
-    const rnd = (crypto?.randomUUID?.() || Math.random().toString(36).slice(2) + Date.now().toString(36));
-    return `${rnd}${ext}`;
-  }
-
-  // Upload one file straight to Supabase Storage. Returns the public URL.
-  async function uploadFile(file) {
-    if (!SUPA.url || !SUPA.key) throw new Error('Supabase not configured');
-    const objectName = randomKey(file.name);
-    const uploadUrl = `${SUPA.url}/storage/v1/object/event-uploads/${encodeURIComponent(objectName)}`;
-    const res = await fetch(uploadUrl, {
-      method: 'POST',
-      headers: {
-        'Authorization': 'Bearer ' + SUPA.key,
-        'apikey': SUPA.key,
-        'Content-Type': file.type || 'application/octet-stream',
-        'x-upsert': 'false',
-      },
-      body: file,
-    });
-    if (!res.ok) {
-      const txt = await res.text().catch(() => '');
-      throw new Error(`Upload failed (${res.status}): ${txt.slice(0, 120)}`);
-    }
-    return `${SUPA.url}/storage/v1/object/public/event-uploads/${encodeURIComponent(objectName)}`;
-  }
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -984,23 +847,9 @@ const SUPABASE_ANON_KEY = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
     if (form.elements.website && form.elements.website.value) return; // honeypot
 
     submitBtn.disabled = true;
-    submitBtn.textContent = files.length ? `Laddar upp filer (0/${files.length})…` : 'Skickar…';
+    submitBtn.textContent = 'Skickar…';
 
     try {
-      // 1. Upload all files in parallel (with progress in button text)
-      let done = 0;
-      const fileUrls = files.length
-        ? await Promise.all(files.map(async (f) => {
-            const url = await uploadFile(f);
-            done++;
-            submitBtn.textContent = `Laddar upp filer (${done}/${files.length})…`;
-            return url;
-          }))
-        : [];
-
-      submitBtn.textContent = 'Skickar…';
-
-      // 2. POST form data + file URLs to our endpoint
       const fd = new FormData(form);
       const payload = {
         firstName:       fd.get('firstName') || '',
@@ -1015,7 +864,7 @@ const SUPABASE_ANON_KEY = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
         registrationUrl: fd.get('registrationUrl') || '',
         publishType:     fd.get('publishType') || '',
         website:         fd.get('website') || '', // honeypot
-        fileUrls,
+        links:           fd.get('links') || '',
         lang: 'sv',
       };
 
@@ -1029,7 +878,7 @@ const SUPABASE_ANON_KEY = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '';
         throw new Error(json.error || `Server error ${resp.status}`);
       }
 
-      // 3. Success state
+      // Success state
       form.style.display = 'none';
       successEl.hidden = false;
       successEl.scrollIntoView({ behavior: 'smooth', block: 'start' });

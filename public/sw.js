@@ -48,22 +48,3 @@ self.addEventListener('fetch', e => {
     }))
   );
 });
-
-self.addEventListener('push', e => {
-  const data = e.data?.json() || {};
-  e.waitUntil(
-    self.registration.showNotification(data.title || 'Music Hub West', {
-      body: data.body || '',
-      icon: '/favicon.svg',
-      badge: '/favicon.svg',
-      data: { url: data.url || '/app' },
-      vibrate: [200, 100, 200],
-    })
-  );
-});
-
-self.addEventListener('notificationclick', e => {
-  e.notification.close();
-  const url = e.notification.data?.url || '/app';
-  e.waitUntil(clients.openWindow(url));
-});

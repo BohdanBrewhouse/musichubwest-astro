@@ -1,28 +1,29 @@
 /**
  * POST /api/event-submission
  *
- * Receives event-publication requests from /publicera-event (and the EN
- * mirror once enabled). Files are uploaded by the browser straight into
- * Supabase Storage (4.5 MB serverless body limit can't fit 5×10 MB), so
- * this endpoint only handles the JSON payload — including the public URLs
- * of already-uploaded files.
+ * Receives event-publication requests from /publicera-event and
+ * /en/publish-event and writes them into Sanity as `eventSubmission`
+ * documents, which the team reads in the Studio.
+ *
+ * No file uploads: submitters give links instead, and we ask for artwork by
+ * email once a submission is accepted. A browser cannot write to Sanity
+ * without a write token, and a Vercel function cannot receive the 10 MB
+ * bodies the old form allowed — so the feature was traded away deliberately
+ * rather than quietly reduced.
  *
  * Flow:
- *   1. Validate Turnstile/honeypot/required fields
- *   2. Insert a row into event_submissions (service-role key)
+ *   1. Validate honeypot + required fields
+ *   2. Create an eventSubmission document (write token)
  *   3. Send a confirmation email to the submitter (Resend)
  *   4. Send an internal notification to the team (Resend)
- *   5. Return ok:true with the new submission id
  *
  * Required env vars:
- *   PUBLIC_SUPABASE_URL
- *   SUPABASE_SERVICE_ROLE_KEY
- *   RESEND_API_KEY
+ *   SANITY_PROJECT_ID · SANITY_DATASET · SANITY_TOKEN · RESEND_API_KEY
  *
- * Failures in steps 3–4 are non-fatal: the row exists in Supabase regardless,
- * so a missed email never costs us the submission.
+ * Failures in steps 3–4 are non-fatal: the document exists regardless, so a
+ * missed email never costs us the submission.
  */
-import { createClient } from '@supabase/supabase-js';
+import { createClient } from '@sanity/client';
 import { Resend } from 'resend';
 import { buildEventConfirmationEmail, buildEventTeamNotification } from './_email-template.js';
 import { resendCall } from './_resend.js';
@@ -64,50 +65,58 @@ export default async function handler(req, res) {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(body.eventDate)) return badRequest(res, 'Invalid date');
   if (String(body.description).length > 1500)     return badRequest(res, 'Description too long');
 
-  // File URLs — only accept supabase.co URLs, never trust arbitrary strings
-  const fileUrls = Array.isArray(body.fileUrls) ? body.fileUrls.filter(u =>
-    typeof u === 'string' && /^https:\/\/[a-z0-9-]+\.supabase\.co\/storage\/v1\/object\/public\/event-uploads\//i.test(u)
-  ).slice(0, 5) : [];
+  // A free-text list of links. Kept as text on purpose: submitters paste
+  // whatever they have — Drive folders, Instagram posts, WeTransfer — and
+  // validating that into a URL field would reject more than it protects.
+  const links = String(body.links || '').trim().slice(0, 2000);
 
-  // ── 3. Insert into Supabase
-  const SUPABASE_URL = process.env.PUBLIC_SUPABASE_URL;
-  const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
-    console.error('[event-submission] Supabase env vars missing');
+  // ── 3. Create the document in Sanity
+  const { SANITY_PROJECT_ID, SANITY_DATASET, SANITY_TOKEN } = process.env;
+  if (!SANITY_PROJECT_ID || !SANITY_TOKEN) {
+    console.error('[event-submission] Sanity env vars missing');
     return res.status(500).json({ ok: false, error: 'Server not configured' });
   }
 
-  const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
-    auth: { persistSession: false, autoRefreshToken: false },
+  const sanity = createClient({
+    projectId: SANITY_PROJECT_ID,
+    dataset: SANITY_DATASET || 'production',
+    token: SANITY_TOKEN,
+    apiVersion: '2024-10-01',
+    useCdn: false,
   });
 
+  // Field names match the Supabase columns they replace, so the email
+  // templates below keep working untouched.
   const row = {
     first_name:       body.firstName.trim(),
     last_name:        body.lastName.trim(),
     email:            body.email.trim().toLowerCase(),
-    phone:            body.phone?.trim() || null,
+    phone:            body.phone?.trim() || undefined,
     organisation:     body.organisation.trim(),
     event_title:      body.eventTitle.trim(),
     event_date:       body.eventDate,
     event_location:   body.eventLocation.trim(),
     description:      body.description.trim(),
-    registration_url: body.registrationUrl?.trim() || null,
-    publish_type:     body.publishType?.trim() || null,
-    file_urls:        fileUrls,
+    registration_url: body.registrationUrl?.trim() || undefined,
+    publish_type:     body.publishType?.trim() || undefined,
+    links:            links || undefined,
     lang:             body.lang === 'en' ? 'en' : 'sv',
   };
 
-  const { data: inserted, error: insertErr } = await supabase
-    .from('event_submissions')
-    .insert([row])
-    .select('id')
-    .single();
-
-  if (insertErr) {
-    console.error('[event-submission] Supabase insert failed:', insertErr.message);
+  let submissionId;
+  try {
+    const created = await sanity.create({
+      _type: 'eventSubmission',
+      ...row,
+      status: 'new',
+      submitted_at: new Date().toISOString(),
+    });
+    submissionId = created._id;
+  } catch (e) {
+    console.error('[event-submission] Sanity create failed:', e?.message || e);
     return res.status(500).json({ ok: false, error: 'Could not save submission' });
   }
-  const submissionId = inserted?.id;
+
   console.log(`[event-submission] ✅ Saved #${submissionId} from ${row.email}`);
 
   // ── 4. Send emails (non-fatal)
@@ -150,7 +159,7 @@ export default async function handler(req, res) {
         description:     row.description,
         registrationUrl: row.registration_url,
         publishType:     row.publish_type,
-        fileUrls:        row.file_urls,
+        links:           row.links,
         submissionId,
       });
       const teamErr = await resendCall('event-submission/team', resend.emails.send({
