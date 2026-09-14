@@ -119,21 +119,23 @@ const badgeText = isPartner ? partnerBadgeText : category;
     transition: none;
   }
 
-  /* ── Full lime border + glow: MHW-own events AND Tune In West events ── */
+  /* ── Our own events ──────────────────────────────────────────────────
+     This used to be a 2px lime border, a radius, two lime glows and a lift on
+     hover — four devices saying one thing, on a page where every other card
+     has none. Next to them it read as pasted in from somewhere else.
+
+     One device now: a lime rule along the top edge, the same weight as the
+     hairline the other cards already have. The badge over the image still
+     says MHW ARRANGÖR in words, which is the part that actually informs; the
+     rule is only there to make it findable while scanning. */
   .event-card--own,
   .event-card[data-category="Tune In West"] {
-    border: 2px solid var(--lime);
-    border-radius: 10px;
-    box-shadow: 0 0 0 1px rgba(204,255,0,0.25), 0 0 24px rgba(204,255,0,0.18);
-    transition: box-shadow 0.2s, transform 0.2s;
-    /* Promote to its own compositor layer so scrolling the carousel doesn't
-       repaint the lime glow on every frame on mobile. */
-    transform: translateZ(0);
+    border-top: 2px solid var(--lime);
+    transition: border-color .2s, background .2s;
   }
   .event-card--own:hover,
   .event-card[data-category="Tune In West"]:hover {
-    box-shadow: 0 0 0 1px rgba(204,255,0,0.4), 0 0 32px rgba(204,255,0,0.3);
-    transform: translateY(-2px);
+    background: rgba(204, 255, 0, 0.04);
   }
 
   /* ── MHW chip overlay (top-right of image) ── */
@@ -198,10 +200,8 @@ const badgeText = isPartner ? partnerBadgeText : category;
     margin-top: 6px;
     letter-spacing: 0.01em;
   }
-  .event-card--own .event-card__location,
-  .event-card[data-category="Tune In West"] .event-card__location {
-    color: rgba(200,242,62,0.6);
-  }
+  /* The location read in lime on our own cards and grey on everyone else's,
+     which made the same field look like two different fields. */
 </style>
 
 <script is:inline>
