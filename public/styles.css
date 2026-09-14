@@ -3474,7 +3474,15 @@ dialog.mnav[open] .mnav__link:nth-child(4) .mnav__num { animation-delay: 0.22s; 
 .evf__opt input:checked::after{content:"✓";display:block;text-align:center;line-height:16px;font-size:12px;color:var(--black)}
 .evf__opt input:focus-visible{outline:2px solid var(--lime);outline-offset:2px}
 .evf__opt:hover .evf__opt-name{color:var(--lime)}
-.evf__opt-n{font-family:var(--font-display);font-size:11px;color:var(--grey-700)}
+/* --grey-700 is a border colour: on the near-black panel the counts were
+   barely a shade off the background. They are information, not decoration —
+   they tell you what a tick would leave you with. */
+.evf__opt-n{
+  font-family:var(--font-display);font-size:11px;color:var(--grey-500);
+  background:var(--black-3);padding:2px 7px;min-width:24px;text-align:center;
+}
+.evf__opt:hover .evf__opt-n{color:var(--white)}
+.evf__opt input:checked ~ .evf__opt-n{background:var(--lime);color:var(--black)}
 /* Empty combinations stay in place and grey out. Removing them makes the list
    jump under the cursor between clicks. */
 .evf__opt.is-empty{opacity:.35;cursor:default}
