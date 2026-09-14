@@ -7,8 +7,8 @@ export interface Props {
 const { lang, active, altUrl } = Astro.props;
 
 const t = {
-  sv: { start: 'Start', events: 'Event', articles: 'Artiklar', about: 'Om' },
-  en: { start: 'Start', events: 'Events', articles: 'Articles', about: 'About' },
+  sv: { start: 'Start', events: 'Kalender', articles: 'Artiklar', about: 'Om' },
+  en: { start: 'Start', events: 'Calendar', articles: 'Articles', about: 'About' },
 }[lang];
 
 const base = lang === 'en' ? '/en' : '';

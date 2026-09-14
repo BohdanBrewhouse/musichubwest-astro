@@ -83,7 +83,7 @@ function formatDate(d: string) {
     .format(new Date(d + 'T12:00:00'));
 }
 ---
-<Base title="Events – Music Hub West" lang={lang} description="Upcoming events in music, technology and creative business in Västra Götaland. Seminars, showcases and industry meetups by Music Hub West.">
+<Base title="Calendar – Music Hub West" lang={lang} description="A calendar of open calls, funding, courses, workshops and industry meetups in music, technology and creative business in Västra Götaland.">
   <fragment slot="hreflang">
     <link rel="alternate" hreflang="sv" href={new URL('/evenemang', Astro.site)} />
     <link rel="alternate" hreflang="en" href={new URL('/en/events', Astro.site)} />
@@ -107,7 +107,7 @@ function formatDate(d: string) {
       <div class="ev-header__row">
         <div class="ev-header__left">
           <p class="ev-header__kicker">Music Hub West</p>
-          <h1 class="ev-header__title">Events</h1>
+          <h1 class="ev-header__title">Calendar</h1>
         </div>
         <div class="ev-header__right">
           <span class="ev-header__num" id="ev-count">{upcoming.length}</span>
