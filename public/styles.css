@@ -3354,10 +3354,10 @@ dialog.mnav[open] .mnav__link:nth-child(4) .mnav__num { animation-delay: 0.22s; 
    which one shows. No fetching, no date maths in the browser, and the page
    still works if the script never runs. */
 .cal{margin:0 0 64px}
-.cal__head{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:18px}
-.cal__label{text-align:center;min-width:0}
+.cal__head{display:flex;align-items:center;justify-content:space-between;gap:24px;margin-bottom:26px;padding:6px 0}
+.cal__label{text-align:center;min-width:0;display:flex;flex-direction:column;gap:6px}
 .cal__month{font-family:var(--font-display);font-size:clamp(20px,2.6vw,28px);text-transform:uppercase;color:var(--white);margin:0}
-.cal__count{font-family:var(--font-display);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--grey-500);margin:4px 0 0}
+.cal__count{font-family:var(--font-display);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--grey-500);margin:0}
 .cal__nav{
   flex:none;width:44px;height:44px;display:grid;place-items:center;cursor:pointer;
   background:none;border:1px solid var(--grey-700);color:var(--white);
@@ -3384,13 +3384,16 @@ dialog.mnav[open] .mnav__link:nth-child(4) .mnav__num { animation-delay: 0.22s; 
    375px phone would give 48px cells, which hold neither picture nor date. */
 @media(min-width:760px){
   .cal__weekdays,.cal__grid{display:grid}
-  .cal__list{display:none}
 }
 
+/* A square cell is only square until an event goes in it. The title clamps to
+   three lines and the picture needs room above it, so the cell is given a
+   floor instead of a fixed ratio and the row grows to the tallest in it. */
 .cal__cell{
-  position:relative;aspect-ratio:1;border:1px solid var(--black-3);
+  position:relative;min-height:132px;border:1px solid var(--black-3);
   padding:8px;display:flex;flex-direction:column;gap:6px;overflow:hidden;
 }
+.cal__cell.has-event{min-height:200px}
 .cal__cell--out{border-color:transparent;background:none}
 .cal__day{font-family:var(--font-display);font-size:12px;color:var(--grey-700);line-height:1}
 .cal__cell.has-event .cal__day{color:var(--white)}
@@ -3399,7 +3402,7 @@ dialog.mnav[open] .mnav__link:nth-child(4) .mnav__num { animation-delay: 0.22s; 
 .cal__cell.is-today .cal__day{color:var(--lime);font-weight:700}
 
 .cal__ev{
-  position:relative;flex:1;min-height:0;display:block;overflow:hidden;
+  position:relative;flex:1;min-height:120px;display:block;overflow:hidden;
   border:1px solid var(--grey-700);text-decoration:none;transition:.15s;
 }
 .cal__ev:hover{border-color:var(--lime)}
@@ -3421,8 +3424,13 @@ dialog.mnav[open] .mnav__link:nth-child(4) .mnav__num { animation-delay: 0.22s; 
   text-transform:uppercase;
 }
 
-/* ── the phone's month ── */
+/* ── the phone's month ──
+   Declared after the grid's media query on purpose: the two rules have equal
+   specificity, so the later one wins. Hiding the list from inside that query
+   put it *before* `display:flex` and lost — which is why the phone list was
+   also sitting under the grid on a desktop. */
 .cal__list{display:flex;flex-direction:column;gap:10px}
+@media(min-width:760px){ .cal__list{display:none} }
 .cal__row{display:grid;grid-template-columns:34px 64px 1fr;gap:12px;align-items:center;
   border:1px solid var(--black-3);padding:10px;text-decoration:none;transition:.15s}
 .cal__row:hover{border-color:var(--lime)}
