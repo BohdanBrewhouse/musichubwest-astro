@@ -3439,7 +3439,10 @@ dialog.mnav[open] .mnav__link:nth-child(4) .mnav__num { animation-delay: 0.22s; 
 @media(min-width:1024px){
   /* 240px is enough for the longest organiser name to wrap to two lines and
      no more; the rest belongs to the events. */
-  .ev-layout{display:grid;grid-template-columns:240px minmax(0,1fr);gap:44px;align-items:start}
+  /* 44px of gap plus the grid's own left padding put a hand's width of empty
+     black between the counts and the first card. 32px reads as one layout
+     rather than two panels. */
+  .ev-layout{display:grid;grid-template-columns:220px minmax(0,1fr);gap:32px;align-items:start}
   .evf{position:sticky;top:96px}
   /* The rail replaces the chips, so on desktop the old row is redundant. */
   .ev-filter-chips{display:none !important}
@@ -3523,3 +3526,25 @@ dialog.mnav[open] .mnav__link:nth-child(4) .mnav__num { animation-delay: 0.22s; 
   .ev-header__bottom{align-items:center}
   .view-toggle-wrap{margin-left:auto}
 }
+
+/* Three hairlines stacked inside sixty pixels: the header's bottom rule, the
+   header row's own, and the first filter group's top border. Two of them are
+   saying the same thing, so two of them go. */
+.evf__group:first-of-type{border-top:0;padding-top:4px}
+@media(min-width:1024px){
+  .ev-header__bottom{border-bottom:0}
+}
+/* The toggle sat alone at the right of an otherwise empty row, which is why it
+   looked unattached — the chips beside it are hidden once the rail exists. A
+   label gives the row something to be. */
+.view-toggle__label{
+  font-family:var(--font-display);font-size:11px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--grey-500);margin-right:4px;
+}
+@media(max-width:1023px){ .view-toggle__label{display:none} }
+
+/* The old mobile dropdown listed organisers as "Alla kategorier" — the same
+   axis the rail now calls Arrangör, plus two values that no event carries any
+   more. Two filters disagreeing about what a category is, one of them stale.
+   The rail's sheet replaces it at every width. */
+.cat-drop{display:none !important}
