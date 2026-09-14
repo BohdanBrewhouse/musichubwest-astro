@@ -3462,6 +3462,12 @@ dialog.mnav[open] .mnav__link:nth-child(4) .mnav__num { animation-delay: 0.22s; 
 .ev-layout__main .section__inner,
 .ev-layout__main .agenda__inner{padding-left:0;padding-right:0;max-width:none}
 .ev-layout > .ev-layout__main > .ev-view{padding-left:0;padding-right:0}
+/* `.section` paints itself one step lighter than the page. Standing alone that
+   reads as a band; beside the filter rail it read as a grey slab hanging above
+   the cards. Inside the layout the views are part of the page, not panels on
+   it — and their section padding would push the first card far below the
+   filter title it should line up with. */
+.ev-layout > .ev-layout__main > .ev-view{background:transparent;padding-top:0}
 
 .evf__head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:18px}
 .evf__title{font-family:var(--font-display);font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--white);margin:0}

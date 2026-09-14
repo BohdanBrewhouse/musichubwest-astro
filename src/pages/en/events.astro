@@ -873,9 +873,6 @@ function formatDate(d: string) {
     top: 80px; /* nav height */
     background: var(--black);
     z-index: 10;
-    margin: 0 -40px;
-    padding-left: 40px;
-    padding-right: 40px;
   }
   .agenda-month__name {
     font-size: 11px;
@@ -904,11 +901,13 @@ function formatDate(d: string) {
   .agenda-item::before {
     content: '';
     position: absolute;
-    inset: 0 -16px;
+    /* The band used to bleed 16px past the column on both sides and carry a
+       4px radius — the one rounded thing on the page, hanging into the gutter
+       beside the filters. */
+    inset: 0;
     background: var(--black-2);
     opacity: 0;
     transition: opacity 0.15s;
-    border-radius: 4px;
     z-index: 0;
   }
   .agenda-item:hover::before { opacity: 1; }
@@ -918,12 +917,11 @@ function formatDate(d: string) {
   .agenda-item[data-category="Tune In West"]::after {
     content: '';
     position: absolute;
-    left: -16px;
+    left: 0;
     top: 6px;
     bottom: 6px;
     width: 3px;
     background: var(--lime);
-    border-radius: 2px;
     z-index: 1;
   }
 
