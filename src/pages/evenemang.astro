@@ -148,6 +148,17 @@ function formatDate(d: string) {
         </div>
 
         <!-- View toggle -->
+        {/* One toolbar instead of three control surfaces. The two switches are
+            different in kind and stay apart: Kommande/Arkiv chooses which events
+            exist (different content — tabs), the four icons choose how the same
+            ones are drawn (same content, different presentation — a segmented
+            control). Putting them on one line, either side of the count they both
+            act on, is what makes that legible. */}
+        <div class="ev-toolbar">
+          <div class="ev-tabs" role="tablist">
+            <button class="ev-tab active" data-tab="upcoming" role="tab" aria-selected="true">Kommande</button>
+            <button class="ev-tab" data-tab="archive" role="tab" aria-selected="false">Arkiv {past.length > 0 && <span class="ev-tab__n">{past.length}</span>}</button>
+          </div>
         <div class="view-toggle-wrap">
           <span class="view-toggle__label">Visa</span>
           <div class="view-toggle" role="group" aria-label="Välj vy">
@@ -182,6 +193,7 @@ function formatDate(d: string) {
           </button>
         </div>
         </div><!-- /view-toggle-wrap -->
+        </div><!-- /ev-toolbar -->
       </div>
     </div>
   </div>
@@ -396,14 +408,6 @@ function formatDate(d: string) {
 
   <Footer lang={lang} />
 
-  <!-- Floating tab pill -->
-  <div class="ev-floating" id="ev-floating">
-    <button class="ev-float-tab active" data-tab="upcoming">Kommande</button>
-    <button class="ev-float-tab" data-tab="archive">
-      Arkiv
-      {past.length > 0 && <span class="ev-float-count">{past.length}</span>}
-    </button>
-  </div>
 </Base>
 
 <script is:inline>
@@ -418,7 +422,7 @@ function formatDate(d: string) {
   var viewList = document.getElementById('view-list');
   var viewMap  = document.getElementById('view-map');
   var viewCal  = document.getElementById('view-cal');
-  var evFloating = document.getElementById('ev-floating'); // Kommande/Arkiv pill
+  var evFloating = null; // the pill is gone; the tabs live in the toolbar
 
   function setView(v) {
     var view = (v === 'list' || v === 'map' || v === 'cal') ? v : 'grid';
