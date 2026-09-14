@@ -3442,7 +3442,12 @@ dialog.mnav[open] .mnav__link:nth-child(4) .mnav__num { animation-delay: 0.22s; 
 .cal__empty{font-size:14px;color:var(--grey-500);padding:20px 0}
 
 /* ═══ Events: filter rail ═════════════════════════════════════════════════ */
-.ev-layout{max-width:var(--max);margin:0 auto;padding:0 var(--px)}
+/* The header centres a 1320px box *inside* a 40px-padded wrapper, so its text
+   starts at 60px on a 1440 screen. The layout centred the same 1320 and then
+   added its own padding, which put the filters 40px further in than the title
+   above them. Widen the box by the gutter so both content edges land on the
+   same line. */
+.ev-layout{max-width:calc(var(--max) + var(--px)*2);margin:0 auto;padding:0 var(--px)}
 .ev-layout__main{min-width:0}
 @media(min-width:1024px){
   /* 240px is enough for the longest organiser name to wrap to two lines and
