@@ -3348,3 +3348,80 @@ dialog.mnav[open] .mnav__link:nth-child(4) .mnav__num { animation-delay: 0.22s; 
 
 /* Over the limit: the hint turns into the instruction and says how much to cut. */
 .pub-form__hint[data-over]{color:#FF6B6B}
+
+/* ═══ Events calendar ═════════════════════════════════════════════════════
+   Every month is in the HTML and hidden with [hidden]; the arrows only change
+   which one shows. No fetching, no date maths in the browser, and the page
+   still works if the script never runs. */
+.cal{margin:0 0 64px}
+.cal__head{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:18px}
+.cal__label{text-align:center;min-width:0}
+.cal__month{font-family:var(--font-display);font-size:clamp(20px,2.6vw,28px);text-transform:uppercase;color:var(--white);margin:0}
+.cal__count{font-family:var(--font-display);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--grey-500);margin:4px 0 0}
+.cal__nav{
+  flex:none;width:44px;height:44px;display:grid;place-items:center;cursor:pointer;
+  background:none;border:1px solid var(--grey-700);color:var(--white);
+  font-family:var(--font-display);font-size:18px;transition:.15s;
+}
+.cal__nav:hover:not(:disabled){border-color:var(--lime);color:var(--lime)}
+.cal__nav:disabled{opacity:.3;cursor:default}
+.cal__nav:focus-visible{outline:2px solid var(--lime);outline-offset:2px}
+
+.cal__weekdays{
+  display:none;grid-template-columns:repeat(7,1fr);gap:8px;margin-bottom:8px;
+  font-family:var(--font-display);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--grey-500);
+}
+.cal__grid{display:none;grid-template-columns:repeat(7,1fr);gap:8px}
+
+/* Seven columns need room. Below this the same month is a list instead — a
+   375px phone would give 48px cells, which hold neither picture nor date. */
+@media(min-width:760px){
+  .cal__weekdays,.cal__grid{display:grid}
+  .cal__list{display:none}
+}
+
+.cal__cell{
+  position:relative;aspect-ratio:1;border:1px solid var(--black-3);
+  padding:8px;display:flex;flex-direction:column;gap:6px;overflow:hidden;
+}
+.cal__cell--out{border-color:transparent;background:none}
+.cal__day{font-family:var(--font-display);font-size:12px;color:var(--grey-700);line-height:1}
+.cal__cell.has-event .cal__day{color:var(--white)}
+/* Today is marked on the number, not with a filled cell: a filled cell would
+   outrank the events, which are the point of the grid. */
+.cal__cell.is-today .cal__day{color:var(--lime);font-weight:700}
+
+.cal__ev{
+  position:relative;flex:1;min-height:0;display:block;overflow:hidden;
+  border:1px solid var(--grey-700);text-decoration:none;transition:.15s;
+}
+.cal__ev:hover{border-color:var(--lime)}
+.cal__ev img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.62;transition:.25s}
+.cal__ev:hover img{opacity:.8;transform:scale(1.04)}
+.cal__ev-title{
+  position:absolute;left:0;right:0;bottom:0;z-index:1;padding:22px 8px 7px;
+  font-size:12px;line-height:1.25;color:var(--white);
+  background:linear-gradient(180deg,transparent,rgba(0,0,0,.88) 60%);
+  display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;
+}
+/* One line, never more: whatever the field holds, the badge is a label, and a
+   label that wraps to three lines has stopped being one. */
+.cal__ev-time{
+  position:absolute;top:6px;left:6px;right:6px;z-index:1;
+  font-family:var(--font-display);font-size:9px;letter-spacing:.06em;
+  background:var(--lime);color:var(--black);padding:2px 5px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  text-transform:uppercase;
+}
+
+/* ── the phone's month ── */
+.cal__list{display:flex;flex-direction:column;gap:10px}
+.cal__row{display:grid;grid-template-columns:34px 64px 1fr;gap:12px;align-items:center;
+  border:1px solid var(--black-3);padding:10px;text-decoration:none;transition:.15s}
+.cal__row:hover{border-color:var(--lime)}
+.cal__row-date{font-family:var(--font-display);font-size:20px;color:var(--lime);text-align:center}
+.cal__row-img{width:64px;height:64px;object-fit:cover}
+.cal__row-text{min-width:0;display:flex;flex-direction:column;gap:3px}
+.cal__row-title{font-size:15px;color:var(--white);line-height:1.3}
+.cal__row-meta{font-size:12px;color:var(--grey-500)}
+.cal__empty{font-size:14px;color:var(--grey-500);padding:20px 0}

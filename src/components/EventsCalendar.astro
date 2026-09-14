@@ -1,0 +1,200 @@
+---
+/*
+  Month calendar for the events, straight from Sanity.
+
+  Two decisions worth writing down:
+
+  1. Every month is rendered at build time and hidden with CSS; the arrows only
+     change which one is visible. Nothing is fetched, nothing is computed in
+     the browser, and the whole year is in the HTML — which also means a
+     visitor who arrives with JavaScript broken still gets the current month
+     rather than an empty box.
+
+  2. The grid is for screens that can hold seven columns. Below 760px it
+     becomes the same events as a list: a seven-column grid on a 375px phone
+     gives 48px cells, which can hold neither a picture nor a date. The
+     guidance on calendar patterns is blunt about this — a mobile fallback has
+     to be designed, not scaled down.
+
+  Empty days stay empty, by request. At two to four events a month most of the
+  grid is blank; the month is the frame, and the pictures are what fills it.
+*/
+import { getCollection } from 'astro:content';
+
+interface Props { lang?: string }
+const { lang = 'sv' } = Astro.props;
+const en = lang === 'en';
+
+const events = await getCollection('events', (e) => e.id.startsWith(`${lang}/`));
+
+const t = en ? {
+  weekdays: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+  months: ['January','February','March','April','May','June','July','August','September','October','November','December'],
+  prev: 'Previous month', next: 'Next month',
+  today: 'Today', empty: 'No events this month',
+  countOne: '1 event', countMany: '{n} events',
+} : {
+  weekdays: ['Mån', 'Tis', 'Ons', 'Tor', 'Fre', 'Lör', 'Sön'],
+  months: ['Januari','Februari','Mars','April','Maj','Juni','Juli','Augusti','September','Oktober','November','December'],
+  prev: 'Föregående månad', next: 'Nästa månad',
+  today: 'Idag', empty: 'Inga event den här månaden',
+  countOne: '1 event', countMany: '{n} event',
+};
+
+const byDate = new Map<string, typeof events>();
+for (const ev of events) {
+  const d = ev.data.date;
+  if (!d) continue;
+  if (!byDate.has(d)) byDate.set(d, [] as any);
+  (byDate.get(d) as any).push(ev);
+}
+
+/* The span of months to render: from the earliest event to the latest, never
+   less than the current month, so the calendar always opens on something real
+   rather than on an empty January. */
+const dates = [...byDate.keys()].sort();
+const todayISO = new Date().toISOString().slice(0, 10);
+const first = dates[0] ?? todayISO;
+const last = dates[dates.length - 1] ?? todayISO;
+
+const monthKey = (iso: string) => iso.slice(0, 7);
+const addMonth = (key: string, n: number) => {
+  const [y, m] = key.split('-').map(Number);
+  const d = new Date(Date.UTC(y, m - 1 + n, 1));
+  return `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, '0')}`;
+};
+
+const months: string[] = [];
+let cur = monthKey(first < todayISO ? first : todayISO);
+const stop = monthKey(last > todayISO ? last : todayISO);
+while (cur <= stop && months.length < 36) { months.push(cur); cur = addMonth(cur, 1); }
+
+// The month the calendar opens on: this one if it exists, otherwise the first.
+const openKey = months.includes(monthKey(todayISO)) ? monthKey(todayISO) : months[0];
+
+/* Monday-first weeks, because that is the Swedish week. getUTCDay() counts
+   from Sunday, so the offset is shifted by one and wrapped. */
+function cells(key: string) {
+  const [y, m] = key.split('-').map(Number);
+  const firstOfMonth = new Date(Date.UTC(y, m - 1, 1));
+  const daysInMonth = new Date(Date.UTC(y, m, 0)).getUTCDate();
+  const lead = (firstOfMonth.getUTCDay() + 6) % 7;
+  const out: ({ iso: string; day: number } | null)[] = Array(lead).fill(null);
+  for (let d = 1; d <= daysInMonth; d++) {
+    out.push({ iso: `${key}-${String(d).padStart(2, '0')}`, day: d });
+  }
+  while (out.length % 7 !== 0) out.push(null);
+  return out;
+}
+
+const label = (key: string) => {
+  const [y, m] = key.split('-').map(Number);
+  return `${t.months[m - 1]} ${y}`;
+};
+const countLabel = (n: number) =>
+  n === 1 ? t.countOne : t.countMany.replace('{n}', String(n));
+const eventsIn = (key: string) => dates.filter((d) => d.startsWith(key)).reduce((n, d) => n + (byDate.get(d)?.length ?? 0), 0);
+const slugOf = (ev: any) => `${en ? '/en/events' : '/evenemang'}/${ev.id.slice(lang.length + 1)}`;
+const imgOf = (ev: any) => ev.data.card_image ?? ev.data.image ?? null;
+/* What the badge says. `time` was the obvious choice and the wrong one: it is
+   a free-text field, and the events use it for everything from "19:00" to
+   "Ansökan öppen — sista dag anges hos ExMS", which filled the whole cell.
+   `event_type` is the short, real answer — Utlysning or Event — and it is also
+   the thing a calendar reader is actually sorting by: is this something to
+   attend, or something to apply for? A clock is the fallback when the type is
+   not set, and only when it really is a clock. */
+const badgeOf = (ev: any) => {
+  const type = ev.data.event_type;
+  if (type) return String(type);
+  const m = String(ev.data.time ?? '').match(/^\s*(\d{1,2}[:.]\d{2})/);
+  return m ? m[1].replace('.', ':') : null;
+};
+---
+
+<div class="cal" id="cal" data-open={openKey}>
+  <div class="cal__head">
+    <button type="button" class="cal__nav" id="calPrev" aria-label={t.prev}>&larr;</button>
+    <div class="cal__label">
+      <h3 class="cal__month" id="calMonth">{label(openKey)}</h3>
+      <p class="cal__count" id="calCount">{countLabel(eventsIn(openKey))}</p>
+    </div>
+    <button type="button" class="cal__nav" id="calNext" aria-label={t.next}>&rarr;</button>
+  </div>
+
+  <div class="cal__weekdays" aria-hidden="true">
+    {t.weekdays.map((w) => <span>{w}</span>)}
+  </div>
+
+  {months.map((key) => (
+    <div class="cal__month-grid" data-month={key} hidden={key !== openKey}>
+      <div class="cal__grid">
+        {cells(key).map((c) => !c ? <div class="cal__cell cal__cell--out"></div> : (
+          <div class={`cal__cell ${byDate.has(c.iso) ? 'has-event' : ''} ${c.iso === todayISO ? 'is-today' : ''}`}>
+            <span class="cal__day">{c.day}</span>
+            {(byDate.get(c.iso) ?? []).map((ev: any) => (
+              <a class="cal__ev" href={slugOf(ev)}>
+                {imgOf(ev) && <img src={imgOf(ev)} alt="" loading="lazy" />}
+                <span class="cal__ev-title">{ev.data.title}</span>
+                {badgeOf(ev) && <span class="cal__ev-time">{badgeOf(ev)}</span>}
+              </a>
+            ))}
+          </div>
+        ))}
+      </div>
+
+      {/* The phone version of the same month. Not a smaller grid — a list. */}
+      <div class="cal__list">
+        {dates.filter((d) => d.startsWith(key)).length === 0 ? (
+          <p class="cal__empty">{t.empty}</p>
+        ) : dates.filter((d) => d.startsWith(key)).map((d) => (
+          (byDate.get(d) ?? []).map((ev: any) => (
+            <a class="cal__row" href={slugOf(ev)}>
+              <span class="cal__row-date">{Number(d.slice(8))}</span>
+              {imgOf(ev) && <img class="cal__row-img" src={imgOf(ev)} alt="" loading="lazy" />}
+              <span class="cal__row-text">
+                <span class="cal__row-title">{ev.data.title}</span>
+                {(ev.data.time || ev.data.location) && (
+                  <span class="cal__row-meta">{[ev.data.time, ev.data.location].filter(Boolean).join(' · ')}</span>
+                )}
+              </span>
+            </a>
+          ))
+        ))}
+      </div>
+    </div>
+  ))}
+</div>
+
+<script is:inline define:vars={{ monthLabels: months.map((k) => label(k)), monthCounts: months.map((k) => countLabel(eventsIn(k))), months }}>
+(function () {
+  const cal = document.getElementById('cal');
+  if (!cal) return;
+  const grids = [...cal.querySelectorAll('.cal__month-grid')];
+  const monthEl = document.getElementById('calMonth');
+  const countEl = document.getElementById('calCount');
+  const prev = document.getElementById('calPrev');
+  const next = document.getElementById('calNext');
+
+  let i = months.indexOf(cal.dataset.open);
+  if (i < 0) i = 0;
+
+  function show(n) {
+    i = Math.max(0, Math.min(months.length - 1, n));
+    grids.forEach((g, k) => { g.hidden = k !== i; });
+    monthEl.textContent = monthLabels[i];
+    countEl.textContent = monthCounts[i];
+    // Nothing beyond the first and last month exists, so say so rather than
+    // letting someone press into emptiness.
+    prev.disabled = i === 0;
+    next.disabled = i === months.length - 1;
+  }
+
+  prev.addEventListener('click', () => show(i - 1));
+  next.addEventListener('click', () => show(i + 1));
+  cal.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') show(i - 1);
+    if (e.key === 'ArrowRight') show(i + 1);
+  });
+  show(i);
+})();
+</script>
