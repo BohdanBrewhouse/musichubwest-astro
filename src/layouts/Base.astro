@@ -126,6 +126,18 @@ import MetaPixel from '../components/MetaPixel.astro';
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Syne+Mono&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Syne+Mono&display=swap" /></noscript>
 
+  {/* The one blocking stylesheet is 100 KB and lives behind an apex → www
+      redirect, so on a cold phone connection the page can paint before it
+      lands: white ground, default serif, and the header logo drawn at its
+      intrinsic 1491px. These few rules make that first frame look like the
+      site instead of like a broken page. */}
+  <style is:inline>
+    :root{color-scheme:dark}
+    html,body{background:#0A0A0A;color:#F5F5F5;margin:0}
+    .nav__logo-icon{width:56px;height:56px;color:#CCFF00}
+    svg{max-width:100%}
+    img{max-width:100%}
+  </style>
   <link rel="stylesheet" href="/styles.css" />
 </head>
 <body>
