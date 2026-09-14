@@ -3461,7 +3461,7 @@ dialog.mnav[open] .mnav__link:nth-child(4) .mnav__num { animation-delay: 0.22s; 
    tabs above them. */
 .ev-layout__main .section__inner,
 .ev-layout__main .agenda__inner{padding-left:0;padding-right:0;max-width:none}
-.ev-layout__main > .ev-view{padding-left:0;padding-right:0}
+.ev-layout > .ev-layout__main > .ev-view{padding-left:0;padding-right:0}
 
 .evf__head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:18px}
 .evf__title{font-family:var(--font-display);font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--white);margin:0}
