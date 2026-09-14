@@ -26,7 +26,11 @@ interface Props { lang?: string }
 const { lang = 'sv' } = Astro.props;
 const en = lang === 'en';
 
-const t = en ? {
+/* Both languages are sent to the page, because the choice is made inside the
+   sheet and has to change it in place. Sending only the page's own language
+   would mean a visitor picking English had to be navigated somewhere to see
+   English — which is exactly the redirect this is supposed to avoid. */
+const COPY = { en: {
   kicker: 'Welcome',
   title: 'Music Hub West',
   slogan: 'The music industry in Västra Götaland, in one place — events, knowledge and the people who make it happen.',
@@ -41,7 +45,8 @@ const t = en ? {
   ],
   skip: 'Just let me look around',
   close: 'Close',
-} : {
+  home: '/en/',
+}, sv: {
   kicker: 'Välkommen',
   title: 'Music Hub West',
   slogan: 'Musikbranschen i Västra Götaland, samlad på ett ställe — event, kunskap och människorna som driver den.',
@@ -56,33 +61,38 @@ const t = en ? {
   ],
   skip: 'Jag vill bara titta runt',
   close: 'Stäng',
-};
+  home: '/',
+} };
+const t = en ? COPY.en : COPY.sv;
 ---
 
 <div class="welcome" id="welcome" role="dialog" aria-modal="false" aria-labelledby="welcomeTitle" hidden>
   <div class="welcome__sheet">
     <button type="button" class="welcome__close" id="welcomeClose" aria-label={t.close}>&times;</button>
 
-    <p class="welcome__kicker">{t.kicker}</p>
+    <p class="welcome__kicker" data-w="kicker">{t.kicker}</p>
     <h2 class="welcome__title" id="welcomeTitle">{t.title}</h2>
-    <p class="welcome__slogan">{t.slogan}</p>
+    <p class="welcome__slogan" data-w="slogan">{t.slogan}</p>
 
-    <p class="welcome__label">{t.langLabel}</p>
+    <p class="welcome__label" data-w="langLabel">{t.langLabel}</p>
+    {/* Buttons, not links: choosing a language switches this sheet, it does
+        not send anyone anywhere. Where the visitor goes is decided by the
+        route they pick afterwards. */}
     <div class="welcome__langs">
-      <a class="welcome__lang" href="/" data-lang="sv" data-current={!en ? 'true' : undefined}>
-        <span class="welcome__lang-name">{t.sv}</span>
+      <button type="button" class="welcome__lang" data-lang="sv" data-current={!en ? 'true' : undefined}>
+        <span class="welcome__lang-name">Svenska</span>
         <span class="welcome__lang-note">SV</span>
-      </a>
-      <a class="welcome__lang" href="/en/" data-lang="en" data-current={en ? 'true' : undefined}>
-        <span class="welcome__lang-name">{t.en}</span>
+      </button>
+      <button type="button" class="welcome__lang" data-lang="en" data-current={en ? 'true' : undefined}>
+        <span class="welcome__lang-name">English</span>
         <span class="welcome__lang-note">EN</span>
-      </a>
+      </button>
     </div>
 
-    <p class="welcome__label">{t.routesLabel}</p>
+    <p class="welcome__label" data-w="routesLabel">{t.routesLabel}</p>
     <div class="welcome__routes">
-      {t.routes.map(([title, note, href]) => (
-        <a class="welcome__route" href={href} data-route={href}>
+      {t.routes.map(([title, note, href], i) => (
+        <a class="welcome__route" href={href} data-route={href} data-i={i}>
           <span class="welcome__route-title">{title}</span>
           <span class="welcome__route-note">{note}</span>
           <span class="welcome__route-arrow" aria-hidden="true">→</span>
@@ -90,11 +100,11 @@ const t = en ? {
       ))}
     </div>
 
-    <button type="button" class="welcome__skip" id="welcomeSkip">{t.skip}</button>
+    <button type="button" class="welcome__skip" id="welcomeSkip" data-w="skip">{t.skip}</button>
   </div>
 </div>
 
-<script is:inline define:vars={{ lang }}>
+<script is:inline define:vars={{ lang, COPY }}>
 (function () {
   const el = document.getElementById('welcome');
   if (!el) return;
@@ -112,10 +122,36 @@ const t = en ? {
 
   const track = (event, extra) => {
     window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push(Object.assign({ event, lang }, extra || {}));
+    window.dataLayer.push(Object.assign({ event, lang: chosen }, extra || {}));
   };
 
   const remember = () => { try { localStorage.setItem(KEY, VERSION); } catch {} };
+
+  /* The language the sheet is currently showing. It starts as the page's own
+     and changes when a button is pressed — in place, without navigating.
+     Sending someone to another URL to read a different label is the redirect
+     the whole design avoids; the destination is decided by the route they
+     pick, not by the language they read it in. */
+  let chosen = lang;
+
+  function apply(next) {
+    chosen = next;
+    const c = COPY[next];
+    el.querySelectorAll('[data-w]').forEach((n) => { n.textContent = c[n.dataset.w]; });
+    el.querySelectorAll('.welcome__route').forEach((a) => {
+      const [title, note, href] = c.routes[Number(a.dataset.i)];
+      a.querySelector('.welcome__route-title').textContent = title;
+      a.querySelector('.welcome__route-note').textContent = note;
+      a.setAttribute('href', href);
+      a.dataset.route = href;
+    });
+    el.querySelectorAll('.welcome__lang').forEach((b) => {
+      if (b.dataset.lang === next) b.dataset.current = 'true';
+      else delete b.dataset.current;
+      delete b.dataset.suggested;
+    });
+    document.getElementById('welcomeClose').setAttribute('aria-label', c.close);
+  }
 
   let lastFocus = null;
   function open() {
@@ -126,33 +162,38 @@ const t = en ? {
     document.getElementById('welcomeClose').focus({ preventScroll: true });
     track('welcome_shown');
   }
+  /* Closing honours the language that was chosen. Someone who switched to
+     English and then closed the sheet asked, in the only way the sheet offers,
+     to read the site in English — leaving them on the Swedish page would make
+     the switch a lie. If nothing was switched, it simply closes. */
   function close(how) {
     if (el.hidden) return;
     remember();
-    el.classList.remove('is-in');
-    setTimeout(() => { el.hidden = true; }, 220);
-    if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
     if (how) track('welcome_dismissed', { how });
+    if (chosen !== lang) { location.href = COPY[chosen].home; return; }
+    el.classList.remove('is-in');
+    setTimeout(() => { el.hidden = true; }, 260);
+    if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
   }
 
   document.getElementById('welcomeClose').addEventListener('click', () => close('close'));
   document.getElementById('welcomeSkip').addEventListener('click', () => close('skip'));
-  el.addEventListener('click', (e) => { if (e.target === el) close('backdrop'); });
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close('esc'); });
 
-  // A choice is also a dismissal: the sheet must not reappear on the page the
-  // visitor just asked for.
-  el.querySelectorAll('.welcome__lang').forEach((a) => {
-    a.addEventListener('click', () => { remember(); track('welcome_language', { chosen: a.dataset.lang }); });
+  el.querySelectorAll('.welcome__lang').forEach((b) => {
+    b.addEventListener('click', () => {
+      if (b.dataset.lang === chosen) return;
+      apply(b.dataset.lang);
+      track('welcome_language', { chosen: b.dataset.lang });
+    });
   });
   el.querySelectorAll('.welcome__route').forEach((a) => {
     a.addEventListener('click', () => { remember(); track('welcome_route', { route: a.dataset.route, source: 'sheet' }); });
   });
 
-  /* Highlight rather than redirect. A visitor whose browser is not set to
-     Swedish probably reads English — but "probably" is not a reason to move
-     someone to a different URL, and the guidance on language selectors is
-     unambiguous that automatic redirects are the worst version of this. */
+  /* Highlight rather than switch. A visitor whose browser is not set to
+     Swedish probably reads English — but "probably" is not a reason to change
+     what is on their screen before they ask. */
   if (!String(navigator.language || '').toLowerCase().startsWith('sv')) {
     const enBtn = el.querySelector('[data-lang="en"]');
     if (enBtn && !enBtn.dataset.current) enBtn.dataset.suggested = 'true';
