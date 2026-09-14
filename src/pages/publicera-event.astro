@@ -835,6 +835,14 @@ En länk per rad. Vi hör av oss om vi behöver material i högre upplösning.`}
 <script is:inline>
 (function() {
   const form = document.getElementById('pub-form');
+
+  /* Set the earliest selectable day to today. It has to happen here rather
+     than in the markup: the page is statically built, so a `min` baked in at
+     build time would be stale the next morning. */
+  const dateInput = document.getElementById('eventDate');
+  if (dateInput) {
+    dateInput.min = new Intl.DateTimeFormat('sv-SE', { timeZone: 'Europe/Stockholm' }).format(new Date());
+  }
   const submitBtn = document.getElementById('pub-submit');
   const errorEl = document.getElementById('pub-error');
   const successEl = document.getElementById('pub-success');
@@ -845,6 +853,33 @@ En länk per rad. Vi hör av oss om vi behöver material i högre upplösning.`}
     errorEl.hidden = true;
     if (!form.checkValidity()) { form.reportValidity(); return; }
     if (form.elements.website && form.elements.website.value) return; // honeypot
+
+    /* The date field has produced silent mistakes. One sender filed eight
+       events in twenty minutes: the first three carried real dates, the last
+       five all carried the day he was filling the form in. A date input looks
+       different in every browser, and in some it shows today's date before
+       anything has been chosen — so it is possible to send today without ever
+       feeling that a choice was made.
+
+       Two guards, both cheap. A date that has already passed is refused: an
+       event cannot be announced for a day that is gone. A date that is today
+       is allowed but has to be confirmed out loud, because that is exactly
+       what the accidental value looks like. */
+    const dateEl = form.elements.eventDate;
+    const midnight = new Date(); midnight.setHours(0, 0, 0, 0);
+    const picked = dateEl.value ? new Date(dateEl.value + 'T00:00:00') : null;
+    if (picked) {
+      if (picked < midnight) {
+        dateEl.setCustomValidity('Datumet har redan passerat. Välj det datum eventet äger rum.');
+        form.reportValidity();
+        dateEl.setCustomValidity('');
+        return;
+      }
+      if (picked.getTime() === midnight.getTime()) {
+        const ok = confirm('Du har angett dagens datum som eventets datum. Stämmer det?');
+        if (!ok) { dateEl.focus(); return; }
+      }
+    }
 
     submitBtn.disabled = true;
     submitBtn.textContent = 'Skickar…';

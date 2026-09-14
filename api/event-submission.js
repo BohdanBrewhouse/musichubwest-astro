@@ -63,6 +63,13 @@ export default async function handler(req, res) {
   }
   if (!isValidEmail(body.email))             return badRequest(res, 'Invalid email');
   if (!/^\d{4}-\d{2}-\d{2}$/.test(body.eventDate)) return badRequest(res, 'Invalid date');
+  /* A date that has already passed is always a mistake — an event cannot be
+     announced for a day that is gone. The browser refuses it too, but that
+     guard lives in page JS and is the easy half to bypass. Compared against
+     Stockholm's date, not the server's UTC clock, so an evening submission in
+     Sweden is not judged against tomorrow. */
+  const todaySE = new Intl.DateTimeFormat('sv-SE', { timeZone: 'Europe/Stockholm' }).format(new Date());
+  if (body.eventDate < todaySE) return badRequest(res, 'Event date is in the past');
   if (String(body.description).length > 1500)     return badRequest(res, 'Description too long');
 
   // A free-text list of links. Kept as text on purpose: submitters paste

@@ -817,11 +817,38 @@ One link per line. We will get in touch if we need higher-resolution material.`}
   const successEl = document.getElementById('pub-success');
   if (!form) return;
 
+  /* Earliest selectable day is today. Set here and not in the markup: the page
+     is statically built, so a baked-in `min` would be stale by morning. */
+  const dateInput = document.getElementById('eventDate');
+  if (dateInput) {
+    dateInput.min = new Intl.DateTimeFormat('sv-SE', { timeZone: 'Europe/Stockholm' }).format(new Date());
+  }
+
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     errorEl.hidden = true;
     if (!form.checkValidity()) { form.reportValidity(); return; }
     if (form.elements.website && form.elements.website.value) return;
+
+    /* See the Swedish page for the reason: a date input can hold today before
+       anything has been chosen, and five of one sender's eight submissions
+       arrived carrying the day he filled the form rather than the event's. A
+       past date is refused; today has to be confirmed out loud. */
+    const dateEl = form.elements.eventDate;
+    const midnight = new Date(); midnight.setHours(0, 0, 0, 0);
+    const picked = dateEl.value ? new Date(dateEl.value + 'T00:00:00') : null;
+    if (picked) {
+      if (picked < midnight) {
+        dateEl.setCustomValidity('That date has already passed. Pick the day the event takes place.');
+        form.reportValidity();
+        dateEl.setCustomValidity('');
+        return;
+      }
+      if (picked.getTime() === midnight.getTime()) {
+        const ok = confirm("You've entered today's date as the event date. Is that right?");
+        if (!ok) { dateEl.focus(); return; }
+      }
+    }
 
     submitBtn.disabled = true;
     submitBtn.textContent = 'Sending…';
