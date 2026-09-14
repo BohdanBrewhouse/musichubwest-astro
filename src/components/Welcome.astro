@@ -1,0 +1,181 @@
+---
+/*
+  The welcome sheet — first visit to the homepage only.
+
+  Three decisions worth stating, because each of them is the opposite of the
+  obvious implementation:
+
+  1. It waits for the cookie banner. CookieYes appears on the first load and
+     has to be answerable; a welcome panel on top of it would bury the one
+     dialog that legally must be actionable. So this listens for the consent
+     decision and only then appears.
+
+  2. It does not block the page. Current guidance on language selectors is
+     explicit that modal choosers are disruptive, and that auto-redirecting by
+     browser language is worse still. So the page scrolls behind it, Esc and
+     the close button both work, and the browser's language only decides which
+     button is highlighted — never where the visitor is sent.
+
+  3. The same three routes also live in a permanent section of the homepage.
+     This sheet is seen once, by people who arrive at the homepage; someone
+     coming from an ad lands on an event page and never sees it, and a second
+     visit never shows it again. Routes that exist only here would, for most
+     visitors, not exist at all.
+*/
+interface Props { lang?: string }
+const { lang = 'sv' } = Astro.props;
+const en = lang === 'en';
+
+const t = en ? {
+  kicker: 'Welcome',
+  title: 'Music Hub West',
+  slogan: 'The music industry in Västra Götaland, in one place — events, knowledge and the people who make it happen.',
+  langLabel: 'Choose language',
+  sv: 'Svenska', svNote: 'Swedish',
+  en: 'English', enNote: 'English',
+  routesLabel: 'What brings you here?',
+  routes: [
+    ['Publish my event', 'Get it on the map and in front of the industry', '/en/publish-event'],
+    ['Find events and courses', 'Everything happening in the region', '/en/events'],
+    ['Learn about the project', 'Tune In West, and what we are building', '/en/tune-in-west'],
+  ],
+  skip: 'Just let me look around',
+  close: 'Close',
+} : {
+  kicker: 'Välkommen',
+  title: 'Music Hub West',
+  slogan: 'Musikbranschen i Västra Götaland, samlad på ett ställe — event, kunskap och människorna som driver den.',
+  langLabel: 'Välj språk',
+  sv: 'Svenska', svNote: 'Svenska',
+  en: 'English', enNote: 'Engelska',
+  routesLabel: 'Vad förde dig hit?',
+  routes: [
+    ['Publicera mitt event', 'Syns på kartan och når branschen', '/publicera-event'],
+    ['Hitta event och kurser', 'Allt som händer i regionen', '/evenemang'],
+    ['Läs om projektet', 'Tune In West och det vi bygger', '/tune-in-west'],
+  ],
+  skip: 'Jag vill bara titta runt',
+  close: 'Stäng',
+};
+---
+
+<div class="welcome" id="welcome" role="dialog" aria-modal="false" aria-labelledby="welcomeTitle" hidden>
+  <div class="welcome__sheet">
+    <button type="button" class="welcome__close" id="welcomeClose" aria-label={t.close}>&times;</button>
+
+    <p class="welcome__kicker">{t.kicker}</p>
+    <h2 class="welcome__title" id="welcomeTitle">{t.title}</h2>
+    <p class="welcome__slogan">{t.slogan}</p>
+
+    <p class="welcome__label">{t.langLabel}</p>
+    <div class="welcome__langs">
+      <a class="welcome__lang" href="/" data-lang="sv" data-current={!en ? 'true' : undefined}>
+        <span class="welcome__lang-name">{t.sv}</span>
+        <span class="welcome__lang-note">SV</span>
+      </a>
+      <a class="welcome__lang" href="/en/" data-lang="en" data-current={en ? 'true' : undefined}>
+        <span class="welcome__lang-name">{t.en}</span>
+        <span class="welcome__lang-note">EN</span>
+      </a>
+    </div>
+
+    <p class="welcome__label">{t.routesLabel}</p>
+    <div class="welcome__routes">
+      {t.routes.map(([title, note, href]) => (
+        <a class="welcome__route" href={href} data-route={href}>
+          <span class="welcome__route-title">{title}</span>
+          <span class="welcome__route-note">{note}</span>
+          <span class="welcome__route-arrow" aria-hidden="true">→</span>
+        </a>
+      ))}
+    </div>
+
+    <button type="button" class="welcome__skip" id="welcomeSkip">{t.skip}</button>
+  </div>
+</div>
+
+<script is:inline define:vars={{ lang }}>
+(function () {
+  const el = document.getElementById('welcome');
+  if (!el) return;
+
+  /* Bumped only when the sheet's content changes enough to be worth showing
+     again. Without the version a returning visitor could never be told
+     anything new; with a bare boolean we would have to choose between never
+     and always. */
+  const KEY = 'mhw-welcome';
+  const VERSION = '1';
+
+  let seen = null;
+  try { seen = localStorage.getItem(KEY); } catch { seen = VERSION; } // private mode: treat as seen
+  if (seen === VERSION) return;
+
+  const track = (event, extra) => {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push(Object.assign({ event, lang }, extra || {}));
+  };
+
+  const remember = () => { try { localStorage.setItem(KEY, VERSION); } catch {} };
+
+  let lastFocus = null;
+  function open() {
+    if (!el.hidden) return;
+    lastFocus = document.activeElement;
+    el.hidden = false;
+    requestAnimationFrame(() => el.classList.add('is-in'));
+    document.getElementById('welcomeClose').focus({ preventScroll: true });
+    track('welcome_shown');
+  }
+  function close(how) {
+    if (el.hidden) return;
+    remember();
+    el.classList.remove('is-in');
+    setTimeout(() => { el.hidden = true; }, 220);
+    if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
+    if (how) track('welcome_dismissed', { how });
+  }
+
+  document.getElementById('welcomeClose').addEventListener('click', () => close('close'));
+  document.getElementById('welcomeSkip').addEventListener('click', () => close('skip'));
+  el.addEventListener('click', (e) => { if (e.target === el) close('backdrop'); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close('esc'); });
+
+  // A choice is also a dismissal: the sheet must not reappear on the page the
+  // visitor just asked for.
+  el.querySelectorAll('.welcome__lang').forEach((a) => {
+    a.addEventListener('click', () => { remember(); track('welcome_language', { chosen: a.dataset.lang }); });
+  });
+  el.querySelectorAll('.welcome__route').forEach((a) => {
+    a.addEventListener('click', () => { remember(); track('welcome_route', { route: a.dataset.route, source: 'sheet' }); });
+  });
+
+  /* Highlight rather than redirect. A visitor whose browser is not set to
+     Swedish probably reads English — but "probably" is not a reason to move
+     someone to a different URL, and the guidance on language selectors is
+     unambiguous that automatic redirects are the worst version of this. */
+  if (!String(navigator.language || '').toLowerCase().startsWith('sv')) {
+    const enBtn = el.querySelector('[data-lang="en"]');
+    if (enBtn && !enBtn.dataset.current) enBtn.dataset.suggested = 'true';
+  }
+
+  /* Wait for the cookie banner to be answered. CookieYes writes a cookie on
+     decision and fires an event; both are watched, because the event name has
+     changed between their script versions and a missed event would mean the
+     sheet never appears at all. The interval gives up after 30s — if consent
+     is never answered, the welcome simply does not show, which is the correct
+     priority between the two. */
+  const consentAnswered = () => /(^|;\s*)cookieyes-consent=/.test(document.cookie);
+
+  if (consentAnswered()) {
+    setTimeout(open, 400);
+  } else {
+    let waited = 0;
+    const poll = setInterval(() => {
+      waited += 400;
+      if (consentAnswered()) { clearInterval(poll); setTimeout(open, 400); }
+      else if (waited > 30000) clearInterval(poll);
+    }, 400);
+    document.addEventListener('cookieyes_consent_update', () => { clearInterval(poll); setTimeout(open, 400); });
+  }
+})();
+</script>

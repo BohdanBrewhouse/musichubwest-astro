@@ -1,0 +1,61 @@
+---
+/*
+  The same three routes as the welcome sheet, as a permanent section.
+
+  This is the half that actually does the work. The sheet is shown once, only
+  on the homepage, only to someone who has not been here before — which is a
+  small fraction of visits. Anyone arriving from an ad lands on an event page,
+  and a second visit never sees it again. If these three doors existed only in
+  a one-time overlay, most people would never be offered them.
+*/
+interface Props { lang?: string }
+const { lang = 'sv' } = Astro.props;
+const en = lang === 'en';
+
+const t = en ? {
+  kicker: 'Where to start',
+  title: 'What brings you here?',
+  routes: [
+    ['Publish my event', 'Get it on the map and in front of the industry', '/en/publish-event'],
+    ['Find events and courses', 'Everything happening in the region', '/en/events'],
+    ['Learn about the project', 'Tune In West, and what we are building', '/en/tune-in-west'],
+  ],
+} : {
+  kicker: 'Börja här',
+  title: 'Vad förde dig hit?',
+  routes: [
+    ['Publicera mitt event', 'Syns på kartan och når branschen', '/publicera-event'],
+    ['Hitta event och kurser', 'Allt som händer i regionen', '/evenemang'],
+    ['Läs om projektet', 'Tune In West och det vi bygger', '/tune-in-west'],
+  ],
+};
+---
+
+<section class="routes">
+  <div class="routes__wrap">
+    <p class="routes__kicker">{t.kicker}</p>
+    <h2 class="routes__title">{t.title}</h2>
+
+    <div class="routes__grid">
+      {t.routes.map(([title, note, href]) => (
+        <a class="route" href={href} data-route={href}>
+          <span class="route__title">{title}</span>
+          <span class="route__note">{note}</span>
+          <span class="route__arrow" aria-hidden="true">→</span>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+  document.querySelectorAll('.routes .route').forEach((a) => {
+    a.addEventListener('click', () => {
+      window.dataLayer = window.dataLayer || [];
+      // Same event name as the sheet's, with the source alongside — otherwise
+      // the two would have to be compared across two different reports to
+      // answer the only question worth asking: which one people actually use.
+      window.dataLayer.push({ event: 'welcome_route', route: a.dataset.route, source: 'section' });
+    });
+  });
+</script>

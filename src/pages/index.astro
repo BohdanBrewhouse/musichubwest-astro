@@ -1,6 +1,8 @@
 ---
 import Base from '../layouts/Base.astro';
 import Nav from '../components/Nav.astro';
+import Welcome from '../components/Welcome.astro';
+import Routes from '../components/Routes.astro';
 import Footer from '../components/Footer.astro';
 import EventCard from '../components/EventCard.astro';
 import ArticleCard from '../components/ArticleCard.astro';
@@ -73,6 +75,8 @@ const heroTitle = (t) => t.split(/(?<=\.)\s+/).filter(Boolean).join('\n');
 
   <Nav lang={lang} active="start" />
 
+  <Welcome lang={lang} />
+
   {heroSlides.length === 0 && (
     <section class="hero-fallback">
       <div class="hero-fallback__inner">
@@ -128,6 +132,8 @@ const heroTitle = (t) => t.split(/(?<=\.)\s+/).filter(Boolean).join('\n');
     </div>
   </section>
   )}
+
+  <Routes lang={lang} />
 
   {cardEvents.length > 0 && (
   <section class="section">
