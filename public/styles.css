@@ -3302,9 +3302,16 @@ dialog.mnav[open] .mnav__link:nth-child(4) .mnav__num { animation-delay: 0.22s; 
 }
 
 .welcome__langs{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:40px;max-width:460px}
+/* These became <button>s when the language choice stopped navigating, and a
+   button carries the browser's own chrome: a light `buttonface` background,
+   the system font and centred text. On a black panel that rendered the English
+   option as a grey slab — so everything the element would otherwise inherit
+   from the page is set back explicitly. */
 .welcome__lang{
-  display:flex;align-items:baseline;justify-content:space-between;gap:10px;
+  display:flex;align-items:baseline;justify-content:space-between;gap:10px;width:100%;
   border:1px solid var(--grey-700);padding:16px 20px;text-decoration:none;transition:.15s;
+  background:none;color:inherit;font:inherit;text-align:left;cursor:pointer;
+  appearance:none;-webkit-appearance:none;border-radius:0;
 }
 .welcome__lang:hover{border-color:var(--white)}
 .welcome__lang-name{font-size:17px;color:var(--white)}
