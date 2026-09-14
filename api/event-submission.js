@@ -70,7 +70,9 @@ export default async function handler(req, res) {
      Sweden is not judged against tomorrow. */
   const todaySE = new Intl.DateTimeFormat('sv-SE', { timeZone: 'Europe/Stockholm' }).format(new Date());
   if (body.eventDate < todaySE) return badRequest(res, 'Event date is in the past');
-  if (String(body.description).length > 1500)     return badRequest(res, 'Description too long');
+  /* 3000 characters, roughly 500 words — the same number the form states and
+     counts down to, so a description that passed the page cannot fail here. */
+  if (String(body.description).length > 3000)     return badRequest(res, 'Description too long');
 
   // A free-text list of links. Kept as text on purpose: submitters paste
   // whatever they have — Drive folders, Instagram posts, WeTransfer — and

@@ -249,8 +249,13 @@ const lang = 'sv';
 
         <div class="pub-form__field">
           <label class="pub-form__label" for="description">Beskrivning <span class="pub-form__req">*</span></label>
-          <textarea class="pub-form__textarea" id="description" name="description" rows="5" maxlength="500" placeholder="Berätta kort vad eventet handlar om, vem som spelar, och varför det är intressant…" required></textarea>
-          <span class="pub-form__hint">Max 500 tecken</span>
+          {/* No maxlength. The attribute silently truncates a paste at the
+              limit — someone pasted a full description, saw what fitted, and
+              never learned the rest had been thrown away. The counter below
+              says where you stand, and going over blocks the submit with a
+              message instead of quietly deleting text. */}
+          <textarea class="pub-form__textarea" id="description" name="description" rows="5" placeholder="Berätta kort vad eventet handlar om, vem som spelar, och varför det är intressant…" required></textarea>
+          <span class="pub-form__hint" id="descHint">Max 3000 tecken (ungefär 500 ord)</span>
         </div>
 
         <div class="pub-form__field">
@@ -833,6 +838,34 @@ En länk per rad. Vi hör av oss om vi behöver material i högre upplösning.`}
 </style>
 
 <script is:inline>
+
+  /* Counts what is actually there, warns before it is a problem, and refuses
+     the submit rather than letting the server reject a long description after
+     the person has already pressed send. */
+  (function () {
+    const ta = document.getElementById('description');
+    const hint = document.getElementById('descHint');
+    if (!ta || !hint) return;
+    const LIMIT = 3000;
+    const BASE = 'Max 3000 tecken (ungefär 500 ord)';
+    function update() {
+      const n = ta.value.length;
+      if (n > LIMIT) {
+        hint.textContent = 'Beskrivningen är för lång — ta bort {n} tecken.'.replace('{n}', String(n - LIMIT));
+        hint.dataset.over = 'true';
+      } else if (n > LIMIT * 0.8) {
+        hint.textContent = '{n} tecken kvar'.replace('{n}', String(LIMIT - n));
+        delete hint.dataset.over;
+      } else {
+        hint.textContent = BASE;
+        delete hint.dataset.over;
+      }
+      ta.setCustomValidity(n > LIMIT ? hint.textContent : '');
+    }
+    ta.addEventListener('input', update);
+    update();
+  })();
+
 (function() {
   const form = document.getElementById('pub-form');
 
