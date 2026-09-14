@@ -2,6 +2,8 @@
 import { Image } from 'astro:assets';
 
 export interface Props {
+  format?: string;
+  address?: string;
   title: string;
   date: string;
   time: string;
@@ -17,7 +19,8 @@ export interface Props {
   location?: string;
   priority?: boolean;
 }
-const { title, date, time, category, image, slug, lang, past = false, organizer, isOwn = false, eventType = 'Event', eventLanguage, location, priority = false } = Astro.props;
+const { title, date, time, category, image, slug, lang, past = false, organizer, isOwn = false, eventType = 'Event', eventLanguage, location, priority = false, format, address } = Astro.props;
+const isOnline = /online|zoom|digital|webbinar|teams|stream/i.test(`${location ?? ''} ${address ?? ''}`);
 const eventsBase = lang === 'en' ? '/en/events' : '/evenemang';
 
 function formatDate(d: string, l: 'sv' | 'en') {
@@ -71,7 +74,7 @@ const badgeClass: Record<string, string> = {
 };
 const badgeText = isPartner ? partnerBadgeText : category;
 ---
-<a href={`${eventsBase}/${slug}`} class={`event-card${past ? ' event-card--past' : ''}${isOwn ? ' event-card--own' : ''}`} data-category={category}>
+<a href={`${eventsBase}/${slug}`} class={`event-card${past ? ' event-card--past' : ''}${isOwn ? ' event-card--own' : ''}`} data-category={category} data-type={format} data-city={isOnline ? (lang === "en" ? "Online" : "Online") : (lang === "en" ? "On site" : "På plats")} data-month={(date ?? "").slice(0,7)}>
   <div class="event-card__image">
     <Image src={image} alt={title} width={800} height={600} quality={80}
       loading={priority ? 'eager' : 'lazy'}

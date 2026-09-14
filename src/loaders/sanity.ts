@@ -145,7 +145,7 @@ const plain = (blocks: unknown): string =>
 
 const EVENT_QUERY = `*[_type == "event"]{
   _id, _updatedAt, tinaKey, slug, title, seo_description, date, time, location, address,
-  map_query, category, event_type, event_language, spots_left, spots_total, cost, duration,
+  map_query, category, event_type, format, event_language, spots_left, spots_total, cost, duration,
   deadline, organizer, organizer_email, registration_open, external_registration_url,
   serve_food, cta_label, sessions_title, sessions, body,
   "imageUrl":     { "sv": image.sv.asset->url, "en": image.en.asset->url },
@@ -187,6 +187,7 @@ export function sanityEvents(): Loader {
             map_query: d.map_query,
             category: pick<string>(d.category, lang),
             event_type: d.event_type ?? 'Event',
+            format: d.format ?? undefined,
             event_language: pick<string>(d.event_language, lang),
             image,
             card_image: pick<string>(d.cardImageUrl, lang),

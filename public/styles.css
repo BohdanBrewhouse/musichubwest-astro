@@ -3368,10 +3368,17 @@ dialog.mnav[open] .mnav__link:nth-child(4) .mnav__num { animation-delay: 0.22s; 
 .cal__nav:focus-visible{outline:2px solid var(--lime);outline-offset:2px}
 
 .cal__weekdays{
-  display:none;grid-template-columns:repeat(7,1fr);gap:8px;margin-bottom:8px;
+  display:none;grid-template-columns:34px repeat(7,1fr);gap:8px;margin-bottom:8px;
   font-family:var(--font-display);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--grey-500);
 }
-.cal__grid{display:none;grid-template-columns:repeat(7,1fr);gap:8px}
+/* Eight tracks, not seven: the week number sits in its own narrow column to
+   the left, the way a Swedish wall calendar prints it. */
+.cal__grid{display:none;grid-template-columns:34px repeat(7,1fr);gap:8px}
+.cal__weekno{
+  display:grid;place-items:center;
+  font-family:var(--font-display);font-size:11px;color:var(--grey-700);
+}
+.cal__weekno-head{text-align:center}
 
 /* Seven columns need room. Below this the same month is a list instead — a
    375px phone would give 48px cells, which hold neither picture nor date. */
@@ -3425,3 +3432,86 @@ dialog.mnav[open] .mnav__link:nth-child(4) .mnav__num { animation-delay: 0.22s; 
 .cal__row-title{font-size:15px;color:var(--white);line-height:1.3}
 .cal__row-meta{font-size:12px;color:var(--grey-500)}
 .cal__empty{font-size:14px;color:var(--grey-500);padding:20px 0}
+
+/* ═══ Events: filter rail ═════════════════════════════════════════════════ */
+.ev-layout{max-width:var(--max);margin:0 auto;padding:0 var(--px)}
+.ev-layout__main{min-width:0}
+@media(min-width:1024px){
+  /* 240px is enough for the longest organiser name to wrap to two lines and
+     no more; the rest belongs to the events. */
+  .ev-layout{display:grid;grid-template-columns:240px minmax(0,1fr);gap:44px;align-items:start}
+  .evf{position:sticky;top:96px}
+  /* The rail replaces the chips, so on desktop the old row is redundant. */
+  .ev-filter-chips{display:none !important}
+}
+/* The views bring their own padding; inside the layout it would double. */
+.ev-layout__main .section__inner,
+.ev-layout__main .agenda__inner{padding-left:0;padding-right:0;max-width:none}
+
+.evf__head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:18px}
+.evf__title{font-family:var(--font-display);font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--white);margin:0}
+.evf__clear{
+  background:none;border:0;padding:0;cursor:pointer;
+  font-size:13px;color:var(--grey-500);text-decoration:underline;text-underline-offset:3px;
+}
+.evf__clear:hover{color:var(--lime)}
+
+.evf__group{padding:16px 0;border-top:1px solid var(--black-3)}
+.evf__group-title{
+  font-family:var(--font-display);font-size:11px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--grey-500);margin:0 0 10px;
+}
+.evf__list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
+.evf__opt{
+  display:grid;grid-template-columns:18px 1fr auto;align-items:center;gap:10px;
+  padding:7px 0;cursor:pointer;font-size:14px;color:var(--white);line-height:1.35;
+}
+.evf__opt input{
+  appearance:none;-webkit-appearance:none;width:18px;height:18px;margin:0;cursor:pointer;
+  border:1px solid var(--grey-700);background:none;transition:.15s;
+}
+.evf__opt input:checked{background:var(--lime);border-color:var(--lime)}
+.evf__opt input:checked::after{content:"✓";display:block;text-align:center;line-height:16px;font-size:12px;color:var(--black)}
+.evf__opt input:focus-visible{outline:2px solid var(--lime);outline-offset:2px}
+.evf__opt:hover .evf__opt-name{color:var(--lime)}
+.evf__opt-n{font-family:var(--font-display);font-size:11px;color:var(--grey-700)}
+/* Empty combinations stay in place and grey out. Removing them makes the list
+   jump under the cursor between clicks. */
+.evf__opt.is-empty{opacity:.35;cursor:default}
+.evf__opt.is-empty:hover .evf__opt-name{color:var(--white)}
+
+/* ── phone: the rail is a sheet, opened from a button ── */
+@media(max-width:1023px){
+  .evf{
+    position:fixed;inset:auto 0 0 0;z-index:70;max-height:82vh;overflow-y:auto;
+    background:var(--black-2);border-top:1px solid var(--lime);
+    padding:20px 20px calc(20px + env(safe-area-inset-bottom));
+    transform:translateY(101%);transition:transform .25s ease;
+  }
+  .evf.is-open{transform:none}
+  .evf__head{position:sticky;top:-20px;background:var(--black-2);padding:4px 0 12px;margin:0 0 6px}
+  .evf-fab{
+    position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:69;
+    display:inline-flex;align-items:center;gap:8px;cursor:pointer;
+    background:var(--lime);color:var(--black);border:0;
+    font-family:var(--font-display);font-size:13px;letter-spacing:.08em;text-transform:uppercase;
+    padding:14px 22px;box-shadow:0 6px 24px rgba(0,0,0,.5);
+  }
+  .evf-done{
+    width:100%;margin-top:18px;padding:14px;cursor:pointer;border:0;
+    background:var(--lime);color:var(--black);
+    font-family:var(--font-display);font-size:13px;letter-spacing:.08em;text-transform:uppercase;
+  }
+  .evf-backdrop{position:fixed;inset:0;z-index:69;background:rgba(0,0,0,.6);opacity:0;pointer-events:none;transition:opacity .25s}
+  .evf-backdrop.is-open{opacity:1;pointer-events:auto}
+}
+@media(min-width:1024px){ .evf-fab,.evf-done,.evf-backdrop{display:none} }
+
+/* The view toggle sat at the left edge, directly above the filter rail, which
+   made four buttons look like the rail's own header. It belongs over the
+   events it switches — so on the layout's breakpoint it moves to the right,
+   above the results column. */
+@media(min-width:1024px){
+  .ev-header__bottom{align-items:center}
+  .view-toggle-wrap{margin-left:auto}
+}

@@ -5,6 +5,7 @@ import Footer from '../../components/Footer.astro';
 import EventCard from '../../components/EventCard.astro';
 import EventsMap from '../../components/EventsMap.astro';
 import EventsCalendar from '../../components/EventsCalendar.astro';
+import EventsFilter from '../../components/EventsFilter.astro';
 import { getCollection } from 'astro:content';
 import geocache from '../../data/geocache.json';
 
@@ -184,6 +185,10 @@ function formatDate(d: string) {
     </div>
   </div>
 
+  <div class="ev-layout">
+    <EventsFilter lang={lang} />
+    <div class="ev-layout__main">
+
   <!-- GRID VIEW -->
   <section class="section ev-view" id="view-grid">
     <div class="section__inner">
@@ -203,6 +208,8 @@ function formatDate(d: string) {
             eventType={ev.data.event_type}
             eventLanguage={ev.data.event_language}
             location={ev.data.location}
+            address={ev.data.address}
+            format={ev.data.format}
           />
         ))}
         {upcoming.length === 0 && (
@@ -226,6 +233,8 @@ function formatDate(d: string) {
             eventType={ev.data.event_type}
             eventLanguage={ev.data.event_language}
             location={ev.data.location}
+            address={ev.data.address}
+            format={ev.data.format}
           />
         ))}
         {past.length === 0 && (
@@ -364,6 +373,9 @@ function formatDate(d: string) {
 
   <!-- MAP VIEW -->
   <EventsMap markers={mapMarkers} lang={lang} />
+
+    </div><!-- /ev-layout__main -->
+  </div><!-- /ev-layout -->
 
   <!-- PUBLISH-YOUR-EVENT CTA (toggle SHOW_PUBLISH_CTA above) -->
   {SHOW_PUBLISH_CTA && (

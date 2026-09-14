@@ -74,6 +74,17 @@ const openKey = months.includes(monthKey(todayISO)) ? monthKey(todayISO) : month
 
 /* Monday-first weeks, because that is the Swedish week. getUTCDay() counts
    from Sunday, so the offset is shifted by one and wrapped. */
+/* ISO 8601 week number — the one Swedish calendars print. The rule is that a
+   week belongs to the year containing its Thursday, which is why the date is
+   nudged to Thursday before counting. */
+function isoWeek(iso: string) {
+  const [y, m, d] = iso.split('-').map(Number);
+  const dt = new Date(Date.UTC(y, m - 1, d));
+  dt.setUTCDate(dt.getUTCDate() + 4 - ((dt.getUTCDay() + 6) % 7 + 1));
+  const yearStart = new Date(Date.UTC(dt.getUTCFullYear(), 0, 1));
+  return Math.ceil(((dt.getTime() - yearStart.getTime()) / 86400000 + 1) / 7);
+}
+
 function cells(key: string) {
   const [y, m] = key.split('-').map(Number);
   const firstOfMonth = new Date(Date.UTC(y, m - 1, 1));
@@ -122,13 +133,20 @@ const badgeOf = (ev: any) => {
   </div>
 
   <div class="cal__weekdays" aria-hidden="true">
+    <span class="cal__weekno-head">{en ? 'W' : 'V'}</span>
     {t.weekdays.map((w) => <span>{w}</span>)}
   </div>
 
   {months.map((key) => (
     <div class="cal__month-grid" data-month={key} hidden={key !== openKey}>
       <div class="cal__grid">
-        {cells(key).map((c) => !c ? <div class="cal__cell cal__cell--out"></div> : (
+        {(() => {
+          const flat = cells(key);
+          const weeks: typeof flat[] = [];
+          for (let i = 0; i < flat.length; i += 7) weeks.push(flat.slice(i, i + 7));
+          return weeks.map((week) => [
+            <div class="cal__weekno">{isoWeek((week.find((c) => c) as any).iso)}</div>,
+            ...week.map((c) => !c ? <div class="cal__cell cal__cell--out"></div> : (
           <div class={`cal__cell ${byDate.has(c.iso) ? 'has-event' : ''} ${c.iso === todayISO ? 'is-today' : ''}`}>
             <span class="cal__day">{c.day}</span>
             {(byDate.get(c.iso) ?? []).map((ev: any) => (
@@ -139,7 +157,9 @@ const badgeOf = (ev: any) => {
               </a>
             ))}
           </div>
-        ))}
+            )),
+          ]);
+        })()}
       </div>
 
       {/* The phone version of the same month. Not a smaller grid — a list. */}

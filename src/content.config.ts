@@ -26,6 +26,10 @@ const events = defineCollection({
     location: z.string(),
     category: z.enum(['Tune In West', 'Kulturverkstaden', 'Högskolan för scen och musik', 'VGR', 'Partners', 'Externa event', 'External events', 'Kulturakademin']),
     event_type: z.enum(['Event', 'Utlysning']).optional().default('Event'),
+    /* What the event is, as opposed to who runs it — the axis the events page
+       filters on. Optional: an event created before the field existed is still
+       valid, it simply does not appear under any type. */
+    format: z.string().optional(),
     event_language: z.enum(['Svenska', 'Engelska', 'Tvåspråkigt', 'Swedish', 'English', 'Bilingual']).optional(),
     image: z.string(),
     card_image: z.string().optional(),

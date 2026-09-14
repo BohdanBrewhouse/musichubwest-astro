@@ -1,0 +1,220 @@
+---
+/*
+  The left filter rail — the shape a shop uses, because the job is the same:
+  narrow a set down four different ways at once.
+
+  Three rules it follows, all of them from what goes wrong when they are
+  ignored:
+
+  1. Every option carries its count, and an option that would return nothing is
+     disabled rather than hidden. Hiding it makes the list jump around as you
+     click; disabling it says "that combination is empty" without moving
+     anything.
+
+  2. Facets combine as OR inside a facet and AND between them — two organisers
+     means "either", an organiser plus a month means "both". That is what a
+     shop does, and it is what people expect without being told.
+
+  3. The filtering is done on attributes already in the DOM, the same
+     [data-*] the old chips used. Nothing is re-fetched and nothing is
+     re-rendered; the views simply hide what does not match, so grid, agenda
+     and calendar all narrow together.
+
+  The `Typ` facet currently reads `event_type`, which holds Utlysning or Event.
+  When the fuller taxonomy is agreed, only the source field changes — the rail
+  is already built for six values.
+*/
+import { getCollection } from 'astro:content';
+
+interface Props { lang?: string }
+const { lang = 'sv' } = Astro.props;
+const en = lang === 'en';
+
+const events = await getCollection('events', (e) => e.id.startsWith(`${lang}/`));
+const today = new Date().toISOString().slice(0, 10);
+const upcoming = events.filter((e) => e.data.date >= today);
+
+const t = en ? {
+  title: 'Filter', clear: 'Clear all', results: '{n} events', resultOne: '1 event',
+  typ: 'Type', arrangor: 'Organiser', plats: 'Place', nar: 'When',
+  open: 'Filter', close: 'Show results',
+} : {
+  title: 'Filter', clear: 'Rensa alla', results: '{n} event', resultOne: '1 event',
+  typ: 'Typ', arrangor: 'Arrangör', plats: 'Plats', nar: 'När',
+  open: 'Filtrera', close: 'Visa resultat',
+};
+
+const monthNames = en
+  ? ['January','February','March','April','May','June','July','August','September','October','November','December']
+  : ['januari','februari','mars','april','maj','juni','juli','augusti','september','oktober','november','december'];
+
+/* Facet values come from the events themselves, so an option only exists if
+   something in the data carries it — no hand-maintained list to drift out of
+   step with Sanity. */
+function facet(pick: (e: any) => string | null | undefined) {
+  const counts = new Map<string, number>();
+  for (const e of upcoming) {
+    const v = (pick(e) ?? '').trim();
+    if (!v) continue;
+    counts.set(v, (counts.get(v) ?? 0) + 1);
+  }
+  return [...counts.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+}
+
+/* "Plats" as a list of venues was unusable — the values came out as
+   "Danmark & Tyskland", "Online (Zoom) + hybrid i Stockholm", "Brewhouse
+   Inkubator": three different kinds of answer to one question. The only
+   distinction that holds across all of them, and the one someone filters on,
+   is whether they have to travel. */
+const ONLINE = /online|zoom|digital|webbinar|teams|stream/i;
+const placeOf = (e: any) => {
+  const hay = `${e.data.location ?? ''} ${e.data.address ?? ''}`;
+  return ONLINE.test(hay) ? (en ? 'Online' : 'Online') : (en ? 'On site' : 'På plats');
+};
+const monthOf = (e: any) => (e.data.date ?? '').slice(0, 7);
+
+const facets = [
+  { key: 'type',     label: t.typ,       values: facet((e) => e.data.format) },
+  { key: 'category', label: t.arrangor,  values: facet((e) => e.data.category) },
+  { key: 'city',     label: t.plats,     values: facet(placeOf) },
+  { key: 'month',    label: t.nar,       values: facet(monthOf) },
+];
+
+const prettyMonth = (key: string) => {
+  const [y, m] = key.split('-').map(Number);
+  return `${monthNames[m - 1]} ${y}`;
+};
+---
+
+{/* On a phone the rail is a sheet: a fixed button opens it, the page dims
+    behind, and a full-width button closes it saying how many events are left.
+    A 240px column pushed to the top of a phone page is a wall of checkboxes
+    before anyone has seen a single event. */}
+<button type="button" class="evf-fab" id="evfFab">{t.open} <span id="evfFabN"></span></button>
+<div class="evf-backdrop" id="evfBackdrop"></div>
+
+<aside class="evf" id="evf">
+  <div class="evf__head">
+    <h2 class="evf__title">{t.title}</h2>
+    <button type="button" class="evf__clear" id="evfClear" hidden>{t.clear}</button>
+  </div>
+
+  {facets.filter((f) => f.values.length > 1).map((f) => (
+    <section class="evf__group" data-facet={f.key}>
+      <h3 class="evf__group-title">{f.label}</h3>
+      <ul class="evf__list">
+        {f.values.map(([value, n]) => (
+          <li>
+            <label class="evf__opt">
+              <input type="checkbox" data-facet={f.key} value={value} />
+              <span class="evf__opt-name">{f.key === 'month' ? prettyMonth(value) : value}</span>
+              <span class="evf__opt-n" data-count-for={`${f.key}|${value}`}>{n}</span>
+            </label>
+          </li>
+        ))}
+      </ul>
+    </section>
+  ))}
+  <button type="button" class="evf-done" id="evfDone">{t.close}</button>
+</aside>
+
+<script is:inline define:vars={{ resultsTpl: t.results, resultOne: t.resultOne, openLabel: t.open, closeLabel: t.close }}>
+(function () {
+  const rail = document.getElementById('evf');
+  if (!rail) return;
+
+  const boxes = [...rail.querySelectorAll('input[type=checkbox]')];
+  const clear = document.getElementById('evfClear');
+  const FACETS = ['type', 'category', 'city', 'month'];
+
+  // Everything the page can show, across all views.
+  const items = () => [...document.querySelectorAll('[data-category]')];
+  /* The same event exists four times over: a card in the upcoming grid, a row
+     in the agenda, a tile in the calendar, and again in the archive. Counting
+     elements therefore said 28 when there are 14 events and 5 of them are
+     upcoming. The canonical set is the upcoming grid; everything else is
+     another rendering of it. */
+  const canonical = () => [...document.querySelectorAll('#grid-upcoming [data-category]')];
+
+  const chosen = () => {
+    const out = {};
+    for (const f of FACETS) out[f] = boxes.filter((b) => b.dataset.facet === f && b.checked).map((b) => b.value);
+    return out;
+  };
+
+  /* OR inside a facet, AND between them. An empty facet means "no opinion",
+     not "nothing" — which is the difference between a filter that narrows and
+     one that empties the page on the first click. */
+  const matches = (el, sel) => FACETS.every((f) => !sel[f].length || sel[f].includes(el.dataset[f] || ''));
+
+  function apply() {
+    const sel = chosen();
+    const all = items();
+    for (const el of all) el.style.display = matches(el, sel) ? '' : 'none';
+    const shown = canonical().filter((el) => matches(el, sel)).length;
+
+    /* Counts are recomputed against the other facets, so a number tells you
+       what you would get if you ticked it — not how many exist in the
+       abstract. A zero disables the option instead of hiding it: hiding makes
+       the list jump under the cursor. */
+    for (const b of boxes) {
+      const probe = { ...sel, [b.dataset.facet]: [b.value] };
+      const n = canonical().filter((el) => matches(el, probe)).length;
+      const badge = rail.querySelector(`[data-count-for="${b.dataset.facet}|${CSS.escape(b.value)}"]`);
+      if (badge) badge.textContent = String(n);
+      b.disabled = n === 0 && !b.checked;
+      b.closest('.evf__opt')?.classList.toggle('is-empty', b.disabled);
+    }
+
+    const any = boxes.some((b) => b.checked);
+    if (clear) clear.hidden = !any;
+
+    // The header's big number already names the result — keep it honest.
+    const count = document.getElementById('ev-count');
+    if (count) count.textContent = String(shown);
+    const n = boxes.filter((b) => b.checked).length;
+    if (fabN) fabN.textContent = n ? '(' + n + ')' : '';
+    if (done) done.textContent = (shown === 1 ? resultOne : resultsTpl.replace('{n}', String(shown)));
+
+    // A calendar day whose only event is filtered out should not keep its box.
+    document.querySelectorAll('.cal__cell').forEach((cell) => {
+      const evs = [...cell.querySelectorAll('.cal__ev')];
+      if (!evs.length) return;
+      cell.classList.toggle('has-event', evs.some((e) => e.style.display !== 'none'));
+    });
+  }
+
+  // ── the phone sheet ──
+  const fab = document.getElementById('evfFab');
+  const fabN = document.getElementById('evfFabN');
+  const done = document.getElementById('evfDone');
+  const backdrop = document.getElementById('evfBackdrop');
+  const openSheet = (on) => {
+    rail.classList.toggle('is-open', on);
+    backdrop.classList.toggle('is-open', on);
+    document.body.style.overflow = on ? 'hidden' : '';
+  };
+  fab?.addEventListener('click', () => openSheet(true));
+  done?.addEventListener('click', () => openSheet(false));
+  backdrop?.addEventListener('click', () => openSheet(false));
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') openSheet(false); });
+
+  boxes.forEach((b) => b.addEventListener('change', apply));
+  if (clear) clear.addEventListener('click', () => { boxes.forEach((b) => { b.checked = false; }); apply(); });
+
+  /* The old chips still exist for browsers that reach them first; keep them in
+     step rather than leaving two filters disagreeing. */
+  document.querySelectorAll('.ev-chip, .cat-drop__item').forEach((c) => {
+    c.addEventListener('click', () => {
+      const v = c.getAttribute('data-filter');
+      boxes.forEach((b) => { if (b.dataset.facet === 'category') b.checked = v !== 'all' && b.value === v; });
+      apply();
+    });
+  });
+
+  /* The rail is parsed before the views below it, so at this point the cards
+     do not exist yet and every count would be zero. Wait for the document. */
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', apply);
+  else apply();
+})();
+</script>

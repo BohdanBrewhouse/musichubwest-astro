@@ -5,6 +5,7 @@ import Footer from '../components/Footer.astro';
 import EventCard from '../components/EventCard.astro';
 import EventsMap from '../components/EventsMap.astro';
 import EventsCalendar from '../components/EventsCalendar.astro';
+import EventsFilter from '../components/EventsFilter.astro';
 import { getCollection } from 'astro:content';
 import geocache from '../data/geocache.json';
 
@@ -184,6 +185,12 @@ function formatDate(d: string) {
     </div>
   </div>
 
+  {/* Rail + views. The rail is a sibling, not a wrapper, so each view keeps
+      its own markup and only the shared [data-*] attributes are filtered. */}
+  <div class="ev-layout">
+    <EventsFilter lang={lang} />
+    <div class="ev-layout__main">
+
   <!-- GRID VIEW -->
   <section class="section ev-view" id="view-grid">
     <div class="section__inner">
@@ -203,6 +210,8 @@ function formatDate(d: string) {
             eventType={ev.data.event_type}
             eventLanguage={ev.data.event_language}
             location={ev.data.location}
+            address={ev.data.address}
+            format={ev.data.format}
           />
         ))}
         {upcoming.length === 0 && (
@@ -226,6 +235,8 @@ function formatDate(d: string) {
             eventType={ev.data.event_type}
             eventLanguage={ev.data.event_language}
             location={ev.data.location}
+            address={ev.data.address}
+            format={ev.data.format}
           />
         ))}
         {past.length === 0 && (
@@ -263,7 +274,7 @@ function formatDate(d: string) {
                   : evLangNorm === 'tvåspråkigt' || evLangNorm === 'bilingual' ? 'Tvåspråkigt'
                   : null;
                 return (
-                  <a class={`agenda-item${evIsOwn ? ' agenda-item--own' : ''}`} href={`/evenemang/${slug}`} data-category={ev.data.category}>
+                  <a class={`agenda-item${evIsOwn ? ' agenda-item--own' : ''}`} href={`/evenemang/${slug}`} data-category={ev.data.category} data-type={ev.data.format} data-city={/online|zoom|digital|webbinar|teams|stream/i.test(`${ev.data.location ?? ""} ${ev.data.address ?? ""}`) ? "Online" : "På plats"} data-month={ev.data.date.slice(0,7)}>
                     <div class="agenda-item__body">
                       <div class="agenda-item__top">
                         <span class={`badge ${badgeClass[ev.data.category] ?? ''}`}>{evBadgeText}</span>
@@ -318,7 +329,7 @@ function formatDate(d: string) {
                   : evLangNorm === 'tvåspråkigt' || evLangNorm === 'bilingual' ? 'Tvåspråkigt'
                   : null;
                 return (
-                  <a class={`agenda-item agenda-item--past${evIsOwn ? ' agenda-item--own' : ''}`} href={`/evenemang/${slug}`} data-category={ev.data.category}>
+                  <a class={`agenda-item agenda-item--past${evIsOwn ? ' agenda-item--own' : ''}`} href={`/evenemang/${slug}`} data-category={ev.data.category} data-type={ev.data.format} data-city={/online|zoom|digital|webbinar|teams|stream/i.test(`${ev.data.location ?? ""} ${ev.data.address ?? ""}`) ? "Online" : "På plats"} data-month={ev.data.date.slice(0,7)}>
                     <div class="agenda-item__body">
                       <div class="agenda-item__top">
                         <span class={`badge ${badgeClass[ev.data.category] ?? ''}`}>{evBadgeText}</span>
@@ -364,6 +375,9 @@ function formatDate(d: string) {
 
   <!-- MAP VIEW -->
   <EventsMap markers={mapMarkers} lang={lang} />
+
+    </div><!-- /ev-layout__main -->
+  </div><!-- /ev-layout -->
 
   <!-- PUBLISH-YOUR-EVENT CTA (toggle SHOW_PUBLISH_CTA above) -->
   {SHOW_PUBLISH_CTA && (
