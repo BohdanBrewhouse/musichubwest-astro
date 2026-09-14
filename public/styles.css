@@ -3393,7 +3393,7 @@ dialog.mnav[open] .mnav__link:nth-child(4) .mnav__num { animation-delay: 0.22s; 
   position:relative;min-height:132px;border:1px solid var(--black-3);
   padding:8px;display:flex;flex-direction:column;gap:6px;overflow:hidden;
 }
-.cal__cell.has-event{min-height:200px}
+.cal__cell.has-event{min-height:236px}
 .cal__cell--out{border-color:transparent;background:none}
 .cal__day{font-family:var(--font-display);font-size:12px;color:var(--grey-700);line-height:1}
 .cal__cell.has-event .cal__day{color:var(--white)}
@@ -3402,7 +3402,7 @@ dialog.mnav[open] .mnav__link:nth-child(4) .mnav__num { animation-delay: 0.22s; 
 .cal__cell.is-today .cal__day{color:var(--lime);font-weight:700}
 
 .cal__ev{
-  position:relative;flex:1;min-height:120px;display:block;overflow:hidden;
+  position:relative;flex:1;min-height:150px;display:block;overflow:hidden;
   border:1px solid var(--grey-700);text-decoration:none;transition:.15s;
 }
 .cal__ev:hover{border-color:var(--lime)}
@@ -3412,7 +3412,7 @@ dialog.mnav[open] .mnav__link:nth-child(4) .mnav__num { animation-delay: 0.22s; 
   position:absolute;left:0;right:0;bottom:0;z-index:1;padding:22px 8px 7px;
   font-size:12px;line-height:1.25;color:var(--white);
   background:linear-gradient(180deg,transparent,rgba(0,0,0,.88) 60%);
-  display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
 }
 /* One line, never more: whatever the field holds, the badge is a label, and a
    label that wraps to three lines has stopped being one. */
@@ -3630,6 +3630,13 @@ dialog.mnav[open] .mnav__link:nth-child(4) .mnav__num { animation-delay: 0.22s; 
   align-items:center;gap:18px;
   padding:14px 0 !important;
 }
+/* Placed by column, not by order: an event without a picture used to shift
+   every later child one track left, which dropped the arrow onto a second row
+   where it hung under the date. */
+.agenda-item__date{grid-column:1}
+.agenda-item__thumb{grid-column:2}
+.agenda-item__body{grid-column:3}
+.agenda-item__link{grid-column:4;grid-row:1}
 .agenda-item__date{
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
   border:1px solid var(--black-3);padding:8px 0;
@@ -3651,6 +3658,31 @@ dialog.mnav[open] .mnav__link:nth-child(4) .mnav__num { animation-delay: 0.22s; 
   /* The thumbnail is the first thing to go: at 375px it would leave the title
      about twelve characters. */
   .agenda-item{grid-template-columns:46px minmax(0,1fr);gap:12px}
+  .agenda-item__body{grid-column:2}
   .agenda-item__thumb,.agenda-item__link{display:none}
   .agenda-item__title{font-size:15px}
 }
+
+/* The sheet's own close. Hidden on desktop, where the rail is not a sheet and
+   has nothing to close. */
+.evf__x{
+  background:none;border:0;padding:4px 6px;margin-left:auto;cursor:pointer;
+  font-size:28px;line-height:1;color:var(--grey-500);
+}
+.evf__x:hover{color:var(--white)}
+.evf__x:focus-visible{outline:2px solid var(--lime);outline-offset:2px}
+@media(min-width:1024px){ .evf__x{display:none} }
+
+
+/* The rail sat flush against the rule that closes the toolbar — the title read
+   as a caption on the line rather than the head of a column. */
+@media(min-width:1024px){ .ev-layout{padding-top:32px} }
+
+/* The view toggle had no lit state on the phone: the pressed button kept the
+   same outline as the other three, so nothing said which view you were in. */
+
+/* Kommande/Arkiv splits the list into past and future. The calendar already
+   answers that question month by month, and the map only ever plots what is
+   coming — so in those two views the tabs contradict what is on screen. */
+.ev-toolbar.no-tabs .ev-tabs{display:none}
+.ev-toolbar.no-tabs{justify-content:flex-end}

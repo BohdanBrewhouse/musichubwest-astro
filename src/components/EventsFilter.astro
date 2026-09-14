@@ -37,11 +37,11 @@ const upcoming = events.filter((e) => e.data.date >= today);
 const t = en ? {
   title: 'Filter', clear: 'Clear all', results: '{n} events', resultOne: '1 event',
   typ: 'Type', arrangor: 'Organiser', plats: 'Place', nar: 'When',
-  open: 'Filter', close: 'Show results',
+  open: 'Filter', close: 'Close', showN: 'Show {n} events', showOne: 'Show 1 event',
 } : {
   title: 'Filter', clear: 'Rensa alla', results: '{n} event', resultOne: '1 event',
   typ: 'Typ', arrangor: 'Arrangör', plats: 'Plats', nar: 'När',
-  open: 'Filtrera', close: 'Visa resultat',
+  open: 'Filtrera', close: 'Stäng', showN: 'Visa {n} event', showOne: 'Visa 1 event',
 };
 
 const monthNames = en
@@ -97,6 +97,10 @@ const prettyMonth = (key: string) => {
   <div class="evf__head">
     <h2 class="evf__title">{t.title}</h2>
     <button type="button" class="evf__clear" id="evfClear" hidden>{t.clear}</button>
+    {/* Only on the phone sheet: on the desktop rail there is nothing to close.
+        A lime button at the foot saying "5 event" was doing the closing, but it
+        reads as a count, not as a way out. */}
+    <button type="button" class="evf__x" id="evfX" aria-label={t.close}>&times;</button>
   </div>
 
   {facets.filter((f) => f.values.length > 1).map((f) => (
@@ -118,7 +122,7 @@ const prettyMonth = (key: string) => {
   <button type="button" class="evf-done" id="evfDone">{t.close}</button>
 </aside>
 
-<script is:inline define:vars={{ resultsTpl: t.results, resultOne: t.resultOne, openLabel: t.open, closeLabel: t.close }}>
+<script is:inline define:vars={{ showN: t.showN, showOne: t.showOne }}>
 (function () {
   const rail = document.getElementById('evf');
   if (!rail) return;
@@ -174,7 +178,7 @@ const prettyMonth = (key: string) => {
     if (count) count.textContent = String(shown);
     const n = boxes.filter((b) => b.checked).length;
     if (fabN) fabN.textContent = n ? '(' + n + ')' : '';
-    if (done) done.textContent = (shown === 1 ? resultOne : resultsTpl.replace('{n}', String(shown)));
+    if (done) done.textContent = (shown === 1 ? showOne : showN.replace('{n}', String(shown)));
 
     // A calendar day whose only event is filtered out should not keep its box.
     document.querySelectorAll('.cal__cell').forEach((cell) => {
@@ -195,6 +199,7 @@ const prettyMonth = (key: string) => {
     document.body.style.overflow = on ? 'hidden' : '';
   };
   fab?.addEventListener('click', () => openSheet(true));
+  document.getElementById('evfX')?.addEventListener('click', () => openSheet(false));
   done?.addEventListener('click', () => openSheet(false));
   backdrop?.addEventListener('click', () => openSheet(false));
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') openSheet(false); });

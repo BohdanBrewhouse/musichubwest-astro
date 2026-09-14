@@ -433,6 +433,8 @@ function formatDate(d: string) {
     if (btnList) { btnList.classList.toggle('active', isList); btnList.setAttribute('aria-pressed', isList ? 'true' : 'false'); }
     if (btnMap)  { btnMap.classList.toggle('active', isMap);   btnMap.setAttribute('aria-pressed', isMap  ? 'true' : 'false'); }
     if (evFloating) evFloating.style.display = (isMap || isCal) ? 'none' : '';
+    var toolbar = document.querySelector('.ev-toolbar');
+    if (toolbar) toolbar.classList.toggle('no-tabs', isMap || isCal);
     if (isMap) {
       try {
         var upcomingBtn = document.querySelector('[data-tab="upcoming"]');
@@ -817,7 +819,16 @@ function formatDate(d: string) {
     position: relative;
   }
   .view-toggle__btn:hover { color: var(--white); border-color: rgba(255,255,255,0.2); }
-  .view-toggle__btn.active { color: var(--lime); border-color: var(--lime); background: rgba(204,255,0,0.06); }
+  /* An outline plus a 6%-opacity wash was not a lit state — on a phone, in
+     daylight, the current view looked the same as the other three. Fill it. */
+  .view-toggle__btn.active { color: var(--black); border-color: var(--lime); background: var(--lime); }
+  /* Safari paints its own orange ring on a clicked button; keep the keyboard
+     ring, drop the mouse one. */
+  .view-toggle__btn:focus { outline: none; }
+  .view-toggle__btn:focus-visible { outline: 2px solid var(--lime); outline-offset: 2px; }
+  /* A tooltip has nothing to hover on a touch screen, so it just hung over the
+     page after a tap. */
+  @media (hover: none) { .view-toggle__tooltip { display: none; } }
 
   .view-toggle__tooltip {
     position: absolute;
