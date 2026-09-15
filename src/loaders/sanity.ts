@@ -143,7 +143,11 @@ const plain = (blocks: unknown): string =>
         .join('\n\n')
     : '';
 
-const EVENT_QUERY = `*[_type == "event"]{
+/* Drafts must never reach the site. The client reads with a token and no
+   perspective, which is the raw one — so an unpublished document comes back
+   from a bare `*[_type == "event"]` exactly like a published one, and the
+   team's work-in-progress would go live the moment the next deploy ran. */
+const EVENT_QUERY = `*[_type == "event" && !(_id in path("drafts.**"))]{
   _id, _updatedAt, tinaKey, slug, title, seo_description, date, time, location, address,
   map_query, category, event_type, format, event_language, spots_left, spots_total, cost, duration,
   deadline, organizer, organizer_email, registration_open, external_registration_url,
@@ -152,7 +156,7 @@ const EVENT_QUERY = `*[_type == "event"]{
   "cardImageUrl": { "sv": card_image.sv.asset->url, "en": card_image.en.asset->url }
 }`;
 
-const ARTICLE_QUERY = `*[_type == "article"]{
+const ARTICLE_QUERY = `*[_type == "article" && !(_id in path("drafts.**"))]{
   _id, _updatedAt, tinaKey, slug, title, author, date, category, featured, body,
   "imageUrl": { "sv": image.sv.asset->url, "en": image.en.asset->url }
 }`;
@@ -200,7 +204,7 @@ export function sanityEvents(): Loader {
             organizer_email: d.organizer_email,
             // translationKey is what pairs the two languages on the site. It is
             // the Tina key, kept so /en switching keeps working unchanged.
-            translationKey: d.tinaKey,
+            translationKey: d.tinaKey || pick<string>(d.slug, "sv") || d._id,
             registration_open: d.registration_open ?? false,
             external_registration_url: pick<string>(d.external_registration_url, lang),
             serve_food: d.serve_food ?? false,
@@ -253,7 +257,7 @@ export function sanityArticles(): Loader {
             category: d.category,
             image: pick<string>(d.imageUrl, lang),
             featured: d.featured ?? false,
-            translationKey: d.tinaKey,
+            translationKey: d.tinaKey || pick<string>(d.slug, "sv") || d._id,
           };
 
           const id = `${lang}/${slug}`;
