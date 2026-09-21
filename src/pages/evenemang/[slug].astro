@@ -296,10 +296,12 @@ const icsContent = dtStart ? [
           <span class="event-cta-box__detail-label">Datum</span>
           <span class="event-cta-box__detail-value">{displayDate}</span>
         </div>
-        <div class="event-cta-box__detail">
-          <span class="event-cta-box__detail-label">Tid</span>
-          <span class="event-cta-box__detail-value">{ev.data.time}</span>
-        </div>
+        {ev.data.time && (
+          <div class="event-cta-box__detail">
+            <span class="event-cta-box__detail-label">Tid</span>
+            <span class="event-cta-box__detail-value">{ev.data.time}</span>
+          </div>
+        )}
         <div class="event-cta-box__detail">
           <span class="event-cta-box__detail-label">Plats</span>
           <span class="event-cta-box__detail-value">{ev.data.location}</span>

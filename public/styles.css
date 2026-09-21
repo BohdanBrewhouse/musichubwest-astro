@@ -2016,9 +2016,17 @@ dialog.mnav[open] .mnav__link:nth-child(4) .mnav__num { animation-delay: 0.22s; 
   margin-bottom: 20px;
   color: var(--white);
 }
+/* Label and value were a flex row pushed to opposite edges with the value
+   right-aligned, so anything longer than a few words wrapped into a ragged
+   staircase — "Onsdag 12:00–17:00 · torsdag 09:00–" then a lonely "15:00"
+   against the right edge. A fixed label column with the value set flush left
+   gives every row the same two starting points and lets long values form a
+   block instead of a stair. */
 .event-cta-box__detail {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 88px minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
   padding: 12px 0;
   border-bottom: 1px solid var(--black-3);
   font-size: 14px;
@@ -2033,10 +2041,8 @@ dialog.mnav[open] .mnav__link:nth-child(4) .mnav__num { animation-delay: 0.22s; 
 .event-cta-box__detail-value {
   font-weight: 700;
   color: var(--white);
-  text-align: right;
-  /* Values like "Fem träffar á tre timmar" wrap instead of overflowing the card */
   min-width: 0;
-  padding-left: 14px;
+  line-height: 1.45;
 }
 /* The deadline is the one fact that decides whether to act now or later, so it
    carries the accent colour rather than sitting level with date and place. */
