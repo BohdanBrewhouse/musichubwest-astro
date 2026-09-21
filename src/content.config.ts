@@ -43,6 +43,8 @@ const events = defineCollection({
     organizer: z.string().optional(),
     organizer_email: z.string().optional(),
     translationKey: z.string(),
+    registration_status: z.enum(['soon', 'open', 'closed']).optional(),
+    // Still read from the markdown files, which predate the three states.
     registration_open: z.boolean().optional().default(false),
     external_registration_url: z.string().optional(),
     serve_food: z.boolean().optional().default(false),

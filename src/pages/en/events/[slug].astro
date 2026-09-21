@@ -33,6 +33,11 @@ const isOpenCall = ev.data.event_type === 'Utlysning';
 const extCtaLabel = ev.data.cta_label ?? (isOpenCall ? 'To the application ↗' : 'Read more ↗');
 // Internal form (our own DB) — only utveckla-din-verksamhet uses this path.
 const ownCtaLabel = ev.data.cta_label ?? (isOpenCall ? 'Apply now' : 'Register now');
+
+/* Three states, not two: a registration that has closed is not one that is
+   about to open. Events written before the field existed carry only the old
+   boolean, so fall back to it. */
+const regStatus = ev.data.registration_status ?? (ev.data.registration_open ? 'open' : 'soon');
 const ctaBoxTitle = isOpenCall ? 'Register your interest' : 'Register for this event';
 // A two-sentence title ("Lev på din musik. Boosta din business.") wrapped
 // wherever the column ran out, landing on three ragged lines. Breaking at the
@@ -203,7 +208,7 @@ const icsContent = dtStart ? [
                data-title={ev.data.title}>
               {extCtaLabel}
             </a>
-          ) : ev.data.registration_open && (
+          ) : regStatus === 'open' && (
             <button class="btn btn--primary" onclick="openRegModal()">{ownCtaLabel}</button>
           )}
           {googleUrl && (
@@ -326,8 +331,10 @@ const icsContent = dtStart ? [
              data-title={ev.data.title}>
             {extCtaLabel}
           </a>
-        ) : ev.data.registration_open ? (
+        ) : regStatus === 'open' ? (
           <button class="btn btn--primary" onclick="openRegModal()">{ownCtaLabel}</button>
+        ) : regStatus === 'closed' ? (
+          <span class="btn btn--primary btn--disabled">Registration is closed</span>
         ) : (
           <span class="btn btn--primary btn--disabled">Registration opens soon</span>
         )}

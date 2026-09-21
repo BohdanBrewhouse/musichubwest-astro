@@ -150,7 +150,7 @@ const plain = (blocks: unknown): string =>
 const EVENT_QUERY = `*[_type == "event" && !(_id in path("drafts.**"))]{
   _id, _updatedAt, tinaKey, slug, title, seo_description, date, time, location, address,
   map_query, category, event_type, format, event_language, spots_left, spots_total, cost, duration,
-  deadline, organizer, organizer_email, registration_open, external_registration_url,
+  deadline, organizer, organizer_email, registration_status, registration_open, external_registration_url,
   serve_food, cta_label, sessions_title, sessions, body,
   "imageUrl":     { "sv": image.sv.asset->url, "en": image.en.asset->url },
   "cardImageUrl": { "sv": card_image.sv.asset->url, "en": card_image.en.asset->url }
@@ -205,7 +205,10 @@ export function sanityEvents(): Loader {
             // translationKey is what pairs the two languages on the site. It is
             // the Tina key, kept so /en switching keeps working unchanged.
             translationKey: d.tinaKey || pick<string>(d.slug, "sv") || d._id,
-            registration_open: d.registration_open ?? false,
+            /* Documents written before the three-state field existed only
+               carry the boolean; read it rather than showing them all as
+               "opens soon". */
+            registration_status: d.registration_status ?? (d.registration_open ? 'open' : 'soon'),
             external_registration_url: pick<string>(d.external_registration_url, lang),
             serve_food: d.serve_food ?? false,
             cta_label: pick<string>(d.cta_label, lang),
