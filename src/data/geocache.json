@@ -96,5 +96,39 @@
     "lng": null,
     "source": "nominatim",
     "failed": true
+  },
+  "Online (självstudier), Sweden": {
+    "lat": null,
+    "lng": null,
+    "source": "nominatim",
+    "failed": true
+  },
+  "Online (self-study), Sweden": {
+    "lat": null,
+    "lng": null,
+    "source": "nominatim",
+    "failed": true
+  },
+  "Stockholm": {
+    "lat": 59.3251172,
+    "lng": 18.0710935,
+    "source": "nominatim"
+  },
+  "Reeperbahn Festival Hamburg": {
+    "lat": null,
+    "lng": null,
+    "source": "nominatim",
+    "failed": true
+  },
+  "Las Palmas Gran Canaria": {
+    "lat": 27.763014,
+    "lng": -15.5760324,
+    "source": "nominatim"
+  },
+  "Viva Sounds Göteborg": {
+    "lat": null,
+    "lng": null,
+    "source": "nominatim",
+    "failed": true
   }
 }

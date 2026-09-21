@@ -19,7 +19,7 @@ export interface Props {
   location?: string;
   priority?: boolean;
 }
-const { title, date, time, category, image, slug, lang, past = false, organizer, isOwn = false, eventType = 'Event', eventLanguage, location, priority = false, format, address } = Astro.props;
+const { title, date, time, category, image, slug, lang, past = false, organizer, isOwn = false, eventType = 'Event', eventLanguage, location, priority = false, format, address, rolling = false } = Astro.props;
 const isOnline = /online|zoom|digital|webbinar|teams|stream/i.test(`${location ?? ''} ${address ?? ''}`);
 const eventsBase = lang === 'en' ? '/en/events' : '/evenemang';
 
@@ -42,9 +42,12 @@ const city = location
   : '';
 
 // Date/time display: Utlysning shows deadline label first, regular shows date · time
+/* Rolling courses carry a sort date, not an event date — the card says so
+   rather than printing 31 December at someone. */
+const dateText = rolling ? (lang === 'en' ? 'Rolling' : 'Löpande') : displayDate;
 const datetimeText = isUtlysning
-  ? `${time} · ${displayDate}`
-  : `${displayDate}${time ? ` · ${time}` : ''}`;
+  ? `${time} · ${dateText}`
+  : `${dateText}${time ? ` · ${time}` : ''}`;
 
 // Language chip: show when event is in a different language than the page
 function getLangChip(evLang: string | undefined, pgLang: 'sv' | 'en'): string | null {

@@ -225,6 +225,7 @@ function formatDate(d: string) {
             location={ev.data.location}
             address={ev.data.address}
             format={ev.data.format}
+            rolling={ev.data.rolling}
           />
         ))}
         {upcoming.length === 0 && (
@@ -250,6 +251,7 @@ function formatDate(d: string) {
             location={ev.data.location}
             address={ev.data.address}
             format={ev.data.format}
+            rolling={ev.data.rolling}
           />
         ))}
         {past.length === 0 && (

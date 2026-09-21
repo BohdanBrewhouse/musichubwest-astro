@@ -39,6 +39,7 @@ const events = defineCollection({
     // Practical facts that were only in the body text, so a reader scanning the
     // sidebar could not see them before deciding.
     duration: z.string().optional(),
+    rolling: z.boolean().optional().default(false),
     deadline: z.string().optional(),
     organizer: z.string().optional(),
     organizer_email: z.string().optional(),

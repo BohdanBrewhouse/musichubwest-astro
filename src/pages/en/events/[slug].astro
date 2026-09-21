@@ -25,6 +25,9 @@ function formatDate(d: string) {
     .format(new Date(d + 'T12:00:00'));
 }
 const displayDate = formatDate(ev.data.date);
+/* A rolling course has no date to print: `date` is only the last day it stays
+   open, and showing it as the date claimed the course happens on that day. */
+const dateText = ev.data.rolling ? 'Rolling' : displayDate;
 
 // External-link wording. Never say "tickets" — almost none of these events
 // sell tickets, and claiming it is misleading. Open calls get application
@@ -189,7 +192,7 @@ const icsContent = dtStart ? [
         <div class="event-meta-row">
           <div class="event-meta-item">
             <span class="event-meta-item__label">Date</span>
-            <span class="event-meta-item__value">{displayDate}</span>
+            <span class="event-meta-item__value">{dateText}</span>
           </div>
           <div class="event-meta-item">
             <span class="event-meta-item__label">Time</span>
@@ -290,7 +293,7 @@ const icsContent = dtStart ? [
         <p class="event-cta-box__title">{ctaBoxTitle}</p>
         <div class="event-cta-box__detail">
           <span class="event-cta-box__detail-label">Date</span>
-          <span class="event-cta-box__detail-value">{displayDate}</span>
+          <span class="event-cta-box__detail-value">{dateText}</span>
         </div>
         {ev.data.time && (
           <div class="event-cta-box__detail">
