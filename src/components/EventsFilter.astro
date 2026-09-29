@@ -142,7 +142,7 @@ const prettyMonth = (key: string) => {
      elements therefore said 28 when there are 14 events and 5 of them are
      upcoming. The canonical set is the upcoming grid; everything else is
      another rendering of it. */
-  const canonical = () => [...document.querySelectorAll('#grid-upcoming [data-category]')];
+  const canonical = () => [...document.querySelectorAll('#grid-upcoming [data-category], .ev-rolling [data-category]')];
 
   const chosen = () => {
     const out = {};
