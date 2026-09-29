@@ -4006,3 +4006,7 @@ body .event-card__image{border-bottom:1px solid rgba(255,255,255,.1)}
 .ev-rolling .event-card__image{border-right:1px solid var(--line)}
 .event-card[data-type] .event-card__datetime{display:flex;align-items:baseline;gap:8px}
 .event-card[data-type] .event-card__datetime::before{content:"";flex:none;width:8px;height:8px;background:var(--tc);transform:translateY(-1px)}
+
+/* Type colours withdrawn: no swatch on cards or filters. */
+.event-card[data-type] .event-card__datetime::before,
+.evf__group[data-facet="type"] .evf__opt-name::before{content:none;display:none}
