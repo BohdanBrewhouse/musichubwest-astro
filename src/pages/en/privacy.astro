@@ -11,12 +11,12 @@ const lang = 'en';
   <main class="privacy">
     <div class="privacy__inner">
       <h1 class="privacy__title">Privacy &amp; cookie policy</h1>
-      <p class="privacy__updated">Last updated: August 2026</p>
+      <p class="privacy__updated">Last updated: September 2026</p>
 
       <section class="privacy__section">
         <h2>In short</h2>
         <p>Music Hub West is run by Brewhouse Göteborg as part of the Tune In West project. We collect as little as possible: statistics on how the site is used (only if you consent), and the details you provide yourself when you register for an event, contact us, submit an event or subscribe to the newsletter.</p>
-        <p>We never sell your data and we do not use it for advertising.</p>
+        <p>We never sell your data. Ad measurement through the Meta pixel only happens if you accept marketing cookies.</p>
       </section>
 
       <section class="privacy__section">
@@ -36,6 +36,8 @@ const lang = 'en';
           <li>CookieYes – remembers your choice in the consent banner so you are not asked every visit.</li>
           <li>Language preference – your choice of Swedish or English is stored locally in your browser.</li>
           <li>Service worker cache – stores pages and images locally for faster loading. Contains no personal data.</li>
+          <li>View choices – that you closed the welcome panel, and whether you view the calendar as a grid, list, map or month, are stored locally in your browser.</li>
+          <li>Traffic source – if you arrive through a link with campaign parameters (UTM), the source is stored temporarily in your browser during the visit and is included with any registration, so we can see which channels work.</li>
         </ul>
         <p style="margin-top:16px"><strong>Statistics</strong> – set only if you accept the “statistics” category:</p>
         <ul>
@@ -61,7 +63,7 @@ const lang = 'en';
         <h2>Information you provide yourself</h2>
         <p>Besides statistics, we process data you actively submit:</p>
         <ul>
-          <li><strong>Event registration</strong> – name, email and the answers you give in the form. Used to administer the event and send your confirmation. Legal basis: contract.</li>
+          <li><strong>Event registration</strong> – name, email, phone, company, any dietary requirements and the answers you give in the form. Used to administer the event and send your confirmation. Legal basis: contract.</li>
           <li><strong>Company details</strong> – when you register we ask whether you have a company and, if you do, for its registration number. This is used solely to report the number of participating companies to Tillväxtverket, which funds the project. Legal basis: legal obligation.<br>If you are a sole trader, the company registration number is the same as your personal identity number. We do not share it for any other purpose, and it is deleted once the reporting to Tillväxtverket is complete.</li>
           <li><strong>Contact form</strong> – name, email, organisation and your message. Used to reply to you. Legal basis: legitimate interest.</li>
           <li><strong>Submit an event</strong> – your contact and event details, so we can review and publish the event. Legal basis: legitimate interest.</li>
@@ -72,7 +74,7 @@ const lang = 'en';
 
       <section class="privacy__section">
         <h2>Logs and click statistics</h2>
-        <p>Our web server logs technical details about each visit, such as IP address, timestamp and the page requested. This is necessary to operate and secure the site, and is kept for a maximum of 30 days.</p>
+        <p>Our web server logs technical details about each visit, such as IP address, timestamp and the page requested. This is necessary to operate and secure the site, and is kept for a maximum of 30 days. The forms' server may also temporarily log details you submit, such as name and email, for troubleshooting; those logs are deleted automatically within the same period.</p>
         <p>When you click through to an external registration link we record that the click happened — which event and in which language. We do not link it to you as an individual.</p>
       </section>
 
@@ -87,7 +89,8 @@ const lang = 'en';
           <li><strong>Sanity</strong> – content management and submitted event proposals.</li>
           <li><strong>Resend</strong> – sending confirmation emails and newsletters, and storing newsletter subscribers.</li>
           <li><strong>Meta Platforms Ireland</strong> – ad measurement via the Meta pixel, only if you have accepted marketing cookies. Data may be transferred to the USA under the EU–US Data Privacy Framework.</li>
-          <li><strong>CARTO and OpenStreetMap</strong> – map imagery on event pages. The map loads only when you open it, at which point the provider receives your IP address.</li>
+          <li><strong>OpenStreetMap</strong> – map imagery in the calendar's map view. The map and its code (from unpkg.com and esm.sh) load only when you open the map view, at which point these providers receive your IP address.</li>
+          <li><strong>Google Maps</strong> – the map on an event page, which loads only when you click “Preview map”. Google then receives your IP address and may set its own cookies.</li>
         </ul>
         <p style="margin-top:16px">Several of these providers are established outside the EU/EEA. Transfers are made with the safeguards required under the GDPR, such as the European Commission’s standard contractual clauses.</p>
       </section>

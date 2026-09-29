@@ -11,12 +11,12 @@ const lang = 'sv';
   <main class="privacy">
     <div class="privacy__inner">
       <h1 class="privacy__title">Integritets- och cookiepolicy</h1>
-      <p class="privacy__updated">Senast uppdaterad: augusti 2026</p>
+      <p class="privacy__updated">Senast uppdaterad: september 2026</p>
 
       <section class="privacy__section">
         <h2>Kort sammanfattning</h2>
         <p>Music Hub West drivs av Brewhouse Göteborg inom projektet Tune In West. Vi samlar in så lite information som möjligt: statistik om hur webbplatsen används (bara om du samtycker), och de uppgifter du själv lämnar när du anmäler dig till ett event, kontaktar oss, publicerar ett event eller prenumererar på nyhetsbrevet.</p>
-        <p>Vi säljer aldrig dina uppgifter och använder dem inte för annonsering.</p>
+        <p>Vi säljer aldrig dina uppgifter. Annonsmätning via Meta-pixeln sker bara om du godkänner marknadsföringscookies.</p>
       </section>
 
       <section class="privacy__section">
@@ -36,6 +36,8 @@ const lang = 'sv';
           <li>CookieYes – sparar ditt val i samtyckesbannern så att du inte får frågan varje gång.</li>
           <li>Språkval – ditt val av svenska eller engelska sparas lokalt i din webbläsare.</li>
           <li>Service worker-cache – sparar sidor och bilder lokalt för snabbare laddning. Innehåller inga personuppgifter.</li>
+          <li>Visningsval – att du stängt välkomstrutan, och om du ser kalendern som rutnät, lista, karta eller månad, sparas lokalt i din webbläsare.</li>
+          <li>Trafikkälla – kommer du via en länk med kampanjparametrar (UTM) sparas källan tillfälligt i webbläsaren under besöket och följer med en eventuell anmälan, så att vi ser vilka kanaler som fungerar.</li>
         </ul>
         <p style="margin-top:16px"><strong>Statistik</strong> – sätts bara om du godkänner kategorin ”statistik”:</p>
         <ul>
@@ -61,7 +63,7 @@ const lang = 'sv';
         <h2>Uppgifter du själv lämnar</h2>
         <p>Utöver statistik behandlar vi uppgifter du aktivt skickar in:</p>
         <ul>
-          <li><strong>Anmälan till event</strong> – namn, e-post och de svar du lämnar i formuläret. Används för att administrera eventet och skicka bekräftelse. Rättslig grund: avtal.</li>
+          <li><strong>Anmälan till event</strong> – namn, e-post, telefon, företag, eventuella matpreferenser och de svar du lämnar i formuläret. Används för att administrera eventet och skicka bekräftelse. Rättslig grund: avtal.</li>
           <li><strong>Uppgift om bolag</strong> – vid anmälan frågar vi om du har bolag och, om du har det, om organisationsnummer. Uppgifterna används enbart för att redovisa antalet deltagande företag till Tillväxtverket, som finansierar projektet. Rättslig grund: rättslig förpliktelse.<br>Har du enskild firma är organisationsnummer detsamma som ditt personnummer. Vi delar det inte vidare i annat syfte, och det raderas när redovisningen till Tillväxtverket är avslutad.</li>
           <li><strong>Kontaktformulär</strong> – namn, e-post, organisation och ditt meddelande. Används för att svara dig. Rättslig grund: berättigat intresse.</li>
           <li><strong>Publicera event</strong> – dina kontakt- och eventuppgifter, så att vi kan granska och publicera eventet. Rättslig grund: berättigat intresse.</li>
@@ -72,7 +74,7 @@ const lang = 'sv';
 
       <section class="privacy__section">
         <h2>Loggar och klickstatistik</h2>
-        <p>Vår webbserver loggar tekniska uppgifter om varje besök, exempelvis IP-adress, tidpunkt och vilken sida som efterfrågades. Detta krävs för att driva och säkra webbplatsen och lagras i högst 30 dagar.</p>
+        <p>Vår webbserver loggar tekniska uppgifter om varje besök, exempelvis IP-adress, tidpunkt och vilken sida som efterfrågades. Detta krävs för att driva och säkra webbplatsen och lagras i högst 30 dagar. Formulärens server kan också tillfälligt logga uppgifter du skickat in, som namn och e-post, för felsökning; de loggarna raderas automatiskt inom samma tid.</p>
         <p>När du klickar vidare till en extern anmälningslänk registrerar vi att klicket skett — vilket event det gällde och på vilket språk. Vi kopplar inte det till dig som person.</p>
       </section>
 
@@ -87,7 +89,8 @@ const lang = 'sv';
           <li><strong>Sanity</strong> – innehållshantering och inskickade eventförslag.</li>
           <li><strong>Resend</strong> – utskick av bekräftelsemejl och nyhetsbrev, samt lagring av nyhetsbrevsprenumeranter.</li>
           <li><strong>Meta Platforms Ireland</strong> – annonsmätning via Meta-pixeln, endast om du godkänt marknadsföringscookies. Uppgifter kan överföras till USA under EU–US Data Privacy Framework.</li>
-          <li><strong>CARTO och OpenStreetMap</strong> – kartbilder på eventsidor. Kartan laddas först när du öppnar den, och leverantören tar då emot din IP-adress.</li>
+          <li><strong>OpenStreetMap</strong> – kartbilder i kalenderns kartvy. Kartan och dess kod (från unpkg.com och esm.sh) laddas först när du öppnar kartvyn, och leverantörerna tar då emot din IP-adress.</li>
+          <li><strong>Google Maps</strong> – kartan på en eventsida, som laddas först när du klickar på ”Förhandsgranska karta”. Google tar då emot din IP-adress och kan sätta egna cookies.</li>
         </ul>
         <p style="margin-top:16px">Flera av dessa leverantörer är etablerade utanför EU/EES. Överföringar sker med de skyddsåtgärder som gäller enligt dataskyddsförordningen, exempelvis EU-kommissionens standardavtalsklausuler.</p>
       </section>
