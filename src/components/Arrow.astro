@@ -1,0 +1,26 @@
+---
+/*
+  The one arrow on the site, drawn instead of typed.
+
+  The site used the characters → ↓ ← ↗. On iPhone and in Apple Mail "↗" is
+  rendered as a blue emoji tile, and the others change weight and height
+  from font to font — so an arrow next to "Music Hub West" looked like a
+  sticker. This is a 24-unit stroke icon in currentColor, sized to the text.
+
+  dir: right (go on), down (further down this page), left (back),
+  out (opens another site).
+*/
+interface Props { dir?: 'right' | 'down' | 'left' | 'out'; class?: string; }
+const { dir = 'right', class: cls = '' } = Astro.props;
+const PATHS = {
+  right: 'M4 12h15M13 6l6 6-6 6',
+  down:  'M12 4v15M6 13l6 6 6-6',
+  left:  'M20 12H5M11 6l-6 6 6 6',
+  out:   'M7 17L17 7M9 7h8v8',
+};
+---
+<svg class:list={['arrow', `arrow--${dir}`, cls]} viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="square" stroke-linejoin="miter" aria-hidden="true" focusable="false"><path d={PATHS[dir]} /></svg>
+
+<style>
+  .arrow { display: inline-block; flex: none; width: 1em; height: 1em; vertical-align: -0.14em; overflow: visible; }
+</style>

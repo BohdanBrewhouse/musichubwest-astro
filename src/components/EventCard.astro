@@ -76,6 +76,16 @@ const badgeClass: Record<string, string> = {
   'Kulturakademin':            'badge--kulturakademin',
 };
 const badgeText = isPartner ? partnerBadgeText : category;
+
+/* The flyer stamp: day and month set large on the photo, the way a gig
+   poster leads with the date. Only for a real calendar date — rolling
+   courses and open calls keep their own wording in the line below. */
+const hasDay = /^\d{4}-\d{2}-\d{2}$/.test(date) && !rolling && !isUtlysning;
+const dObj = hasDay ? new Date(date + 'T12:00:00') : null;
+const loc = lang === 'sv' ? 'sv-SE' : 'en-GB';
+const stampDay = dObj ? String(dObj.getDate()) : '';
+const stampMon = dObj ? new Intl.DateTimeFormat(loc, { month: 'short' }).format(dObj).replace('.', '') : '';
+const stampWd = dObj ? new Intl.DateTimeFormat(loc, { weekday: 'short' }).format(dObj).replace('.', '') : '';
 ---
 <a href={`${eventsBase}/${slug}`} class={`event-card${past ? ' event-card--past' : ''}${isOwn ? ' event-card--own' : ''}`} data-category={category} data-type={format} data-city={isOnline ? (lang === "en" ? "Online" : "Online") : (lang === "en" ? "On site" : "På plats")} data-month={(date ?? "").slice(0,7)}>
   <div class="event-card__image">
@@ -89,6 +99,12 @@ const badgeText = isPartner ? partnerBadgeText : category;
     <span class={`badge ${badgeClass[category] ?? ''} event-card__badge`}>{badgeText}</span>
     {isOwn && (
       <span class="event-card__mhw-chip">{mhwChipText}</span>
+    )}
+    {hasDay && (
+      <span class="event-card__stamp" aria-hidden="true">
+        <span class="event-card__stamp-d">{stampDay}</span>
+        <span class="event-card__stamp-m">{stampMon}<br />{stampWd}</span>
+      </span>
     )}
     {isUtlysning && (
       <span class="event-card__utlysning-chip">{lang === 'en' ? 'Open call' : 'Utlysning'}</span>

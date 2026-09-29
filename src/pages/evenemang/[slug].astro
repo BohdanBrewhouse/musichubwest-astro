@@ -1,4 +1,5 @@
 ---
+import Arrow from '../../components/Arrow.astro';
 import Base from '../../layouts/Base.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/Footer.astro';
@@ -33,7 +34,7 @@ const dateText = ev.data.rolling ? 'Löpande' : displayDate;
 // sell tickets, and claiming it is misleading. Open calls get application
 // wording instead.
 const isOpenCall = ev.data.event_type === 'Utlysning';
-const extCtaLabel = ev.data.cta_label ?? (isOpenCall ? 'Till ansökan ↗' : 'Läs mer ↗');
+const extCtaLabel = (ev.data.cta_label ?? (isOpenCall ? 'Till ansökan ↗' : 'Läs mer ↗')).replace(/\s*↗\s*$/, '');
 // Internal form (our own DB) — only utveckla-din-verksamhet uses this path.
 const ownCtaLabel = ev.data.cta_label ?? (isOpenCall ? 'Ansök nu' : 'Anmäl dig nu');
 
@@ -213,7 +214,7 @@ const icsContent = dtStart ? [
                class="btn btn--primary ext-reg-link"
                data-slug={ev.id.replace('sv/','')}
                data-title={ev.data.title}>
-              {extCtaLabel}
+              {extCtaLabel}&#160;<Arrow dir="out" />
             </a>
           ) : regStatus === 'open' && (
             <button class="btn btn--primary" onclick="openRegModal()">{ownCtaLabel}</button>
@@ -264,7 +265,7 @@ const icsContent = dtStart ? [
               <p class="sessions__note">
                 {/* Only claim per-session registration when sessions actually link somewhere */}
                 {ev.data.sessions.some(s => s.registration_url) && 'Anmälan sker per programpunkt hos arrangören · '}
-                <a href={ev.data.external_registration_url} target="_blank" rel="noopener noreferrer">Se hela programmet ↗</a>
+                <a href={ev.data.external_registration_url} target="_blank" rel="noopener noreferrer">Se hela programmet&#160;<Arrow dir="out" /></a>
               </p>
             )}
           </div>
@@ -284,7 +285,7 @@ const icsContent = dtStart ? [
                 </p>
               </div>
               {s.registration_url ? (
-                <a href={s.registration_url} target="_blank" rel="noopener noreferrer" class="session__cta">Anmäl dig ↗</a>
+                <a href={s.registration_url} target="_blank" rel="noopener noreferrer" class="session__cta">Anmäl dig&#160;<Arrow dir="out" /></a>
               ) : <span></span>}
             </div>
           ))}
@@ -338,7 +339,7 @@ const icsContent = dtStart ? [
              class="btn btn--primary ext-reg-link"
              data-slug={ev.id.replace('sv/','')}
              data-title={ev.data.title}>
-            {extCtaLabel}
+            {extCtaLabel}&#160;<Arrow dir="out" />
           </a>
         ) : regStatus === 'open' ? (
           <button class="btn btn--primary" onclick="openRegModal()">{ownCtaLabel}</button>
@@ -806,4 +807,26 @@ const icsContent = dtStart ? [
   )}
 
   <Footer lang={lang} />
+  <script is:inline>
+    (function () {
+      var src = document.querySelector('.event-cta-box .btn--primary:not(.btn--disabled)');
+      if (!src) return;
+      var bar = document.createElement('div');
+      bar.className = 'event-sticky';
+      var c = src.cloneNode(true);
+      c.removeAttribute('id');
+      bar.appendChild(c);
+      document.body.appendChild(bar);
+      var io = new IntersectionObserver(function (es) {
+        es.forEach(function (e) { bar.classList.toggle('on', !e.isIntersecting && e.boundingClientRect.top > 0); });
+      });
+      var head = document.querySelector('.event-header__actions');
+      if (head) io.observe(head);
+      var box = document.querySelector('.event-cta-box');
+      var io2 = new IntersectionObserver(function (es) {
+        es.forEach(function (e) { if (e.isIntersecting) bar.classList.remove('on'); });
+      });
+      if (box) io2.observe(box);
+    })();
+  </script>
 </Base>

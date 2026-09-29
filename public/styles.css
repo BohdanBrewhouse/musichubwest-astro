@@ -3733,3 +3733,195 @@ dialog.mnav[open] .mnav__link:nth-child(4) .mnav__num { animation-delay: 0.22s; 
    coming — so in those two views the tabs contradict what is on screen. */
 .ev-toolbar.no-tabs .ev-tabs{display:none}
 .ev-toolbar.no-tabs{justify-content:flex-end}
+
+
+/* ═══ EVENT CARD AS A FLYER ═══════════════════════════════════════════════
+   The card is the site's one recurring object, so it gets the grammar of a
+   gig poster: the photo framed by a hairline, the date stamped large on its
+   lower-left corner in the display face, and every chip on the photo in one
+   shape — square corners, mono caps — so the badges read as a set instead
+   of four stickers. The body below is quiet: date line, title, place. */
+.event-card{background:none;border:1px solid rgba(255,255,255,.1);transition:border-color .2s}
+.event-card:hover{transform:none;border-color:rgba(204,255,0,.55)}
+.event-card--own,.event-card[data-category="Tune In West"]{border-top:2px solid var(--lime)}
+.event-card--own:hover,.event-card[data-category="Tune In West"]:hover{background:none}
+.event-card__image{border-bottom:1px solid rgba(255,255,255,.1)}
+.event-card__image img{transition:filter .35s,transform .6s cubic-bezier(.2,.8,.2,1),opacity .35s}
+.event-card:hover .event-card__image img{transform:scale(1.035)}
+.event-card__stamp{position:absolute;left:0;bottom:0;z-index:2;display:flex;align-items:flex-end;gap:8px;padding:10px 14px 10px 12px;background:var(--black);color:var(--white);pointer-events:none}
+.event-card__stamp-d{font-family:var(--font-display);font-size:44px;line-height:.8;color:var(--lime);letter-spacing:-.04em}
+.event-card__stamp-m{font-family:var(--font-display);font-size:11px;line-height:1.15;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.75)}
+.event-card .badge,.event-card__mhw-chip,.event-card__utlysning-chip{border-radius:0;font-family:var(--font-display);font-weight:400;font-size:10px;letter-spacing:.08em;line-height:1;padding:5px 8px 4px}
+.event-card__mhw-chip{background:var(--black);color:var(--lime);border:1px solid var(--lime)}
+.event-card__body{padding:16px 16px 18px;display:flex;flex-direction:column;flex:1}
+.event-card__datetime{font-family:var(--font-display);font-weight:400;font-size:11px;letter-spacing:.08em;color:var(--lime)}
+.event-card__title{font-size:18px;line-height:1.2}
+.event-card__lang-chip{border-radius:0;align-self:flex-start}
+.event-card__location{margin-top:auto;padding-top:10px;font-family:var(--font-display);font-weight:400;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.45)}
+@media(max-width:640px){.event-card__stamp-d{font-size:38px}}
+@media (prefers-reduced-motion:reduce){.event-card:hover .event-card__image img{transform:none}}
+
+/* EVENT PAGE — the location is a line of facts and two ways to get there,
+   not a grey box asking to be clicked: the map preview still opens from its
+   button. */
+.event-location__map-placeholder{display:none}
+.event-location__inner{grid-template-columns:minmax(0,1fr) !important}
+.event-location{padding-top:56px;padding-bottom:56px}
+
+/* Phones: the one action rides along at the foot while neither the header
+   button nor the sidebar box is in view. */
+.event-sticky{display:none}
+@media(max-width:900px){
+  .event-sticky{display:block;position:fixed;left:0;right:0;bottom:0;z-index:40;padding:12px 16px calc(12px + env(safe-area-inset-bottom));background:rgba(13,13,13,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-top:1px solid rgba(255,255,255,.12);transform:translateY(110%);transition:transform .25s ease}
+  .event-sticky.on{transform:none}
+  .event-sticky .btn{width:100%;justify-content:center;display:flex;align-items:center}
+}
+@media (prefers-reduced-motion:reduce){.event-sticky{transition:none}}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MUSIC HUB WEST — ONE SYSTEM
+   The site grew page by page, and each page brought its own button, kicker,
+   card and input: four radii on buttons, twelve kicker styles, three display
+   weights, five reds. This layer states each of those once and applies it to
+   every class that plays the role, so the pages share one grammar:
+
+   · corners are square — the only round things are avatars, pins and dots
+   · one hairline for every edge (--line), one stronger one (--line-2)
+   · Syne Mono is the voice for anything that labels: buttons, kickers,
+     chips, form labels, section headings; Outfit is for reading
+   · lime is the action and the marker; amber is kept for open calls only
+
+   Rules are prefixed with `body` (and doubled where a page's scoped style
+   would otherwise win) so they beat the older page-level declarations
+   without touching the copy or the markup.
+   ═══════════════════════════════════════════════════════════════════════════ */
+:root{
+  --font-body:var(--font);                 /* was referenced, never defined */
+  --line:rgba(255,255,255,.12);
+  --line-2:rgba(255,255,255,.22);
+  --text-2:rgba(255,255,255,.72);
+  --text-3:rgba(255,255,255,.48);
+  --lime-soft:rgba(204,255,0,.08);
+  --lime-edge:rgba(204,255,0,.45);
+  --amber:#F59E0B;
+  --err:#ff6b6b;
+}
+
+/* ── Buttons: primary (lime), outline, and the text link with an arrow ── */
+body .btn,body .home-project__btn,body .nl__btn,body .event-location__cta-maps,body .event-location__cta-preview,
+body .session__cta,body .mhw-popup__cta,body .btn.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  font-family:var(--font-display);font-weight:400;font-size:13px;letter-spacing:.08em;text-transform:uppercase;line-height:1;
+  padding:15px 24px 14px;border-radius:0;border:1px solid transparent;transform:none;opacity:1;
+  transition:background .18s,color .18s,border-color .18s;
+}
+body .btn--primary,body .home-project__btn,body .nl__btn,body .event-location__cta-maps,body .mhw-popup__cta{background:var(--lime);color:var(--black);border-color:var(--lime)}
+body .btn--primary:hover,body .home-project__btn:hover,body .nl__btn:hover,body .event-location__cta-maps:hover,body .mhw-popup__cta:hover{background:var(--white);border-color:var(--white);color:var(--black);opacity:1;transform:none}
+body .btn--outline,body .btn--ghost,body .btn--ghost-lime,body .event-location__cta-preview,body .session__cta{background:transparent;color:var(--white);border-color:var(--line-2)}
+body .btn--outline:hover,body .btn--ghost:hover,body .btn--ghost-lime:hover,body .event-location__cta-preview:hover,body .session__cta:hover{border-color:var(--lime);color:var(--lime);background:transparent;opacity:1;transform:none}
+body .btn--ghost-lime{color:var(--lime);border-color:var(--lime-edge)}
+body .btn--disabled{background:rgba(255,255,255,.06);color:var(--text-3);border-color:var(--line)}
+body .session__cta{padding:11px 16px 10px;font-size:12px}
+body .btn:focus-visible,body .nl__btn:focus-visible,body a:focus-visible,body button:focus-visible{outline:2px solid var(--lime);outline-offset:3px}
+
+/* text links that lead on */
+body .section__link,body .section__more,body .tiw-header__link,body .tiw-hero__link,body .ap-card__link,body .about-ap-card__link,
+body .stakeholder__link,body .agenda-item__link,body .pub-about__link,body .event-location__link{
+  font-family:var(--font-display);font-weight:400;font-size:13px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--lime);opacity:1;text-decoration:none;border-bottom:1px solid var(--lime-edge);padding-bottom:3px;transition:border-color .18s,color .18s
+}
+body .section__link:hover,body .section__more:hover,body .tiw-header__link:hover,body .tiw-hero__link:hover,body .ap-card__link:hover,
+body .about-ap-card__link:hover,body .stakeholder__link:hover,body .agenda-item__link:hover,body .pub-about__link:hover{border-bottom-color:var(--lime);color:var(--lime)}
+
+/* ── Chips: one square shape, three weights ── */
+body .badge,body .filter-chip,body .ev-chip,body .cat-drop__btn,body .view-toggle__btn,body .share-btn,body .sessions__legend,
+body .pub-partner-chip,body .agenda-item__lang-chip,body .agenda-item__utlysning-chip,body .event-card__lang-chip,body .event-card__mhw-chip,body .event-card__utlysning-chip{
+  border-radius:0 !important;font-family:var(--font-display);font-weight:400;letter-spacing:.06em;text-transform:uppercase;line-height:1
+}
+body .badge,body .agenda-item__lang-chip,body .agenda-item__utlysning-chip,body .event-card__lang-chip,body .event-card__mhw-chip,body .event-card__utlysning-chip{font-size:10px;padding:5px 8px 4px}
+body .filter-chip,body .ev-chip,body .cat-drop__btn,body .share-btn,body .sessions__legend,body .pub-partner-chip{font-size:11px;padding:9px 12px 8px;border:1px solid var(--line-2);background:transparent;color:var(--text-2)}
+body .filter-chip:hover,body .ev-chip:hover,body .cat-drop__btn:hover,body .share-btn:hover{border-color:var(--lime);color:var(--lime);background:transparent}
+body .filter-chip.active,body .filter-chip[aria-pressed="true"],body .ev-chip.active,body .ev-chip[aria-pressed="true"]{background:var(--lime);border-color:var(--lime);color:var(--black);font-weight:400}
+body .sessions__legend{color:var(--lime);border-color:var(--lime-edge)}
+body .agenda-item__utlysning-chip,body .event-card__utlysning-chip{background:var(--amber);color:var(--black)}
+body .badge--hsm,body .badge--vgr{border:1px solid var(--line-2);background:var(--black)}
+body .badge--kulturakademin{background:#C68649;color:var(--black)}
+body .view-toggle__btn{border-color:var(--line)}
+body .view-toggle__tooltip,body .cat-drop__menu{border-radius:0 !important}
+
+/* ── Kickers / eyebrows: every "BAKOM PLATTFORMEN" says it the same way ── */
+body .hero-fallback__eyebrow,body .home-project__kicker,body .project-strip__kicker,body .tiw-header__kicker,body .tiw-hero__kicker,
+body .tiw-contact__kicker,body .event-location__kicker,body .nl__eyebrow,body .welcome__kicker,body .about-hero__kicker,
+body .about-section__kicker,body .ap-hero__kicker,body .stakeholder__tag,body .ev-header__kicker,body .ev-cta__kicker,body .pub-eyebrow,
+body .event-location__kicker{
+  font-family:var(--font-display);font-weight:400;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--lime);line-height:1.4
+}
+/* grey labels (field names, legends, small headings over lists) */
+body .footer__col-title,body .ap-activities__heading,body .tiw-partners__title,body .filter-bar__label,body .share-bar__label,
+body .welcome__label,body .view-toggle__label,body .evf__group-title{
+  font-family:var(--font-display);font-weight:400;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-3)
+}
+body .footer__col-title{color:var(--lime)}
+
+/* ── Section headings: one display voice ── */
+body .section__title,body .contact-title,body .about-section__title,body .tiw-about__title,body .tiw-contact__title,body .stakeholder__title,
+body .pub-section__title,body .ev-cta__title,body .nl__title,body .sessions__title,body .related__title,body .related-events__title{
+  font-family:var(--font-display);font-weight:400;letter-spacing:-.01em;line-height:1.08;text-wrap:balance
+}
+body .section__title,body .contact-title,body .about-section__title,body .tiw-about__title,body .tiw-contact__title,body .stakeholder__title,
+body .pub-section__title,body .ev-cta__title,body .nl__title{font-size:clamp(28px,3.6vw,48px)}
+body .sessions__title,body .related__title,body .related-events__title{font-size:clamp(22px,2.4vw,30px)}
+
+/* ── Panels: one surface, one edge, square ── */
+body .hero-fallback__card,body .ap-card,body .about-ap-card,body .about-stats-mini,body .event-cta-box,body .pub-value__item,
+body .pub-process__step,body .pub-reach__item,body .pub-form,body .pub-form__terms,body .accordion__item,body .event-carousel__viewall{
+  border-radius:0 !important;background:var(--black-2);border:1px solid var(--line)
+}
+body .pub-form__success,body .pub-form__error{border-radius:0 !important}
+body .event-carousel__viewall{border-style:solid}
+body .event-carousel__viewall:hover{border-color:var(--lime)}
+body .leaflet-host{border-radius:0 !important}
+body .leaflet-popup-content-wrapper{border-radius:0 !important}
+
+/* ── Inputs: one field ── */
+body .form__input,body .form__textarea,body .form__select,body .reg-form__input,body .nl__input,body .pub-form__input,body .pub-form__textarea,body .pub-form__select{
+  background:var(--black-2);border:1px solid var(--line-2);border-radius:0 !important;padding:13px 14px;
+  font-family:var(--font);font-size:15px;color:var(--white);box-shadow:none
+}
+body .form__input:focus,body .form__textarea:focus,body .form__select:focus,body .reg-form__input:focus,body .nl__input:focus,
+body .pub-form__input:focus,body .pub-form__textarea:focus,body .pub-form__select:focus{outline:none;border-color:var(--lime);box-shadow:none}
+body .form__label,body .reg-form__label,body .nl__label,body .pub-form__label{
+  font-family:var(--font-display);font-weight:400;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-2)
+}
+body .pub-form__radio,body .reg-form__radio{border-radius:0 !important;border-color:var(--line-2)}
+body .form__error,body .nl__error,body .pub-form__error-text,body .reg-form__error{color:var(--err)}
+
+/* ── THE FOOT OF EVERY PAGE — one lime sheet, as on Music Tech Summit and
+   the ticket family: the newsletter is the stub on top, torn off along a
+   perforation from the fine print below. Black ink only. The same object
+   now closes all three sites. */
+.divider-wave[hidden]{display:none}
+body .footer{position:relative;background:var(--lime);color:var(--black);border-top:0;margin-top:0}
+body .footer a{color:var(--black)}
+body .footer__nl{padding-bottom:40px;margin-bottom:40px;border-bottom:0;position:relative}
+body .footer__nl::after{content:"";position:absolute;left:0;right:0;bottom:0;border-top:2px dashed rgba(13,13,13,.4)}
+body .footer__nl .footer__col-title{color:rgba(13,13,13,.7)}
+body .footer__nl-lead{color:var(--black);font-family:var(--font-display);font-size:clamp(20px,2.2vw,28px);line-height:1.25;max-width:26ch;text-wrap:balance}
+body .footer .nl__input{background:transparent;border:0;border-bottom:2px solid var(--black);color:var(--black);padding-left:0}
+body .footer .nl__input::placeholder{color:rgba(13,13,13,.5)}
+body .footer .nl__input:focus{border-color:var(--black)}
+body .footer .nl__btn{background:var(--black);color:var(--lime);border-color:var(--black)}
+body .footer .nl__btn:hover{background:#262626;border-color:#262626;color:var(--lime)}
+body .footer .nl__consent,body .footer .nl__msg{color:rgba(13,13,13,.7)}
+body .footer .nl__consent a{text-decoration:underline}
+body .footer__col-title{color:rgba(13,13,13,.55)}
+body .footer__logo,body .footer__logo-text{color:var(--black)}
+body .footer__tagline{color:rgba(13,13,13,.72)}
+body .footer__col a{color:var(--black);opacity:1}
+body .footer__col a:hover{text-decoration:underline;text-underline-offset:3px;color:var(--black)}
+body .footer__social-link{border-radius:0;border:1px solid rgba(13,13,13,.35);color:var(--black);background:transparent}
+body .footer__social-link:hover{background:var(--black);color:var(--lime);border-color:var(--black)}
+body .footer__bottom{border-top:1px solid rgba(13,13,13,.2);color:rgba(13,13,13,.62)}
+body .footer__bottom a,body .footer__copy,body .footer__privacy{color:rgba(13,13,13,.72)}
+body .footer :focus-visible{outline-color:var(--black)}
