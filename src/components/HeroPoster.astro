@@ -1,0 +1,140 @@
+---
+/*
+  The homepage opener as a gig poster instead of a slideshow.
+
+  The old hero rotated five events and a promo every few seconds, each one
+  full-screen, so a visitor saw one event at a time and had to wait (or
+  swipe) to learn what else was coming. Festival and venue sites that sell
+  "what's on" lead with the next thing big and the ones after it listed
+  beside it, so the whole near future is readable in one look.
+
+  Every string here is the one the slides already carried: the badge, the
+  title, "{date} på {location}", "Läs mer", and the promo slide's badge,
+  question, sentence and button.
+*/
+import { Image } from 'astro:assets';
+interface Props { lang: 'sv' | 'en'; slides: any[] }
+const { lang, slides } = Astro.props;
+const en = lang === 'en';
+const base = en ? '/en/events' : '/evenemang';
+const idPrefix = en ? 'en/' : 'sv/';
+const partnerCats = en ? ['Partners', 'External events'] : ['Partners', 'Externa event'];
+const badgeClass: Record<string, string> = {
+  'Tune In West': 'badge--tiw', 'Kulturverkstaden': 'badge--kv', 'Högskolan för scen och musik': 'badge--hsm',
+  'VGR': 'badge--vgr', 'Partners': 'badge--partner', 'Externa event': 'badge--partner', 'External events': 'badge--partner',
+  'Kulturakademin': 'badge--kulturakademin',
+};
+const badgeText = (ev: any) => partnerCats.includes(ev.data.category) ? (ev.data.organizer ?? 'Partner') : ev.data.category;
+const heroTitle = (t: string) => t.split(/(?<=\.)\s+/).filter(Boolean).join('\n');
+const loc = en ? 'en-GB' : 'sv-SE';
+const stamp = (d: string) => {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(d)) return null;
+  const o = new Date(d + 'T12:00:00');
+  const f = (opt: Intl.DateTimeFormatOptions) => new Intl.DateTimeFormat(loc, opt).format(o).replace('.', '');
+  return { d: String(o.getDate()), m: f({ month: 'short' }), w: f({ weekday: 'short' }) };
+};
+const [first, ...rest] = slides;
+const s0 = stamp(first.data.date);
+const t = en ? {
+  more: 'Read more', at: 'at',
+  promoBadge: 'FOR ORGANISERS', promoTitle: 'Got an event?',
+  promoSub: 'We spotlight music-industry events in Västra Götaland — publish yours on our site.',
+  promoCta: 'Publish your event →', promoHref: '/en/publish-event',
+} : {
+  more: 'Läs mer', at: 'på',
+  promoBadge: 'FÖR ARRANGÖRER', promoTitle: 'Har du ett event?',
+  promoSub: 'Vi lyfter musikbranschens event i Västra Götaland — publicera ditt på vår sajt.',
+  promoCta: 'Publicera ditt event →', promoHref: '/publicera-event',
+};
+---
+<section class="hposter">
+  <a class="hposter__main" href={`${base}/${first.id.replace(idPrefix, '')}`}>
+    <div class="hposter__bg">
+      <Image src={first.data.image} alt="" width={1600} height={1000} quality={80} fetchpriority="high" loading="eager" decoding="async" densities={[1, 2]} />
+    </div>
+    <div class="hposter__body">
+      <span class={`badge ${badgeClass[first.data.category] ?? ''}`}>{badgeText(first)}</span>
+      <h1 class="hposter__title">{heroTitle(first.data.title)}</h1>
+      <p class="hposter__sub">{first.data.date} {t.at} {first.data.location}</p>
+      <span class="btn btn--primary hposter__cta">{t.more}</span>
+    </div>
+    {s0 && (
+      <span class="hposter__stamp" aria-hidden="true">
+        <span class="hposter__stamp-d">{s0.d}</span>
+        <span class="hposter__stamp-m">{s0.m}<br />{s0.w}</span>
+      </span>
+    )}
+  </a>
+
+  <div class="hposter__side">
+    {rest.map((ev) => {
+      const s = stamp(ev.data.date);
+      return (
+        <a class="hposter__row" href={`${base}/${ev.id.replace(idPrefix, '')}`}>
+          <span class="hposter__row-date" aria-hidden={s ? 'true' : undefined}>
+            {s ? (<><b>{s.d}</b><i>{s.m}</i></>) : <i>{ev.data.date}</i>}
+          </span>
+          <span class="hposter__row-main">
+            <span class={`badge ${badgeClass[ev.data.category] ?? ''}`}>{badgeText(ev)}</span>
+            <span class="hposter__row-title">{ev.data.title}</span>
+            <span class="hposter__row-sub">{ev.data.date} {t.at} {ev.data.location}</span>
+          </span>
+        </a>
+      );
+    })}
+    <a class="hposter__promo" href={t.promoHref}>
+      <span class="badge badge--tiw">{t.promoBadge}</span>
+      <span class="hposter__promo-title">{t.promoTitle}</span>
+      <span class="hposter__promo-sub">{t.promoSub}</span>
+      <span class="btn btn--outline hposter__promo-cta">{t.promoCta}</span>
+    </a>
+  </div>
+</section>
+
+<style is:global>
+  /* Poster left, the rest of the near future listed right. Square, hairline,
+     the date stamped in the display face — the event card's grammar at
+     poster scale. */
+  .hposter{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);border-bottom:1px solid var(--line);min-height:min(760px,calc(100svh - 64px))}
+  .hposter__main{position:relative;display:flex;align-items:flex-end;overflow:hidden;color:var(--white);text-decoration:none;background:var(--black-2);isolation:isolate}
+  .hposter__bg{position:absolute;inset:0;z-index:-1;background:var(--lime)}
+  .hposter__bg img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.05);mix-blend-mode:multiply;transition:transform 1.2s cubic-bezier(.2,.8,.2,1)}
+  .hposter__main::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(13,13,13,0) 30%,rgba(13,13,13,.88) 100%)}
+  .hposter__main:hover .hposter__bg img{transform:scale(1.03)}
+  .hposter__body{position:relative;padding:48px var(--px) 44px;max-width:900px;display:flex;flex-direction:column;align-items:flex-start;gap:18px}
+  .hposter__title{font-family:var(--font-display);font-weight:400;font-size:clamp(40px,5.6vw,88px);line-height:.98;letter-spacing:-.02em;white-space:pre-line;text-wrap:balance;margin:0}
+  .hposter__sub{font-size:16px;color:var(--text-2);margin:0}
+  .hposter__cta{pointer-events:none}
+  .hposter__main:hover .hposter__cta{background:var(--white);border-color:var(--white)}
+  .hposter__stamp{position:absolute;top:0;right:0;display:flex;align-items:flex-end;gap:12px;padding:20px 24px;background:var(--black)}
+  .hposter__stamp-d{font-family:var(--font-display);font-size:clamp(64px,7vw,112px);line-height:.78;color:var(--lime);letter-spacing:-.05em}
+  .hposter__stamp-m{font-family:var(--font-display);font-size:14px;line-height:1.2;text-transform:uppercase;letter-spacing:.1em;color:var(--text-2)}
+
+  .hposter__side{display:flex;flex-direction:column;border-left:1px solid var(--line);background:var(--black)}
+  .hposter__row{display:grid;grid-template-columns:72px minmax(0,1fr);gap:16px;padding:22px 24px;border-bottom:1px solid var(--line);color:var(--white);text-decoration:none;transition:background .18s}
+  .hposter__row:hover{background:var(--black-2)}
+  .hposter__row:hover .hposter__row-title{color:var(--lime)}
+  .hposter__row-date{display:flex;flex-direction:column;gap:4px;font-family:var(--font-display)}
+  .hposter__row-date b{font-weight:400;font-size:40px;line-height:.85;color:var(--lime);letter-spacing:-.04em}
+  .hposter__row-date i{font-style:normal;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-3)}
+  .hposter__row-main{display:flex;flex-direction:column;align-items:flex-start;gap:8px;min-width:0}
+  .hposter__row-title{font-family:var(--font-display);font-size:17px;line-height:1.25;transition:color .18s;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .hposter__row-sub{font-size:13px;color:var(--text-3);display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
+  .hposter__promo{margin-top:auto;display:flex;flex-direction:column;align-items:flex-start;gap:12px;padding:28px 24px;color:var(--white);text-decoration:none;background:var(--black-2)}
+  .hposter__promo-title{font-family:var(--font-display);font-size:clamp(24px,2.4vw,32px);line-height:1.05}
+  .hposter__promo-sub{font-size:14px;line-height:1.55;color:var(--text-2);max-width:40ch}
+  .hposter__promo-cta{pointer-events:none;margin-top:4px}
+  .hposter__promo:hover .hposter__promo-cta{border-color:var(--lime);color:var(--lime)}
+
+  @media(max-width:960px){
+    .hposter{grid-template-columns:minmax(0,1fr);min-height:0}
+    .hposter__main{min-height:min(72svh,620px)}
+    .hposter__side{border-left:0}
+    .hposter__body{padding:32px 20px 28px}
+    .hposter__stamp{padding:14px 16px}
+    .hposter__row{padding:18px 20px;grid-template-columns:56px minmax(0,1fr)}
+    .hposter__row-date b{font-size:32px}
+    .hposter__promo{padding:24px 20px}
+  }
+  @media (prefers-reduced-motion:reduce){.hposter__bg img{transition:none}}
+</style>

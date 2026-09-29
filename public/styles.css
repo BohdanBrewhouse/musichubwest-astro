@@ -3925,3 +3925,23 @@ body .footer__social-link:hover{background:var(--black);color:var(--lime);border
 body .footer__bottom{border-top:1px solid rgba(13,13,13,.2);color:rgba(13,13,13,.62)}
 body .footer__bottom a,body .footer__copy,body .footer__privacy{color:rgba(13,13,13,.72)}
 body .footer :focus-visible{outline-color:var(--black)}
+
+/* ── EVENT TYPES, IN COLOUR ──────────────────────────────────────────────
+   The way Tallinn Music Week tells its strands apart: each kind of event
+   carries one colour, on the card (a bar where photo meets text) and on the
+   filter that selects it, so the colour teaches the filter. Lime stays for
+   Music Hub West's own events; the violet and orange are Music Tech
+   Summit's day colours, so the family of sites shares one palette. */
+:root{--t-kurs:#C9B6FF;--t-master:#FFB866;--t-konf:#7FE3F0;--t-utl:var(--amber)}
+.event-card[data-type]{--tc:transparent}
+.event-card[data-type="Kurs & utbildning"]{--tc:var(--t-kurs)}
+.event-card[data-type="Masterclass & workshop"]{--tc:var(--t-master)}
+.event-card[data-type="Konferens & branschträff"]{--tc:var(--t-konf)}
+.event-card[data-type="Utlysning & stöd"]{--tc:var(--t-utl)}
+body .event-card__image{border-bottom:3px solid var(--tc,rgba(255,255,255,.1))}
+.evf__group[data-facet="type"] .evf__opt-name{display:inline-flex;align-items:center;gap:8px}
+.evf__group[data-facet="type"] .evf__opt-name::before{content:"";width:10px;height:10px;flex:none;background:var(--sw,transparent)}
+.evf__opt:has(input[value="Kurs & utbildning"]){--sw:var(--t-kurs)}
+.evf__opt:has(input[value="Masterclass & workshop"]){--sw:var(--t-master)}
+.evf__opt:has(input[value="Konferens & branschträff"]){--sw:var(--t-konf)}
+.evf__opt:has(input[value="Utlysning & stöd"]){--sw:var(--t-utl)}
