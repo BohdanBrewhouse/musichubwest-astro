@@ -1,4 +1,5 @@
 ---
+import PubPreview from '../components/PubPreview.astro';
 import Base from '../layouts/Base.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
@@ -197,6 +198,7 @@ const lang = 'sv';
       <h2 class="pub-section__title">Skicka in ditt event.</h2>
       <p class="pub-form-section__lead">Vi återkommer med besked. Obs — vi publicerar föreläsningar, workshops och branschträffar, men prioriterar inte rena konserter eller gigs.</p>
 
+      <div class="pub-live">
       <form class="pub-form" id="pub-form" novalidate>
         <!-- Honeypot (hidden from users; bots fill it in) -->
         <div class="pub-form__honeypot" aria-hidden="true">
@@ -321,6 +323,8 @@ En länk per rad. Vi hör av oss om vi behöver material i högre upplösning.`}
           Något gick fel. Försök igen eller mejla oss direkt på hello@musichubwest.com.
         </div>
       </form>
+      <PubPreview lang="sv" />
+      </div>
 
       <!-- Success state -->
       <div class="pub-form__success" id="pub-success" hidden>

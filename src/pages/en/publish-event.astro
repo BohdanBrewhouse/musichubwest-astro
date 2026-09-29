@@ -1,4 +1,5 @@
 ---
+import PubPreview from '../../components/PubPreview.astro';
 import Base from '../../layouts/Base.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/Footer.astro';
@@ -197,6 +198,7 @@ const lang = 'en';
       <h2 class="pub-section__title">Submit your event.</h2>
       <p class="pub-form-section__lead">We'll get back to you with a decision. Note — we publish lectures, workshops and industry meetups, but don't prioritise pure concerts or gigs.</p>
 
+      <div class="pub-live">
       <form class="pub-form" id="pub-form" novalidate>
         <div class="pub-form__honeypot" aria-hidden="true">
           <label for="website">Website</label>
@@ -316,6 +318,8 @@ One link per line. We will get in touch if we need higher-resolution material.`}
           Something went wrong. Try again or email us directly at hello@musichubwest.com.
         </div>
       </form>
+      <PubPreview lang="en" />
+      </div>
 
       <div class="pub-form__success" id="pub-success" hidden>
         <div class="pub-form__success-icon">

@@ -1,0 +1,65 @@
+---
+/*
+  Month headings in the upcoming grid — the way a printed gig guide is set:
+  "Oktober 2026" as a rule across the page, then that month's events.
+
+  Built in the browser from the cards' own data-month, and rebuilt whenever
+  the filters hide or show cards, so a heading never stands over an empty
+  month. Rolling courses (whose date is only a sort key) gather under the
+  word the cards already use for them, after the dated months. Without
+  script the grid is simply the grid it always was.
+*/
+interface Props { lang: 'sv' | 'en'; grid: string }
+const { lang, grid } = Astro.props;
+---
+<script is:inline define:vars={{ lang, grid }}>
+(function () {
+  var g = document.getElementById(grid);
+  if (!g) return;
+  var loc = lang === 'en' ? 'en-GB' : 'sv-SE';
+  var rollingWord = lang === 'en' ? 'Rolling' : 'Löpande';
+  var busy = false;
+  function label(key) {
+    if (key === 'rolling') return rollingWord;
+    var d = new Date(key + '-15T12:00:00');
+    var s = new Intl.DateTimeFormat(loc, { month: 'long', year: 'numeric' }).format(d);
+    return s.charAt(0).toUpperCase() + s.slice(1);
+  }
+  function build() {
+    busy = true;
+    g.querySelectorAll('.ev-month').forEach(function (h) { h.remove(); });
+    var cards = [].slice.call(g.querySelectorAll('.event-card'));
+    var visible = cards.filter(function (c) { return c.style.display !== 'none'; });
+    // rolling courses move to the end, dated months keep their order
+    cards.filter(function (c) { return c.dataset.rolling; }).forEach(function (c) { g.appendChild(c); });
+    var seen = {};
+    cards = [].slice.call(g.querySelectorAll('.event-card'));
+    cards.forEach(function (c) {
+      if (c.style.display === 'none') return;
+      var key = c.dataset.rolling ? 'rolling' : (c.dataset.month || '');
+      if (!key || seen[key]) return;
+      seen[key] = true;
+      var n = visible.filter(function (v) { return (v.dataset.rolling ? 'rolling' : v.dataset.month) === key; }).length;
+      var h = document.createElement('div');
+      h.className = 'ev-month';
+      h.setAttribute('role', 'heading');
+      h.setAttribute('aria-level', '2');
+      h.innerHTML = '<span class="ev-month__name"></span><span class="ev-month__n" aria-hidden="true"></span>';
+      h.firstChild.textContent = label(key);
+      h.lastChild.textContent = String(n).padStart(2, '0');
+      g.insertBefore(h, c);
+    });
+    busy = false;
+  }
+  build();
+  new MutationObserver(function () { if (!busy) { clearTimeout(g._mt); g._mt = setTimeout(build, 30); } })
+    .observe(g, { subtree: true, attributes: true, attributeFilter: ['style'] });
+})();
+</script>
+
+<style is:global>
+  .ev-month{grid-column:1/-1;display:flex;align-items:baseline;justify-content:space-between;gap:16px;padding:28px 0 10px;border-bottom:1px solid var(--line-2);margin-top:12px}
+  .ev-month:first-child{margin-top:0;padding-top:0}
+  .ev-month__name{font-family:var(--font-display);font-size:clamp(22px,2.4vw,32px);line-height:1;color:var(--white)}
+  .ev-month__n{font-family:var(--font-display);font-size:13px;letter-spacing:.1em;color:var(--lime)}
+</style>

@@ -1,4 +1,5 @@
 ---
+import MonthGroups from '../../components/MonthGroups.astro';
 import Base from '../../layouts/Base.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/Footer.astro';
@@ -230,6 +231,7 @@ function formatDate(d: string) {
           <p class="ev-empty">No upcoming events right now. Check back soon!</p>
         )}
       </div>
+      <MonthGroups lang="en" grid="grid-upcoming" />
       <!-- Archive -->
       <div class="card-grid" id="grid-archive" style="display:none">
         {past.map(ev => (
