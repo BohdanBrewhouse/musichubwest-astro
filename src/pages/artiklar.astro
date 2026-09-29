@@ -1,4 +1,5 @@
 ---
+import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
@@ -55,19 +56,19 @@ const badgeClass: Record<string, string> = {
         <button class="filter-chip" data-filter="VGR" aria-pressed="false">VGR</button>
       </div>
 
-      <a id="featured-article" href={`/artiklar/${featured.id.replace('sv/', '')}`}
-         data-category={featured.data.category}
-         style="display:block;background:var(--black-2);padding:40px;margin-bottom:56px;text-decoration:none;transition:background 0.2s;">
-        <span class={`badge ${badgeClass[featured.data.category]}`} style="margin-bottom:16px;display:inline-block">{featured.data.category}</span>
-        <h2 class="featured-title" style="font-size:clamp(28px,4vw,52px);font-weight:800;letter-spacing:-0.03em;line-height:1.05;margin-bottom:12px;max-width:760px;">
-          <span>{featured.data.title}</span>
-        </h2>
-        <p style="font-size:13px;color:rgba(255,255,255,0.4);margin-bottom:14px;text-transform:uppercase;letter-spacing:0.06em;font-weight:600;">
-          {featured.data.author} &nbsp;·&nbsp; {featured.data.date}
-        </p>
-        <p style="font-size:17px;color:rgba(255,255,255,0.7);max-width:680px;line-height:1.6;">
-          <span data-i18n="art.feat.desc">{featured.body.slice(0, 180)}...</span>
-        </p>
+      <a id="featured-article" class="art-feature" href={`/artiklar/${featured.id.replace('sv/', '')}`}
+         data-category={featured.data.category}>
+        {featured.data.image && (
+          <div class="art-feature__img">
+            <Image src={featured.data.image} alt="" width={1400} height={900} quality={80} loading="eager" decoding="async" widths={[640, 960, 1400]} sizes="(max-width: 900px) 100vw, 60vw" />
+          </div>
+        )}
+        <div class="art-feature__body">
+          <span class={`badge ${badgeClass[featured.data.category]}`}>{featured.data.category}</span>
+          <h2 class="featured-title art-feature__title"><span>{featured.data.title}</span></h2>
+          <p class="art-feature__meta">{featured.data.author} &nbsp;·&nbsp; {featured.data.date}</p>
+          <p class="art-feature__lead"><span data-i18n="art.feat.desc">{featured.body.slice(0, 180)}...</span></p>
+        </div>
       </a>
 
       <div class="card-grid">
@@ -79,6 +80,7 @@ const badgeClass: Record<string, string> = {
             category={a.data.category}
             description={a.body.slice(0, 120) + '...'}
             slug={a.id.replace('sv/', '')}
+            image={a.data.image}
             lang={lang}
           />
         ))}

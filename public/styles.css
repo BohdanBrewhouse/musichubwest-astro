@@ -4010,3 +4010,48 @@ body .event-card__image{border-bottom:1px solid rgba(255,255,255,.1)}
 /* Type colours withdrawn: no swatch on cards or filters. */
 .event-card[data-type] .event-card__datetime::before,
 .evf__group[data-facet="type"] .evf__opt-name::before{content:none;display:none}
+
+/* ── ARTICLES AS A MAGAZINE ──────────────────────────────────────────────
+   The lead story gets its cover and half the width, the rest sit as cards
+   with a photo on top — the event card's treatment (grayscale on a lime
+   ground, colour on hover), so a story and an event look like siblings.
+   Replaces the inline-styled featured box. */
+.art-feature{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);margin-bottom:56px;border:1px solid var(--line);background:var(--black-2);color:var(--white);text-decoration:none;transition:border-color .2s}
+.art-feature:not(:has(.art-feature__img)){grid-template-columns:minmax(0,1fr)}
+.art-feature:hover{border-color:var(--lime-edge)}
+.art-feature__img,.article-card__img{position:relative;overflow:hidden;background:var(--lime)}
+.art-feature__img{min-height:360px}
+.art-feature__img img,.article-card__img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.05);mix-blend-mode:multiply;transition:filter .4s,mix-blend-mode .4s,transform .6s cubic-bezier(.2,.8,.2,1)}
+.art-feature:hover .art-feature__img img,.article-card:hover .article-card__img img{filter:none;mix-blend-mode:normal;transform:scale(1.03)}
+.art-feature__body{display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;gap:14px;padding:40px}
+.art-feature__title{font-family:var(--font-display);font-weight:400;font-size:clamp(28px,3.4vw,48px);line-height:1.05;letter-spacing:-.01em;margin:0;text-wrap:balance}
+.art-feature:hover .art-feature__title{color:var(--lime)}
+.art-feature__meta,.article-card__meta{font-family:var(--font-display);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-3);margin:0}
+.art-feature__lead{font-size:16px;line-height:1.6;color:var(--text-2);margin:0;max-width:52ch}
+body .article-card--img{padding-bottom:20px}
+.article-card__img{aspect-ratio:16/10;margin-bottom:16px;border:1px solid var(--line)}
+.article-card:hover .article-card__title{color:var(--lime)}
+@media(max-width:900px){
+  .art-feature{grid-template-columns:minmax(0,1fr)}
+  .art-feature__img{min-height:0;aspect-ratio:16/10}
+  .art-feature__body{padding:24px 20px 28px}
+}
+@media (prefers-reduced-motion:reduce){.art-feature__img img,.article-card__img img{transition:none}}
+
+/* Home opener: exactly one screen under the nav on desktop. Type and rows
+   scale with the viewport height so the button and the whole list fit. */
+@media(min-width:961px){
+  body .hposter{height:calc(100svh - 80px);min-height:560px;max-height:none}
+  body .hposter__title{font-size:clamp(36px,min(5.2vw,8.4vh),88px)}
+  body .hposter__body{padding:clamp(24px,4vh,48px) var(--px) clamp(24px,5vh,48px);gap:clamp(10px,1.8vh,18px)}
+  body .hposter__stamp-d{font-size:clamp(56px,min(7vw,11vh),112px)}
+  body .hposter__side{overflow:hidden}
+  body .hposter__row{flex:1 1 0;min-height:0;align-content:center;padding-top:clamp(10px,1.6vh,22px);padding-bottom:clamp(10px,1.6vh,22px)}
+  body .hposter__row-date b{font-size:clamp(28px,4.4vh,40px)}
+  body .hposter__promo{flex:0 0 auto;margin-top:0;padding-top:clamp(16px,2.6vh,28px);padding-bottom:clamp(16px,2.6vh,28px);gap:clamp(6px,1.2vh,12px)}
+  body .hposter__promo-title{font-size:clamp(20px,min(2.4vw,3.6vh),32px)}
+}
+
+/* Outline buttons need an edge you can see at rest, or they read as text */
+body .btn--outline,body .btn--ghost,body .event-location__cta-preview,body .session__cta{border-color:rgba(255,255,255,.5)}
+body .hposter__promo:hover .hposter__promo-cta{background:var(--white);border-color:var(--white);color:var(--black)}

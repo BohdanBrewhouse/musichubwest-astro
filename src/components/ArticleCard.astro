@@ -1,5 +1,7 @@
 ---
+import { Image } from 'astro:assets';
 export interface Props {
+  image?: string;
   title: string;
   author: string;
   date: string;
@@ -8,7 +10,7 @@ export interface Props {
   slug: string;
   lang: 'sv' | 'en';
 }
-const { title, author, date, category, description, slug, lang } = Astro.props;
+const { title, author, date, category, description, slug, lang, image } = Astro.props;
 const articlesBase = lang === 'en' ? '/en/articles' : '/artiklar';
 
 const badgeClass: Record<string, string> = {
@@ -19,7 +21,12 @@ const badgeClass: Record<string, string> = {
   'Scenen':          'badge--scenen',
 };
 ---
-<a href={`${articlesBase}/${slug}`} class="article-card" data-category={category}>
+<a href={`${articlesBase}/${slug}`} class:list={['article-card', { 'article-card--img': image }]} data-category={category}>
+  {image && (
+    <div class="article-card__img">
+      <Image src={image} alt="" width={800} height={500} quality={78} loading="lazy" decoding="async" widths={[400, 640, 800]} sizes="(max-width: 640px) 90vw, 400px" />
+    </div>
+  )}
   <span class={`badge ${badgeClass[category] ?? ''} article-card__badge`}>{category}</span>
   <h3 class="article-card__title">{title}</h3>
   <p class="article-card__meta">{author} &nbsp;·&nbsp; {date}</p>

@@ -142,6 +142,7 @@ const heroTitle = (t) => t.split(/(?<=\.)\s+/).filter(Boolean).join('\n');
           category={a.data.category}
           description={a.body?.slice(0, 120).replace(/\s+/g, ' ').trim()}
           slug={a.id.replace('en/', '')}
+          image={a.data.image}
           lang={lang}
         />
       ))}
