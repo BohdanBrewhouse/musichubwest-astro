@@ -77,7 +77,7 @@ const eventsBase = lang === 'sv' ? '/evenemang' : '/en/events';
     background: var(--black-2);
   }
   @media (max-width: 640px) {
-    .map-wrap { padding: 12px var(--px) 80px; }
+    .map-wrap { padding: 12px 16px 96px; overflow: hidden; }
     .leaflet-host { height: 75vh; min-height: 420px; border-radius: 8px; }
   }
 
@@ -396,7 +396,12 @@ const eventsBase = lang === 'sv' ? '/evenemang' : '/en/events';
     map.addLayer(cluster);
 
     // Fit map to all markers (with padding for popups)
-    const group = L.featureGroup([...cluster.getLayers()]);
+    /* Frame the region, not the world: one open call in Gran Canaria used to
+       zoom the whole map out to half of Europe. Markers in Sweden set the
+       view when there are any; the far ones stay on the map, a pan away. */
+    const all = [...cluster.getLayers()];
+    const home = all.filter((m) => { const p = m.getLatLng(); return p.lat > 54.5 && p.lat < 69.5 && p.lng > 10 && p.lng < 24.5; });
+    const group = L.featureGroup(home.length ? home : all);
     const bounds = group.getBounds();
     if (bounds.isValid()) map.fitBounds(bounds.pad(0.18), { maxZoom: 12 });
 

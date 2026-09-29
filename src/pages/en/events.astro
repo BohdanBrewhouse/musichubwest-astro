@@ -292,8 +292,8 @@ function formatDate(d: string) {
                 return (
                   <a class={`agenda-item${evIsOwn ? ' agenda-item--own' : ''}`} href={`/en/events/${slug}`} data-category={ev.data.category}>
                     <span class="agenda-item__date">
-                      <span class="agenda-item__d">{Number(ev.data.date.slice(8))}</span>
-                      <span class="agenda-item__m">{['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'][Number(ev.data.date.slice(5,7))-1]}</span>
+                      {ev.data.rolling ? <span class="agenda-item__m agenda-item__m--rolling">Rolling</span> : (<><span class="agenda-item__d">{Number(ev.data.date.slice(8))}</span>
+                      <span class="agenda-item__m">{['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'][Number(ev.data.date.slice(5,7))-1]}</span></>)}
                     </span>
                     {(ev.data.card_image ?? ev.data.image) && (
                       <img class="agenda-item__thumb" src={ev.data.card_image ?? ev.data.image} alt="" loading="lazy" />
@@ -344,8 +344,8 @@ function formatDate(d: string) {
                 return (
                   <a class={`agenda-item agenda-item--past${evIsOwn ? ' agenda-item--own' : ''}`} href={`/en/events/${slug}`} data-category={ev.data.category}>
                     <span class="agenda-item__date">
-                      <span class="agenda-item__d">{Number(ev.data.date.slice(8))}</span>
-                      <span class="agenda-item__m">{['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'][Number(ev.data.date.slice(5,7))-1]}</span>
+                      {ev.data.rolling ? <span class="agenda-item__m agenda-item__m--rolling">Rolling</span> : (<><span class="agenda-item__d">{Number(ev.data.date.slice(8))}</span>
+                      <span class="agenda-item__m">{['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'][Number(ev.data.date.slice(5,7))-1]}</span></>)}
                     </span>
                     {(ev.data.card_image ?? ev.data.image) && (
                       <img class="agenda-item__thumb" src={ev.data.card_image ?? ev.data.image} alt="" loading="lazy" />

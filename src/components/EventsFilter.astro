@@ -225,6 +225,15 @@ const prettyMonth = (key: string) => {
     }
   };
   boxes.forEach((b) => b.addEventListener('change', steady(apply)));
+
+  // The floating "Filtrera" button steps aside once the footer is on screen,
+  // so it never sits on the newsletter field or the footer links.
+  const watchFoot = () => {
+    const foot = document.querySelector('footer.footer, .footer');
+    if (fab && foot && 'IntersectionObserver' in window)
+      new IntersectionObserver((es) => es.forEach((e) => fab.classList.toggle('evf-fab--away', e.isIntersecting))).observe(foot);
+  };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', watchFoot); else watchFoot();
   if (clear) clear.addEventListener('click', () => { boxes.forEach((b) => { b.checked = false; }); apply(); });
 
   /* The old chips still exist for browsers that reach them first; keep them in
