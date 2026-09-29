@@ -1,0 +1,83 @@
+---
+/*
+  "Musikevent i Göteborg" — one page per town that has events, built from
+  the calendar itself. People search for music events by town; this gives
+  each town an address with its own title, and the page is nothing but the
+  calendar's cards for that town: upcoming by month, then the archive.
+  A town gets a page once it has had two events, so a one-off venue does
+  not become a near-empty page.
+*/
+import Base from '../../layouts/Base.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+import EventCard from '../../components/EventCard.astro';
+import MonthGroups from '../../components/MonthGroups.astro';
+import { getCollection } from 'astro:content';
+import { cityOf, citySlug } from '../../lib-cities';
+
+export async function getStaticPaths() {
+  const events = await getCollection('events', (e) => e.id.startsWith('sv/'));
+  const by: Record<string, { name: string; evs: any[] }> = {};
+  for (const ev of events) {
+    const c = cityOf(ev); if (!c) continue;
+    const k = citySlug(c); (by[k] ??= { name: c, evs: [] }).evs.push(ev);
+  }
+  return Object.entries(by).filter(([, v]) => v.evs.length >= 2)
+    .map(([stad, v]) => ({ params: { stad }, props: { name: v.name, evs: v.evs } }));
+}
+const { name, evs } = Astro.props;
+const lang = 'sv';
+const today = new Date().toISOString().split('T')[0];
+const sorted = [...evs].sort((a, b) => a.data.date.localeCompare(b.data.date));
+const upcoming = sorted.filter((e) => e.data.date >= today);
+const past = sorted.filter((e) => e.data.date < today).reverse();
+const card = (ev: any) => ({
+  title: ev.data.title, date: ev.data.date, time: ev.data.time, category: ev.data.category,
+  image: ev.data.card_image ?? ev.data.image, slug: ev.id.replace('sv/', ''), lang,
+  organizer: ev.data.organizer, isOwn: !ev.data.external_registration_url, eventType: ev.data.event_type,
+  eventLanguage: ev.data.event_language, location: ev.data.location, address: ev.data.address,
+  format: ev.data.format, rolling: ev.data.rolling,
+});
+const title = `Musikevent i ${name}`;
+---
+<Base title={`${title} – Music Hub West`} lang={lang} description="Kalender med utlysningar, stöd, kurser, workshops och branschträffar inom musik, teknik och kreativt företagande i Västra Götaland.">
+  <Nav lang={lang} active="kalender" />
+  <div class="ev-header">
+    <div class="ev-header__inner">
+      <div class="ev-header__row">
+        <div class="ev-header__left">
+          <a href="/evenemang" class="ev-header__kicker">Kalender</a>
+          <h1 class="ev-header__title">{title}</h1>
+        </div>
+        <div class="ev-header__right">
+          <span class="ev-header__num">{upcoming.length}</span>
+          <span class="ev-header__num-label">kommande<br />event</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="city-page">
+    {upcoming.length > 0 && (
+      <div class="card-grid" id="grid-city">
+        {upcoming.map((ev) => <EventCard {...card(ev)} />)}
+      </div>
+    )}
+    {upcoming.length > 0 && <MonthGroups lang={lang} grid="grid-city" />}
+    {past.length > 0 && (
+      <section class="city-page__archive">
+        <div class="ev-month"><span class="ev-month__name">Arkiv</span><span class="ev-month__n" aria-hidden="true">{String(past.length).padStart(2, '0')}</span></div>
+        <div class="card-grid">
+          {past.map((ev) => <EventCard {...card(ev)} past />)}
+        </div>
+      </section>
+    )}
+  </div>
+  <Footer lang={lang} />
+</Base>
+
+<style>
+  .city-page{max-width:var(--max);margin:0 auto;padding:0 var(--px) 96px}
+  .city-page__archive{margin-top:64px}
+  .city-page__archive .card-grid{margin-top:20px}
+  @media(max-width:640px){.city-page{padding:0 20px 72px}}
+</style>

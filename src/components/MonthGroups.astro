@@ -19,27 +19,39 @@ const { lang, grid } = Astro.props;
   var loc = lang === 'en' ? 'en-GB' : 'sv-SE';
   var rollingWord = lang === 'en' ? 'Rolling' : 'Löpande';
   var busy = false;
+
+  /* Rolling courses are not "in" a month — their date is a sort key — so
+     they leave the dated grid for a band of their own below it, set as a
+     compact list: start-any-time courses read as a shelf, not as one more
+     month. */
+  var shelf = null;
+  var rolling = [].slice.call(g.querySelectorAll('.event-card[data-rolling]'));
+  if (rolling.length) {
+    shelf = document.createElement('section');
+    shelf.className = 'ev-rolling';
+    shelf.innerHTML = '<div class="ev-month ev-month--rolling" role="heading" aria-level="2"><span class="ev-month__name"></span><span class="ev-month__n" aria-hidden="true"></span></div><div class="ev-rolling__list"></div>';
+    shelf.querySelector('.ev-month__name').textContent = rollingWord;
+    var list = shelf.querySelector('.ev-rolling__list');
+    rolling.forEach(function (c) { list.appendChild(c); });
+    g.parentNode.insertBefore(shelf, g.nextSibling);
+  }
+
   function label(key) {
-    if (key === 'rolling') return rollingWord;
     var d = new Date(key + '-15T12:00:00');
     var s = new Intl.DateTimeFormat(loc, { month: 'long', year: 'numeric' }).format(d);
     return s.charAt(0).toUpperCase() + s.slice(1);
   }
+  var shown = function (c) { return c.style.display !== 'none'; };
   function build() {
     busy = true;
     g.querySelectorAll('.ev-month').forEach(function (h) { h.remove(); });
-    var cards = [].slice.call(g.querySelectorAll('.event-card'));
-    var visible = cards.filter(function (c) { return c.style.display !== 'none'; });
-    // rolling courses move to the end, dated months keep their order
-    cards.filter(function (c) { return c.dataset.rolling; }).forEach(function (c) { g.appendChild(c); });
+    var cards = [].slice.call(g.querySelectorAll('.event-card')).filter(shown);
     var seen = {};
-    cards = [].slice.call(g.querySelectorAll('.event-card'));
     cards.forEach(function (c) {
-      if (c.style.display === 'none') return;
-      var key = c.dataset.rolling ? 'rolling' : (c.dataset.month || '');
+      var key = c.dataset.month || '';
       if (!key || seen[key]) return;
       seen[key] = true;
-      var n = visible.filter(function (v) { return (v.dataset.rolling ? 'rolling' : v.dataset.month) === key; }).length;
+      var n = cards.filter(function (v) { return v.dataset.month === key; }).length;
       var h = document.createElement('div');
       h.className = 'ev-month';
       h.setAttribute('role', 'heading');
@@ -49,17 +61,41 @@ const { lang, grid } = Astro.props;
       h.lastChild.textContent = String(n).padStart(2, '0');
       g.insertBefore(h, c);
     });
+    if (shelf) {
+      var n = rolling.filter(shown).length;
+      shelf.hidden = n === 0;
+      shelf.querySelector('.ev-month__n').textContent = String(n).padStart(2, '0');
+    }
     busy = false;
   }
   build();
-  new MutationObserver(function () { if (!busy) { clearTimeout(g._mt); g._mt = setTimeout(build, 30); } })
-    .observe(g, { subtree: true, attributes: true, attributeFilter: ['style'] });
+  var mo = new MutationObserver(function () { if (!busy) { clearTimeout(g._mt); g._mt = setTimeout(build, 30); } });
+  mo.observe(g, { subtree: true, attributes: true, attributeFilter: ['style'] });
+  if (shelf) mo.observe(shelf, { subtree: true, attributes: true, attributeFilter: ['style'] });
 })();
 </script>
 
 <style is:global>
   .ev-month{grid-column:1/-1;display:flex;align-items:baseline;justify-content:space-between;gap:16px;padding:28px 0 10px;border-bottom:1px solid var(--line-2);margin-top:12px}
-  .ev-month:first-child{margin-top:0;padding-top:0}
+  .card-grid > .ev-month:first-child{margin-top:0;padding-top:0}
   .ev-month__name{font-family:var(--font-display);font-size:clamp(22px,2.4vw,32px);line-height:1;color:var(--white)}
   .ev-month__n{font-family:var(--font-display);font-size:13px;letter-spacing:.1em;color:var(--lime)}
+
+  /* the shelf: a different object from a month — framed, compact rows */
+  .ev-rolling{margin-top:56px;padding:28px;border:1px dashed var(--line-2);background:var(--black-2)}
+  .ev-rolling[hidden]{display:none}
+  .ev-month--rolling{margin-top:0;padding-top:0}
+  .ev-rolling__list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:20px}
+  .ev-rolling .event-card{flex-direction:row;background:var(--black)}
+  .ev-rolling .event-card__image{flex:0 0 38%;aspect-ratio:auto;min-height:150px;border-bottom:0;border-right:3px solid var(--tc,var(--line))}
+  .ev-rolling .event-card__badge{top:8px;left:8px}
+  .ev-rolling .event-card__utlysning-chip{bottom:8px;left:8px}
+  .ev-rolling .event-card__body{padding:14px 16px}
+  .ev-rolling .event-card__title{font-size:16px}
+  @media(max-width:900px){
+    .ev-rolling{padding:20px 16px;margin-left:-4px;margin-right:-4px}
+    .ev-rolling__list{grid-template-columns:minmax(0,1fr)}
+    .ev-rolling .event-card__image{flex-basis:36%;min-height:120px}
+    .ev-rolling .event-card .badge{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  }
 </style>
