@@ -208,7 +208,23 @@ const prettyMonth = (key: string) => {
   backdrop?.addEventListener('click', () => openSheet(false));
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') openSheet(false); });
 
-  boxes.forEach((b) => b.addEventListener('change', apply));
+  /* Filtering shortens the list, and a shorter page makes the browser pull
+     the scroll position up — the page jumps under the pointer. Hold the
+     results area at its tallest height while filters are in use, and keep
+     the clicked checkbox where it was on screen. */
+  let tallest = 0;
+  const steady = (fn) => (e) => {
+    const anchor = e && e.target instanceof Element ? e.target : null;
+    const before = anchor ? anchor.getBoundingClientRect().top : 0;
+    const main = document.querySelector('.ev-layout__main');
+    if (main) { tallest = Math.max(tallest, main.offsetHeight); main.style.minHeight = tallest + 'px'; }
+    fn(e);
+    if (anchor) {
+      const drift = anchor.getBoundingClientRect().top - before;
+      if (Math.abs(drift) > 1) window.scrollBy(0, drift);
+    }
+  };
+  boxes.forEach((b) => b.addEventListener('change', steady(apply)));
   if (clear) clear.addEventListener('click', () => { boxes.forEach((b) => { b.checked = false; }); apply(); });
 
   /* The old chips still exist for browsers that reach them first; keep them in

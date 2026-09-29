@@ -4094,3 +4094,85 @@ body .stakeholder .stakeholder__inner.stakeholder__inner{grid-template-columns:m
 body .stakeholder .stakeholder__title{overflow-wrap:anywhere;hyphens:auto;font-size:clamp(22px,2.2vw,34px)}
 @media(max-width:1000px){body .stakeholder .stakeholder__inner.stakeholder__inner{grid-template-columns:minmax(0,2fr) minmax(0,3fr)}}
 @media(max-width:620px){body .stakeholder .stakeholder__inner.stakeholder__inner{grid-template-columns:minmax(0,1fr)}}
+
+/* ═══ OM OSS — one editorial grid instead of six unrelated blocks ═══════════
+   The Tune In West "about" order: every section on the same 12-column
+   frame, the heading on the left (sticky while its text scrolls), the
+   reading on the right, hairlines between sections. The quote becomes the
+   page's one big moment; the numbers a ruled row; the focus areas three
+   columns instead of three boxed cards. Copy unchanged. */
+#tab-om-oss{--om-pad:clamp(56px,7vw,112px)}
+#tab-om-oss .about-hero.about-hero{padding:clamp(56px,8vw,120px) var(--px) clamp(40px,5vw,72px);background:none;border-bottom:0}
+#tab-om-oss .about-hero__inner.about-hero__inner{max-width:var(--max);margin:0 auto;display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);grid-template-rows:auto auto;column-gap:48px;align-items:end}
+#tab-om-oss .about-hero__kicker{grid-column:1/-1;margin-bottom:20px}
+#tab-om-oss .about-hero__title.about-hero__title{grid-column:1;font-family:var(--font-display);font-weight:400;font-size:clamp(56px,9vw,152px);line-height:.9;letter-spacing:-.03em;margin:0}
+#tab-om-oss .about-hero__subtitle.about-hero__subtitle{grid-column:2;font-size:clamp(18px,1.6vw,22px);line-height:1.5;color:var(--text-2);margin:0;max-width:34ch;padding-bottom:10px}
+
+#tab-om-oss .about-image.about-image{height:clamp(220px,34vh,380px);margin:0}
+#tab-om-oss .about-image__overlay{display:none}
+
+#tab-om-oss .about-platform.about-platform,#tab-om-oss .about-project.about-project,#tab-om-oss .about-themes.about-themes{padding:var(--om-pad) var(--px);background:none;border-top:1px solid var(--line)}
+#tab-om-oss .about-platform__inner.about-platform__inner{max-width:var(--max);margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr);gap:0}
+#tab-om-oss .about-platform__text{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);column-gap:48px;align-items:start}
+#tab-om-oss .about-platform__text > .about-section__kicker{grid-column:1;grid-row:1}
+#tab-om-oss .about-platform__text > .about-section__title{grid-column:1;grid-row:2;position:sticky;top:120px;margin:12px 0 0}
+#tab-om-oss .about-platform__text > .about-body{grid-column:2;font-size:17px;line-height:1.7;color:var(--text-2);margin:0 0 18px;max-width:62ch}
+#tab-om-oss .about-platform__text > .about-body:first-of-type{grid-row:1/3;align-self:start}
+#tab-om-oss .about-body strong{color:var(--white)}
+
+/* the quote: full width, display face, the page's one loud line */
+#tab-om-oss .about-platform__highlight.about-platform__highlight{margin-top:var(--om-pad);display:flex;flex-direction:column;gap:clamp(40px,5vw,72px);background:none;border:0;padding:0}
+#tab-om-oss .about-quote.about-quote{margin:0;padding:0;border:0}
+#tab-om-oss .about-quote p{font-family:var(--font-display);font-style:normal;font-size:clamp(28px,4vw,60px);line-height:1.1;letter-spacing:-.01em;color:var(--lime);max-width:22ch;text-wrap:balance;margin:0}
+
+/* numbers: one ruled row */
+#tab-om-oss .about-stats-mini.about-stats-mini{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;padding:0;background:none;border:0;border-top:1px solid var(--line-2);border-bottom:1px solid var(--line-2)}
+#tab-om-oss .about-stat{display:flex;flex-direction:column;gap:10px;padding:28px 24px 26px;border-left:1px solid var(--line)}
+#tab-om-oss .about-stat:first-child{border-left:0;padding-left:0}
+#tab-om-oss .about-stat__num{font-family:var(--font-display);font-weight:400;font-size:clamp(48px,6vw,96px);line-height:.85;color:var(--white);letter-spacing:-.03em}
+#tab-om-oss .about-stat__label{font-family:var(--font-display);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-3)}
+
+/* Tune In West: one row — name, sentence, button */
+#tab-om-oss .about-project__inner.about-project__inner{max-width:var(--max);margin:0 auto;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);column-gap:48px;row-gap:24px;align-items:start}
+#tab-om-oss .about-project__header{display:contents}
+#tab-om-oss .about-project__header > .about-section__kicker{grid-column:1;grid-row:1}
+#tab-om-oss .about-project__header > .about-section__title{grid-column:1;grid-row:2;margin:12px 0 0}
+#tab-om-oss .about-project__header > .about-body{grid-column:2;grid-row:1/3;max-width:62ch !important;font-size:17px;line-height:1.7;color:var(--text-2);margin:0}
+#tab-om-oss .about-project .home-project__btn{grid-column:2;justify-self:start}
+
+/* focus areas: three ruled columns */
+#tab-om-oss .about-themes__inner.about-themes__inner{max-width:var(--max);margin:0 auto}
+#tab-om-oss .about-themes__grid.about-themes__grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;margin-top:28px;border-top:1px solid var(--line-2);background:none}
+#tab-om-oss .about-theme.about-theme{background:none;border:0;border-left:1px solid var(--line);border-radius:0;padding:32px 32px 8px}
+#tab-om-oss .about-theme:first-child{border-left:0;padding-left:0}
+#tab-om-oss .about-theme__icon{width:auto;height:auto;background:none;border:0;border-radius:0;margin-bottom:24px;padding:0}
+#tab-om-oss .about-theme__title.about-theme__title{font-family:var(--font-display);font-weight:400;font-size:clamp(20px,1.8vw,26px);line-height:1.15;margin:0 0 12px}
+#tab-om-oss .about-theme__desc{font-size:15px;line-height:1.65;color:var(--text-2);margin:0}
+
+@media(max-width:900px){
+  #tab-om-oss .about-hero__inner.about-hero__inner,#tab-om-oss .about-platform__text,#tab-om-oss .about-project__inner.about-project__inner{grid-template-columns:minmax(0,1fr)}
+  #tab-om-oss .about-hero__subtitle.about-hero__subtitle{grid-column:1;margin-top:24px}
+  #tab-om-oss .about-platform__text > *,#tab-om-oss .about-project__header > *,#tab-om-oss .about-project .home-project__btn{grid-column:1 !important;grid-row:auto !important;position:static !important}
+  #tab-om-oss .about-platform__text > .about-section__title,#tab-om-oss .about-project__header > .about-section__title{margin-bottom:20px}
+  #tab-om-oss .about-themes__grid.about-themes__grid{grid-template-columns:minmax(0,1fr)}
+  #tab-om-oss .about-theme.about-theme{border-left:0;border-bottom:1px solid var(--line);padding:24px 0}
+}
+@media(max-width:640px){
+  #tab-om-oss .about-stats-mini.about-stats-mini{grid-template-columns:minmax(0,1fr)}
+  #tab-om-oss .about-stat{border-left:0;border-top:1px solid var(--line);padding:20px 0}
+  #tab-om-oss .about-stat:first-child{border-top:0}
+  #tab-om-oss .about-hero.about-hero,#tab-om-oss .about-platform.about-platform,#tab-om-oss .about-project.about-project,#tab-om-oss .about-themes.about-themes{padding-left:20px;padding-right:20px}
+}
+/* no sticky heading under the sticky tab bar; a quieter quote */
+#tab-om-oss .about-platform__text > .about-section__title{position:static}
+#tab-om-oss .about-quote p{font-size:clamp(24px,2.8vw,40px);max-width:30ch}
+
+/* Partners grouped by role, each group headed like the Tune In West list */
+.pgroup{padding:0 var(--px)}
+.pgroup + .pgroup{margin-top:clamp(48px,6vw,88px)}
+.pgroup__head{max-width:var(--max);margin:0 auto;display:flex;align-items:baseline;justify-content:space-between;gap:16px;padding-bottom:18px;border-bottom:1px solid var(--line-2)}
+.pgroup__title{font-family:var(--font-display);font-weight:400;font-size:clamp(28px,3.4vw,44px);line-height:1;margin:0}
+.pgroup__n{font-family:var(--font-display);font-size:13px;letter-spacing:.1em;color:var(--lime)}
+.pgroup body .stakeholder,.pgroup .stakeholder.stakeholder{padding:0}
+body .pgroup .stakeholder:first-of-type .stakeholder__inner{border-top:0}
+@media(max-width:620px){.pgroup{padding:0 20px}}
