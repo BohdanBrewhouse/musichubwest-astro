@@ -4176,3 +4176,6 @@ body .stakeholder .stakeholder__title{overflow-wrap:anywhere;hyphens:auto;font-s
 .pgroup body .stakeholder,.pgroup .stakeholder.stakeholder{padding:0}
 body .pgroup .stakeholder:first-of-type .stakeholder__inner{border-top:0}
 @media(max-width:620px){.pgroup{padding:0 20px}}
+
+/* footer links on the lime sheet keep black ink on hover */
+body .footer__privacy:hover,body .footer__bottom a:hover{color:var(--black);text-decoration:underline;text-underline-offset:3px}

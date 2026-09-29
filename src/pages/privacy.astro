@@ -133,13 +133,13 @@ const lang = 'sv';
   }
   .privacy__updated {
     font-size: 13px;
-    color: #888;
+    color: var(--text-3);
     margin-bottom: 56px;
   }
   .privacy__section {
     margin-bottom: 40px;
     padding-bottom: 40px;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid var(--line);
   }
   .privacy__section:last-child { border-bottom: none; }
   .privacy__section h2 {
@@ -150,27 +150,13 @@ const lang = 'sv';
   .privacy__section p, .privacy__section ul {
     font-size: 16px;
     line-height: 1.75;
-    color: #444;
+    color: var(--text-2);
   }
   .privacy__section ul {
     padding-left: 20px;
     margin-top: 8px;
   }
   .privacy__section li { margin-bottom: 8px; }
-  .privacy__section a { color: inherit; text-decoration: underline; }
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    font-size: 15px;
-    font-weight: 600;
-    padding: 12px 24px;
-    border-radius: 10px;
-    text-decoration: none;
-    cursor: pointer;
-    border: 2px solid #ddd;
-    background: transparent;
-    margin-top: 16px;
-    transition: border-color 0.15s;
-  }
-  .btn:hover { border-color: #999; }
+  .privacy__section a { color: var(--lime); text-decoration: underline; text-underline-offset: 3px; }
+  .privacy__section strong { color: var(--white); }
 </style>
