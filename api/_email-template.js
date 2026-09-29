@@ -158,8 +158,8 @@ export function buildEventConfirmationEmail({ firstName, eventTitle, eventDate, 
           Hej ${name}!
         </p>
         <p style="font-family:'Outfit',-apple-system,Arial,sans-serif;font-size:16px;line-height:1.7;color:#e5e5e5;margin:0 0 16px;">
-          Vi har tagit emot din eventansökan och återkommer inom 5 arbetsdagar
-          med besked.
+          Vi har tagit emot din eventansökan och återkommer med besked
+          så snart vi har gått igenom den.
         </p>
 
         <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:8px 0 4px;width:100%;background:#0a0a0a;border:1px solid #1a1a1a;border-radius:8px;">
@@ -212,7 +212,7 @@ export function buildEventConfirmationEmail({ firstName, eventTitle, eventDate, 
 
   const text = `Hej ${name}!
 
-Tack för din eventansökan${title ? ` "${title}"` : ''}. Vi har tagit emot den och återkommer inom 5 arbetsdagar med besked.
+Tack för din eventansökan${title ? ` "${title}"` : ''}. Vi har tagit emot den och återkommer med besked så snart vi har gått igenom den.
 ${date ? `\nDatum: ${date}` : ''}${location ? `\nPlats: ${location}` : ''}
 
 Den här tjänsten är till för dig som är aktör inom musikbranschen i Västra Götaland.
