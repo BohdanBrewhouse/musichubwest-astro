@@ -18,7 +18,9 @@ const upcoming = events.filter(e => e.data.date >= today);
 // they show up first on the hero and the homepage carousel.
 const isPriority = (ev: typeof events[number]) =>
   ev.data.category === 'Tune In West' || !ev.data.external_registration_url;
+// A pinned event (set in Sanity) always leads the homepage poster.
 const sorted = upcoming.sort((a, b) => {
+  if (!!a.data.pinned !== !!b.data.pinned) return a.data.pinned ? -1 : 1;
   const aPri = isPriority(a) ? 0 : 1;
   const bPri = isPriority(b) ? 0 : 1;
   if (aPri !== bPri) return aPri - bPri;

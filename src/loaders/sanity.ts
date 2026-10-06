@@ -150,7 +150,7 @@ const plain = (blocks: unknown): string =>
 const EVENT_QUERY = `*[_type == "event" && !(_id in path("drafts.**"))]{
   _id, _updatedAt, tinaKey, slug, title, seo_description, date, time, location, address,
   map_query, category, event_type, format, event_language, spots_left, spots_total, cost, duration,
-  deadline, organizer, organizer_email, registration_status, registration_open, external_registration_url, rolling,
+  deadline, organizer, organizer_email, registration_status, registration_open, external_registration_url, rolling, pinned,
   serve_food, cta_label, sessions_title, sessions, body,
   "imageUrl":     { "sv": image.sv.asset->url, "en": image.en.asset->url },
   "cardImageUrl": { "sv": card_image.sv.asset->url, "en": card_image.en.asset->url }
@@ -200,6 +200,7 @@ export function sanityEvents(): Loader {
             cost: pick<string>(d.cost, lang),
             duration: pick<string>(d.duration, lang),
             rolling: d.rolling ?? false,
+            pinned: d.pinned ?? false,
             deadline: pick<string>(d.deadline, lang),
             organizer: pick<string>(d.organizer, lang),
             organizer_email: d.organizer_email,

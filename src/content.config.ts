@@ -40,6 +40,7 @@ const events = defineCollection({
     // sidebar could not see them before deciding.
     duration: z.string().optional(),
     rolling: z.boolean().optional().default(false),
+    pinned: z.boolean().optional().default(false),
     deadline: z.string().optional(),
     organizer: z.string().optional(),
     organizer_email: z.string().optional(),
