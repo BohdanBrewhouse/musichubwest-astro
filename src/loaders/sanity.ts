@@ -153,7 +153,8 @@ const EVENT_QUERY = `*[_type == "event" && !(_id in path("drafts.**"))]{
   deadline, organizer, organizer_email, registration_status, registration_open, external_registration_url, rolling, pinned,
   serve_food, cta_label, sessions_title, sessions, body,
   "imageUrl":     { "sv": image.sv.asset->url, "en": image.en.asset->url },
-  "cardImageUrl": { "sv": card_image.sv.asset->url, "en": card_image.en.asset->url }
+  "cardImageUrl": { "sv": card_image.sv.asset->url, "en": card_image.en.asset->url },
+  "mobileImageUrl": { "sv": image_mobile.sv.asset->url, "en": image_mobile.en.asset->url }
 }`;
 
 const ARTICLE_QUERY = `*[_type == "article" && !(_id in path("drafts.**"))]{
@@ -195,6 +196,7 @@ export function sanityEvents(): Loader {
             event_language: pick<string>(d.event_language, lang),
             image,
             card_image: pick<string>(d.cardImageUrl, lang),
+            image_mobile: pick<string>(d.mobileImageUrl, lang),
             spots_left: d.spots_left,
             spots_total: d.spots_total,
             cost: pick<string>(d.cost, lang),

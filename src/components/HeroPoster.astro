@@ -12,7 +12,7 @@
   title, "{date} på {location}", "Läs mer", and the promo slide's badge,
   question, sentence and button.
 */
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 interface Props { lang: 'sv' | 'en'; slides: any[] }
 const { lang, slides } = Astro.props;
 const en = lang === 'en';
@@ -35,6 +35,9 @@ const stamp = (d: string) => {
 };
 const [first, ...rest] = slides;
 const s0 = stamp(first.data.date);
+// An optional portrait version for phones, where the wide picture is cropped
+// to its middle third.
+const mob = first.data.image_mobile ? await getImage({ src: first.data.image_mobile, width: 900, height: 1125, quality: 80 }) : null;
 const t = en ? {
   more: 'Read more', at: 'at',
   promoBadge: 'FOR ORGANISERS', promoTitle: 'Got an event?',
@@ -50,7 +53,10 @@ const t = en ? {
 <section class="hposter">
   <a class="hposter__main" href={`${base}/${first.id.replace(idPrefix, '')}`}>
     <div class="hposter__bg">
-      <Image src={first.data.image} alt="" width={1600} height={1000} quality={80} fetchpriority="high" loading="eager" decoding="async" densities={[1, 2]} />
+      <picture>
+        {mob && <source media="(max-width: 960px)" srcset={mob.src} />}
+        <Image src={first.data.image} alt="" width={1600} height={1000} quality={80} fetchpriority="high" loading="eager" decoding="async" densities={[1, 2]} />
+      </picture>
     </div>
     <div class="hposter__body">
       <span class={`badge ${badgeClass[first.data.category] ?? ''}`}>{badgeText(first)}</span>
@@ -98,6 +104,7 @@ const t = en ? {
   .hposter{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);border-bottom:1px solid var(--line);min-height:min(760px,calc(100svh - 64px))}
   .hposter__main{position:relative;display:flex;align-items:flex-end;overflow:hidden;color:var(--white);text-decoration:none;background:var(--black-2);isolation:isolate}
   .hposter__bg{position:absolute;inset:0;z-index:-1;background:var(--lime)}
+  .hposter__bg picture{display:contents}
   .hposter__bg img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.05);mix-blend-mode:multiply;transition:transform 1.2s cubic-bezier(.2,.8,.2,1)}
   .hposter__main::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(13,13,13,0) 30%,rgba(13,13,13,.88) 100%)}
   .hposter__main:hover .hposter__bg img{transform:scale(1.03)}
