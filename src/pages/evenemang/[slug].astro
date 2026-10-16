@@ -525,7 +525,7 @@ const icsContent = dtStart ? [
       </div>
       <div class="reg-modal__body">
         <div class="reg-modal__event-info">
-          <p class="reg-modal__event-label">Event</p>
+          <p class="reg-modal__event-label">{ev.data.format ?? 'Event'}</p>
           <p class="reg-modal__event-name">{ev.data.title}</p>
           <p class="reg-modal__event-meta">{dateText} &nbsp;·&nbsp; {ev.data.location}</p>
         </div>
