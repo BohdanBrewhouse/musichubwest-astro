@@ -84,6 +84,9 @@ const { lang, grid } = Astro.props;
   /* the shelf: a different object from a month — framed, compact rows */
   .ev-rolling{margin-top:56px;padding:28px;border:1px dashed var(--line-2);background:var(--black-2)}
   .ev-rolling[hidden]{display:none}
+  /* Rolling courses belong to Kommande only: hide the shelf when the upcoming
+     grid is switched off (Arkiv tab), and never build one under the archive. */
+  #grid-upcoming[style*="none"] + .ev-rolling,#grid-archive + .ev-rolling{display:none}
   .ev-month--rolling{margin-top:0;padding-top:0}
   .ev-rolling__list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:20px}
   .ev-rolling .event-card{flex-direction:row;background:var(--black)}
