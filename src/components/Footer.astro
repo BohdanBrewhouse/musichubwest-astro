@@ -69,6 +69,10 @@ const base = lang === 'en' ? '/en' : '';
         <a href="#">Högskolan för scen och musik</a>
       </div>
     </div>
+    <div class="footer__eu">
+      <img src={lang === 'sv' ? '/eu/eu-sv-white.png' : '/eu/eu-en-white.png'} alt={lang === 'sv' ? 'Medfinansieras av Europeiska unionen' : 'Co-funded by the European Union'} width="1000" height="214" loading="lazy" />
+      <p>{lang === 'sv' ? 'Music Hub West är en del av Tune In West, som medfinansieras av Europeiska unionen via Tillväxtverket och av Västra Götalandsregionen.' : 'Music Hub West is part of Tune In West, co-funded by the European Union through Tillväxtverket and by Region Västra Götaland.'}</p>
+    </div>
     <div class="footer__bottom">
       <span class="footer__copy">© 2026 Music Hub West</span>
       <span class="footer__copy">{ lang === 'sv' ? 'En del av Tune In West 2026–2029' : 'Part of Tune In West 2026–2029' }</span>
@@ -78,3 +82,9 @@ const base = lang === 'en' ? '/en' : '';
     </div>
   </div>
 </footer>
+
+<style>
+  .footer__eu { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 28px; padding: 28px 0; border-top: 1px solid var(--line); }
+  .footer__eu img { height: 44px; width: auto; }
+  .footer__eu p { margin: 0; font-size: 13px; line-height: 1.5; color: var(--text-2); max-width: 60ch; }
+</style>

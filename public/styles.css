@@ -841,6 +841,8 @@ a:hover .featured-title { text-decoration-color: var(--lime); }
 }
 
 .partner-logo img:hover { opacity: 1; }
+/* EU logo: own white version, no filter, flag at least as large as the other logos. */
+.partner-logo--eu img { filter: none; opacity: 1; height: 40px; }
 
 /* ─── PAGE TAB NAVIGATION ─────────────────────────── */
 .page-tabs {

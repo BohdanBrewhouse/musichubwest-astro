@@ -93,6 +93,7 @@ const t = en ? {
       <span class="hposter__promo-title">{t.promoTitle}</span>
       <span class="hposter__promo-sub">{t.promoSub}</span>
       <span class="btn btn--primary hposter__promo-cta">{t.promoCta}</span>
+      <img class="hposter__eu" src={en ? '/eu/eu-en-white.png' : '/eu/eu-sv-white.png'} alt={en ? 'Co-funded by the European Union' : 'Medfinansieras av Europeiska unionen'} width="1000" height="214" />
     </a>
   </div>
 </section>
@@ -131,6 +132,8 @@ const t = en ? {
   .hposter__promo-title{font-family:var(--font-display);font-size:clamp(24px,2.4vw,32px);line-height:1.05}
   .hposter__promo-sub{font-size:14px;line-height:1.55;color:var(--text-2);max-width:40ch}
   .hposter__promo-cta{pointer-events:none;margin-top:4px}
+  /* EU funding logo, white on dark as the EU rules allow. */
+  .hposter__eu{height:40px;width:auto;margin-top:8px}
   .hposter__promo:hover .hposter__promo-cta{border-color:var(--lime);color:var(--lime)}
 
   @media(max-width:960px){
