@@ -15,6 +15,7 @@
 import { Resend } from 'resend';
 import { buildMhwEmail } from './_email-template.js';
 import { resendCall } from './_resend.js';
+import { withEu } from './_eu.js';
 
 const COLUMN_IDS = {
   email: 'text_mm2dg4hr',   // Email
@@ -138,14 +139,14 @@ export default async function handler(req, res) {
       try {
         const resend = new Resend(RESEND_API_KEY);
         const { subject, html, text } = buildMhwEmail({ namn: namn.trim() });
-        const mailErr = await resendCall('contact', resend.emails.send({
+        const mailErr = await resendCall('contact', resend.emails.send(withEu({
           from: FROM_ADDRESS,
           to: emailVal,
           replyTo: REPLY_TO,
           subject,
           html,
           text,
-        }));
+        })));
         if (mailErr) {
           console.error(`[contact] ⚠️ Email NOT sent → ${emailVal} (${mailErr.name})`);
         } else {

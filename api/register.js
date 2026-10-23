@@ -20,6 +20,7 @@
 import { Resend } from 'resend';
 import { buildRegistrationConfirmationEmail } from './_email-template.js';
 import { resendCall } from './_resend.js';
+import { withEu } from './_eu.js';
 
 const MONDAY_API = 'https://api.monday.com/v2';
 const FROM     = process.env.EMAIL_FROM || 'Music Hub West <hello@musichubwest.com>';
@@ -157,14 +158,14 @@ export default async function handler(req, res) {
           eventLocation,
           lang,
         });
-        const mailErr = await resendCall('register', new Resend(RESEND_API_KEY).emails.send({
+        const mailErr = await resendCall('register', new Resend(RESEND_API_KEY).emails.send(withEu({
           from: FROM,
           to: email,
           replyTo: REPLY_TO,
           subject: mail.subject,
           html: mail.html,
           text: mail.text,
-        }));
+        })));
         // Still non-fatal — the registration itself succeeded — but no longer
         // logged as sent when Resend rejected it.
         if (mailErr) {

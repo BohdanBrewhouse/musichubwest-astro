@@ -30,6 +30,7 @@ import crypto from 'node:crypto';
 import { Resend } from 'resend';
 import { buildNewsletterWelcomeEmail } from './_email-template.js';
 import { resendCall as call } from './_resend.js';
+import { withEu } from './_eu.js';
 
 const FROM     = process.env.EMAIL_FROM || 'Music Hub West <hello@musichubwest.com>';
 const REPLY_TO = process.env.EMAIL_REPLY_TO || 'hello@musichubwest.com';
@@ -183,14 +184,14 @@ export default async function handler(req, res) {
       unsubscribeUrl: unsubscribeUrl(email, NEWSLETTER_SECRET, lang),
       lang,
     });
-    await call('welcome mail', resend.emails.send({
+    await call('welcome mail', resend.emails.send(withEu({
       from: FROM,
       to: email,
       replyTo: REPLY_TO,
       subject: mail.subject,
       html: mail.html,
       text: mail.text,
-    }));
+    })));
 
     return res.status(200).json({ ok: true });
   } catch (err) {

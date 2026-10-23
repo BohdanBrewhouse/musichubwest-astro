@@ -27,6 +27,7 @@ import { createClient } from '@sanity/client';
 import { Resend } from 'resend';
 import { buildEventConfirmationEmail, buildEventTeamNotification } from './_email-template.js';
 import { resendCall } from './_resend.js';
+import { withEu } from './_eu.js';
 
 const TEAM_EMAIL  = 'bohdan@brewhouse.se';
 const FROM        = process.env.EMAIL_FROM || 'Music Hub West <hello@musichubwest.com>';
@@ -141,14 +142,14 @@ export default async function handler(req, res) {
         eventDate:     row.event_date,
         eventLocation: row.event_location,
       });
-      const userErr = await resendCall('event-submission/user', resend.emails.send({
+      const userErr = await resendCall('event-submission/user', resend.emails.send(withEu({
         from: FROM,
         to: row.email,
         replyTo: REPLY_TO,
         subject: userEmail.subject,
         html: userEmail.html,
         text: userEmail.text,
-      }));
+      })));
       if (userErr) console.error(`[event-submission] ⚠️ Confirmation NOT sent to ${row.email} (${userErr.name})`);
     } catch (e) {
       console.error('[event-submission] User email failed (non-fatal):', e?.message || e);
@@ -171,14 +172,14 @@ export default async function handler(req, res) {
         links:           row.links,
         submissionId,
       });
-      const teamErr = await resendCall('event-submission/team', resend.emails.send({
+      const teamErr = await resendCall('event-submission/team', resend.emails.send(withEu({
         from: FROM,
         to: TEAM_EMAIL,
         replyTo: row.email, // reply jumps straight back to the submitter
         subject: teamEmail.subject,
         html: teamEmail.html,
         text: teamEmail.text,
-      }));
+      })));
       // The team not hearing about a submission is the worse failure of the two:
       // the submitter got their confirmation and will expect a reply.
       if (teamErr) console.error(`[event-submission] ⚠️ TEAM NOT NOTIFIED of ${submissionId} (${teamErr.name})`);
