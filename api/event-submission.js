@@ -81,7 +81,9 @@ export default async function handler(req, res) {
   const links = String(body.links || '').trim().slice(0, 2000);
 
   // ── 3. Create the document in Sanity
-  const { SANITY_PROJECT_ID, SANITY_DATASET, SANITY_TOKEN } = process.env;
+  const { SANITY_PROJECT_ID, SANITY_DATASET } = process.env;
+  // Writing needs an Editor token; the site's SANITY_TOKEN is read-only.
+  const SANITY_TOKEN = process.env.SANITY_WRITE_TOKEN || process.env.SANITY_TOKEN;
   if (!SANITY_PROJECT_ID || !SANITY_TOKEN) {
     console.error('[event-submission] Sanity env vars missing');
     return res.status(500).json({ ok: false, error: 'Server not configured' });
@@ -123,11 +125,14 @@ export default async function handler(req, res) {
     });
     submissionId = created._id;
   } catch (e) {
-    console.error('[event-submission] Sanity create failed:', e?.message || e);
-    return res.status(500).json({ ok: false, error: 'Could not save submission' });
+    /* Not fatal any more: the team email below carries every field, so a
+       Sanity problem (a read-only token, an outage) no longer loses the
+       submission or shows the visitor an error. */
+    console.error('[event-submission] Sanity create failed, continuing with email only:', e?.message || e);
+    submissionId = null;
   }
 
-  console.log(`[event-submission] ✅ Saved #${submissionId} from ${row.email}`);
+  if (submissionId) console.log(`[event-submission] ✅ Saved #${submissionId} from ${row.email}`);
 
   // ── 4. Send emails (non-fatal)
   const RESEND_API_KEY = process.env.RESEND_API_KEY;
