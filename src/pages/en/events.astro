@@ -505,8 +505,10 @@ function formatDate(d: string) {
   });
 
   try {
+    var wantArchive = /[?&]tab=arkiv|[?&]tab=archive/.test(location.search) || location.hash === '#arkiv';
     var savedTab = localStorage.getItem('mhw-events-tab');
-    if (savedTab === 'archive') setTab('archive');
+    if (wantArchive || savedTab === 'archive') setTab('archive');
+    else if (/[?&]tab=/.test(location.search)) setTab('upcoming');
   } catch(e) {}
 
   // ── Desktop chip filter ──

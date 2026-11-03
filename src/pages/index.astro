@@ -146,7 +146,7 @@ const heroTitle = (t) => t.split(/(?<=\.)\s+/).filter(Boolean).join('\n');
                 priority={i < 3} />
             </div>
           ))}
-          <a href="/evenemang" class="event-carousel__item event-carousel__viewall">
+          <a href="/evenemang?tab=arkiv" class="event-carousel__item event-carousel__viewall">
             <span class="event-carousel__viewall-arrow">→</span>
             <span class="event-carousel__viewall-text">Se alla event</span>
           </a>
@@ -317,6 +317,7 @@ const heroTitle = (t) => t.split(/(?<=\.)\s+/).filter(Boolean).join('\n');
     document.querySelectorAll('[data-hometab]').forEach((b) => { b.classList.toggle('active', b === btn); b.setAttribute('aria-selected', String(b === btn)); });
     Object.entries(tracks).forEach(([key, el]) => { if (el) el.hidden = key !== k; });
     const h = document.getElementById('ev-title'); if (h) h.textContent = k === 'past' ? h.dataset.past : h.dataset.up;
+    const sa = document.querySelector('.section__head .section__link'); if (sa) sa.href = k === 'past' ? '/evenemang?tab=arkiv' : '/evenemang';
     track = tracks[k]; track.scrollLeft = 0; window.dispatchEvent(new Event('resize'));
   }));
   const prev  = document.getElementById('ev-prev');
