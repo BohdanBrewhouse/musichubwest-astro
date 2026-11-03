@@ -130,7 +130,6 @@ export default async function handler(req, res) {
        submission or shows the visitor an error. */
     console.error('[event-submission] Sanity create failed, continuing with email only:', e?.message || e);
     submissionId = null;
-    var sanityErr = String(e?.message || e).slice(0, 200);
   }
 
   if (submissionId) console.log(`[event-submission] ✅ Saved #${submissionId} from ${row.email}`);
@@ -196,6 +195,5 @@ export default async function handler(req, res) {
     console.warn('[event-submission] RESEND_API_KEY missing — emails skipped');
   }
 
-  const dbg = req.headers['x-debug'] === 'mhw' ? { sanityErr: typeof sanityErr === 'undefined' ? null : sanityErr, tokenFrom: process.env.SANITY_WRITE_TOKEN ? 'write' : 'read', tokenLen: (SANITY_TOKEN || '').length } : {};
-  return res.status(200).json({ ok: true, id: submissionId, ...dbg });
+  return res.status(200).json({ ok: true, id: submissionId });
 }
