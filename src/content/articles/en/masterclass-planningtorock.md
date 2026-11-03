@@ -28,6 +28,6 @@ For the participants it was a chance to get close to a way of working that's rar
 
 ## This is just the beginning
 
-The masterclass is part of what we do at Music Hub West — creating spaces where the music industry in Västra Götaland can meet, learn from each other and grow. More masterclasses, workshops and talks are on the way.
+The masterclass is part of what we do at Music Hub West — creating spaces where the music business in Västra Götaland can meet, learn from each other and grow. More masterclasses, workshops and talks are on the way.
 
 Don't want to miss the next one? Keep an eye on [our upcoming events](/en/events).

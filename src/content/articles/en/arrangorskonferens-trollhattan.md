@@ -26,6 +26,6 @@ Several workshops focused on sustainable organising and funding. For many smalle
 
 What often gives the most on a day like this are the breaks between sessions. The networking slots and the shared lunch made room for conversations that rarely fit into everyday life — between organisers who might otherwise only know each other by name.
 
-That's exactly the kind of meeting we want to see more of. A stronger music industry in Västra Götaland isn't built by individual players on their own, but by a network that shares and lifts one another.
+That's exactly the kind of meeting we want to see more of. A stronger music business in Västra Götaland isn't built by individual players on their own, but by a network that shares and lifts one another.
 
 Don't want to miss the next chance to meet? Keep an eye on [our upcoming events](/en/events).

@@ -16,7 +16,7 @@ registration_open: false
 external_registration_url: 'https://exms.org/nyheter/ansok-om-resestod-och-rabattkod-till-reeperbahn-festival'
 ---
 
-### The Swedish music industry meets the German one
+### The Swedish music business meets the German one
 
 Reeperbahn Festival in Hamburg is one of Europe's most important industry gatherings. Export Music Sweden is there this autumn and is arranging two things on **17 September**: a matchmaking session between the Swedish and German music industries, followed by a networking event for the Swedish and international industry at Wiener Bistro at Arcotel at 16:00.
 

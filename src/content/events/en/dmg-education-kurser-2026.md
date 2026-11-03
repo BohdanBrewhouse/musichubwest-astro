@@ -1,5 +1,5 @@
 ---
-title: Music industry diploma courses — DMG Education
+title: Music business diploma courses — DMG Education
 seo_description: Online courses in Music Business and Independent Artist starting 14 October 2026. Application deadline 7 October. Organised by DMG Education.
 date: '2026-10-07'
 time: Application deadline
@@ -37,7 +37,7 @@ sessions:
 
 ### Diploma courses for those wanting to work in music
 
-DMG Education runs online courses for anyone who wants to understand how the music industry works — whether you're building an artist career or want to work with music professionally.
+DMG Education runs online courses for anyone who wants to understand how the music business works — whether you're building an artist career or want to work with music professionally.
 
 Two of the courses, **Music Business** and **Independent Artist**, run as eight-week programmes starting **14 October 2026**. Teaching happens online via Zoom with nine live sessions, where the first and last are hybrid in Stockholm. Expect around five hours a week.
 

@@ -522,7 +522,7 @@ export function buildNewsletterWelcomeEmail({ unsubscribeUrl, lang = 'sv' }) {
     subject: 'Welcome to the Music Hub West newsletter',
     head: 'YOU’RE IN.<br>THANK YOU!',
     hi: 'Hi!',
-    body: 'You’re on the list. From now on you’ll get events, open calls and news from the music industry in Västra Götaland — roughly once a month, never more often than we have something worth your time.',
+    body: 'You’re on the list. From now on you’ll get events, open calls and news from the music business in Västra Götaland — roughly once a month, never more often than we have something worth your time.',
     while: 'While you wait for the first one, there’s plenty happening already:',
     btn: 'SEE ALL EVENTS →',
     btn2: 'PUBLISH YOUR OWN EVENT →',

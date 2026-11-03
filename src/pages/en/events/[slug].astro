@@ -254,7 +254,7 @@ const icsContent = dtStart ? [
             <div>
               <h2 class="sessions__title">{ev.data.sessions_title ?? 'Programme'}</h2>
               {ev.data.sessions.some(s => s.highlight) && (
-                <p style="margin-top:10px"><span class="sessions__legend">★ Especially relevant for the music industry</span></p>
+                <p style="margin-top:10px"><span class="sessions__legend">★ Especially relevant for the music business</span></p>
               )}
             </div>
             {ev.data.external_registration_url && (
@@ -274,7 +274,7 @@ const icsContent = dtStart ? [
               <div>
                 <p class="session__title">
                   {s.title}
-                  {s.highlight && <span class="session__star" title="Especially relevant for the music industry">★</span>}
+                  {s.highlight && <span class="session__star" title="Especially relevant for the music business">★</span>}
                 </p>
                 <p class="session__meta">
                   {s.location}{s.description ? ` — ${s.description}` : ''}
