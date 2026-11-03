@@ -28,6 +28,8 @@ const sorted = upcoming.sort((a, b) => {
 });
 const heroSlides = sorted.slice(0, 5);
 const cardEvents = sorted.slice(0, 6);
+// Archive tab: the six most recent past events, newest first.
+const pastEvents = events.filter(e => e.data.date < today).sort((a, b) => b.data.date.localeCompare(a.data.date)).slice(0, 6);
 const articles = await getCollection('articles', a => a.id.startsWith('en/'));
 const latestArticles = articles.sort((a, b) => b.data.date.localeCompare(a.data.date)).slice(0, 3);
 // The glitch effect draws two copies of the title through ::before/::after with
@@ -91,7 +93,11 @@ const heroTitle = (t) => t.split(/(?<=\.)\s+/).filter(Boolean).join('\n');
   <section class="section">
     <div class="section__inner">
       <div class="section__head">
-        <h2 class="section__title">Upcoming events</h2>
+        <h2 class="section__title" id="ev-title" data-up="Upcoming events" data-past="Past events">Upcoming events</h2>
+        <div class="ev-tabs home-tabs" role="tablist">
+          <button class="ev-tab active" data-hometab="up" role="tab" aria-selected="true" type="button">Upcoming</button>
+          <button class="ev-tab" data-hometab="past" role="tab" aria-selected="false" type="button">Archive <span class="ev-tab__n">{pastEvents.length}</span></button>
+        </div>
         <div class="event-carousel__nav">
           <button class="event-carousel__arrow" id="ev-prev" aria-label="Previous event" type="button">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -105,6 +111,23 @@ const heroTitle = (t) => t.split(/(?<=\.)\s+/).filter(Boolean).join('\n');
       <div class="event-carousel">
         <div class="event-carousel__track" id="ev-track">
           {cardEvents.map((ev, i) => (
+            <div class="event-carousel__item">
+              <EventCard title={ev.data.title} date={ev.data.date} time={ev.data.time}
+                category={ev.data.category} image={ev.data.card_image ?? ev.data.image}
+                slug={ev.id.replace('en/','')} lang={lang}
+                organizer={ev.data.organizer} isOwn={!ev.data.external_registration_url}
+                eventType={ev.data.event_type} eventLanguage={ev.data.event_language}
+                location={ev.data.location}
+                priority={i < 3} />
+            </div>
+          ))}
+          <a href="/en/events" class="event-carousel__item event-carousel__viewall">
+            <span class="event-carousel__viewall-arrow">→</span>
+            <span class="event-carousel__viewall-text">See all events</span>
+          </a>
+        </div>
+        <div class="event-carousel__track" id="ev-track-past" hidden>
+          {pastEvents.map((ev, i) => (
             <div class="event-carousel__item">
               <EventCard title={ev.data.title} date={ev.data.date} time={ev.data.time}
                 category={ev.data.category} image={ev.data.card_image ?? ev.data.image}
@@ -269,10 +292,22 @@ const heroTitle = (t) => t.split(/(?<=\.)\s+/).filter(Boolean).join('\n');
   @media (max-width: 640px) {
     .event-carousel__item { width: 300px; }
   }
+  .section__head { flex-wrap: wrap; gap: 16px 24px; }
+  .home-tabs { margin-right: auto; margin-left: 24px; }
+  .event-carousel__track[hidden] { display: none; }
+  @media (max-width: 640px) { .home-tabs { margin-left: 0; order: 3; } }
 </style>
 
 <script>
-  const track = document.getElementById('ev-track');
+  let track = document.getElementById('ev-track');
+  const tracks = { up: document.getElementById('ev-track'), past: document.getElementById('ev-track-past') };
+  document.querySelectorAll('[data-hometab]').forEach((btn) => btn.addEventListener('click', () => {
+    const k = btn.dataset.hometab;
+    document.querySelectorAll('[data-hometab]').forEach((b) => { b.classList.toggle('active', b === btn); b.setAttribute('aria-selected', String(b === btn)); });
+    Object.entries(tracks).forEach(([key, el]) => { if (el) el.hidden = key !== k; });
+    const h = document.getElementById('ev-title'); if (h) h.textContent = k === 'past' ? h.dataset.past : h.dataset.up;
+    track = tracks[k]; track.scrollLeft = 0; window.dispatchEvent(new Event('resize'));
+  }));
   const prev  = document.getElementById('ev-prev');
   const next  = document.getElementById('ev-next');
 
@@ -291,7 +326,7 @@ const heroTitle = (t) => t.split(/(?<=\.)\s+/).filter(Boolean).join('\n');
 
     prev.addEventListener('click', () => track.scrollBy({ left: -step(), behavior: 'smooth' }));
     next.addEventListener('click', () => track.scrollBy({ left:  step(), behavior: 'smooth' }));
-    track.addEventListener('scroll', update, { passive: true });
+    Object.values(tracks).forEach((t) => t && t.addEventListener('scroll', update, { passive: true }));
     window.addEventListener('resize', update);
     update();
   }
