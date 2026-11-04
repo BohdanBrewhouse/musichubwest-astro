@@ -131,9 +131,6 @@ export default async function handler(req, res) {
     // Required for the Tillväxtverket report, so a missing answer is rejected
     // rather than stored as unknown.
     const hasCompany = harBolag === 'Ja' ? 'Ja' : harBolag === 'Nej' ? 'Nej' : null;
-    if (!hasCompany) {
-      return res.status(400).json({ error: 'Ange om du har bolag' });
-    }
 
     // Ten digits, hyphen optional on input, always stored as NNNNNN-NNNN.
     let orgNumber = null;
@@ -236,13 +233,13 @@ export default async function handler(req, res) {
     // below, so the answer is never silently dropped.
     const unwritten = [];
 
-    const hasCol = process.env.MONDAY_HAS_COMPANY_COL
+    const hasCol = !hasCompany ? null : process.env.MONDAY_HAS_COMPANY_COL
       ? { id: process.env.MONDAY_HAS_COMPANY_COL, type: 'text' }
       : await findColumnId(MONDAY_BOARD_ID, ['Har bolag', 'Har du bolag', 'Bolag'], MONDAY_API_TOKEN);
     if (hasCol) {
       // A status column needs {"label": …}; a text column takes the string.
       colObj[hasCol.id] = hasCol.type === 'status' ? { label: hasCompany } : hasCompany;
-    } else {
+    } else if (hasCompany) {
       unwritten.push(`Har bolag: ${hasCompany}`);
     }
 

@@ -560,25 +560,11 @@ const icsContent = dtStart ? [
             <span class="reg-form__label">Kön <span class="reg-form__required">*</span></span>
             <div class="reg-form__radios reg-form__radios--wrap"><label class="reg-form__radio"><input type="radio" name="kon" value="Man" required /><span>Man</span></label><label class="reg-form__radio"><input type="radio" name="kon" value="Kvinna" required /><span>Kvinna</span></label><label class="reg-form__radio"><input type="radio" name="kon" value="Annat" required /><span>Annat</span></label><label class="reg-form__radio"><input type="radio" name="kon" value="Vill inte uppge" required /><span>Vill inte uppge</span></label></div>
           </div>
-          <div class="reg-form__field">
-            <span class="reg-form__label">Har du bolag / enskild firma? <span class="reg-form__required">*</span></span>
-            <div class="reg-form__radios">
-              <label class="reg-form__radio"><input type="radio" name="harBolag" value="Ja" required /><span>Ja</span></label>
-              <label class="reg-form__radio"><input type="radio" name="harBolag" value="Nej" required /><span>Nej</span></label>
-            </div>
-          </div>
-          <div class="reg-form__field" id="reg-orgnr-field" hidden>
-            <label class="reg-form__label" for="reg-orgnr">Organisationsnummer <span class="reg-form__required">*</span></label>
-            <input class="reg-form__input" type="text" id="reg-orgnr" name="orgnr" inputmode="numeric" autocomplete="off" placeholder="XXXXXX-XXXX" pattern="[0-9]{6}-?[0-9]{4}" title="Tio siffror, med eller utan bindestreck" />
-            <p class="reg-form__hint">Vi rapporterar antalet deltagande f&ouml;retag till Tillv&auml;xtverket. Numret anv&auml;nds bara f&ouml;r det.</p>
-          </div>
 
-          {ev.data.serve_food && (
-            <div class="reg-form__field">
+                      <div class="reg-form__field">
               <label class="reg-form__label" for="reg-mat">Matpreferenser / allergier <span class="reg-form__optional">(valfritt)</span></label>
               <input class="reg-form__input" type="text" id="reg-mat" name="matpreferenser" placeholder="T.ex. vegetarian, glutenintolerant, inga preferenser..." />
             </div>
-          )}
 
           <div class="reg-form__error" id="reg-error" hidden>
             Något gick fel. Försök igen eller kontakta oss direkt.
@@ -695,22 +681,6 @@ const icsContent = dtStart ? [
       var successEl = document.getElementById('reg-success');
 
       if (form) {
-        // The registration number is only asked for when there is a company, and
-        // is only required while visible — a hidden required field blocks submit.
-        var orgnrField = document.getElementById('reg-orgnr-field');
-        var orgnrInput = document.getElementById('reg-orgnr');
-        function syncOrgnr() {
-          var picked = form.querySelector('input[name="harBolag"]:checked');
-          var show = !!picked && picked.value === 'Ja';
-          orgnrField.hidden = !show;
-          orgnrInput.required = show;
-          if (!show) orgnrInput.value = '';
-        }
-        Array.prototype.forEach.call(
-          form.querySelectorAll('input[name="harBolag"]'),
-          function (r) { r.addEventListener('change', syncOrgnr); }
-        );
-        syncOrgnr();
 
         form.addEventListener('submit', function (e) {
           e.preventDefault();
