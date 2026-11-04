@@ -557,6 +557,10 @@ const icsContent = dtStart ? [
           {/* Asked because the number of participating companies is reported to
               Tillväxtverket. Required, or the report has gaps. */}
           <div class="reg-form__field">
+            <span class="reg-form__label">Kön <span class="reg-form__required">*</span></span>
+            <div class="reg-form__radios reg-form__radios--wrap"><label class="reg-form__radio"><input type="radio" name="kon" value="Man" required /><span>Man</span></label><label class="reg-form__radio"><input type="radio" name="kon" value="Kvinna" required /><span>Kvinna</span></label><label class="reg-form__radio"><input type="radio" name="kon" value="Annat" required /><span>Annat</span></label><label class="reg-form__radio"><input type="radio" name="kon" value="Vill inte uppge" required /><span>Vill inte uppge</span></label></div>
+          </div>
+          <div class="reg-form__field">
             <span class="reg-form__label">Har du bolag / enskild firma? <span class="reg-form__required">*</span></span>
             <div class="reg-form__radios">
               <label class="reg-form__radio"><input type="radio" name="harBolag" value="Ja" required /><span>Ja</span></label>

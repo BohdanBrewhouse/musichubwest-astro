@@ -553,6 +553,10 @@ const icsContent = dtStart ? [
           {/* Asked because the number of participating companies is reported to
               Tillväxtverket. Required, or the report has gaps. */}
           <div class="reg-form__field">
+            <span class="reg-form__label">Gender <span class="reg-form__required">*</span></span>
+            <div class="reg-form__radios reg-form__radios--wrap"><label class="reg-form__radio"><input type="radio" name="kon" value="Man" required /><span>Man</span></label><label class="reg-form__radio"><input type="radio" name="kon" value="Kvinna" required /><span>Woman</span></label><label class="reg-form__radio"><input type="radio" name="kon" value="Annat" required /><span>Other</span></label><label class="reg-form__radio"><input type="radio" name="kon" value="Vill inte uppge" required /><span>Prefer not to say</span></label></div>
+          </div>
+          <div class="reg-form__field">
             <span class="reg-form__label">Do you have a company or sole proprietorship (enskild firma)? <span class="reg-form__required">*</span></span>
             <div class="reg-form__radios">
               <label class="reg-form__radio"><input type="radio" name="harBolag" value="Ja" required /><span>Yes</span></label>

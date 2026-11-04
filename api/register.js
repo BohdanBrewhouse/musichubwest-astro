@@ -103,7 +103,7 @@ export default async function handler(req, res) {
   try {
     const {
       namn, epost, telefon, foretag, matpreferenser,
-      harBolag, orgnr, source,
+      harBolag, orgnr, source, kon,
       eventTitle, eventSlug, eventDate, eventLocation,
       translationKey, lang,
     } = req.body;
@@ -244,6 +244,13 @@ export default async function handler(req, res) {
       colObj[hasCol.id] = hasCol.type === 'status' ? { label: hasCompany } : hasCompany;
     } else {
       unwritten.push(`Har bolag: ${hasCompany}`);
+    }
+
+    // Gender — reported to Tillväxtverket. Column titled "Kön" on the board.
+    if (kon) {
+      const konCol = await findColumnId(MONDAY_BOARD_ID, ['Kön', 'Kon', 'Gender'], MONDAY_API_TOKEN);
+      if (konCol) colObj[konCol.id] = konCol.type === 'status' ? { label: String(kon).slice(0, 40) } : String(kon).slice(0, 40);
+      else unwritten.push(`Kön: ${kon}`);
     }
 
     const srcCol = process.env.MONDAY_SOURCE_COL
