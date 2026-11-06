@@ -1,6 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import Nav from '../../components/Nav.astro';
+import AboutPanel from '../../components/AboutPanel.astro';
 import Footer from '../../components/Footer.astro';
 
 const lang = 'en';
@@ -34,98 +35,7 @@ const lang = 'en';
 
   <!-- PANEL: ABOUT -->
   <div class="page-panel active" id="tab-om-oss">
-
-    <!-- HERO -->
-    <div class="about-hero">
-      <div class="about-hero__inner">
-        <p class="about-hero__kicker">About the platform</p>
-        <h1 class="about-hero__title">Music Hub<br>West</h1>
-        <p class="about-hero__subtitle">Your meeting place for music, networking and new ideas. In Västra Götaland.</p>
-      </div>
-    </div>
-
-    <!-- IMAGE -->
-    <div class="about-image brand-photo">
-      <img src="/images/about-hero.webp" alt="Gothenburg" />
-      <div class="about-image__overlay"></div>
-    </div>
-
-    <!-- PLATFORM -->
-    <div class="about-platform">
-      <div class="about-platform__inner">
-        <div class="about-platform__text">
-          <p class="about-section__kicker">The platform</p>
-          <h2 class="about-section__title">What is Music Hub West?</h2>
-          <p class="about-body">Music Hub West is for anyone working with music in Västra Götaland. Artists, producers, creatives, event organisers and tech companies. We don't build things for you, we build them with you.</p>
-          <p class="about-body">The headline event is the <strong>Music Tech Summit</strong>, one of the region's most talked-about events where music and tech collide for real. The first edition takes place on Tuesday 24 November 2026 at <a href="https://pustervik.nu/" target="_blank" rel="noopener" style="color:var(--lime)">Pustervik</a> and <a href="https://www.skeppetgbg.se/" target="_blank" rel="noopener" style="color:var(--lime)">Skeppet GBG</a>. The rest of the year you'll find masterclasses, think tanks and workshops where you don't just show up — you help shape what happens.</p>
-          <p class="about-body">We believe the music business is stronger when more voices are heard. That's why we actively work for gender equality, inclusion and diversity, and strive to create spaces where everyone feels welcome. Regardless of background, experience or where you are in your career.</p>
-        </div>
-        <div class="about-platform__highlight">
-          <blockquote class="about-quote">
-            <p>"Music doesn't happen in a vacuum. The best things happen when the right people meet in the right place."</p>
-          </blockquote>
-          <div class="about-stats-mini">
-            <div class="about-stat">
-              <span class="about-stat__num">45</span>
-              <span class="about-stat__label">participating companies</span>
-            </div>
-            <div class="about-stat">
-              <span class="about-stat__num">3 MSEK</span>
-              <span class="about-stat__label">in funding</span>
-            </div>
-            <div class="about-stat">
-              <span class="about-stat__num">12+</span>
-              <span class="about-stat__label">events per year</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- PROJECT -->
-    <div class="about-project">
-      <div class="about-project__inner">
-        <div class="about-project__header">
-          <p class="about-section__kicker">Project 2026–2029</p>
-          <h2 class="about-section__title">Tune In West</h2>
-          <p class="about-body" style="max-width:640px;">Tune In West is the project behind Music Hub West. An investment in the music business in Västra Götaland running until 2029, supported by Tillväxtverket, VGR, Högskolan för scen och musik and Brewhouse Inkubator.</p>
-        </div>
-        <a href="https://tuneinwest.se/en" target="_blank" rel="noopener" class="home-project__btn">
-          Visit the project website →
-        </a>
-      </div>
-    </div>
-
-    <!-- THEMES -->
-    <div class="about-themes">
-      <div class="about-themes__inner">
-        <p class="about-section__kicker">Focus areas</p>
-        <div class="about-themes__grid">
-          <div class="about-theme">
-            <div class="about-theme__icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="var(--lime)" stroke-width="2" stroke-linecap="round"/><circle cx="9" cy="7" r="4" stroke="var(--lime)" stroke-width="2"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke="var(--lime)" stroke-width="2" stroke-linecap="round"/></svg>
-            </div>
-            <h3 class="about-theme__title">Collaboration &amp; networks</h3>
-            <p class="about-theme__desc">You meet people you wouldn't have found otherwise. Artists, tech companies, event organisers and cultural institutions. All in one place, in your region.</p>
-          </div>
-          <div class="about-theme">
-            <div class="about-theme__icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7l10 5 10-5-10-5z" stroke="var(--lime)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5" stroke="var(--lime)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </div>
-            <h3 class="about-theme__title">AI &amp; digitalisation</h3>
-            <p class="about-theme__desc">What happens to your music when AI takes over? We dig into both the opportunities and the questions. Creative practice, production and copyright.</p>
-          </div>
-          <div class="about-theme">
-            <div class="about-theme__icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 22V12M12 12L6 6M12 12l6-6M2 22h20" stroke="var(--lime)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </div>
-            <h3 class="about-theme__title">Sustainable growth</h3>
-            <p class="about-theme__desc">We give you the tools to grow. Business models that last, international perspectives and a network that actually opens doors.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
+    <AboutPanel lang="en" />
   </div>
 
   <!-- PANEL: CONTACT -->
@@ -246,7 +156,7 @@ const lang = 'en';
     <!-- STAKEHOLDER: EU (ERDF via Tillväxtverket) -->
     <div class="stakeholder stakeholder--alt">
       <div class="stakeholder__inner">
-        <div class="stakeholder__logo">
+        <div class="stakeholder__logo stakeholder__logo--eu">
           <img src="/eu/eu-en.png" alt="Co-funded by the European Union" />
         </div>
         <div class="stakeholder__content">
@@ -447,4 +357,6 @@ const lang = 'en';
     .about-image { aspect-ratio: 16/7; }
     .stakeholder { padding: 48px 20px; }
   }
+  .stakeholder__logo.stakeholder__logo--eu{background:#fff !important}
+  .stakeholder__logo--eu img{filter:none !important;opacity:1 !important;max-width:88% !important}
 </style>

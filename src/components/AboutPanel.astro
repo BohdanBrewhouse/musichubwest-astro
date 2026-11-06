@@ -1,0 +1,228 @@
+---
+// "About us" panel of /om and /en/about. Own class prefix (ab-) so the
+// global about-* overrides in public/styles.css don't reach it.
+interface Props { lang: 'sv' | 'en' }
+const { lang } = Astro.props;
+const sv = lang === 'sv';
+
+const T = sv ? {
+  kicker: 'Om plattformen',
+  sub: 'Din mötesplats för musik, nätverk och nya idéer i Västra Götaland.',
+  quote: 'Musik händer inte i ett vakuum. Det bästa händer när rätt människor möts på rätt plats.',
+  stats: [['45', 'deltagande bolag'], ['3 mkr', 'i finansiering'], ['12+', 'event per år']],
+  whatK: 'Plattformen', whatH: 'Vad är Music Hub West?',
+  what: [
+    'Music Hub West är till för dig som jobbar med musik i Västra Götaland. Artister, producenter, kreatörer, arrangörer och techbolag. Vi bygger inte något åt dig, vi bygger det med dig.',
+    'Kronan på verket är <strong>Music Tech Summit</strong>, där musik och teknik möts på riktigt. Första upplagan går av stapeln 24–25 november 2026 på Pustervik och Skeppet GBG. Resten av året hittar du masterclasses, think tanks och workshops där du inte bara dyker upp utan är med och sätter agendan.',
+    'Vi tror att musikbranschen mår bättre när fler röster får plats. Därför arbetar vi aktivt för jämlikhet, inkludering och mångfald – oavsett bakgrund, erfarenhet eller var du befinner dig i karriären.',
+  ],
+  findK: 'Här hittar du', find: [
+    ['Kalender', 'Workshops, masterclasses och branschträffar i hela regionen.', '/evenemang'],
+    ['Artiklar', 'Kunskap, intervjuer och nyheter från scenen.', '/artiklar'],
+    ['Music Tech Summit', '24–25 nov 2026 · Pustervik & Skeppet GBG. Kostnadsfritt.', 'https://musictechsummit.se'],
+    ['Nyhetsbrev', 'Det viktigaste från musikbranschen, direkt i inkorgen.', '/nyhetsbrev'],
+  ],
+  focusK: 'Fokusområden', focus: [
+    ['Samverkan & nätverk', 'Du möter folk du annars aldrig hade hittat. Artister, techbolag, arrangörer och kulturinstitutioner på ett ställe i din region.'],
+    ['AI & digitalisering', 'Vad händer med din musik när AI tar plats? Vi gräver i både möjligheterna och frågorna – skapande, produktion och upphovsrätt.'],
+    ['Hållbar tillväxt', 'Verktyg för att växa: affärsmodeller som håller, internationella perspektiv och ett nätverk som faktiskt öppnar dörrar.'],
+  ],
+  projK: 'Projekt 2026–2029', projH: 'Tune In West',
+  proj: 'Tune In West är projektet bakom Music Hub West – en satsning på musikbranschen i Västra Götaland fram till 2029. Projektet medfinansieras av Europeiska unionen genom Regionalfonden.',
+  projCta: 'Besök tuneinwest.se', projUrl: 'https://tuneinwest.se',
+  partners: 'Se alla partners', eu: '/eu/eu-sv.png', euAlt: 'Medfinansieras av Europeiska unionen',
+} : {
+  kicker: 'About the platform',
+  sub: 'Your meeting place for music, networking and new ideas in Västra Götaland.',
+  quote: 'Music doesn’t happen in a vacuum. The best things happen when the right people meet in the right place.',
+  stats: [['45', 'participating companies'], ['3 MSEK', 'in funding'], ['12+', 'events per year']],
+  whatK: 'The platform', whatH: 'What is Music Hub West?',
+  what: [
+    'Music Hub West is for anyone working with music in Västra Götaland. Artists, producers, creatives, event organisers and tech companies. We don’t build things for you, we build them with you.',
+    'The headline event is <strong>Music Tech Summit</strong>, where music and tech meet for real. The first edition takes place on 24–25 November 2026 at Pustervik and Skeppet GBG. The rest of the year you’ll find masterclasses, think tanks and workshops where you don’t just show up – you help set the agenda.',
+    'We believe the music business is stronger when more voices are heard. That’s why we actively work for gender equality, inclusion and diversity – regardless of background, experience or where you are in your career.',
+  ],
+  findK: 'What you’ll find', find: [
+    ['Calendar', 'Workshops, masterclasses and meetups across the region.', '/en/events'],
+    ['Articles', 'Knowledge, interviews and news from the scene.', '/en/articles'],
+    ['Music Tech Summit', '24–25 Nov 2026 · Pustervik & Skeppet GBG. Free of charge.', 'https://musictechsummit.se'],
+    ['Newsletter', 'The most important things in the music business, straight to your inbox.', '/en/newsletter'],
+  ],
+  focusK: 'Focus areas', focus: [
+    ['Collaboration & networks', 'You meet people you wouldn’t have found otherwise. Artists, tech companies, event organisers and cultural institutions – all in one place, in your region.'],
+    ['AI & digitalisation', 'What happens to your music when AI takes over? We dig into both the opportunities and the questions – creation, production and copyright.'],
+    ['Sustainable growth', 'Tools to grow: business models that last, international perspectives and a network that actually opens doors.'],
+  ],
+  projK: 'Project 2026–2029', projH: 'Tune In West',
+  proj: 'Tune In West is the project behind Music Hub West – an investment in the music business in Västra Götaland running until 2029. The project is co-funded by the European Union through the European Regional Development Fund.',
+  projCta: 'Visit tuneinwest.se', projUrl: 'https://tuneinwest.se/en',
+  partners: 'See all partners', eu: '/eu/eu-en.png', euAlt: 'Co-funded by the European Union',
+};
+
+// Deterministic equaliser for the hero band.
+let s = 7; const rnd = () => (s = (s * 9301 + 49297) % 233280) / 233280;
+const bars = Array.from({ length: 64 }, (_, i) => {
+  const v = 0.12 + 0.88 * Math.pow(Math.abs(Math.sin(i * 0.37) * Math.cos(i * 0.11) + 0.35 * rnd()), 0.9);
+  return Math.min(1, v);
+});
+const ext = (u: string) => u.startsWith('http');
+---
+<section class="ab">
+  <header class="ab-hero">
+    <p class="ab-k">{T.kicker}</p>
+    <div class="ab-hero__row">
+      <h1 class="ab-hero__title">Music Hub<br><span>West</span></h1>
+      <p class="ab-hero__sub">{T.sub}</p>
+    </div>
+    <div class="ab-eq" aria-hidden="true">
+      {bars.map((v, i) => <i style={`height:${(v * 100).toFixed(1)}%;${i % 9 === 4 ? 'background:var(--white)' : ''}`}></i>)}
+    </div>
+  </header>
+
+  <div class="ab-wrap">
+    <blockquote class="ab-quote">“{T.quote}”</blockquote>
+
+    <div class="ab-stats">
+      {T.stats.map(([n, l]) => <div class="ab-stat"><span class="ab-stat__n">{n}</span><span class="ab-stat__l">{l}</span></div>)}
+    </div>
+
+    <section class="ab-split">
+      <div class="ab-split__head"><p class="ab-k">{T.whatK}</p><h2 class="ab-h2">{T.whatH}</h2></div>
+      <div class="ab-split__body">{T.what.map((p) => <p set:html={p} />)}</div>
+    </section>
+
+    <section class="ab-block">
+      <p class="ab-k">{T.findK}</p>
+      <div class="ab-find">
+        {T.find.map(([t, d, u], i) => (
+          <a class="ab-card" href={u} target={ext(u) ? '_blank' : undefined} rel={ext(u) ? 'noopener' : undefined}>
+            <span class="ab-card__n">0{i + 1}</span>
+            <span class="ab-card__t">{t}</span>
+            <span class="ab-card__d">{d}</span>
+            <span class="ab-card__a" aria-hidden="true">→</span>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <section class="ab-block">
+      <p class="ab-k">{T.focusK}</p>
+      <div class="ab-focus">
+        {T.focus.map(([t, d], i) => (
+          <div class="ab-focus__item"><span class="ab-focus__n">0{i + 1}</span><h3>{t}</h3><p>{d}</p></div>
+        ))}
+      </div>
+    </section>
+
+    <section class="ab-proj">
+      <div class="ab-proj__text">
+        <p class="ab-k">{T.projK}</p>
+        <h2 class="ab-h2">{T.projH}</h2>
+        <p>{T.proj}</p>
+        <div class="ab-proj__ctas">
+          <a class="ab-btn" href={T.projUrl} target="_blank" rel="noopener">{T.projCta} →</a>
+          <button type="button" class="ab-btn ab-btn--ghost" data-goto-tab="partners">{T.partners}</button>
+        </div>
+      </div>
+      <div class="ab-proj__logos">
+        <div class="ab-eu"><img src={T.eu} alt={T.euAlt} /></div>
+        <div class="ab-partners">
+          <img src="/logos/vgr.svg" alt="Västra Götalandsregionen" />
+          <img src="/logos/hsm-wordmark.svg" alt="Högskolan för scen och musik" />
+          <img src="/logos/brewhouse.svg" alt="Brewhouse Inkubator" />
+        </div>
+      </div>
+    </section>
+  </div>
+</section>
+
+<script is:inline>
+  document.querySelectorAll('[data-goto-tab]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var t = document.querySelector('.page-tab[data-tab="' + b.dataset.gotoTab + '"]');
+      if (t) { t.click(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+    });
+  });
+</script>
+
+<style>
+  .ab { --pad: clamp(56px, 8vw, 112px); color: var(--white); }
+  .ab-k { font-family: var(--font-display); font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--lime); margin: 0 0 18px; }
+  .ab-h2 { font-family: var(--font-display); font-weight: 400; font-size: clamp(30px, 3.6vw, 52px); line-height: 1.02; letter-spacing: -.02em; margin: 0; text-wrap: balance; }
+
+  .ab-hero { max-width: var(--max); margin: 0 auto; padding: clamp(56px, 8vw, 112px) var(--px) 0; }
+  .ab-hero__row { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 48px; align-items: end; }
+  .ab-hero__title { font-family: var(--font-display); font-weight: 400; font-size: clamp(60px, 10vw, 168px); line-height: .88; letter-spacing: -.035em; margin: 0; }
+  .ab-hero__title span { color: var(--lime); }
+  .ab-hero__sub { font-size: clamp(18px, 1.6vw, 22px); line-height: 1.5; color: var(--text-2, rgba(255,255,255,.72)); margin: 0 0 12px; max-width: 34ch; }
+  .ab-eq { display: flex; align-items: flex-end; gap: 4px; height: clamp(90px, 14vw, 180px); margin-top: clamp(40px, 6vw, 80px); }
+  .ab-eq i { flex: 1; background: var(--lime); min-height: 6%; }
+
+  .ab-wrap { max-width: var(--max); margin: 0 auto; padding: 0 var(--px) var(--pad); }
+  .ab-quote { margin: 0; padding: var(--pad) 0; border-top: 1px solid var(--line-2, rgba(255,255,255,.22)); font-family: var(--font-display); font-size: clamp(26px, 3.6vw, 54px); line-height: 1.12; color: var(--white); max-width: 24ch; text-wrap: balance; }
+
+  .ab-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--line-2, rgba(255,255,255,.22)); border-bottom: 1px solid var(--line-2, rgba(255,255,255,.22)); }
+  .ab-stat { display: flex; flex-direction: column; gap: 14px; padding: 32px 28px; border-left: 1px solid var(--line, rgba(255,255,255,.12)); }
+  .ab-stat:first-child { border-left: 0; padding-left: 0; }
+  .ab-stat__n { font-family: var(--font-display); font-size: clamp(48px, 6vw, 96px); line-height: .85; letter-spacing: -.03em; color: var(--lime); font-variant-numeric: tabular-nums; }
+  .ab-stat__l { font-family: var(--font-display); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--text-3, rgba(255,255,255,.48)); }
+
+  .ab-split { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 48px; padding: var(--pad) 0; border-bottom: 1px solid var(--line, rgba(255,255,255,.12)); }
+  .ab-split__head { position: sticky; top: 120px; align-self: start; }
+  .ab-split__body p { font-size: 17px; line-height: 1.75; color: var(--text-2, rgba(255,255,255,.72)); margin: 0 0 20px; max-width: 62ch; }
+  .ab-split__body p:first-child { font-size: clamp(19px, 1.6vw, 22px); line-height: 1.55; color: var(--white); }
+  .ab-split__body :global(strong) { color: var(--lime); font-weight: 600; }
+
+  .ab-block { padding: var(--pad) 0 0; }
+  .ab-find { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; border: 1px solid var(--line, rgba(255,255,255,.12)); }
+  .ab-card { position: relative; display: flex; flex-direction: column; gap: 10px; padding: 28px 24px 56px; min-height: 220px; text-decoration: none; color: var(--white); border-left: 1px solid var(--line, rgba(255,255,255,.12)); transition: background .2s, color .2s; }
+  .ab-card:first-child { border-left: 0; }
+  .ab-card:hover, .ab-card:focus-visible { background: var(--lime); color: var(--black); outline: none; }
+  .ab-card__n { font-family: var(--font-display); font-size: 12px; letter-spacing: .12em; color: var(--lime); }
+  .ab-card:hover .ab-card__n, .ab-card:focus-visible .ab-card__n { color: var(--black); }
+  .ab-card__t { font-family: var(--font-display); font-size: clamp(20px, 1.8vw, 26px); line-height: 1.1; }
+  .ab-card__d { font-size: 15px; line-height: 1.55; opacity: .72; }
+  .ab-card__a { position: absolute; left: 24px; bottom: 22px; font-size: 20px; transition: transform .2s; }
+  .ab-card:hover .ab-card__a { transform: translateX(6px); }
+
+  .ab-focus { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 48px; }
+  .ab-focus__item { border-top: 2px solid var(--lime); padding-top: 24px; }
+  .ab-focus__n { font-family: var(--font-display); font-size: 12px; letter-spacing: .12em; color: var(--lime); }
+  .ab-focus__item h3 { font-family: var(--font-display); font-weight: 400; font-size: clamp(22px, 2vw, 28px); line-height: 1.1; margin: 14px 0 14px; }
+  .ab-focus__item p { font-size: 15px; line-height: 1.7; color: var(--text-2, rgba(255,255,255,.72)); margin: 0; }
+
+  .ab-proj { margin-top: var(--pad); display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: 56px; padding: clamp(32px, 4vw, 56px); background: var(--black-2); border: 1px solid var(--line, rgba(255,255,255,.12)); align-items: center; }
+  .ab-proj__text p:not(.ab-k) { font-size: 16px; line-height: 1.7; color: var(--text-2, rgba(255,255,255,.72)); margin: 20px 0 28px; max-width: 54ch; }
+  .ab-proj__ctas { display: flex; flex-wrap: wrap; gap: 12px; }
+  .ab-btn { font-family: var(--font-display); font-size: 14px; letter-spacing: .04em; padding: 14px 20px; background: var(--lime); color: var(--black); text-decoration: none; border: 1px solid var(--lime); cursor: pointer; }
+  .ab-btn--ghost { background: none; color: var(--white); border-color: var(--line-2, rgba(255,255,255,.22)); }
+  .ab-btn:hover { filter: brightness(1.08); }
+  .ab-btn--ghost:hover { border-color: var(--lime); color: var(--lime); }
+  .ab-btn:focus-visible, .ab-card:focus-visible { outline: 2px solid var(--white); outline-offset: 2px; }
+  .ab-proj__logos { display: flex; flex-direction: column; gap: 28px; }
+  /* EU emblem stays in colour on white, as the visibility rules require. */
+  .ab-eu { background: #fff; padding: 18px 22px; align-self: flex-start; }
+  .ab-eu img { display: block; height: 52px; width: auto; }
+  .ab-partners { display: flex; flex-wrap: wrap; align-items: center; gap: 28px 36px; padding-top: 24px; border-top: 1px solid var(--line, rgba(255,255,255,.12)); }
+  .ab-partners img { height: 30px; width: auto; filter: brightness(0) invert(1); opacity: .75; }
+
+  @media (max-width: 1000px) {
+    .ab-hero__row, .ab-split, .ab-proj { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+    .ab-split__head { position: static; }
+    .ab-find { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .ab-card:nth-child(3) { border-left: 0; }
+    .ab-card:nth-child(n+3) { border-top: 1px solid var(--line, rgba(255,255,255,.12)); }
+    .ab-focus { grid-template-columns: minmax(0, 1fr); gap: 36px; }
+  }
+  @media (max-width: 620px) {
+    .ab-hero, .ab-wrap { padding-left: 20px; padding-right: 20px; }
+    .ab-eq { gap: 2px; }
+    .ab-stats { grid-template-columns: minmax(0, 1fr); }
+    .ab-stat { border-left: 0; padding: 24px 0; border-top: 1px solid var(--line, rgba(255,255,255,.12)); }
+    .ab-stat:first-child { border-top: 0; }
+    .ab-find { grid-template-columns: minmax(0, 1fr); }
+    .ab-card { border-left: 0; border-top: 1px solid var(--line, rgba(255,255,255,.12)); min-height: 0; }
+    .ab-card:first-child { border-top: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) { .ab-card, .ab-card__a { transition: none; } }
+</style>

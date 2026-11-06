@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import Nav from '../components/Nav.astro';
+import AboutPanel from '../components/AboutPanel.astro';
 import Footer from '../components/Footer.astro';
 
 const lang = 'sv';
@@ -34,98 +35,7 @@ const lang = 'sv';
 
   <!-- PANEL: OM OSS -->
   <div class="page-panel active" id="tab-om-oss">
-
-    <!-- HERO -->
-    <div class="about-hero">
-      <div class="about-hero__inner">
-        <p class="about-hero__kicker">Om plattformen</p>
-        <h1 class="about-hero__title">Music Hub<br>West</h1>
-        <p class="about-hero__subtitle">Din mötesplats för musik, nätverk och nya idéer i Västra Götaland.</p>
-      </div>
-    </div>
-
-    <!-- IMAGE -->
-    <div class="about-image brand-photo">
-      <img src="/images/about-hero.webp" alt="Göteborg" />
-      <div class="about-image__overlay"></div>
-    </div>
-
-    <!-- PLATFORM -->
-    <div class="about-platform">
-      <div class="about-platform__inner">
-        <div class="about-platform__text">
-          <p class="about-section__kicker">Plattformen</p>
-          <h2 class="about-section__title">Vad är Music Hub West?</h2>
-          <p class="about-body">Music Hub West är till för dig som jobbar med musik i Västra Götaland. Artister, producenter, kreatörer, arrangörer och tech-bolag. Vi bygger inte något åt dig, vi bygger det med dig.</p>
-          <p class="about-body">Kronan på verket är <strong>Music Tech Summit</strong>, ett helt nytt event där musik och teknik äntligen möts på riktigt – för första gången i Västra Götaland. Den första upplagan går av stapeln tisdag 24 november 2026 på <a href="https://pustervik.nu/" target="_blank" rel="noopener" style="color:var(--lime)">Pustervik</a> och <a href="https://www.skeppetgbg.se/" target="_blank" rel="noopener" style="color:var(--lime)">Skeppet GBG</a>. Resten av året hittar du masterclasses, think tanks och workshops där du inte bara dyker upp utan faktiskt är med och sätter agendan.</p>
-          <p class="about-body">Vi tror att musikbranschen mår bättre när fler röster får plats. Därför arbetar vi aktivt för jämlikhet, inkludering och mångfald, och strävar efter att skapa rum där alla känner sig välkomna. Oavsett bakgrund, erfarenhet eller var du befinner dig i karriären.</p>
-        </div>
-        <div class="about-platform__highlight">
-          <blockquote class="about-quote">
-            <p>"Musik sker inte i ett vakuum. Det bästa händer när rätt människor möts på rätt plats."</p>
-          </blockquote>
-          <div class="about-stats-mini">
-            <div class="about-stat">
-              <span class="about-stat__num">45</span>
-              <span class="about-stat__label">deltagande bolag</span>
-            </div>
-            <div class="about-stat">
-              <span class="about-stat__num">3 mkr</span>
-              <span class="about-stat__label">i finansiering</span>
-            </div>
-            <div class="about-stat">
-              <span class="about-stat__num">12+</span>
-              <span class="about-stat__label">event per år</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- PROJECT -->
-    <div class="about-project">
-      <div class="about-project__inner">
-        <div class="about-project__header">
-          <p class="about-section__kicker">Projekt 2026–2029</p>
-          <h2 class="about-section__title">Tune In West</h2>
-          <p class="about-body" style="max-width:640px;">Tune In West är projektet bakom Music Hub West. En satsning på musikbranschen i Västra Götaland fram till 2029, med stöd av Tillväxtverket, VGR, Högskolan för scen och musik och Brewhouse Inkubator.</p>
-        </div>
-        <a href="https://tuneinwest.se" target="_blank" rel="noopener" class="home-project__btn">
-          Till projektets webbplats →
-        </a>
-      </div>
-    </div>
-
-    <!-- THEMES -->
-    <div class="about-themes">
-      <div class="about-themes__inner">
-        <p class="about-section__kicker">Fokusområden</p>
-        <div class="about-themes__grid">
-          <div class="about-theme">
-            <div class="about-theme__icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="var(--lime)" stroke-width="2" stroke-linecap="round"/><circle cx="9" cy="7" r="4" stroke="var(--lime)" stroke-width="2"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke="var(--lime)" stroke-width="2" stroke-linecap="round"/></svg>
-            </div>
-            <h3 class="about-theme__title">Samverkan &amp; nätverk</h3>
-            <p class="about-theme__desc">Du möter folk du annars aldrig hade hittat. Artister, tech-bolag, arrangörer och kulturinstitutioner på ett ställe i din region.</p>
-          </div>
-          <div class="about-theme">
-            <div class="about-theme__icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7l10 5 10-5-10-5z" stroke="var(--lime)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5" stroke="var(--lime)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </div>
-            <h3 class="about-theme__title">AI &amp; digitalisering</h3>
-            <p class="about-theme__desc">Vad händer med din musik när AI tar plats? Vi gräver i möjligheterna och frågorna. Kreativt skapande, produktion, upphovsrätt.</p>
-          </div>
-          <div class="about-theme">
-            <div class="about-theme__icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 22V12M12 12L6 6M12 12l6-6M2 22h20" stroke="var(--lime)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </div>
-            <h3 class="about-theme__title">Hållbar tillväxt</h3>
-            <p class="about-theme__desc">Vi ger dig verktygen för att växa. Affärsmodeller som håller, internationella perspektiv och ett nätverk som faktiskt öppnar dörrar.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
+    <AboutPanel lang="sv" />
   </div>
 
   <!-- PANEL: KONTAKT -->
@@ -246,7 +156,7 @@ const lang = 'sv';
     <!-- STAKEHOLDER: EU (Regionalfonden via Tillväxtverket) -->
     <div class="stakeholder stakeholder--alt">
       <div class="stakeholder__inner">
-        <div class="stakeholder__logo">
+        <div class="stakeholder__logo stakeholder__logo--eu">
           <img src="/eu/eu-sv.png" alt="Medfinansieras av Europeiska unionen" />
         </div>
         <div class="stakeholder__content">
@@ -658,4 +568,6 @@ const lang = 'sv';
     .about-image { aspect-ratio: 16/7; }
     .stakeholder { padding: 48px 20px; }
   }
+  .stakeholder__logo.stakeholder__logo--eu{background:#fff !important}
+  .stakeholder__logo--eu img{filter:none !important;opacity:1 !important;max-width:88% !important}
 </style>
