@@ -44,7 +44,7 @@ const mapMarkers = upcoming
       image: ev.data.card_image ?? ev.data.image,
       category: ev.data.category,
       organizer: ev.data.organizer ?? null,
-      isOwn: !ev.data.external_registration_url,
+      isOwn: !ev.data.external_registration_url || ev.data.category === "Tune In West",
       eventType: ev.data.event_type ?? null,
     };
   })
@@ -220,7 +220,7 @@ function formatDate(d: string) {
             slug={ev.id.replace('sv/', '')}
             lang={lang}
             organizer={ev.data.organizer}
-            isOwn={!ev.data.external_registration_url}
+            isOwn={!ev.data.external_registration_url || ev.data.category === "Tune In West"}
             eventType={ev.data.event_type}
             eventLanguage={ev.data.event_language}
             location={ev.data.location}
@@ -247,7 +247,7 @@ function formatDate(d: string) {
             lang={lang}
             past={true}
             organizer={ev.data.organizer}
-            isOwn={!ev.data.external_registration_url}
+            isOwn={!ev.data.external_registration_url || ev.data.category === "Tune In West"}
             eventType={ev.data.event_type}
             eventLanguage={ev.data.event_language}
             location={ev.data.location}

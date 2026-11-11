@@ -769,7 +769,7 @@ const icsContent = dtStart ? [
               slug={r.id.replace('sv/', '')}
               lang={lang}
               organizer={r.data.organizer}
-              isOwn={!r.data.external_registration_url}
+              isOwn={!r.data.external_registration_url || r.data.category === "Tune In West"}
               eventType={r.data.event_type}
               eventLanguage={r.data.event_language}
               location={r.data.location}

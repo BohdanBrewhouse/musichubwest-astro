@@ -34,7 +34,7 @@ const past = sorted.filter((e) => e.data.date < today).reverse();
 const card = (ev: any) => ({
   title: ev.data.title, date: ev.data.date, time: ev.data.time, category: ev.data.category,
   image: ev.data.card_image ?? ev.data.image, slug: ev.id.replace('sv/', ''), lang,
-  organizer: ev.data.organizer, isOwn: !ev.data.external_registration_url, eventType: ev.data.event_type,
+  organizer: ev.data.organizer, isOwn: !ev.data.external_registration_url || ev.data.category === "Tune In West", eventType: ev.data.event_type,
   eventLanguage: ev.data.event_language, location: ev.data.location, address: ev.data.address,
   format: ev.data.format, rolling: ev.data.rolling,
 });

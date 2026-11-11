@@ -123,7 +123,7 @@ const heroTitle = (t) => t.split(/(?<=\.)\s+/).filter(Boolean).join('\n');
               <EventCard title={ev.data.title} date={ev.data.date} time={ev.data.time}
                 category={ev.data.category} image={ev.data.card_image ?? ev.data.image}
                 slug={ev.id.replace('sv/', '')} lang={lang}
-                organizer={ev.data.organizer} isOwn={!ev.data.external_registration_url}
+                organizer={ev.data.organizer} isOwn={!ev.data.external_registration_url || ev.data.category === "Tune In West"}
                 eventType={ev.data.event_type} eventLanguage={ev.data.event_language}
                 location={ev.data.location}
                 priority={i < 3} />
@@ -140,7 +140,7 @@ const heroTitle = (t) => t.split(/(?<=\.)\s+/).filter(Boolean).join('\n');
               <EventCard title={ev.data.title} date={ev.data.date} time={ev.data.time}
                 category={ev.data.category} image={ev.data.card_image ?? ev.data.image}
                 slug={ev.id.replace('sv/', '')} lang={lang}
-                organizer={ev.data.organizer} isOwn={!ev.data.external_registration_url}
+                organizer={ev.data.organizer} isOwn={!ev.data.external_registration_url || ev.data.category === "Tune In West"}
                 eventType={ev.data.event_type} eventLanguage={ev.data.event_language}
                 location={ev.data.location}
                 priority={i < 3} />
