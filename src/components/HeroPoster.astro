@@ -33,7 +33,9 @@ const stamp = (d: string) => {
   const f = (opt: Intl.DateTimeFormatOptions) => new Intl.DateTimeFormat(loc, opt).format(o).replace('.', '');
   return { d: String(o.getDate()), m: f({ month: 'short' }), w: f({ weekday: 'short' }) };
 };
-const [first, ...rest] = slides;
+const [first, ...others] = slides;
+// Side list: the next three events in date order, so it stays readable.
+const rest = others.sort((a, b) => a.data.date.localeCompare(b.data.date)).slice(0, 3);
 const s0 = stamp(first.data.date);
 // An optional portrait version for phones, where the wide picture is cropped
 // to its middle third.
@@ -122,7 +124,7 @@ const t = en ? {
   .hposter__stamp-m{font-family:var(--font-display);font-size:14px;line-height:1.2;text-transform:uppercase;letter-spacing:.1em;color:var(--text-2)}
 
   .hposter__side{display:flex;flex-direction:column;border-left:1px solid var(--line);background:var(--black)}
-  .hposter__row{display:grid;grid-template-columns:72px minmax(0,1fr);gap:16px;padding:22px 24px;border-bottom:1px solid var(--line);color:var(--white);text-decoration:none;transition:background .18s}
+  .hposter__row{flex:none;display:grid;grid-template-columns:72px minmax(0,1fr);gap:16px;padding:22px 24px;border-bottom:1px solid var(--line);color:var(--white);text-decoration:none;transition:background .18s}
   .hposter__row:hover{background:var(--black-2)}
   .hposter__row:hover .hposter__row-title{color:var(--lime)}
   .hposter__row-date{display:flex;flex-direction:column;gap:4px;font-family:var(--font-display)}
