@@ -1,4 +1,4 @@
-const CACHE = 'mhw-v4';
+const CACHE = 'mhw-v5';
 const PRECACHE = ['/favicon.svg'];
 
 self.addEventListener('install', e => {
@@ -23,6 +23,9 @@ self.addEventListener('fetch', e => {
 
   // Skip cross-origin (e.g. fonts from googleapis) — let browser handle
   if (url.origin !== self.location.origin) return;
+
+  // Never cache API calls (check-in, registration etc.) — they must always be live
+  if (url.pathname.startsWith('/api/')) return;
 
   // Network-first for HTML/CSS/JS — always try fresh, fall back to cache
   if (dest === 'document' || dest === 'style' || dest === 'script' || url.pathname.endsWith('.css') || url.pathname.endsWith('.js')) {
