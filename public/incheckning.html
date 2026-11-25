@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#0d0d0d">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="MHW Incheckning">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Incheckning – Music Hub West</title>
+<link rel="icon" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/icon-180.png">
+<link rel="manifest" href="/incheckning.webmanifest">
+<style>
+@font-face{font-family:SM;src:url(/fonts/syne-mono-latin.woff2) format('woff2')}
+@font-face{font-family:SM;src:url(/fonts/syne-mono-latin-ext.woff2) format('woff2');unicode-range:U+0100-024F}
+@font-face{font-family:OU;src:url(/fonts/outfit-latin.woff2) format('woff2')}
+@font-face{font-family:OU;src:url(/fonts/outfit-latin-ext.woff2) format('woff2');unicode-range:U+0100-024F}
+:root{--ink:#0d0d0d;--card:#161616;--card2:#1c1c1a;--line:#2a2a28;--lime:#ccff00;--txt:#f2f2ee;--mute:#8f8f88;--red:#ff5a4d;--dc:var(--lime)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--ink);color:var(--txt);font:16px/1.4 OU,system-ui,sans-serif}
+button,input,select{font:inherit;color:inherit}
+.top{position:sticky;top:0;z-index:5;background:rgba(13,13,13,.94);backdrop-filter:blur(10px);padding:calc(12px + env(safe-area-inset-top)) 16px 12px;border-bottom:1px solid var(--line)}
+.brand{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.brand b{font-family:SM;font-weight:400;font-size:18px}
+.sync{font-family:SM;font-size:11px;letter-spacing:.12em;color:var(--mute);text-transform:uppercase}
+.sync.err{color:var(--red)}
+.ev{position:relative;margin-bottom:12px}
+.ev button{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;background:var(--card);border:1px solid var(--line);text-align:left;cursor:pointer}
+.ev button:focus-visible{outline:2px solid var(--lime);outline-offset:2px}
+.ev .t{display:block;font-weight:600;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ev .d{display:block;font-family:SM;font-size:11px;letter-spacing:.12em;color:var(--lime);text-transform:uppercase;margin-top:2px}
+.ev .chev{flex:none;font-family:SM;color:var(--mute)}
+.stat{display:flex;align-items:baseline;gap:10px;margin-bottom:10px}
+.stat strong{font-family:SM;font-weight:400;font-size:34px;line-height:1;color:var(--dc)}
+.stat span{color:var(--mute);font-size:14px}
+.bar{height:4px;background:var(--line);margin-bottom:12px}.bar i{display:block;height:100%;background:var(--dc);transition:width .3s}
+.search input{width:100%;padding:14px;background:var(--card);border:1px solid var(--line);font-size:17px}
+.search input:focus{outline:2px solid var(--dc);outline-offset:-2px}
+.filters{display:flex;gap:6px;margin-top:10px}
+.filters button{flex:1;padding:8px 4px;border:1px solid var(--line);background:none;font-size:12px;color:var(--mute);cursor:pointer}
+.filters button[aria-pressed=true]{color:var(--txt);border-color:var(--txt)}
+ul{list-style:none;margin:0;padding:0 0 calc(110px + env(safe-area-inset-bottom))}
+li{display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid var(--line)}
+li.in{background:rgba(204,255,0,.04)}
+.who{flex:1;min-width:0}
+.nm{font-size:18px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.meta{font-size:13px;color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tag{display:inline-block;font-family:SM;font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:2px 6px;border:1px solid var(--line);margin-right:6px;color:var(--mute)}
+.tag.no{color:var(--red);border-color:rgba(255,90,77,.5)}
+.btn{flex:none;min-width:108px;padding:14px 10px;border:1px solid var(--line);background:var(--card);font-family:SM;font-size:13px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
+li.in .btn{background:var(--dc);color:var(--ink);border-color:var(--dc)}
+.btn:disabled{opacity:.5}
+.empty{padding:40px 16px;text-align:center;color:var(--mute);display:block}
+.av{flex:none;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-family:SM;font-size:15px;background:#222;color:var(--txt)}
+li.in .av{background:var(--dc);color:var(--ink)}
+li.no .av{background:rgba(255,90,77,.18);color:var(--red)}
+li.endday{flex-wrap:wrap;background:rgba(255,90,77,.06);border-bottom:1px solid rgba(255,90,77,.3)}
+li.endday div{flex:1;min-width:180px}li.endday b{display:block;font-size:16px}li.endday span{font-size:13px;color:var(--mute)}
+li.endday .btn{background:var(--red);color:var(--ink);border-color:var(--red)}
+.fab{position:fixed;left:16px;right:16px;bottom:calc(16px + env(safe-area-inset-bottom));padding:16px;border:0;background:var(--txt);color:var(--ink);font-family:SM;font-size:14px;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;z-index:6}
+dialog{border:0;padding:0;background:var(--card);color:var(--txt);width:min(480px,100% - 24px);border-top:4px solid var(--dc)}
+dialog::backdrop{background:rgba(0,0,0,.7)}
+.dlg{padding:22px 18px}.dlg h2{font-family:SM;font-weight:400;font-size:20px;margin:0 0 4px}.dlg p{color:var(--mute);font-size:14px;margin:0 0 16px}
+.dlg label{display:block;font-size:13px;color:var(--mute);margin:10px 0 4px}
+.dlg input{width:100%;padding:13px;background:var(--ink);border:1px solid var(--line);font-size:16px}
+.dlg .row{display:flex;gap:8px;margin-top:18px}
+.dlg .row button{flex:1;padding:14px;border:1px solid var(--line);background:none;font-family:SM;font-size:13px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer}
+.dlg .row .go{background:var(--dc);color:var(--ink);border-color:var(--dc)}
+#evDlg{max-height:80vh}
+.evl{max-height:60vh;overflow:auto;margin:0 -18px;border-top:1px solid var(--line)}
+.evl button{width:100%;display:grid;grid-template-columns:1fr auto;gap:2px 12px;padding:14px 18px;background:none;border:0;border-bottom:1px solid var(--line);text-align:left;cursor:pointer}
+.evl button:hover,.evl button[aria-current=true]{background:rgba(204,255,0,.06)}
+.evl .t{font-weight:600}.evl .d{grid-column:1;font-family:SM;font-size:11px;letter-spacing:.1em;color:var(--mute);text-transform:uppercase}
+.evl .c{grid-row:1/3;grid-column:2;align-self:center;font-family:SM;font-size:13px;color:var(--mute)}
+.evl .today{color:var(--lime)}
+.flash{position:fixed;inset:0;z-index:9;display:grid;place-items:center;align-content:center;gap:14px;background:var(--dc);color:var(--ink);opacity:0;pointer-events:none;transition:opacity .18s}
+.flash.on{opacity:1}.flash .tick{font-size:96px;line-height:1}.flash .who2{font-size:30px;font-weight:600;text-align:center;padding:0 24px}
+.flash .sub{font-family:SM;font-size:13px;letter-spacing:.16em;text-transform:uppercase}
+.party{position:fixed;inset:0;z-index:10;display:none;justify-items:center;align-content:center;gap:18px;padding:24px 20px;background:rgba(13,13,13,.92);text-align:center;cursor:pointer}
+.party.on{display:grid}.party canvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none}
+.party h2{font-family:SM;font-weight:400;font-size:clamp(30px,10.5vw,60px);line-height:1;margin:0;color:var(--dc);animation:pop .6s cubic-bezier(.2,1.6,.4,1) both}
+.party p{margin:0;font-size:18px;line-height:1.45;max-width:30ch}
+.party small{font-family:SM;font-size:11px;letter-spacing:.12em;color:var(--mute);text-transform:uppercase;margin-top:18px}
+@keyframes pop{from{transform:scale(.3) rotate(-8deg);opacity:0}to{transform:none;opacity:1}}
+#ask{border-top:0;max-width:420px}
+.ask{padding:26px 22px 20px;text-align:center}
+.ask .ic{width:64px;height:64px;margin:0 auto 16px;border-radius:50%;display:grid;place-items:center;font-size:28px;background:rgba(255,255,255,.06)}
+.ask.danger .ic{background:rgba(255,90,77,.14);color:var(--red)}
+.ask .big{font-family:SM;font-size:44px;line-height:1;color:var(--red);margin:0 0 6px}
+.ask h2{font-family:OU;font-weight:600;font-size:21px;margin:0 0 8px}
+.ask p{color:var(--mute);font-size:15px;line-height:1.5;margin:0 auto;max-width:32ch}
+.ask .names{margin:14px 0 0;font-size:13px;color:var(--mute);max-height:96px;overflow:auto}
+.ask .acts{display:grid;gap:8px;margin-top:22px}
+.ask .acts button{padding:16px;border:1px solid var(--line);background:none;font-family:SM;font-size:13px;letter-spacing:.12em;text-transform:uppercase;cursor:pointer}
+.ask .acts .ok{background:var(--txt);color:var(--ink);border-color:var(--txt)}
+.ask.danger .acts .ok{background:var(--red);border-color:var(--red)}
+.toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--txt);color:var(--ink);padding:10px 16px;font-size:14px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:7;white-space:nowrap}
+.toast.on{opacity:1}
+.lock{padding:60px 20px;text-align:center}
+.lock input{width:100%;max-width:320px;padding:14px;background:var(--card);border:1px solid var(--line);margin:16px 0;text-align:center;font-family:SM;font-size:28px;letter-spacing:.4em}
+@media(prefers-reduced-motion:reduce){.party h2{animation:none}}
+</style>
+</head>
+<body>
+<div id="app" hidden>
+  <header class="top">
+    <div class="brand"><b>Incheckning</b><span class="sync" id="sync">Laddar…</span></div>
+    <div class="ev"><button id="evBtn" aria-haspopup="dialog"><span style="min-width:0"><span class="t" id="evT">Välj event</span><span class="d" id="evD"></span></span><span class="chev">Byt ▾</span></button></div>
+    <div class="stat"><strong id="cnt">0</strong><span id="cntOf">av 0 incheckade</span></div>
+    <div class="bar"><i id="bar" style="width:0"></i></div>
+    <div class="search"><input id="q" type="search" placeholder="Sök namn, mejl eller företag" autocomplete="off" autocapitalize="off" spellcheck="false"></div>
+    <div class="filters" role="group" aria-label="Filter">
+      <button data-f="todo" aria-pressed="true">Ej inne</button>
+      <button data-f="in" aria-pressed="false">Inne</button>
+      <button data-f="no" aria-pressed="false">Uteblev</button>
+      <button data-f="all" aria-pressed="false">Alla</button>
+    </div>
+  </header>
+  <ul id="list"></ul>
+  <button class="fab" id="add">+ Ny besökare på plats</button>
+</div>
+
+<div class="lock" id="lock" hidden>
+  <img src="/icon-180.png" alt="" width="72" height="72" style="border-radius:18px;margin-bottom:18px">
+  <p style="font-family:SM;font-size:20px;margin:0 0 6px">Music Hub West · Incheckning</p>
+  <p id="lockMsg" style="color:var(--mute)">Ange koden för att öppna.</p>
+  <input id="keyIn" type="password" inputmode="numeric" autocomplete="one-time-code" placeholder="••••••"><br>
+  <button class="btn" id="keyGo" style="width:100%;max-width:320px;background:var(--lime);color:var(--ink);border-color:var(--lime)">Öppna</button>
+</div>
+
+<dialog id="evDlg"><div class="dlg"><h2>Välj event</h2><p>Listan kommer från grupperna i Monday.</p><div class="evl" id="evList"></div><div class="row"><button type="button" id="evClose">Stäng</button></div></div></dialog>
+<dialog id="dlg"><form class="dlg" id="newForm" method="dialog">
+  <h2>Ny besökare</h2><p id="newSub">Läggs till i eventets grupp i Monday och checkas in direkt.</p>
+  <label>Namn<input name="name" required autocomplete="off"></label>
+  <label>Mejl<input name="email" type="email" required autocomplete="off" inputmode="email"></label>
+  <div class="row"><button type="button" id="cancel">Avbryt</button><button class="go" type="submit" id="addGo">Lägg till</button></div>
+</form></dialog>
+<dialog id="ask"><div class="ask" id="askBox"><div class="ic" id="askIc"></div><div class="big" id="askBig"></div><h2 id="askT"></h2><p id="askP"></p><div class="names" id="askN"></div><div class="acts"><button class="ok" id="askOk"></button><button id="askNo">Avbryt</button></div></div></dialog>
+<div class="toast" id="toast"></div>
+<div class="party" id="party" role="dialog" aria-label="Alla incheckade"><canvas id="confetti"></canvas><h2>FULLT&nbsp;HUS!</h2><p id="partyT"></p><small>Tryck var som helst för att stänga</small></div>
+<div class="flash" id="flash" aria-live="polite"><div class="tick">✓</div><div class="who2" id="flashName"></div><div class="sub" id="flashSub">Incheckad</div></div>
+
+<script>
+(function () {
+  const $ = (id) => document.getElementById(id);
+  const LS = (k, v) => { try { if (v === undefined) return localStorage.getItem(k) || ''; localStorage.setItem(k, v); } catch { return ''; } };
+  let key = new URLSearchParams(location.search).get('k') || '';
+  if (key) { LS('mhw-checkin-key', key); history.replaceState(null, '', location.pathname + '?k=' + encodeURIComponent(key)); } else key = LS('mhw-checkin-key');
+
+  let events = [], ev = null, people = [], filter = 'todo', busy = new Set();
+  const today = new Date().toLocaleDateString('sv-SE', { timeZone: 'Europe/Stockholm' });
+  const fold = (s) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+  const fmtDate = (d) => d ? new Date(d + 'T12:00').toLocaleDateString('sv-SE', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' }) : 'Inget datum';
+  const isIn = (p) => p.state === 'in', isNo = (p) => p.state === 'no';
+
+  function toast(t) { const el = $('toast'); el.textContent = t; el.classList.add('on'); clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.remove('on'), 1800); }
+  function flash(name) { $('flashName').textContent = name; const el = $('flash'); el.classList.add('on'); clearTimeout(flash.t); flash.t = setTimeout(() => { el.classList.remove('on'); $('q').value = ''; render(); }, 900); }
+  function party(n) {
+    $('partyT').textContent = n + ' av ' + n + ' incheckade. Nu kör vi! 🎧'; $('party').classList.add('on'); if (navigator.vibrate) navigator.vibrate([60, 40, 60, 40, 120]);
+    const c = $('confetti'), x = c.getContext('2d'); c.width = innerWidth * devicePixelRatio; c.height = innerHeight * devicePixelRatio; x.scale(devicePixelRatio, devicePixelRatio);
+    const cols = ['#ccff00', '#ffffff', '#c9b8ff'];
+    const ps = Array.from({ length: 160 }, () => ({ x: innerWidth / 2, y: innerHeight * .55, vx: (Math.random() - .5) * 14, vy: -Math.random() * 16 - 6, s: Math.random() * 8 + 4, r: Math.random() * 6, vr: (Math.random() - .5) * .3, c: cols[Math.floor(Math.random() * 3)] }));
+    let t = 0; cancelAnimationFrame(party.raf);
+    (function tick() { x.clearRect(0, 0, innerWidth, innerHeight); ps.forEach((p) => { p.vy += .35; p.vx *= .99; p.x += p.vx; p.y += p.vy; p.r += p.vr; x.save(); x.translate(p.x, p.y); x.rotate(p.r); x.fillStyle = p.c; x.fillRect(-p.s / 2, -p.s / 4, p.s, p.s / 2); x.restore(); }); if (++t < 240) party.raf = requestAnimationFrame(tick); else x.clearRect(0, 0, innerWidth, innerHeight); })();
+  }
+  $('party').onclick = () => $('party').classList.remove('on');
+
+  async function api(method, qs, body) {
+    const r = await fetch('/api/checkin' + (qs || ''), { method, headers: { 'Content-Type': 'application/json', 'X-Key': key }, body: body ? JSON.stringify(body) : undefined, cache: 'no-store' });
+    if (r.status === 401) { showLock('Fel kod.'); throw new Error('key'); }
+    const j = await r.json().catch(() => ({}));
+    if (!r.ok) throw new Error(j.error || 'fel');
+    return j;
+  }
+
+  function showEvent() {
+    $('evT').textContent = ev ? ev.title : 'Välj event';
+    $('evD').textContent = ev ? fmtDate(ev.date) + (ev.date === today ? ' · idag' : '') : '';
+  }
+  function render() {
+    const q = fold($('q').value.trim());
+    const inC = people.filter(isIn).length, noC = people.filter(isNo).length;
+    $('cnt').textContent = inC; $('cntOf').textContent = 'av ' + people.length + ' incheckade' + (noC ? ' · ' + noC + ' uteblev' : '');
+    $('bar').style.width = people.length ? (inC / people.length * 100) + '%' : '0';
+    let rows = q ? people.filter((p) => fold(p.name + ' ' + p.email + ' ' + p.company).includes(q)) : people.slice();
+    if (!q && filter === 'todo') rows = rows.filter((p) => !isIn(p) && !isNo(p));
+    if (!q && filter === 'in') rows = rows.filter(isIn);
+    if (!q && filter === 'no') rows = rows.filter(isNo);
+    rows.sort((a, b) => a.name.localeCompare(b.name, 'sv'));
+    const L = $('list'); L.innerHTML = '';
+    if (!ev) { L.innerHTML = '<li class="empty">Välj ett event ovan.</li>'; return; }
+    if (!rows.length) L.innerHTML = '<li class="empty">' + (q ? 'Ingen träff. Lägg till som ny besökare nedan.' : filter === 'todo' ? (people.length ? 'Alla är incheckade eller markerade 🎉' : 'Inga anmälda till det här eventet.') : 'Ingen här ännu.') + '</li>';
+    for (const p of rows) {
+      const li = document.createElement('li'); if (isIn(p)) li.className = 'in'; else if (isNo(p)) li.className = 'no';
+      li.innerHTML = '<span class="av"></span><div class="who"><div class="nm"></div><div class="meta"></div></div><button class="btn"></button>';
+      li.querySelector('.nm').textContent = p.name;
+      li.querySelector('.av').textContent = p.name.split(/\s+/).map((w) => w[0] || '').slice(0, 2).join('').toUpperCase();
+      const m = li.querySelector('.meta');
+      if (isNo(p)) m.insertAdjacentHTML('beforeend', '<span class="tag no">Uteblev</span>');
+      if (/plats/i.test(p.source)) m.insertAdjacentHTML('beforeend', '<span class="tag">På plats</span>');
+      m.appendChild(document.createTextNode([p.company, p.email].filter(Boolean).join(' · ')));
+      const b = li.querySelector('.btn'); b.textContent = isIn(p) ? '✓ Inne' : isNo(p) ? 'Kom ändå' : 'Checka in'; b.disabled = busy.has(p.id); b.onclick = () => toggle(p);
+      L.appendChild(li);
+    }
+    if (!q && filter === 'todo' && rows.length) {
+      const end = document.createElement('li'); end.className = 'endday';
+      end.innerHTML = '<div><b>Eventet slut?</b><span>Markera de ' + rows.length + ' som inte kom som uteblivna. Syns i Monday.</span></div><button class="btn">Avsluta event</button>';
+      end.querySelector('button').onclick = () => endEvent(rows.slice()); L.appendChild(end);
+    }
+  }
+  async function loadEvents() {
+    const j = await api('GET', '?events=1'); events = j.events || [];
+    const saved = LS('mhw-checkin-event');
+    // Default: today's event, else the one used last, else the nearest upcoming, else the latest.
+    const up = events.filter((e) => e.date >= today).sort((a, b) => a.date.localeCompare(b.date));
+    ev = events.find((e) => e.date === today) || events.find((e) => e.id === saved) || up[0] || events[0] || null;
+    showEvent();
+  }
+  async function loadPeople(quiet) {
+    if (!ev) return render();
+    try {
+      const id = ev.id; const j = await api('GET', '?group=' + encodeURIComponent(id));
+      if (!ev || ev.id !== id) return;
+      const keep = new Map(people.filter((p) => busy.has(p.id)).map((p) => [p.id, p]));
+      people = j.people.map((p) => keep.get(p.id) || p);
+      $('sync').className = 'sync'; $('sync').textContent = 'Uppdaterad ' + new Date().toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit' });
+      render();
+    } catch (e) { if (e.message !== 'key') { $('sync').className = 'sync err'; $('sync').textContent = quiet ? 'Offline – försöker igen' : 'Kunde inte ladda'; } }
+  }
+  function pickEvent() {
+    const L = $('evList'); L.innerHTML = '';
+    for (const e of events) {
+      const b = document.createElement('button'); b.setAttribute('aria-current', String(ev && e.id === ev.id));
+      b.innerHTML = '<span class="t"></span><span class="d"></span><span class="c"></span>';
+      b.querySelector('.t').textContent = e.title; const d = b.querySelector('.d'); d.textContent = fmtDate(e.date) + (e.date === today ? ' · idag' : ''); if (e.date === today) d.classList.add('today');
+      b.querySelector('.c').textContent = e.count + ' anm.';
+      b.onclick = () => { ev = e; LS('mhw-checkin-event', e.id); people = []; showEvent(); $('evDlg').close(); $('q').value = ''; render(); loadPeople(); };
+      L.appendChild(b);
+    }
+    if (!events.length) L.innerHTML = '<p style="padding:16px 18px">Inga event med anmälda hittades.</p>';
+    $('evDlg').showModal();
+  }
+  $('evBtn').onclick = pickEvent; $('evClose').onclick = () => $('evDlg').close();
+
+  function ask({ title, text, ok, danger, icon, big, names }) {
+    return new Promise((res) => {
+      const d = $('ask'); $('askBox').className = 'ask' + (danger ? ' danger' : '');
+      $('askIc').textContent = icon || '?'; $('askBig').textContent = big || ''; $('askBig').hidden = !big;
+      $('askT').textContent = title; $('askP').textContent = text || ''; $('askN').textContent = names || ''; $('askN').hidden = !names; $('askOk').textContent = ok;
+      const done = (v) => { d.close(); res(v); }; $('askOk').onclick = () => done(true); $('askNo').onclick = () => done(false);
+      d.oncancel = (e) => { e.preventDefault(); done(false); }; d.showModal();
+    });
+  }
+  function toggle(p) {
+    if (isIn(p)) ask({ icon: '↺', title: 'Ångra incheckning?', text: p.name + ' markeras som inte incheckad.', ok: 'Ja, ångra' }).then((y) => y && setState([p], 'none'));
+    else setState([p], 'in');
+  }
+  async function setState(list, state) {
+    const prev = new Map(list.map((p) => [p.id, p.state]));
+    list.forEach((p) => { busy.add(p.id); p.state = state; }); render();
+    try {
+      for (let i = 0; i < list.length; i += 6) await api('POST', '', { ids: list.slice(i, i + 6).map((p) => p.id), state });
+      if (state === 'in' && list.length === 1) {
+        if (people.length && people.every(isIn)) setTimeout(() => party(people.length), 300);
+        else { flash(list[0].name); if (navigator.vibrate) navigator.vibrate(40); }
+      }
+      if (state === 'no') toast(list.length + ' markerade som uteblivna');
+    } catch (e) { list.forEach((p) => { p.state = prev.get(p.id); }); toast('Kunde inte spara – försök igen'); loadPeople(true); }
+    finally { list.forEach((p) => busy.delete(p.id)); render(); }
+  }
+  async function endEvent(rows) {
+    const names = rows.map((p) => p.name);
+    const y = await ask({ danger: true, icon: '✕', big: String(rows.length), title: 'Avsluta eventet?', text: 'De här personerna kom inte och markeras som ”Uteblev” i Monday. Det går att ändra efteråt.', names: names.slice(0, 12).join(' · ') + (names.length > 12 ? ' … +' + (names.length - 12) : ''), ok: 'Markera som uteblivna' });
+    if (y) setState(rows, 'no');
+  }
+
+  $('add').onclick = () => { if (!ev) return toast('Välj ett event först'); const f = $('newForm'); f.reset(); const q = $('q').value.trim(); if (q && !q.includes('@')) f.name.value = q; $('newSub').textContent = 'Läggs till i ”' + ev.title + '” i Monday och checkas in direkt.'; $('dlg').showModal(); };
+  $('cancel').onclick = () => $('dlg').close();
+  $('newForm').addEventListener('submit', async (e) => {
+    e.preventDefault(); const f = e.target; $('addGo').disabled = true;
+    try {
+      await api('POST', '', { walkin: { group: ev.id, name: f.name.value.trim(), email: f.email.value.trim() } });
+      $('dlg').close(); $('q').value = ''; flash(f.name.value.trim()); await loadPeople(true);
+    } catch (err) { if (err.message !== 'key') toast(err.message === 'bad_input' ? 'Kolla namn och mejl' : 'Kunde inte lägga till'); }
+    finally { $('addGo').disabled = false; }
+  });
+
+  document.querySelectorAll('.filters button').forEach((b) => b.onclick = () => { filter = b.dataset.f; document.querySelectorAll('.filters button').forEach((x) => x.setAttribute('aria-pressed', String(x === b))); render(); });
+  $('q').addEventListener('input', render);
+  function showLock(msg) { $('app').hidden = true; $('lock').hidden = false; if (msg) $('lockMsg').textContent = msg + ' Ange koden igen.'; }
+  $('keyIn').addEventListener('keydown', (e) => { if (e.key === 'Enter') $('keyGo').click(); });
+  $('keyGo').onclick = () => { key = $('keyIn').value.trim(); LS('mhw-checkin-key', key); start(); };
+
+  async function start() {
+    if (!key) return showLock();
+    $('lock').hidden = true; $('app').hidden = false;
+    try { await loadEvents(); } catch (e) { if (e.message !== 'key') { $('sync').className = 'sync err'; $('sync').textContent = 'Kunde inte ladda event'; } return; }
+    render(); loadPeople();
+    clearInterval(start.t); start.t = setInterval(() => loadPeople(true), 15000);
+  }
+  start();
+})();
+</script>
+</body>
+</html>
