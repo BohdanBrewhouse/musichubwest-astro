@@ -384,6 +384,8 @@ export default async function handler(req, res) {
 
   } catch (err) {
     console.error('[register] Unhandled error:', err.message);
+    // At the door the person is standing in front of us: never block them.
+    if (/^på plats$/i.test(String(req.body?.source || '').trim())) return res.status(200).json({ ok: true, degraded: true });
     return res.status(500).json({ error: 'Internal server error' });
   }
 }

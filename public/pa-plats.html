@@ -89,7 +89,6 @@ f.addEventListener('submit', async (e) => {
   if (!v('namn')) return err.textContent = 'Fyll i ditt namn.';
   if (!/^\S+@\S+\.\S+$/.test(v('epost'))) return err.textContent = 'Kolla mejladressen.';
   if (!f.consent.checked) return err.textContent = 'Kryssa i rutan för att fortsätta.';
-  if (f.website.value) return;
   btn.disabled = true; btn.textContent = 'Skickar…';
   try {
     const r = await fetch('/api/register', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(Object.assign({}, EV, { namn: v('namn'), epost: v('epost'), kon: f.kon.value || undefined, harBolag: f.harBolag.value || undefined, source: 'På plats' })) });
