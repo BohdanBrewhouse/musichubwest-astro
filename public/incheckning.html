@@ -119,12 +119,14 @@ dialog::backdrop{background:rgba(0,0,0,.7)}
   ul.grid li.endday{flex-direction:row}
   ul.grid .who{flex:none}
 }
+.addbtn{width:36px;height:36px;border:1px solid var(--line);background:none;color:var(--txt);font-size:20px;line-height:1;cursor:pointer}.addbtn:hover{border-color:var(--lime);color:var(--lime)}
+ul{padding-bottom:calc(30px + env(safe-area-inset-bottom))!important}
 </style>
 </head>
 <body>
 <div id="app" hidden>
   <header class="top">
-    <div class="brand"><b>Incheckning</b><span class="brand__r"><span class="views" role="group" aria-label="Visning"><button id="vList" aria-pressed="true" title="Lista"><svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 4h12M2 8h12M2 12h12"/></svg></button><button id="vGrid" aria-pressed="false" title="Kort"><svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="2" width="5" height="5"/><rect x="9" y="2" width="5" height="5"/><rect x="2" y="9" width="5" height="5"/><rect x="9" y="9" width="5" height="5"/></svg></button></span><span class="sync" id="sync">Laddar…</span></span></div>
+    <div class="brand"><b>Incheckning</b><span class="brand__r"><button class="addbtn" id="add" title="Ny besökare på plats" aria-label="Ny besökare på plats">+</button><span class="views" role="group" aria-label="Visning"><button id="vList" aria-pressed="true" title="Lista"><svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 4h12M2 8h12M2 12h12"/></svg></button><button id="vGrid" aria-pressed="false" title="Kort"><svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="2" width="5" height="5"/><rect x="9" y="2" width="5" height="5"/><rect x="2" y="9" width="5" height="5"/><rect x="9" y="9" width="5" height="5"/></svg></button></span><span class="sync" id="sync">Laddar…</span></span></div>
     <div class="ev"><button id="evBtn" aria-haspopup="dialog"><span style="min-width:0"><span class="t" id="evT">Välj event</span><span class="d" id="evD"></span></span><span class="chev">Byt ▾</span></button></div>
     <div class="stat"><strong id="cnt">0</strong><span id="cntOf">av 0 incheckade</span></div>
     <div class="bar"><i id="bar" style="width:0"></i></div>
@@ -137,7 +139,7 @@ dialog::backdrop{background:rgba(0,0,0,.7)}
     </div>
   </header>
   <ul id="list"></ul>
-  <button class="fab" id="add">+ Ny besökare på plats</button>
+
 </div>
 
 <div class="lock" id="lock" hidden>
