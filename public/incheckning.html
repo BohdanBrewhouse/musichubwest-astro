@@ -121,12 +121,14 @@ dialog::backdrop{background:rgba(0,0,0,.7)}
 }
 .addbtn{width:36px;height:36px;border:1px solid var(--line);background:none;color:var(--txt);font-size:20px;line-height:1;cursor:pointer}.addbtn:hover{border-color:var(--lime);color:var(--lime)}
 ul{padding-bottom:calc(30px + env(safe-area-inset-bottom))!important}
+.endbtn{height:36px;padding:0 12px;border:1px solid rgba(255,90,77,.5);background:none;color:var(--red);font-family:SM;font-size:11px;letter-spacing:.12em;text-transform:uppercase;cursor:pointer}.endbtn:hover{background:var(--red);color:var(--ink)}.endbtn:disabled{opacity:.35;cursor:default}
+@media (max-width:520px){.endbtn{font-size:0;width:36px;padding:0}.endbtn::before{content:"✕";font-size:14px}}
 </style>
 </head>
 <body>
 <div id="app" hidden>
   <header class="top">
-    <div class="brand"><b>Incheckning</b><span class="brand__r"><button class="addbtn" id="add" title="Ny besökare på plats" aria-label="Ny besökare på plats">+</button><span class="views" role="group" aria-label="Visning"><button id="vList" aria-pressed="true" title="Lista"><svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 4h12M2 8h12M2 12h12"/></svg></button><button id="vGrid" aria-pressed="false" title="Kort"><svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="2" width="5" height="5"/><rect x="9" y="2" width="5" height="5"/><rect x="2" y="9" width="5" height="5"/><rect x="9" y="9" width="5" height="5"/></svg></button></span><span class="sync" id="sync">Laddar…</span></span></div>
+    <div class="brand"><b>Incheckning</b><span class="brand__r"><button class="endbtn" id="endBtn" title="Markera de som inte kom som uteblivna">Avsluta event</button><button class="addbtn" id="add" title="Ny besökare på plats" aria-label="Ny besökare på plats">+</button><span class="views" role="group" aria-label="Visning"><button id="vList" aria-pressed="true" title="Lista"><svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 4h12M2 8h12M2 12h12"/></svg></button><button id="vGrid" aria-pressed="false" title="Kort"><svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="2" width="5" height="5"/><rect x="9" y="2" width="5" height="5"/><rect x="2" y="9" width="5" height="5"/><rect x="9" y="9" width="5" height="5"/></svg></button></span><span class="sync" id="sync">Laddar…</span></span></div>
     <div class="ev"><button id="evBtn" aria-haspopup="dialog"><span style="min-width:0"><span class="t" id="evT">Välj event</span><span class="d" id="evD"></span></span><span class="chev">Byt ▾</span></button></div>
     <div class="stat"><strong id="cnt">0</strong><span id="cntOf">av 0 incheckade</span></div>
     <div class="bar"><i id="bar" style="width:0"></i></div>
@@ -229,11 +231,6 @@ if ('caches' in window) caches.keys().then((ks) => ks.filter((k) => k !== 'mhw-v
       const b = li.querySelector('.btn'); b.textContent = isIn(p) ? '✓ Inne' : isNo(p) ? 'Kom ändå' : 'Checka in'; b.disabled = busy.has(p.id); b.onclick = () => toggle(p);
       L.appendChild(li);
     }
-    if (!q && filter === 'todo' && rows.length) {
-      const end = document.createElement('li'); end.className = 'endday';
-      end.innerHTML = '<div><b>Eventet slut?</b><span>Markera de ' + rows.length + ' som inte kom som uteblivna. Syns i Monday.</span></div><button class="btn">Avsluta event</button>';
-      end.querySelector('button').onclick = () => endEvent(rows.slice()); L.appendChild(end);
-    }
   }
   async function loadEvents() {
     const j = await api('GET', '?events=1'); events = j.events || [];
@@ -267,6 +264,7 @@ if ('caches' in window) caches.keys().then((ks) => ks.filter((k) => k !== 'mhw-v
     if (!events.length) L.innerHTML = '<p style="padding:16px 18px">Inga event med anmälda hittades.</p>';
     $('evDlg').showModal();
   }
+  $('endBtn').onclick = () => { const rows = people.filter((p) => !isIn(p) && !isNo(p)); if (rows.length) endEvent(rows); else toast('Alla är redan markerade'); };
   $('vList').onclick = () => setView('list'); $('vGrid').onclick = () => setView('grid'); setView(view);
   $('evBtn').onclick = pickEvent; $('evClose').onclick = () => $('evDlg').close();
 
