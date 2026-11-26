@@ -136,10 +136,12 @@ export default async function handler(req, res) {
     let orgNumber = null;
     if (hasCompany === 'Ja') {
       const digits = String(orgnr || '').replace(/\D/g, '');
-      if (digits.length !== 10) {
+      // Walk-ins at the door (/pa-plats) are not asked for the number; a typed
+      // number must still be valid.
+      if (digits.length === 10) orgNumber = `${digits.slice(0, 6)}-${digits.slice(6)}`;
+      else if (digits.length || !/^på plats$/i.test(String(source || '').trim())) {
         return res.status(400).json({ error: 'Ogiltigt organisationsnummer' });
       }
-      orgNumber = `${digits.slice(0, 6)}-${digits.slice(6)}`;
     }
 
     // ── Confirmation email to the registrant (non-fatal) ────

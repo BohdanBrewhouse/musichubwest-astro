@@ -93,13 +93,13 @@ f.addEventListener('submit', async (e) => {
   btn.disabled = true; btn.textContent = 'Skickar…';
   try {
     const r = await fetch('/api/register', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(Object.assign({}, EV, { namn: v('namn'), epost: v('epost'), kon: f.kon.value || undefined, harBolag: f.harBolag.value || undefined, source: 'På plats' })) });
-    if (!r.ok) throw 0;
+    if (!r.ok) { const j = await r.json().catch(() => ({})); throw new Error(j.error || ''); }
     (window.dataLayer = window.dataLayer || []).push({ event: 'walkin_register', event_slug: EV.eventSlug });
     document.getElementById('formView').hidden = true;
     document.getElementById('doneN').textContent = 'Välkommen, ' + v('namn').split(' ')[0] + '!';
     document.getElementById('doneT').textContent = 'Du är registrerad och incheckad. En bekräftelse är på väg till ' + v('epost') + '.';
     document.getElementById('doneView').classList.add('on');
-  } catch { err.textContent = 'Det gick inte att skicka. Försök igen eller fråga oss vid entrén.'; btn.disabled = false; btn.textContent = 'Registrera mig'; }
+  } catch (x) { err.textContent = (x && x.message ? x.message + '. ' : '') + 'Försök igen eller fråga oss vid entrén.'; btn.disabled = false; btn.textContent = 'Registrera mig'; }
 });
 </script>
 </body>
