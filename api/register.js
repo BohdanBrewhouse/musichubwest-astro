@@ -145,6 +145,7 @@ export default async function handler(req, res) {
     // ── Confirmation email to the registrant (non-fatal) ────
     // Sent regardless of the Monday outcome below — the person signed up, so
     // they get their "your spot is booked" email even if the CRM write hiccups.
+    let mailStatus = 'no_key';
     const RESEND_API_KEY = process.env.RESEND_API_KEY;
     if (RESEND_API_KEY) {
       try {
@@ -165,12 +166,14 @@ export default async function handler(req, res) {
         })));
         // Still non-fatal — the registration itself succeeded — but no longer
         // logged as sent when Resend rejected it.
+        mailStatus = mailErr ? (mailErr.name || 'error') + ': ' + String(mailErr.message || '').slice(0, 120) : 'sent';
         if (mailErr) {
           console.error(`[register] ⚠️ Confirmation email NOT sent to ${email} (${mailErr.name})`);
         } else {
           console.log(`[register] ✅ Confirmation email sent to ${email}`);
         }
       } catch (e) {
+        mailStatus = 'threw: ' + String(e?.message || e).slice(0, 120);
         console.error('[register] Confirmation email failed (non-fatal):', e?.message || e);
       }
     } else {
@@ -375,7 +378,7 @@ export default async function handler(req, res) {
       } catch (e) { console.error('[register] door check-in failed', e.message); }
     }
 
-    return res.status(200).json({ ok: true });
+    return res.status(200).json({ ok: true, mail: mailStatus });
 
   } catch (err) {
     console.error('[register] Unhandled error:', err.message);
