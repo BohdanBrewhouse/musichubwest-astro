@@ -95,6 +95,10 @@
     {
       "source": "/incheckning",
       "destination": "/incheckning.html"
+    },
+    {
+      "source": "/pa-plats",
+      "destination": "/pa-plats.html"
     }
   ]
 }

@@ -365,6 +365,16 @@ export default async function handler(req, res) {
       }
     }
 
+    // Walk-ins registered at the door (/pa-plats) are checked in right away.
+    if (itemId && /^på plats$/i.test(trafficSource)) {
+      try {
+        const cs = (await monday(`{ boards(ids:[${MONDAY_BOARD_ID}]) { columns { id title } } }`, {}, MONDAY_API_TOKEN))?.boards?.[0]?.columns || [];
+        const chk = cs.find((c) => /^(incheckning|incheckad|närvaro|narvaro)$/i.test(c.title.trim()));
+        if (chk) await monday(`mutation($b:ID!,$i:ID!,$c:String!,$v:String){ change_simple_column_value(board_id:$b, item_id:$i, column_id:$c, value:$v, create_labels_if_missing:true){ id } }`,
+          { b: String(MONDAY_BOARD_ID), i: String(itemId), c: chk.id, v: 'Incheckad' }, MONDAY_API_TOKEN);
+      } catch (e) { console.error('[register] door check-in failed', e.message); }
+    }
+
     return res.status(200).json({ ok: true });
 
   } catch (err) {

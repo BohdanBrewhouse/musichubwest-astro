@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#0d0d0d">
+<title>Välkommen – Tune In West Meetup @ Viva Sounds</title>
+<link rel="icon" href="/favicon.svg">
+<style>
+@font-face{font-family:SM;src:url(/fonts/syne-mono-latin.woff2) format('woff2');font-display:swap}
+@font-face{font-family:SM;src:url(/fonts/syne-mono-latin-ext.woff2) format('woff2');unicode-range:U+0100-024F;font-display:swap}
+@font-face{font-family:OU;src:url(/fonts/outfit-latin.woff2) format('woff2');font-display:swap}
+@font-face{font-family:OU;src:url(/fonts/outfit-latin-ext.woff2) format('woff2');unicode-range:U+0100-024F;font-display:swap}
+:root{--ink:#0d0d0d;--card:#161616;--line:#2a2a28;--lime:#ccff00;--txt:#f2f2ee;--mute:#8f8f88;--red:#ff5a4d}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--ink);color:var(--txt);font:17px/1.45 OU,system-ui,sans-serif;min-height:100%}
+body{display:flex;flex-direction:column;min-height:100svh}
+.wrap{width:100%;max-width:480px;margin:0 auto;padding:calc(28px + env(safe-area-inset-top)) 20px calc(32px + env(safe-area-inset-bottom));flex:1;display:flex;flex-direction:column}
+.logo{height:34px;width:auto;align-self:flex-start;margin-bottom:34px}
+.k{font-family:SM,monospace;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--lime)}
+h1{font-family:SM,monospace;font-weight:400;font-size:clamp(34px,10vw,46px);line-height:1.06;margin:12px 0 12px;text-wrap:balance}
+.lead{color:var(--mute);margin:0 0 28px}
+form{display:grid;gap:16px}
+label,.lbl{display:grid;gap:6px;font-size:14px;color:var(--mute)}
+input[type=text],input[type=email]{width:100%;padding:16px;background:var(--card);border:1px solid var(--line);color:var(--txt);font:inherit;font-size:18px;border-radius:0;-webkit-appearance:none}
+input:focus{outline:2px solid var(--lime);outline-offset:-2px;border-color:transparent}
+.seg{display:grid;grid-template-columns:repeat(auto-fit,minmax(0,1fr));gap:6px}
+.seg label{display:block;position:relative;cursor:pointer}
+.seg input{position:absolute;opacity:0}
+.seg span{display:block;padding:13px 6px;text-align:center;background:var(--card);border:1px solid var(--line);color:var(--txt);font-size:14px}
+.seg input:checked+span{background:var(--lime);border-color:var(--lime);color:var(--ink)}
+.seg input:focus-visible+span{outline:2px solid var(--lime);outline-offset:2px}
+.chk{display:flex;gap:12px;align-items:flex-start;font-size:14px;color:var(--mute);cursor:pointer}
+.chk input{width:22px;height:22px;flex:none;margin:1px 0 0;accent-color:var(--lime)}
+.hp{position:absolute;left:-9999px}
+button{margin-top:6px;width:100%;padding:20px;border:0;background:var(--lime);color:var(--ink);font-family:SM,monospace;font-size:15px;letter-spacing:.16em;text-transform:uppercase;cursor:pointer}
+button:disabled{opacity:.55}
+.err{min-height:22px;margin:0;color:var(--red);font-size:15px}
+.done{display:none;flex-direction:column;flex:1}.done.on{display:flex}
+.tick{width:112px;height:112px;border-radius:50%;background:var(--lime);display:grid;place-items:center;margin:8px 0 30px;animation:pop .55s cubic-bezier(.2,.9,.3,1.2) both}
+.tick svg{width:60px;height:60px;fill:none;stroke:var(--ink);stroke-width:5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:40;stroke-dashoffset:40;animation:draw .4s .35s ease-out forwards}
+@keyframes pop{0%{transform:scale(.6);opacity:0}60%{transform:scale(1.06);opacity:1}100%{transform:scale(1)}}
+@keyframes draw{to{stroke-dashoffset:0}}
+.big{font-family:SM,monospace;font-size:clamp(38px,12vw,56px);line-height:1;color:var(--lime);margin:14px 0 16px;word-break:break-word}
+.badge{display:inline-block;align-self:flex-start;border:1px solid var(--line);padding:10px 14px;font-family:SM,monospace;font-size:13px;letter-spacing:.1em;text-transform:uppercase}
+.foot{margin-top:auto;padding-top:36px;display:flex;align-items:center;justify-content:space-between;gap:12px;color:var(--mute);font-size:12px}
+.foot img{height:34px;width:auto}
+@media (prefers-reduced-motion:reduce){.tick,.tick svg{animation:none;stroke-dashoffset:0}}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <img class="logo" src="/logo-mhw.png" alt="Music Hub West" onerror="this.style.display='none'">
+  <section id="formView">
+    <div class="k">Tune In West Meetup · Viva Sounds</div>
+    <h1>Välkommen!</h1>
+    <p class="lead">Registrera dig på plats, det tar 20 sekunder. Du får en bekräftelse på mejlen.</p>
+    <form id="f" novalidate>
+      <label>Namn<input type="text" name="namn" autocomplete="name" required></label>
+      <label>Mejl<input type="email" name="epost" autocomplete="email" inputmode="email" required></label>
+      <div class="lbl">Kön
+        <div class="seg"><label><input type="radio" name="kon" value="Kvinna"><span>Kvinna</span></label><label><input type="radio" name="kon" value="Man"><span>Man</span></label><label><input type="radio" name="kon" value="Annat"><span>Annat</span></label><label><input type="radio" name="kon" value="Vill inte uppge"><span>Vill ej</span></label></div>
+      </div>
+      <div class="lbl">Har du ett eget bolag?
+        <div class="seg"><label><input type="radio" name="harBolag" value="Ja"><span>Ja</span></label><label><input type="radio" name="harBolag" value="Nej"><span>Nej</span></label></div>
+      </div>
+      <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <label class="chk"><input type="checkbox" name="consent" required><span>Jag godkänner att mina uppgifter sparas för registreringen.</span></label>
+      <p class="err" id="err" role="alert"></p>
+      <button type="submit" id="btn">Registrera mig</button>
+    </form>
+  </section>
+  <section class="done" id="doneView" aria-live="polite">
+    <div class="tick" aria-hidden="true"><svg viewBox="0 0 52 52"><path d="M14 27l8 8 17-18"/></svg></div>
+    <div class="k">Incheckad</div>
+    <div class="big" id="doneN">Välkommen!</div>
+    <p class="lead" id="doneT"></p>
+    <div class="badge">26 nov · Bongo Bar</div>
+  </section>
+  <div class="foot"><span>Music Hub West · En del av Tune In West</span><img src="/eu/eu-sv-white.png" alt="Medfinansieras av Europeiska unionen"></div>
+</main>
+<script>
+const f = document.getElementById('f'), err = document.getElementById('err'), btn = document.getElementById('btn');
+const EV = { eventTitle: 'Tune In West Meetup @ Viva Sounds', eventSlug: 'tiw-meetup-viva-sounds-2026', eventDate: '2026-11-26', eventLocation: 'Bongo Bar', translationKey: 'tiw-meetup-viva-sounds-2026', lang: 'sv' };
+f.addEventListener('submit', async (e) => {
+  e.preventDefault(); err.textContent = '';
+  const v = (n) => (f[n].value || '').trim();
+  if (!v('namn')) return err.textContent = 'Fyll i ditt namn.';
+  if (!/^\S+@\S+\.\S+$/.test(v('epost'))) return err.textContent = 'Kolla mejladressen.';
+  if (!f.consent.checked) return err.textContent = 'Kryssa i rutan för att fortsätta.';
+  if (f.website.value) return;
+  btn.disabled = true; btn.textContent = 'Skickar…';
+  try {
+    const r = await fetch('/api/register', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(Object.assign({}, EV, { namn: v('namn'), epost: v('epost'), kon: f.kon.value || undefined, harBolag: f.harBolag.value || undefined, source: 'På plats' })) });
+    if (!r.ok) throw 0;
+    (window.dataLayer = window.dataLayer || []).push({ event: 'walkin_register', event_slug: EV.eventSlug });
+    document.getElementById('formView').hidden = true;
+    document.getElementById('doneN').textContent = 'Välkommen, ' + v('namn').split(' ')[0] + '!';
+    document.getElementById('doneT').textContent = 'Du är registrerad och incheckad. En bekräftelse är på väg till ' + v('epost') + '.';
+    document.getElementById('doneView').classList.add('on');
+  } catch { err.textContent = 'Det gick inte att skicka. Försök igen eller fråga oss vid entrén.'; btn.disabled = false; btn.textContent = 'Registrera mig'; }
+});
+</script>
+</body>
+</html>
