@@ -10,7 +10,7 @@ event_language: Svenska
 image: /images/exms-reeperbahn-2026.jpg
 cost: Resestöd (begränsat antal) · rabattkod till delegatpass
 organizer: Export Music Sweden
-cta_label: 'Till ansökan ↗'
+cta_label: 'Till ansökan ↗︎'
 translationKey: exms-resestod-reeperbahn-2026
 registration_open: false
 external_registration_url: 'https://exms.org/nyheter/ansok-om-resestod-och-rabattkod-till-reeperbahn-festival'

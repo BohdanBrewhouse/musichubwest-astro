@@ -34,7 +34,7 @@ const dateText = ev.data.rolling ? 'Löpande' : displayDate;
 // sell tickets, and claiming it is misleading. Open calls get application
 // wording instead.
 const isOpenCall = ev.data.event_type === 'Utlysning';
-const extCtaLabel = (ev.data.cta_label ?? (isOpenCall ? 'Till ansökan ↗' : 'Läs mer ↗')).replace(/\s*↗\s*$/, '');
+const extCtaLabel = (ev.data.cta_label ?? (isOpenCall ? 'Till ansökan ↗︎' : 'Läs mer ↗︎')).replace(/\s*↗︎\s*$/, '');
 // Internal form (our own DB) — only utveckla-din-verksamhet uses this path.
 const ownCtaLabel = ev.data.cta_label ?? (isOpenCall ? 'Ansök nu' : 'Anmäl dig nu');
 

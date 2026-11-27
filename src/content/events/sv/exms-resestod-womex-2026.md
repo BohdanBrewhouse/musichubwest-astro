@@ -10,7 +10,7 @@ event_language: Svenska
 image: /images/exms-womex-2026.jpg
 cost: Resestöd 3 000 kr
 organizer: Export Music Sweden
-cta_label: 'Till ansökan ↗'
+cta_label: 'Till ansökan ↗︎'
 translationKey: exms-resestod-womex-2026
 registration_open: false
 external_registration_url: 'https://exms.org/nyheter/ansok-om-resestod-till-womex-2026'

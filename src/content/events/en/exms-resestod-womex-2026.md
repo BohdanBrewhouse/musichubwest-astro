@@ -10,7 +10,7 @@ event_language: Swedish
 image: /images/exms-womex-2026.jpg
 cost: Travel support SEK 3,000
 organizer: Export Music Sweden
-cta_label: 'To the application ↗'
+cta_label: 'To the application ↗︎'
 translationKey: exms-resestod-womex-2026
 registration_open: false
 external_registration_url: 'https://exms.org/nyheter/ansok-om-resestod-till-womex-2026'
